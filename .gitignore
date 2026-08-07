@@ -29,3 +29,6 @@ exports/
 *.aab
 *.ipa
 *.zip
+
+# Local asset vault
+.asset-vault/
