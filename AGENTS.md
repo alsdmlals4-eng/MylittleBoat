@@ -13,6 +13,28 @@ The player sits in a small boat and watches the sea. The player body is not visi
 
 Do not add combat, failure states, competitive systems, ads, payments, or online letter sharing.
 
+## Authority bootstrap
+
+Do not infer current project status from memory or past chats. Resolve current authority in this order:
+
+1. Latest user instruction.
+2. This `AGENTS.md` and project engine/data/safety constraints.
+3. Current Notion Project Home and approved human-facing project decisions.
+4. Current repository planning/data/code/scenes/resources/tests and actual runtime evidence.
+5. Current adopted Base contract and routing needed for the task.
+6. External references, past conversations, and inference.
+
+### DOMAIN_SPLIT_CANON
+
+- `NOTION_HUMAN_FACING_CANON`: 사람이 읽고 비교·수정하는 Project Home, 핵심 경험·루프·시각 방향, 에셋/Reference, 사람용 표·Flow/Storyboard를 책임진다.
+- `REPOSITORY_STRUCTURED_CANON`: Markdown·JSON·게임 데이터·GDScript·Scene·Resource·config·tests를 책임진다.
+- `REPOSITORY_RUNTIME_TRUTH`: 실제 Godot 실행·test·log·screenshot/video evidence를 책임진다.
+- Google Sheets가 과거 자료로 남아 있더라도 unique 미이관 자료용 `MIGRATION_ONLY_UNTIL_REMOVAL` compatibility source일 뿐 신규 기본 작업공간이나 runtime 증거가 아니다.
+
+Notion 승인이나 정적 이미지가 runtime 구현 성공을 의미하지 않는다. Notion의 사람용 결정이 구조화 데이터나 구현 의미를 바꾸면 repository owner에 동기화한 뒤 구현·완료를 주장한다.
+
+현재 `open/draft/ready` PR은 작업 시작 시 실제 GitHub 상태를 조회한다. 다른 workstream의 PR을 명시적 권한 없이 수정·흡수·종료·병합하지 않는다.
+
 ## Core Game Direction
 
 Core controls:
