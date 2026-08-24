@@ -35,6 +35,8 @@ var _drift_phase := 0.0
 var _diorama_camera_base_position := Vector3.ZERO
 var _appreciation_camera_base_position := Vector3.ZERO
 var _boat_base_position := Vector3.ZERO
+var _avatar_base_position := Vector3.ZERO
+var _pet_base_position := Vector3.ZERO
 
 
 func _ready() -> void:
@@ -45,6 +47,8 @@ func _ready() -> void:
 	_diorama_camera_base_position = $VoyageWorld/DioramaCameraRig.position
 	_appreciation_camera_base_position = $VoyageWorld/AppreciationCameraRig.position
 	_boat_base_position = $VoyageWorld/BoatBow.position
+	_avatar_base_position = $VoyageWorld/PlayerAvatarPlaceholder.position
+	_pet_base_position = $VoyageWorld/RestingPetPlaceholder.position
 	_apply_mood_tone()
 
 	%TakePhotoButton.pressed.connect(_take_photo)
@@ -127,13 +131,16 @@ func _cycle_speed() -> void:
 	_update_ui("표류 리듬을 %s으로 바꿨습니다." % SPEED_NAMES[GameState.speed_index])
 
 
-## Applies subtle boat/camera bob so speed changes felt drift without changing progression.
+## Applies subtle shared boat-space bob plus camera drift without changing progression.
 func _apply_drift_motion(delta: float) -> void:
 	var speed_index := clampi(GameState.speed_index, 0, SPEED_MULTIPLIERS.size() - 1)
 	_drift_phase += maxf(delta, 0.0) * SPEED_MULTIPLIERS[speed_index]
 	$VoyageWorld/DioramaCameraRig.position.y = _diorama_camera_base_position.y + sin(_drift_phase * 1.2) * 0.018
 	$VoyageWorld/AppreciationCameraRig.position.y = _appreciation_camera_base_position.y + sin(_drift_phase * 1.2) * 0.025
-	$VoyageWorld/BoatBow.position.y = _boat_base_position.y + sin(_drift_phase * 1.05 + 0.45) * 0.035
+	var boat_bob := sin(_drift_phase * 1.05 + 0.45) * 0.035
+	$VoyageWorld/BoatBow.position.y = _boat_base_position.y + boat_bob
+	$VoyageWorld/PlayerAvatarPlaceholder.position.y = _avatar_base_position.y + boat_bob
+	$VoyageWorld/RestingPetPlaceholder.position.y = _pet_base_position.y + boat_bob
 
 
 func _schedule_next_discovery(first_discovery: bool = false) -> void:
