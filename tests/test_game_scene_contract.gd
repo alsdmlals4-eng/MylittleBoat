@@ -1,4 +1,4 @@
-# 항해 화면이 상태 연속성·감상·발견·낚시·마음 톤을 실제 UI/환경으로 표현하는지 검증한다.
+# 항해 화면이 상태 연속성·감상·발견·낚시·마음 톤·다음 항해 흐름을 실제 UI/환경으로 표현하는지 검증한다.
 extends SceneTree
 
 var _failures := 0
@@ -40,6 +40,7 @@ func _run() -> void:
 	var scenery_button := scene.get_node_or_null("BottomPanel/ButtonGrid/SceneryButton") as Button
 	var album_button := scene.get_node_or_null("BottomPanel/ButtonGrid/AlbumButton") as Button
 	var fishing_button := scene.get_node_or_null("BottomPanel/ButtonGrid/FishingButton") as Button
+	var next_voyage_button := scene.get_node_or_null("BottomPanel/ButtonGrid/NextVoyageButton") as Button
 	var fishing_status := scene.get_node_or_null("TopPanel/TopVBox/FishingStatusLabel") as Label
 	var camera_rig := scene.get_node_or_null("VoyageWorld/CameraRig") as Node3D
 	var world_environment := scene.get_node_or_null("VoyageWorld/WorldEnvironment") as WorldEnvironment
@@ -53,6 +54,9 @@ func _run() -> void:
 	_expect(scenery_button != null and not scenery_button.visible, "scenery action must stay hidden until an ambient scenery exists")
 	_expect(fishing_button != null, "game scene must expose optional FishingButton")
 	_expect(fishing_status != null, "game scene must expose FishingStatusLabel")
+	_expect(next_voyage_button != null, "game scene must expose a NextVoyageButton for repeated memory-building sessions")
+	if next_voyage_button != null:
+		_expect(not next_voyage_button.visible, "NextVoyageButton must stay hidden before the current five-minute voyage is complete")
 
 	if appreciation_button != null and take_photo_button != null and speed_button != null and album_button != null:
 		appreciation_button.emit_signal("pressed")
@@ -61,6 +65,8 @@ func _run() -> void:
 		_expect(not take_photo_button.visible, "appreciation mode must hide TakePhotoButton")
 		_expect(not speed_button.visible, "appreciation mode must hide SpeedButton")
 		_expect(not album_button.visible, "appreciation mode must hide AlbumButton")
+		appreciation_button.emit_signal("pressed")
+		await process_frame
 
 	if camera_rig != null and scene.has_method("_cycle_speed"):
 		var before_y := camera_rig.position.y
@@ -72,6 +78,14 @@ func _run() -> void:
 
 	_expect(scene.has_method("_spawn_ambient_discovery"), "game scene must schedule ambient discoveries instead of permanent reward buttons")
 	_expect(scene.has_method("_handle_fishing_action"), "game scene must connect the calm fishing interaction")
+	_expect(scene.has_method("_start_next_voyage"), "game scene must provide a path back to mood selection for the next voyage")
+
+	game_state.remaining_seconds = 0.01
+	game_state.voyage_record_created = false
+	scene.call("_process", 0.02)
+	await process_frame
+	if next_voyage_button != null:
+		_expect(next_voyage_button.visible, "NextVoyageButton must appear after the five-minute voyage record is created")
 
 	scene.queue_free()
 	await process_frame
