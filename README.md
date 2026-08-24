@@ -29,6 +29,8 @@ MyLittleBoat/
     game.tscn
     album.tscn
   scripts/
+    audio/
+      resting_soundscape.gd
     core/
       game_state.gd
     ui/
@@ -37,6 +39,7 @@ MyLittleBoat/
     voyage/
       boat_camera_controller.gd
       fishing_session.gd
+      resting_pet_placeholder.gd
       game_scene.gd
   tests/
     test_calm_voyage_state.gd
@@ -44,6 +47,7 @@ MyLittleBoat/
     test_game_scene_contract.gd
     test_album_memory_contract.gd
     test_camera_input_contract.gd
+    test_resting_core_contract.gd
   assets/
     images/
     audio/
@@ -89,9 +93,22 @@ MyLittleBoat/
 - 사진 / 풍경 / 편지 / 물고기 / 항해 기록이 같은 실행 세션 동안 누적되는 앨범
 - 사진·풍경·편지 기억에 따라 변하는 동반자 호감도 Lv 1~3
 
+## Resting Core Technical Prototype
+
+현재는 최종 자산을 만들기 전에 구조를 검증하는 **기술 prototype**이 추가되어 있습니다.
+
+- `RestingSoundscape` AutoLoad가 메뉴/항해/앨범 Scene 전환에도 유지됩니다.
+- 런타임 생성 `AudioStreamWAV` OceanBed가 `-16 dB`에서 loop됩니다.
+- 이 합성음은 **TECHNICAL_PROTOTYPE**이며 자연 파도 production audio가 아닙니다.
+- 바다 placeholder는 roughness를 높이고 밝기/조명/마음별 하늘 톤을 더 부드러운 범위로 낮췄습니다.
+- 둥근 `RestingPetPlaceholder` 1종이 12~24초 저밀도 idle과 아주 작은 호흡만 수행합니다.
+- 펫 placeholder에는 배고픔·청소·피로·방치 의무가 없습니다.
+
+자동 테스트는 이 구조를 검증하지만 **실제로 듣기/보기에 편안하다는 뜻은 아닙니다.**
+
 ## 현재 구현 경계
 
-현재는 **기능 Vertical Slice는 존재하지만 최종 휴식 경험 자산은 아직 없는 상태**입니다.
+현재는 **기능 Vertical Slice + Resting Core 기술 구조는 존재하지만 최종 휴식 경험 자산은 아직 없는 상태**입니다.
 
 - 앨범을 열었다가 바다로 돌아와도 현재 항해 타이머와 상태가 이어집니다.
 - 새 항해를 시작해도 이전 사진·풍경·편지·물고기·항해 기록과 동반자 진행은 지우지 않습니다.
@@ -100,26 +117,28 @@ MyLittleBoat/
 - 사진은 아직 실제 PNG 파일을 저장하지 않고 텍스트 기록으로 남깁니다.
 - 낚시는 현재 조용한 보조 콘텐츠입니다. 어종 대량화, 미끼, 장비, 판매, 요리, 낚시 경제는 **별도 기획 결정 전까지 현재 범위에서 추가하지 않습니다.**
 - 모바일 화면 드래그는 자동 입력 계약으로 기술 연결을 검증했지만 실제 스마트폰 손감각·버튼 크기·가독성은 `NOT_RUN`입니다.
-- `assets/audio`에는 아직 production audio가 없습니다. 파도소리 휴식감은 `NOT_RUN`입니다.
-- 제작 펫 모델/idle 애니메이션이 없습니다. 펫의 실제 시각적 휴식감은 `NOT_RUN`입니다.
+- production 자연 파도/잔물결/바람/선체/펫 audio asset은 아직 없습니다. Human listening은 `NOT_RUN`입니다.
+- 제작 펫 모델/idle 애니메이션이 없습니다. 현재 둥근 펫은 기술 placeholder입니다.
 - 현재 placeholder 바다/보트는 최종 Visual PASS가 아닙니다.
 
 ## 다음 우선 작업
 
-기능 수를 늘리지 않고 **Resting Core Asset Prototype**을 먼저 만듭니다.
+기능 수를 늘리지 않고 **Production Resting Asset A/B**를 진행합니다.
 
-1. 잔잔한 파도 `OceanBed` A/B 후보 청취 및 권리 readback
-2. 가까운 물결 + 낮은 바람 + 드문 선체 소리 최소 soundscape
-3. 편안한 바다/하늘 color study
-4. 첫 펫 1종의 `바다 보기 / 앉기 / 눕기 / 졸기 / 하품·기지개` idle prototype
+1. 실제 자연 파도 `OceanBed` A/B 후보 청취 + 권리/hash readback
+2. 선택된 OceanBed를 persistent soundscape에 교체하고 `NearWater` 1개만 추가
+3. 편안한 바다/하늘 production color study
+4. 첫 펫 1종의 실제 visual brief 승인 → 단일 제작 → resting idle 연결
 5. 제작 자산이 들어간 30초 / 5분 Human rest test
 
 ## 현재 Godot 골격
 
 - `scenes/main_menu.tscn`: 오늘의 마음 선택 후 새 항해 시작
-- `scenes/game.tscn`: 1인칭 보트 감상, 5분 상태, 핵심 조작, Ambient Discovery, 선택형 낚시, 다음 항해 진입
+- `scenes/game.tscn`: 1인칭 보트 감상, 5분 상태, 핵심 조작, Ambient Discovery, 선택형 낚시, soft-sea placeholder, resting-pet placeholder
 - `scenes/album.tscn`: 사진·풍경·편지·물고기·항해 기록 확인
 - `scripts/core/game_state.gd`: Scene 전환보다 오래 살아야 하는 현재 항해 상태와 누적 기억을 보관하는 AutoLoad
+- `scripts/audio/resting_soundscape.gd`: Scene 전환에 끊기지 않는 persistent 기술용 OceanBed AutoLoad
+- `scripts/voyage/resting_pet_placeholder.gd`: 관리 의무 없는 저밀도 resting idle 기술 placeholder
 - `scripts/voyage/fishing_session.gd`: 실패 없는 `IDLE → WAITING → BITE_READY → IDLE` 낚시 상태 머신
 - `scripts/voyage/boat_camera_controller.gd`: PC 마우스와 모바일 화면 드래그 시야 회전
 
@@ -135,6 +154,7 @@ Godot 버전 확인
 → game scene 의미 계약
 → album memory 계약
 → camera input 계약
+→ resting core technical contract
 → main menu / game / album scene smoke
 ```
 
@@ -182,11 +202,15 @@ Notion 사람용 방향 승인
 - [ ] 반복 낚시만으로 동반자 호감도를 파밍할 수 없다.
 - [ ] 앨범에 물고기와 항해 기록도 표시된다.
 - [ ] synthetic 모바일 화면 드래그가 카메라를 돌리면서 pitch clamp와 수평을 보존한다.
+- [ ] RestingSoundscape가 persistent AutoLoad이고 기술용 OceanBed가 loop된다.
+- [ ] RestingSoundscape는 `TECHNICAL_PROTOTYPE` evidence class를 노출한다.
+- [ ] 펫 placeholder idle 간격이 최소 10초 이상이고 care obligation이 없다.
+- [ ] runtime 마음별 하늘과 ocean material이 soft-resting 기술 범위를 지킨다.
 
 ### Resting Core 사람 검증 — 제작 자산 통합 후
 
 - [ ] 첫 30초에 버튼을 누르지 않아도 바다에 머물고 싶은가.
-- [ ] 음악 OFF + 파도소리만으로 공간이 성립하는가.
+- [ ] 음악 OFF + 실제 파도소리만으로 공간이 성립하는가.
 - [ ] 5분이 편안한가, 아니면 `EMPTY`/`CHORES`로 느껴지는가.
 - [ ] 마음별 미세한 하늘 톤 차이가 감정을 강요하지 않고 자연스럽게 느껴지는가.
 - [ ] 파도 loop seam, 큰 소리, 날카로운 고역이 거슬리지 않는가.
