@@ -20,6 +20,10 @@ func _run() -> void:
 	gs.appreciation_mode = false
 
 	var packed := load("res://scenes/game.tscn") as PackedScene
+	_expect(packed != null, "game.tscn must load for boat life contract")
+	if packed == null:
+		_finish()
+		return
 	var scene := packed.instantiate()
 	root.add_child(scene)
 	await process_frame
