@@ -1,0 +1,41 @@
+name: Godot 4.7 validation
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Godot 4.7
+        uses: chickensoft-games/setup-godot@v2.4.1
+        with:
+          version: 4.7.0
+          use-dotnet: false
+          include-templates: false
+
+      - name: Verify Godot version
+        run: godot --version
+
+      - name: Import project headlessly
+        run: godot --headless --path . --quit
+
+      - name: Run calm voyage state contract
+        run: godot --headless --path . --script res://tests/test_calm_voyage_state.gd
+
+      - name: Run fishing state contract
+        run: godot --headless --path . --script res://tests/test_fishing_session.gd
+
+      - name: Smoke main menu scene
+        run: godot --headless --path . --scene "res://scenes/main_menu.tscn" --quit-after 1
+
+      - name: Smoke game scene
+        run: godot --headless --path . --scene "res://scenes/game.tscn" --quit-after 1
