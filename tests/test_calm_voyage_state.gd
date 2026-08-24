@@ -43,6 +43,10 @@ func _run() -> void:
 	_expect(state.voyage_active, "begin_voyage must activate the voyage")
 	_expect(is_equal_approx(state.remaining_seconds, 300.0), "begin_voyage must start the 5-minute baseline")
 
+	var early_records: int = state.voyage_records.size()
+	state.complete_voyage()
+	_expect(state.voyage_records.size() == early_records, "complete_voyage must not record an active voyage before its timer reaches zero")
+
 	var fish_before: int = state.fish.size()
 	var affection_before_fish: int = state.companion_affection
 	state.add_fish("정어리")
@@ -50,10 +54,11 @@ func _run() -> void:
 	_expect(state.fish.size() == fish_before + 2, "add_fish must append fish memories")
 	_expect(state.companion_affection == affection_before_fish, "repeat fishing must not become the fastest companion-affection farming loop")
 
+	state.remaining_seconds = 0.0
 	var records_before: int = state.voyage_records.size()
 	state.complete_voyage()
 	state.complete_voyage()
-	_expect(state.voyage_records.size() == records_before + 1, "complete_voyage must create exactly one record per active voyage")
+	_expect(state.voyage_records.size() == records_before + 1, "complete_voyage must create exactly one record after the active voyage reaches zero")
 
 	_finish()
 
