@@ -1,10 +1,12 @@
-# 1인칭 보트 카메라의 PC 마우스와 모바일 화면 드래그 회전을 관리한다.
+# 바다 감상용 Appreciation Camera의 PC 마우스와 모바일 화면 드래그 회전을 관리한다.
 extends Node3D
 
 @export var mouse_sensitivity := 0.12
 @export var touch_sensitivity := 0.12
 @export var min_pitch_degrees := -28.0
 @export var max_pitch_degrees := 18.0
+
+@onready var _controlled_camera := get_node_or_null("AppreciationCamera3D") as Camera3D
 
 var _dragging := false
 var _yaw_degrees := 0.0
@@ -17,7 +19,15 @@ func _ready() -> void:
 	_apply_camera_rotation()
 
 
+func _is_input_active() -> bool:
+	return _controlled_camera != null and _controlled_camera.current
+
+
 func _unhandled_input(event: InputEvent) -> void:
+	if not _is_input_active():
+		_dragging = false
+		return
+
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		_dragging = event.pressed
 	elif event is InputEventMouseMotion and _dragging:
