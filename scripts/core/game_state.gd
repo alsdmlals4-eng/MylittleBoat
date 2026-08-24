@@ -63,9 +63,9 @@ func tick_voyage(delta: float) -> bool:
 	return remaining_seconds <= 0.0
 
 
-## Creates exactly one memory record for the active voyage.
+## Creates exactly one memory record for an active voyage.
 func complete_voyage() -> void:
-	if voyage_record_created:
+	if not voyage_active or voyage_record_created:
 		return
 	voyage_record_created = true
 	var photos_this_voyage := maxi(0, photos.size() - _voyage_photo_start_count)
