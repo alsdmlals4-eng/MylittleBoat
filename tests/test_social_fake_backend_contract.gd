@@ -23,6 +23,9 @@ func _run() -> void:
 		_finish()
 		return
 
+	_assert_local_only_source(session_path)
+	_assert_local_only_source(client_path)
+
 	var session_script = load(session_path)
 	var client_script = load(client_path)
 	_expect(session_script != null, "SocialSessionFake must load")
@@ -92,6 +95,14 @@ func _run() -> void:
 	var high_delay: Dictionary = high_delay_client.call("send_friend_bottle", "높은 경계", "")
 	_expect(is_equal_approx(float(high_delay.get("deliver_at", 0.0)) - float(high_delay.get("accepted_at", 0.0)), 210.0), "fake delay must clamp to approved maximum 210 seconds")
 
+	var text_boundary_client = client_script.new()
+	text_boundary_client.call("configure", session, 90.0)
+	text_boundary_client.call("set_friend_available", true)
+	var exactly_400: String = "가".repeat(400)
+	var over_400: String = "가".repeat(401)
+	_expect(str((text_boundary_client.call("send_friend_bottle", exactly_400, "") as Dictionary).get("status", "")) == "accepted", "400-character bottle text must remain valid")
+	_expect(str((text_boundary_client.call("send_friend_bottle", over_400, "") as Dictionary).get("status", "")) == "MESSAGE_TOO_LONG", "401-character bottle text must be rejected")
+
 	var no_recipient_client = client_script.new()
 	no_recipient_client.call("configure", session, 90.0)
 	no_recipient_client.call("set_drift_recipient_available", false)
@@ -101,6 +112,17 @@ func _run() -> void:
 	_expect(drafts.size() == 1 and str((drafts[0] as Dictionary).get("text", "")) == "누군가에게 닿기를", "no-recipient DriftBottle must remain as a local draft")
 	no_recipient_client.call("advance_time", 300.0)
 	_expect((no_recipient_client.call("poll_inbox") as Array).is_empty(), "no-recipient draft must never appear as delivered")
+
+	var drift_delay_client = client_script.new()
+	drift_delay_client.call("configure", session, 75.0)
+	drift_delay_client.call("set_drift_recipient_available", true)
+	var drift_delayed: Dictionary = drift_delay_client.call("send_drift_bottle", "천천히 표류하는 편지", "", "thread-delay")
+	_expect(str(drift_delayed.get("status", "")) == "accepted", "eligible DriftBottle must be accepted")
+	_expect(is_equal_approx(float(drift_delayed.get("deliver_at", 0.0)) - float(drift_delayed.get("accepted_at", 0.0)), 75.0), "accepted DriftBottle must use the same delayed delivery contract")
+	drift_delay_client.call("advance_time", 74.99)
+	_expect((drift_delay_client.call("poll_inbox") as Array).is_empty(), "DriftBottle must stay hidden before deliver_at")
+	drift_delay_client.call("advance_time", 0.01)
+	_expect((drift_delay_client.call("poll_inbox") as Array).size() == 1, "DriftBottle must become pollable at deliver_at")
 
 	var drift_client = client_script.new()
 	drift_client.call("configure", session, 60.0)
@@ -139,6 +161,16 @@ func _snapshot_core(game_state: Node) -> Dictionary:
 		"voyage_records": game_state.voyage_records.duplicate(),
 		"boat_decor": game_state.boat_decor.duplicate(true),
 	}
+
+
+func _assert_local_only_source(path: String) -> void:
+	var file := FileAccess.open(path, FileAccess.READ)
+	_expect(file != null, "social fake source must be readable: %s" % path)
+	if file == null:
+		return
+	var source := file.get_as_text()
+	for forbidden in ["HTTPRequest", "HTTPClient", "WebSocketPeer", "WebSocketMultiplayerPeer", "supabase", "SUPABASE", "service_role", "api_key"]:
+		_expect(source.find(forbidden) == -1, "social fake must not include real network/backend surface: %s" % forbidden)
 
 
 func _assert_no_realtime_fields(value: Variant) -> void:
