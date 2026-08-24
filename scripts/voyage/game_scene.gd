@@ -193,7 +193,7 @@ func _refresh_decor_item_options() -> void:
 	for item_id in compatible_items:
 		var definition := _decor_catalog.get_item_definition(item_id)
 		%DecorItemOption.add_item(str(definition.get("label", item_id)))
-		var index := %DecorItemOption.item_count - 1
+		var index: int = %DecorItemOption.item_count - 1
 		%DecorItemOption.set_item_metadata(index, item_id)
 		if item_id == stored_item:
 			stored_index = index
