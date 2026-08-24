@@ -1,4 +1,4 @@
-# Rest-first technical prototype contracts: audio wiring, soft sea composition, and non-demanding pet placeholder.
+# Rest-first technical prototype contracts: persistent audio wiring, soft sea composition, and non-demanding pet placeholder.
 extends SceneTree
 
 var _failures := 0
@@ -19,10 +19,11 @@ func _run() -> void:
 	root.add_child(scene)
 	await process_frame
 
-	var soundscape := scene.get_node_or_null("RestingSoundscape")
-	var ocean_bed := scene.get_node_or_null("RestingSoundscape/OceanBed") as AudioStreamPlayer
-	_expect(soundscape != null, "game scene must have a dedicated RestingSoundscape owner")
-	_expect(ocean_bed != null, "RestingSoundscape must expose an OceanBed AudioStreamPlayer")
+	var soundscape := root.get_node_or_null("RestingSoundscape")
+	var ocean_bed := root.get_node_or_null("RestingSoundscape/OceanBed") as AudioStreamPlayer
+	_expect(soundscape != null, "RestingSoundscape must be a persistent AutoLoad owner so album/menu scene changes do not restart the ocean bed")
+	_expect(scene.get_node_or_null("RestingSoundscape") == null, "game scene must not create a duplicate local RestingSoundscape")
+	_expect(ocean_bed != null, "persistent RestingSoundscape must expose an OceanBed AudioStreamPlayer")
 	if soundscape != null:
 		_expect(soundscape.has_method("is_technical_prototype"), "soundscape must expose its evidence class")
 		if soundscape.has_method("is_technical_prototype"):
