@@ -99,7 +99,7 @@ func _build_visual(shape: String) -> void:
 			mesh_instance.mesh = mesh
 			material.albedo_color = Color(0.72, 0.72, 0.72, 1.0)
 
-	mesh_instance.surface_material_override[0] = material
+	mesh_instance.set_surface_override_material(0, material)
 	add_child(mesh_instance)
 	_visual = mesh_instance
 
