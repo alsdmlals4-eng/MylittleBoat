@@ -210,6 +210,8 @@ product-target margin: >= 55 sec
 
 Random delay is product behavior, not accidental latency.
 
+**No cron/scheduler is required for MVP availability.** `poll-inbox` treats any allowed bottle with `deliver_at <= server_now` as available and may atomically stamp `delivered_at` on first retrieval. The database timestamp is the source of truth; the client cannot shorten the delay.
+
 ---
 
 ## 7. Social eligibility and durable identity
@@ -243,13 +245,15 @@ No public user search.
 Use a server-generated **8-character one-time Friend Invite Code**:
 
 - expires after 24 hours;
-- single-use after successful acceptance;
 - generated only for `linked_social` users;
 - code itself reveals no email or auth id;
-- accepting the code creates a pending friendship request;
-- friendship becomes accepted only after the receiving account confirms.
+- the code owner is the inviter;
+- a second linked user redeems the code as the invitee;
+- redemption consumes the code and records the invitee's consent;
+- the inviter must then explicitly confirm the pending request before `friendships.status` becomes `accepted`;
+- raw code is shown only at creation time and the database stores only its hash.
 
-A new `friend_invites` table stores only the hash of the active code, owner, expiry, use state, and timestamps.
+This extra inviter-confirm step prevents a leaked code from silently creating a durable friendship.
 
 ### FriendBottle flow
 
@@ -526,7 +530,9 @@ Sensitive social state is mutated through Edge Functions when full invariants mu
 - `owner_id uuid`;
 - `code_hash text unique`;
 - `expires_at timestamptz`;
-- `used_at timestamptz nullable`;
+- `redeemed_by uuid nullable`;
+- `redeemed_at timestamptz nullable`;
+- `confirmed_at timestamptz nullable`;
 - `created_at timestamptz`.
 
 Raw invite codes are returned once to the owner and are not stored in plaintext.
@@ -624,8 +630,8 @@ Block immediately prevents matching, thread continuation, and friend delivery.
 
 ### Recipient offline
 
-- bottle becomes available server-side at/after `deliver_at`;
-- remains unread until future poll/session;
+- bottle becomes available server-side when `deliver_at <= server_now`;
+- remains unread until a future poll/session;
 - no push notification required in MVP.
 
 ### Moderation unavailable
@@ -691,13 +697,13 @@ This architecture is intentionally split into testable slices rather than one gi
    Godot `BottleClient` interface + deterministic local fake implementing delayed FriendBottle/DriftBottle transitions, 5-minute acceptance semantics, report/block, invite-code, age gate, and 6-letter stranger limit.
 
 4. **Supabase schema/Auth/RLS/Edge Functions**  
-   Local Supabase development first, SQL migrations, anonymous→email-OTP link, RLS/security tests, rate limits, delivery scheduling, block routing, invite flow, stranger gate.
+   Local Supabase development first, SQL migrations, anonymous→email-OTP link, RLS/security tests, rate limits, delivery timestamp semantics, block routing, invite flow, stranger gate.
 
 5. **Production moderation + release gate**  
    Separate focused design/benchmark for the concrete semantic moderation provider, then implement Terms, report queue, block/report UX and feature gating. `DriftBottle` remains OFF until this passes.
 
 6. **End-to-end delayed bottle integration**  
-   Replace fake adapter with real adapter under same client interface; polling; offline drafts; friendship; delivery evidence.
+   Replace fake adapter with real adapter under the same client interface; polling; offline drafts; friendship; delivery evidence.
 
 7. **Human/device social-rest validation**  
    Verify arrivals feel ambient, safety actions are discoverable, delivery target holds on real networks, and backend failure never blocks rest gameplay.
@@ -719,6 +725,7 @@ Implementation is faithful only if:
 - no-recipient DriftBottle is not falsely accepted;
 - all online social is 16+ in MVP;
 - FriendInvite codes are one-time, 8-character, 24-hour and server-generated;
+- FriendInvite redemption does not create an accepted friendship until the inviter confirms;
 - stranger mode has no directory, presence, typing, read receipt, or public feed;
 - stranger thread stops at 6 letters unless mutual friendship consent succeeds;
 - report and block are in-app;
@@ -754,9 +761,9 @@ Implementation is faithful only if:
 - Decoration: fixed slot zones first.
 - Interaction: reusable `Interactable` contract.
 - Social age: all online social 16+ for MVP.
-- Friend discovery: durable linked account + one-time 8-char/24h Friend Invite Code.
+- Friend discovery: durable linked account + one-time 8-char/24h Friend Invite Code + inviter confirm after redemption.
 - Stranger social: delayed/rate-limited `DriftBottle`, server-assigned ephemeral alias, max 6 letters, mutual consent to become friends.
-- Delivery: accepted bottles use 45..210 sec intentional delay + 20..30 sec polling, target <=5 min under healthy conditions.
+- Delivery: accepted bottles use 45..210 sec intentional delay + 20..30 sec polling; `poll-inbox` resolves `deliver_at <= server_now`; target <=5 min under healthy conditions.
 - MVP backend: Supabase Auth + Postgres/RLS + Edge Functions, polling instead of Realtime.
 - Safety: stranger mode remains OFF until semantic moderation + Terms + report/block + operations are deployed/tested.
 - Cost: local/free-first development; hosting tier is re-Gated before public release if Supabase Free pause/limits conflict with real reliability.
