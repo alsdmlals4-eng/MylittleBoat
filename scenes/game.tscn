@@ -1,9 +1,8 @@
-[gd_scene load_steps=13 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://scripts/voyage/game_scene.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/voyage/boat_camera_controller.gd" id="2"]
-[ext_resource type="Script" path="res://scripts/voyage/resting_pet_placeholder.gd" id="4"]
-[ext_resource type="Script" path="res://scripts/avatar/player_avatar_placeholder.gd" id="5"]
+[ext_resource type="PackedScene" path="res://scenes/boat_space.tscn" id="3"]
 
 [sub_resource type="Environment" id="Environment_sky"]
 background_mode = 1
@@ -18,27 +17,6 @@ size = Vector2(180, 180)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ocean"]
 albedo_color = Color(0.2, 0.47, 0.62, 1)
 roughness = 0.92
-
-[sub_resource type="BoxMesh" id="BoxMesh_boat_bow"]
-size = Vector3(2.8, 0.22, 2.4)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_boat"]
-albedo_color = Color(0.89, 0.75, 0.54, 1)
-roughness = 0.72
-
-[sub_resource type="SphereMesh" id="SphereMesh_pet"]
-radius = 0.45
-height = 0.9
-radial_segments = 20
-rings = 10
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pet"]
-albedo_color = Color(0.82, 0.75, 0.66, 1)
-roughness = 0.96
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_avatar"]
-albedo_color = Color(0.72, 0.66, 0.82, 1)
-roughness = 0.94
 
 [node name="GameScene" type="Control"]
 layout_mode = 3
@@ -84,42 +62,7 @@ far = 200.0
 mesh = SubResource("PlaneMesh_ocean")
 surface_material_override/0 = SubResource("StandardMaterial3D_ocean")
 
-[node name="BoatBow" type="MeshInstance3D" parent="VoyageWorld"]
-position = Vector3(0, 0.18, 0.55)
-mesh = SubResource("BoxMesh_boat_bow")
-surface_material_override/0 = SubResource("StandardMaterial3D_boat")
-
-[node name="PlayerAvatarPlaceholder" type="Node3D" parent="VoyageWorld"]
-position = Vector3(-0.62, 0.72, 0.32)
-scale = Vector3(0.74, 0.74, 0.74)
-script = ExtResource("5")
-
-[node name="Body" type="MeshInstance3D" parent="VoyageWorld/PlayerAvatarPlaceholder"]
-scale = Vector3(0.62, 0.88, 0.48)
-mesh = SubResource("SphereMesh_pet")
-surface_material_override/0 = SubResource("StandardMaterial3D_avatar")
-
-[node name="Head" type="MeshInstance3D" parent="VoyageWorld/PlayerAvatarPlaceholder"]
-position = Vector3(0, 0.62, 0)
-scale = Vector3(0.64, 0.64, 0.64)
-mesh = SubResource("SphereMesh_pet")
-surface_material_override/0 = SubResource("StandardMaterial3D_avatar")
-
-[node name="RestingPetPlaceholder" type="Node3D" parent="VoyageWorld"]
-position = Vector3(0.9, 0.58, 0.38)
-scale = Vector3(0.72, 0.72, 0.72)
-script = ExtResource("4")
-
-[node name="Body" type="MeshInstance3D" parent="VoyageWorld/RestingPetPlaceholder"]
-scale = Vector3(0.72, 0.58, 0.92)
-mesh = SubResource("SphereMesh_pet")
-surface_material_override/0 = SubResource("StandardMaterial3D_pet")
-
-[node name="Head" type="MeshInstance3D" parent="VoyageWorld/RestingPetPlaceholder"]
-position = Vector3(0, 0.28, -0.42)
-scale = Vector3(0.55, 0.55, 0.55)
-mesh = SubResource("SphereMesh_pet")
-surface_material_override/0 = SubResource("StandardMaterial3D_pet")
+[node name="BoatSpace" parent="VoyageWorld" instance=ExtResource("3")]
 
 [node name="TopPanel" type="PanelContainer" parent="."]
 layout_mode = 1
@@ -161,6 +104,93 @@ text = ""
 horizontal_alignment = 1
 autowrap_mode = 2
 
+[node name="DecorPanel" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -170.0
+offset_top = -520.0
+offset_right = 170.0
+offset_bottom = -292.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="DecorVBox" type="VBoxContainer" parent="DecorPanel"]
+layout_mode = 2
+
+[node name="DecorTitle" type="Label" parent="DecorPanel/DecorVBox"]
+layout_mode = 2
+text = "보트 꾸미기 · 기술 미리보기"
+horizontal_alignment = 1
+
+[node name="DecorSlotOption" type="OptionButton" parent="DecorPanel/DecorVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="DecorItemOption" type="OptionButton" parent="DecorPanel/DecorVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="DecorApplyButton" type="Button" parent="DecorPanel/DecorVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "놓기 / 바꾸기"
+
+[node name="DecorClearButton" type="Button" parent="DecorPanel/DecorVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "비우기"
+
+[node name="DecorCloseButton" type="Button" parent="DecorPanel/DecorVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "닫기"
+
+[node name="InteractionPanel" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -170.0
+offset_top = -500.0
+offset_right = 170.0
+offset_bottom = -292.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="InteractionVBox" type="VBoxContainer" parent="InteractionPanel"]
+layout_mode = 2
+
+[node name="InteractionTitle" type="Label" parent="InteractionPanel/InteractionVBox"]
+layout_mode = 2
+text = "작은 상호작용"
+horizontal_alignment = 1
+
+[node name="InteractionTargetOption" type="OptionButton" parent="InteractionPanel/InteractionVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="InteractionActionOption" type="OptionButton" parent="InteractionPanel/InteractionVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="InteractionPerformButton" type="Button" parent="InteractionPanel/InteractionVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "천천히 해보기"
+
+[node name="InteractionCloseButton" type="Button" parent="InteractionPanel/InteractionVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "닫기"
+
 [node name="BottomPanel" type="PanelContainer" parent="."]
 layout_mode = 1
 anchors_preset = 12
@@ -168,7 +198,7 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 16.0
-offset_top = -268.0
+offset_top = -292.0
 offset_right = -16.0
 offset_bottom = -20.0
 grow_horizontal = 2
@@ -197,6 +227,16 @@ text = "속도: 보통"
 unique_name_in_owner = true
 layout_mode = 2
 text = "낚시"
+
+[node name="DecorButton" type="Button" parent="BottomPanel/ButtonGrid"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "꾸미기"
+
+[node name="InteractButton" type="Button" parent="BottomPanel/ButtonGrid"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "상호작용"
 
 [node name="LetterButton" type="Button" parent="BottomPanel/ButtonGrid"]
 unique_name_in_owner = true

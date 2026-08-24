@@ -1,7 +1,8 @@
-# 5분 항해의 디오라마·감상 카메라와 발견·낚시 상호작용을 관리한다.
+# 5분 항해의 디오라마·보트 생활공간·발견·낚시 상호작용을 관리한다.
 extends Control
 
 const FISHING_SESSION_SCRIPT = preload("res://scripts/voyage/fishing_session.gd")
+const DECOR_CATALOG_SCRIPT = preload("res://scripts/decor/boat_decor_catalog.gd")
 
 const SPEED_NAMES: Array[String] = ["느림", "보통", "빠름"]
 const SPEED_MULTIPLIERS: Array[float] = [0.65, 1.0, 1.45]
@@ -12,14 +13,22 @@ const LETTER_TEXTS: Array[String] = [
 ]
 const SCENERY_NAMES: Array[String] = ["일출", "비", "고래", "밤바다"]
 const FISH_NAMES: Array[String] = ["정어리", "전갱이", "고등어", "도미"]
-
+const DECOR_SLOT_NODE_NAMES := {
+	"bow_left": "BowLeft",
+	"bow_right": "BowRight",
+	"center_left": "CenterLeft",
+	"center_right": "CenterRight",
+	"rear_left": "RearLeft",
+	"rear_right": "RearRight",
+	"rail_accent": "RailAccent",
+	"pet_corner": "PetCorner",
+}
 const MOOD_SKY_COLORS := {
 	"평온": Color(0.58, 0.76, 0.86, 1.0),
 	"지침": Color(0.60, 0.72, 0.80, 1.0),
 	"외로움": Color(0.55, 0.69, 0.82, 1.0),
 	"설렘": Color(0.66, 0.80, 0.88, 1.0),
 }
-
 const FIRST_DISCOVERY_MIN_SECONDS := 18.0
 const FIRST_DISCOVERY_MAX_SECONDS := 30.0
 const DISCOVERY_MIN_SECONDS := 35.0
@@ -29,42 +38,46 @@ const FISHING_WAIT_MIN_SECONDS := 6.0
 const FISHING_WAIT_MAX_SECONDS := 12.0
 
 var _fishing_session = FISHING_SESSION_SCRIPT.new()
+var _decor_catalog = DECOR_CATALOG_SCRIPT.new()
 var _discovery_wait_remaining := 0.0
 var _discovery_offer_remaining := 0.0
 var _drift_phase := 0.0
 var _diorama_camera_base_position := Vector3.ZERO
 var _appreciation_camera_base_position := Vector3.ZERO
-var _boat_base_position := Vector3.ZERO
-var _avatar_base_position := Vector3.ZERO
-var _pet_base_position := Vector3.ZERO
+var _boat_space_base_position := Vector3.ZERO
 
 
 func _ready() -> void:
 	randomize()
 	if not GameState.voyage_active:
 		GameState.begin_voyage(GameState.selected_mood)
-
 	_diorama_camera_base_position = $VoyageWorld/DioramaCameraRig.position
 	_appreciation_camera_base_position = $VoyageWorld/AppreciationCameraRig.position
-	_boat_base_position = $VoyageWorld/BoatBow.position
-	_avatar_base_position = $VoyageWorld/PlayerAvatarPlaceholder.position
-	_pet_base_position = $VoyageWorld/RestingPetPlaceholder.position
+	_boat_space_base_position = $VoyageWorld/BoatSpace.position
 	_apply_mood_tone()
-
+	_apply_stored_boat_decor()
 	%TakePhotoButton.pressed.connect(_take_photo)
 	%AppreciationButton.pressed.connect(_toggle_appreciation_mode)
 	%SpeedButton.pressed.connect(_cycle_speed)
 	%FishingButton.pressed.connect(_handle_fishing_action)
+	%DecorButton.pressed.connect(_open_decor_panel)
+	%InteractButton.pressed.connect(_open_interaction_panel)
+	%DecorSlotOption.item_selected.connect(_on_decor_slot_selected)
+	%DecorApplyButton.pressed.connect(_apply_selected_decor)
+	%DecorClearButton.pressed.connect(_clear_selected_decor)
+	%DecorCloseButton.pressed.connect(_close_decor_panel)
+	%InteractionTargetOption.item_selected.connect(_on_interaction_target_selected)
+	%InteractionPerformButton.pressed.connect(_perform_selected_interaction)
+	%InteractionCloseButton.pressed.connect(_close_interaction_panel)
 	%LetterButton.pressed.connect(_record_pending_letter)
 	%SceneryButton.pressed.connect(_record_pending_scenery)
 	%AlbumButton.pressed.connect(_open_album)
 	%NextVoyageButton.pressed.connect(_start_next_voyage)
-
+	_populate_decor_slot_options()
 	if GameState.pending_discovery_type != "":
 		_discovery_offer_remaining = DISCOVERY_OFFER_SECONDS
 	else:
 		_schedule_next_discovery(GameState.remaining_seconds >= 299.9)
-
 	_sync_discovery_buttons()
 	_apply_appreciation_mode()
 	var message := "동반자가 곁에서 조용히 바다를 바라봅니다."
@@ -79,7 +92,6 @@ func _process(delta: float) -> void:
 	_apply_drift_motion(delta)
 	_advance_fishing(delta)
 	_advance_ambient_discovery(delta)
-
 	var completed_now := GameState.tick_voyage(delta)
 	if completed_now:
 		GameState.complete_voyage()
@@ -89,7 +101,6 @@ func _process(delta: float) -> void:
 		_update_ui()
 
 
-## Applies only a subtle sky shift so mood changes interpretation without becoming good/bad weather.
 func _apply_mood_tone() -> void:
 	var world_environment := $VoyageWorld/WorldEnvironment as WorldEnvironment
 	if world_environment.environment == null:
@@ -98,13 +109,11 @@ func _apply_mood_tone() -> void:
 	world_environment.environment.background_color = mood_color
 
 
-## Adds a simple photo record to the album.
 func _take_photo() -> void:
 	GameState.add_photo("사진 %d - %s의 바다" % [GameState.photos.size() + 1, GameState.selected_mood])
 	_update_ui("사진을 한 장 남겼습니다. 동반자가 가까이 다가옵니다.")
 
 
-## Toggles quiet appreciation mode and switches between diorama life and sea-focused viewing.
 func _toggle_appreciation_mode() -> void:
 	if _fishing_session.is_waiting() or _fishing_session.is_bite_ready():
 		_fishing_session.cancel()
@@ -125,37 +134,237 @@ func _apply_camera_mode() -> void:
 	$VoyageWorld/AppreciationCameraRig/AppreciationCamera3D.current = GameState.appreciation_mode
 
 
-## Cycles drift rhythm between slow, normal, and fast without changing rewards or voyage duration.
+func apply_boat_decor(slot_id: String, item_id: String) -> bool:
+	if not _decor_catalog.is_compatible(slot_id, item_id):
+		return false
+	var slot: Node = _get_decor_slot(slot_id)
+	if slot == null or not slot.has_method("apply_item"):
+		return false
+	if not bool(slot.call("apply_item", item_id)):
+		return false
+	GameState.set_boat_decor(slot_id, item_id)
+	return true
+
+
+func clear_boat_decor(slot_id: String) -> void:
+	var slot: Node = _get_decor_slot(slot_id)
+	if slot != null and slot.has_method("apply_item"):
+		slot.call("apply_item", "")
+	GameState.set_boat_decor(slot_id, "")
+
+
+func _apply_stored_boat_decor() -> void:
+	for slot_id in _decor_catalog.get_slot_ids():
+		var item_id := GameState.get_boat_decor(slot_id)
+		if item_id == "":
+			clear_boat_decor(slot_id)
+		elif not apply_boat_decor(slot_id, item_id):
+			clear_boat_decor(slot_id)
+
+
+func _get_decor_slot(slot_id: String) -> Node:
+	if not DECOR_SLOT_NODE_NAMES.has(slot_id):
+		return null
+	return get_node_or_null("VoyageWorld/BoatSpace/BoatDecorSlots/%s" % str(DECOR_SLOT_NODE_NAMES[slot_id]))
+
+
+func _populate_decor_slot_options() -> void:
+	%DecorSlotOption.clear()
+	for slot_id in _decor_catalog.get_slot_ids():
+		%DecorSlotOption.add_item(_decor_catalog.get_slot_label(slot_id))
+		%DecorSlotOption.set_item_metadata(%DecorSlotOption.item_count - 1, slot_id)
+	if %DecorSlotOption.item_count > 0:
+		%DecorSlotOption.select(0)
+	_refresh_decor_item_options()
+
+
+func _on_decor_slot_selected(_index: int) -> void:
+	_refresh_decor_item_options()
+
+
+func _refresh_decor_item_options() -> void:
+	%DecorItemOption.clear()
+	var slot_id := _get_selected_metadata(%DecorSlotOption)
+	if slot_id == "":
+		return
+	var compatible_items := _decor_catalog.get_compatible_item_ids(slot_id)
+	var stored_item := GameState.get_boat_decor(slot_id)
+	var stored_index := -1
+	for item_id in compatible_items:
+		var definition := _decor_catalog.get_item_definition(item_id)
+		%DecorItemOption.add_item(str(definition.get("label", item_id)))
+		var index: int = %DecorItemOption.item_count - 1
+		%DecorItemOption.set_item_metadata(index, item_id)
+		if item_id == stored_item:
+			stored_index = index
+	if %DecorItemOption.item_count > 0:
+		%DecorItemOption.select(stored_index if stored_index >= 0 else 0)
+
+
+func _apply_selected_decor() -> void:
+	var slot_id := _get_selected_metadata(%DecorSlotOption)
+	var item_id := _get_selected_metadata(%DecorItemOption)
+	if slot_id == "" or item_id == "":
+		return
+	if apply_boat_decor(slot_id, item_id):
+		var definition := _decor_catalog.get_item_definition(item_id)
+		_update_ui("%s에 %s을 조용히 놓았습니다." % [_decor_catalog.get_slot_label(slot_id), str(definition.get("label", item_id))])
+		_refresh_interaction_targets()
+
+
+func _clear_selected_decor() -> void:
+	var slot_id := _get_selected_metadata(%DecorSlotOption)
+	if slot_id == "":
+		return
+	clear_boat_decor(slot_id)
+	_update_ui("%s 자리를 비웠습니다. 잃는 것은 없습니다." % _decor_catalog.get_slot_label(slot_id))
+	_refresh_decor_item_options()
+	_refresh_interaction_targets()
+
+
+func _open_decor_panel() -> void:
+	if GameState.appreciation_mode:
+		return
+	$InteractionPanel.visible = false
+	$DecorPanel.visible = true
+	_refresh_decor_item_options()
+
+
+func _close_decor_panel() -> void:
+	$DecorPanel.visible = false
+
+
+func _open_interaction_panel() -> void:
+	if GameState.appreciation_mode:
+		return
+	$DecorPanel.visible = false
+	$InteractionPanel.visible = true
+	_refresh_interaction_targets()
+
+
+func _close_interaction_panel() -> void:
+	$InteractionPanel.visible = false
+
+
+func get_interaction_target_ids() -> Array[String]:
+	var result: Array[String] = []
+	for target_id in ["pet", "rail"]:
+		var node := _get_interaction_target_node(target_id)
+		if node != null and node.has_method("get_actions") and not node.call("get_actions", {}).is_empty():
+			result.append(target_id)
+	for slot_id in _decor_catalog.get_slot_ids():
+		var slot := _get_decor_slot(slot_id)
+		if slot == null or GameState.get_boat_decor(slot_id) == "":
+			continue
+		if slot.has_method("get_actions") and not slot.call("get_actions", {}).is_empty():
+			result.append("decor:%s" % slot_id)
+	return result
+
+
+func perform_interaction(target_id: String, action_id: String) -> Dictionary:
+	var target := _get_interaction_target_node(target_id)
+	if target == null or not target.has_method("can_interact") or not target.has_method("perform"):
+		return {"ok": false, "target_id": target_id, "action_id": action_id, "message": ""}
+	if not bool(target.call("can_interact", {}, action_id)):
+		return {"ok": false, "target_id": target_id, "action_id": action_id, "message": ""}
+	return target.call("perform", {}, action_id)
+
+
+func _get_interaction_target_node(target_id: String) -> Node:
+	if target_id == "pet":
+		return get_node_or_null("VoyageWorld/BoatSpace/RestingPetPlaceholder")
+	if target_id == "rail":
+		return get_node_or_null("VoyageWorld/BoatSpace/BoatRail")
+	if target_id.begins_with("decor:"):
+		return _get_decor_slot(target_id.trim_prefix("decor:"))
+	return null
+
+
+func _get_interaction_target_label(target_id: String) -> String:
+	if target_id == "pet":
+		return "동반자"
+	if target_id == "rail":
+		return "보트 난간"
+	if target_id.begins_with("decor:"):
+		var slot_id := target_id.trim_prefix("decor:")
+		var item_id := GameState.get_boat_decor(slot_id)
+		var definition := _decor_catalog.get_item_definition(item_id)
+		return "%s · %s" % [_decor_catalog.get_slot_label(slot_id), str(definition.get("label", item_id))]
+	return target_id
+
+
+func _refresh_interaction_targets() -> void:
+	%InteractionTargetOption.clear()
+	for target_id in get_interaction_target_ids():
+		%InteractionTargetOption.add_item(_get_interaction_target_label(target_id))
+		%InteractionTargetOption.set_item_metadata(%InteractionTargetOption.item_count - 1, target_id)
+	if %InteractionTargetOption.item_count > 0:
+		%InteractionTargetOption.select(0)
+	_refresh_interaction_actions()
+
+
+func _on_interaction_target_selected(_index: int) -> void:
+	_refresh_interaction_actions()
+
+
+func _refresh_interaction_actions() -> void:
+	%InteractionActionOption.clear()
+	var target_id := _get_selected_metadata(%InteractionTargetOption)
+	var target := _get_interaction_target_node(target_id)
+	if target == null or not target.has_method("get_actions"):
+		return
+	var actions: Array = target.call("get_actions", {})
+	for action in actions:
+		if not action is Dictionary:
+			continue
+		var action_id := str(action.get("id", ""))
+		if action_id == "":
+			continue
+		%InteractionActionOption.add_item(str(action.get("label", action_id)))
+		%InteractionActionOption.set_item_metadata(%InteractionActionOption.item_count - 1, action_id)
+	if %InteractionActionOption.item_count > 0:
+		%InteractionActionOption.select(0)
+
+
+func _perform_selected_interaction() -> void:
+	var target_id := _get_selected_metadata(%InteractionTargetOption)
+	var action_id := _get_selected_metadata(%InteractionActionOption)
+	if target_id == "" or action_id == "":
+		return
+	var result := perform_interaction(target_id, action_id)
+	if bool(result.get("ok", false)):
+		_update_ui(str(result.get("message", "")))
+
+
+func _get_selected_metadata(option: OptionButton) -> String:
+	if option == null or option.item_count <= 0 or option.selected < 0:
+		return ""
+	return str(option.get_item_metadata(option.selected))
+
+
 func _cycle_speed() -> void:
 	GameState.speed_index = (GameState.speed_index + 1) % SPEED_NAMES.size()
 	_update_ui("표류 리듬을 %s으로 바꿨습니다." % SPEED_NAMES[GameState.speed_index])
 
 
-## Applies subtle shared boat-space bob plus camera drift without changing progression.
 func _apply_drift_motion(delta: float) -> void:
 	var speed_index := clampi(GameState.speed_index, 0, SPEED_MULTIPLIERS.size() - 1)
 	_drift_phase += maxf(delta, 0.0) * SPEED_MULTIPLIERS[speed_index]
 	$VoyageWorld/DioramaCameraRig.position.y = _diorama_camera_base_position.y + sin(_drift_phase * 1.2) * 0.018
 	$VoyageWorld/AppreciationCameraRig.position.y = _appreciation_camera_base_position.y + sin(_drift_phase * 1.2) * 0.025
 	var boat_bob := sin(_drift_phase * 1.05 + 0.45) * 0.035
-	$VoyageWorld/BoatBow.position.y = _boat_base_position.y + boat_bob
-	$VoyageWorld/PlayerAvatarPlaceholder.position.y = _avatar_base_position.y + boat_bob
-	$VoyageWorld/RestingPetPlaceholder.position.y = _pet_base_position.y + boat_bob
+	$VoyageWorld/BoatSpace.position.y = _boat_space_base_position.y + boat_bob
 
 
 func _schedule_next_discovery(first_discovery: bool = false) -> void:
 	if GameState.pending_discovery_type != "":
 		return
-	if first_discovery:
-		_discovery_wait_remaining = randf_range(FIRST_DISCOVERY_MIN_SECONDS, FIRST_DISCOVERY_MAX_SECONDS)
-	else:
-		_discovery_wait_remaining = randf_range(DISCOVERY_MIN_SECONDS, DISCOVERY_MAX_SECONDS)
+	_discovery_wait_remaining = randf_range(FIRST_DISCOVERY_MIN_SECONDS, FIRST_DISCOVERY_MAX_SECONDS) if first_discovery else randf_range(DISCOVERY_MIN_SECONDS, DISCOVERY_MAX_SECONDS)
 
 
 func _advance_ambient_discovery(delta: float) -> void:
 	if GameState.appreciation_mode:
 		return
-
 	if GameState.pending_discovery_type != "":
 		_discovery_offer_remaining = maxf(0.0, _discovery_offer_remaining - maxf(delta, 0.0))
 		if _discovery_offer_remaining <= 0.0:
@@ -164,13 +373,11 @@ func _advance_ambient_discovery(delta: float) -> void:
 			_schedule_next_discovery()
 			_update_ui("작은 발견은 파도 너머로 조용히 지나갔습니다.")
 		return
-
 	_discovery_wait_remaining = maxf(0.0, _discovery_wait_remaining - maxf(delta, 0.0))
 	if _discovery_wait_remaining <= 0.0:
 		_spawn_ambient_discovery()
 
 
-## Creates one optional ambient discovery instead of vending a reward from a permanent button.
 func _spawn_ambient_discovery() -> void:
 	if GameState.pending_discovery_type != "":
 		return
@@ -214,7 +421,6 @@ func _sync_discovery_buttons() -> void:
 	%SceneryButton.visible = controls_visible and GameState.pending_discovery_type == "scenery"
 
 
-## Starts, cancels, or resolves one low-friction fishing wait.
 func _handle_fishing_action() -> void:
 	if _fishing_session.is_bite_ready():
 		var fish_name: String = str(FISH_NAMES.pick_random())
@@ -225,13 +431,11 @@ func _handle_fishing_action() -> void:
 			_update_ui("작은 입질 하나가 오늘의 항해에 기억으로 남았습니다.")
 		%FishingButton.text = "낚시"
 		return
-
 	if _fishing_session.is_waiting():
 		_fishing_session.cancel()
 		%FishingButton.text = "낚시"
 		_set_fishing_status("낚싯줄을 천천히 거두었습니다. 잃는 것은 없습니다.")
 		return
-
 	_fishing_session.cast_line(randf_range(FISHING_WAIT_MIN_SECONDS, FISHING_WAIT_MAX_SECONDS))
 	%FishingButton.text = "줄 거두기"
 	_set_fishing_status("낚싯줄을 던졌습니다. 서두르지 말고 물결을 기다립니다.")
@@ -254,9 +458,14 @@ func _apply_appreciation_mode() -> void:
 	%TakePhotoButton.visible = controls_visible
 	%SpeedButton.visible = controls_visible
 	%FishingButton.visible = controls_visible
+	%DecorButton.visible = controls_visible
+	%InteractButton.visible = controls_visible
 	%AlbumButton.visible = controls_visible
 	%AppreciationButton.visible = true
 	%AppreciationButton.text = "감상 끝내기" if GameState.appreciation_mode else "감상모드"
+	if GameState.appreciation_mode:
+		$DecorPanel.visible = false
+		$InteractionPanel.visible = false
 	_apply_camera_mode()
 	_sync_discovery_buttons()
 	_sync_next_voyage_button()
@@ -273,7 +482,6 @@ func _open_album() -> void:
 	get_tree().change_scene_to_file("res://scenes/album.tscn")
 
 
-## Returns to mood selection only after this voyage has been recorded. Accumulated memories stay in GameState.
 func _start_next_voyage() -> void:
 	if not GameState.voyage_record_created:
 		return
