@@ -1,5 +1,7 @@
 # Concept
 
+> **Authority:** 사람용 프로젝트 개요·경험/시각 방향의 최신 승인 정본은 Notion Human Home과 관련 Core/Visual 페이지입니다. 이 파일은 그 방향을 repository 구현 작업이 소비할 수 있게 옮긴 **structured implementation mirror**이며, 더 최신의 승인된 Notion 방향을 임의로 덮어쓰지 않습니다. 실제 런타임 사실은 코드·Scene·Resource·Test와 실행 증거가 우선합니다.
+
 `my little boat`는 작은 보트 위에서 **잔잔한 바다와 파도소리, 곁에서 같이 쉬는 펫**과 함께 아무것도 하지 않아도 편안하게 머무는 1인칭 힐링 항해 게임입니다.
 
 ## 핵심 감정
@@ -41,7 +43,7 @@
 - 반복 파밍이나 효율 최적화가 최선의 플레이가 되지 않는다.
 - 1인 개발 유지비가 핵심 휴식 품질보다 커지지 않는다.
 
-세부 제작 판단은 `docs/RESTING_EXPERIENCE_BIBLE.md`를 따릅니다.
+구현 세부 보호선은 `docs/RESTING_EXPERIENCE_BIBLE.md`에 구조화해 mirror하며, 사람용 방향 변경은 Notion 정본에서 승인된 뒤 동기화합니다.
 
 ## 금지 방향
 
