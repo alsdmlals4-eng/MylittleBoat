@@ -51,13 +51,11 @@ func _ready() -> void:
 	randomize()
 	if not GameState.voyage_active:
 		GameState.begin_voyage(GameState.selected_mood)
-
 	_diorama_camera_base_position = $VoyageWorld/DioramaCameraRig.position
 	_appreciation_camera_base_position = $VoyageWorld/AppreciationCameraRig.position
 	_boat_space_base_position = $VoyageWorld/BoatSpace.position
 	_apply_mood_tone()
 	_apply_stored_boat_decor()
-
 	%TakePhotoButton.pressed.connect(_take_photo)
 	%AppreciationButton.pressed.connect(_toggle_appreciation_mode)
 	%SpeedButton.pressed.connect(_cycle_speed)
@@ -66,12 +64,10 @@ func _ready() -> void:
 	%SceneryButton.pressed.connect(_record_pending_scenery)
 	%AlbumButton.pressed.connect(_open_album)
 	%NextVoyageButton.pressed.connect(_start_next_voyage)
-
 	if GameState.pending_discovery_type != "":
 		_discovery_offer_remaining = DISCOVERY_OFFER_SECONDS
 	else:
 		_schedule_next_discovery(GameState.remaining_seconds >= 299.9)
-
 	_sync_discovery_buttons()
 	_apply_appreciation_mode()
 	var message := "동반자가 곁에서 조용히 바다를 바라봅니다."
@@ -131,7 +127,7 @@ func _apply_camera_mode() -> void:
 func apply_boat_decor(slot_id: String, item_id: String) -> bool:
 	if not _decor_catalog.is_compatible(slot_id, item_id):
 		return false
-	var slot := _get_decor_slot(slot_id)
+	var slot: Node = _get_decor_slot(slot_id)
 	if slot == null or not slot.has_method("apply_item"):
 		return false
 	if not bool(slot.call("apply_item", item_id)):
@@ -141,7 +137,7 @@ func apply_boat_decor(slot_id: String, item_id: String) -> bool:
 
 
 func clear_boat_decor(slot_id: String) -> void:
-	var slot := _get_decor_slot(slot_id)
+	var slot: Node = _get_decor_slot(slot_id)
 	if slot != null and slot.has_method("apply_item"):
 		slot.call("apply_item", "")
 	GameState.set_boat_decor(slot_id, "")
@@ -156,7 +152,7 @@ func _apply_stored_boat_decor() -> void:
 			clear_boat_decor(slot_id)
 
 
-func _get_decor_slot(slot_id: String):
+func _get_decor_slot(slot_id: String) -> Node:
 	if not DECOR_SLOT_NODE_NAMES.has(slot_id):
 		return null
 	return get_node_or_null("VoyageWorld/BoatSpace/BoatDecorSlots/%s" % str(DECOR_SLOT_NODE_NAMES[slot_id]))
