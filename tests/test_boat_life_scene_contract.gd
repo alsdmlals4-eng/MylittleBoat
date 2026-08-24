@@ -60,6 +60,13 @@ func _run() -> void:
 		_expect(gs.get_boat_decor("pet_corner") == "", "invalid pair cannot mutate")
 		_expect(bool(scene.call("apply_boat_decor", "bow_left", "plant")), "compatible replace succeeds")
 		_expect(gs.get_boat_decor("bow_left") == "plant", "replace stored")
+		var left_after_replace := scene.get_node_or_null("VoyageWorld/BoatSpace/BoatDecorSlots/BowLeft")
+		if left_after_replace != null:
+			var visual_count := 0
+			for child in left_after_replace.get_children():
+				if child is MeshInstance3D:
+					visual_count += 1
+			_expect(visual_count == 1, "decor replacement must leave exactly one visual immediately")
 	if scene.has_method("clear_boat_decor"):
 		scene.call("clear_boat_decor", "bow_left")
 		_expect(gs.get_boat_decor("bow_left") == "", "clear stored")
