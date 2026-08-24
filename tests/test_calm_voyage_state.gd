@@ -23,6 +23,9 @@ func _run() -> void:
 	state.companion_affection = 1
 	state.reset_session()
 
+	state.complete_voyage()
+	_expect(state.voyage_records.is_empty(), "complete_voyage must not create an orphan record when no voyage is active")
+
 	state.add_photo("테스트 사진")
 	state.add_scenery("테스트 풍경")
 	state.add_letter("테스트 편지")
@@ -50,7 +53,7 @@ func _run() -> void:
 	var records_before: int = state.voyage_records.size()
 	state.complete_voyage()
 	state.complete_voyage()
-	_expect(state.voyage_records.size() == records_before + 1, "complete_voyage must create exactly one record per voyage")
+	_expect(state.voyage_records.size() == records_before + 1, "complete_voyage must create exactly one record per active voyage")
 
 	_finish()
 
