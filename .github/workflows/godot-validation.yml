@@ -28,11 +28,13 @@ jobs:
       - name: Import project headlessly
         run: godot --headless --path . --quit
 
-      - name: Run calm voyage state contract
-        run: godot --headless --path . --script res://tests/test_calm_voyage_state.gd
-
-      - name: Run fishing state contract
-        run: godot --headless --path . --script res://tests/test_fishing_session.gd
+      - name: Run focused behavior contracts
+        shell: bash
+        run: |
+          status=0
+          godot --headless --path . --script res://tests/test_calm_voyage_state.gd || status=1
+          godot --headless --path . --script res://tests/test_fishing_session.gd || status=1
+          exit "$status"
 
       - name: Smoke main menu scene
         run: godot --headless --path . --scene "res://scenes/main_menu.tscn" --quit-after 1
