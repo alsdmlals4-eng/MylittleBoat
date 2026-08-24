@@ -13,6 +13,13 @@ const LETTER_TEXTS: Array[String] = [
 const SCENERY_NAMES: Array[String] = ["일출", "비", "고래", "밤바다"]
 const FISH_NAMES: Array[String] = ["정어리", "전갱이", "고등어", "도미"]
 
+const MOOD_SKY_COLORS := {
+	"평온": Color(0.64, 0.84, 0.96, 1.0),
+	"지침": Color(0.66, 0.80, 0.88, 1.0),
+	"외로움": Color(0.60, 0.77, 0.91, 1.0),
+	"설렘": Color(0.72, 0.86, 0.95, 1.0),
+}
+
 const FIRST_DISCOVERY_MIN_SECONDS := 18.0
 const FIRST_DISCOVERY_MAX_SECONDS := 30.0
 const DISCOVERY_MIN_SECONDS := 35.0
@@ -36,6 +43,7 @@ func _ready() -> void:
 
 	_camera_base_position = $VoyageWorld/CameraRig.position
 	_boat_base_position = $VoyageWorld/BoatBow.position
+	_apply_mood_tone()
 
 	%TakePhotoButton.pressed.connect(_take_photo)
 	%AppreciationButton.pressed.connect(_toggle_appreciation_mode)
@@ -71,6 +79,15 @@ func _process(delta: float) -> void:
 		_update_ui("오늘의 항해 기록이 만들어졌습니다. 이제 편히 머물러도 좋아요.")
 	else:
 		_update_ui()
+
+
+## Applies only a subtle sky shift so mood changes interpretation without becoming good/bad weather.
+func _apply_mood_tone() -> void:
+	var world_environment := $VoyageWorld/WorldEnvironment as WorldEnvironment
+	if world_environment.environment == null:
+		return
+	var mood_color: Color = MOOD_SKY_COLORS.get(GameState.selected_mood, MOOD_SKY_COLORS["평온"])
+	world_environment.environment.background_color = mood_color
 
 
 ## Adds a simple photo record to the album.
