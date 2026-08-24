@@ -36,6 +36,7 @@ jobs:
           godot --headless --path . --script res://tests/test_fishing_session.gd || status=1
           godot --headless --path . --script res://tests/test_game_scene_contract.gd || status=1
           godot --headless --path . --script res://tests/test_album_memory_contract.gd || status=1
+          godot --headless --path . --script res://tests/test_camera_input_contract.gd || status=1
           exit "$status"
 
       - name: Smoke main menu scene
