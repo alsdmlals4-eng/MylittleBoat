@@ -11,12 +11,12 @@
 MVP가 궁극적으로 통과해야 하는 기준:
 
 - 아무 조작 없이도 30초 이상 머물고 싶은가.
-- 음악을 끄고 파도/자연음만 들어도 공간이 성립하는가.
+- 음악을 끄고 실제 파도/자연음만 들어도 공간이 성립하는가.
 - 5분이 `CALM`으로 느껴지고 `EMPTY`나 `CHORES`로 변하지 않는가.
 - 펫이 할 일을 만드는 존재가 아니라 곁에서 같이 쉬는 존재로 느껴지는가.
 - 사진·낚시·발견을 무시해도 손해나 불안이 없는가.
 
-이 항목은 제작 아트/오디오/펫 자산이 들어간 Human playtest 전에는 `NOT_RUN`입니다.
+이 항목은 제작 아트/자연 오디오/펫 자산이 들어간 Human playtest 전에는 `NOT_RUN`입니다.
 
 ## 현재 구현된 Vertical Slice
 
@@ -58,20 +58,52 @@ MVP가 궁극적으로 통과해야 하는 기준:
   - 기록 수
   - 최근 기록
 
-## 승인된 다음 경험 방향 — 아직 runtime PASS 아님
+## 현재 Resting Core Technical Prototype
+
+최종 자산을 기다리기 전에 구현 구조를 검증하는 기술 placeholder가 포함됩니다.
+
+### Technical soundscape
+
+- `RestingSoundscape` AutoLoad가 메뉴/항해/앨범 Scene 전환에 유지된다.
+- 런타임에서 4초 합성 `AudioStreamWAV`를 생성하고 `-16 dB`에서 loop한다.
+- 합성 OceanBed는 `TECHNICAL_PROTOTYPE=true`이며 production 자연 파도 자산이 아니다.
+- 자동 테스트는 persistent owner / loop / evidence class / 보수적 볼륨을 검증한다.
+
+### Technical resting pet
+
+- `RestingPetPlaceholder` 1종이 둥근 mesh로 존재한다.
+- 12~24초 간격의 저밀도 resting state와 아주 작은 호흡만 사용한다.
+- 배고픔 / 청소 / 피로 / 방치 의무가 없다.
+- 현재 mesh와 움직임은 최종 펫 디자인/animation이 아니다.
+
+### Technical soft sea
+
+- ocean roughness와 밝기를 부드러운 placeholder 범위로 조정한다.
+- DirectionalLight 에너지를 낮추고 마음별 runtime 하늘 톤도 brightness ceiling 안에 둔다.
+- 마음별 차이는 남기되 좋고/나쁜 날씨로 판정하지 않는다.
+
+현재 자동 evidence:
+
+`TECH_RESTING_CORE = PASS`
+
+아래는 아직 자동 PASS로 승격하지 않는다.
+
+`AUDIO_REST_PASS / VISUAL_REST_PASS / PET_REST_PASS / MOBILE_REST_PASS = NOT_RUN`
+
+## Production 목표 — 아직 Human PASS 아님
 
 ### Wave-first soundscape
 
-- 잔잔한 파도 `OceanBed`를 가장 중요한 소리로 둔다.
+- 실제 잔잔한 파도 `OceanBed`를 가장 중요한 소리로 둔다.
 - 가까운 물결, 낮은 바람, 드문 선체 creak, 먼 자연음, 펫 foley를 낮은 밀도로 레이어링한다.
 - 음악은 선택형이다. 음악 OFF에서도 5분 경험이 성립해야 한다.
 - 큰 효과음/보상 징글/갑작스러운 고역을 피한다.
 
-현재 `assets/audio`에는 production audio가 없으므로 **구현 완료로 표시하지 않는다.**
+현재 **production 자연 audio asset은 없으며**, 합성 기술 bed를 최종 소리로 간주하지 않는다.
 
 ### Resting pet presence
 
-- 펫은 바다 보기 / 앉기 / 눕기 / 졸기 / 하품·기지개 / 작은 귀·꼬리 반응을 기본 idle로 한다.
+- 실제 펫은 바다 보기 / 앉기 / 눕기 / 졸기 / 하품·기지개 / 작은 귀·꼬리 반응을 기본 idle로 한다.
 - 가끔 플레이어를 보거나 낚시를 조용히 지켜본다.
 - 배고픔, 청소, 피로, 방치 패널티, 반복 터치 파밍을 만들지 않는다.
 
@@ -80,13 +112,14 @@ MVP가 궁극적으로 통과해야 하는 기준:
 ### Soft sea visual tone
 
 - 안정적인 수평선
-- 저~중간 대비
+- 저~중간 환경 대비
 - 부드러운 하늘/바다 색
 - 작은 고휘도 반짝임/깜빡임 억제
 - 매우 작은 bob
 - 낮은 빈도의 구름/원거리 생명체/펫 idle로 `EMPTY`를 방지
+- 텍스트/버튼/포커스는 환경과 별개로 충분한 가독성을 유지
 
-현재 placeholder 환경은 최종 Visual PASS가 아니다.
+현재 색/재질 조정은 **technical placeholder**이며 최종 Visual PASS가 아니다.
 
 세부 기준: `docs/RESTING_EXPERIENCE_BIBLE.md`
 
@@ -101,7 +134,7 @@ MVP가 궁극적으로 통과해야 하는 기준:
 
 - 앱 재실행을 넘는 save file persistence
 - 실제 사진 PNG 저장
-- 제작 아트/최종 오디오
+- 제작 아트/최종 자연 오디오
 - 제작 펫 모델/애니메이션
 - 어종 대량 콘텐츠
 - 미끼 / 낚싯대 장비 / 줄 내구도
