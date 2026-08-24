@@ -13,7 +13,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Godot 4.7
         uses: chickensoft-games/setup-godot@v2.4.1
