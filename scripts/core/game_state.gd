@@ -12,6 +12,7 @@ var sceneries: Array[String] = []
 var letters: Array[String] = []
 var fish: Array[String] = []
 var voyage_records: Array[String] = []
+var boat_decor: Dictionary = {}
 
 # Scene 전환에도 유지되어야 하는 현재 항해 상태다.
 var voyage_active := false
@@ -33,7 +34,7 @@ func select_mood(mood: String) -> void:
 	selected_mood = mood
 
 
-## Starts a fresh five-minute voyage while preserving accumulated memories.
+## Starts a fresh five-minute voyage while preserving accumulated memories and boat decoration.
 func begin_voyage(mood: String) -> void:
 	select_mood(mood)
 	reset_session()
@@ -44,7 +45,7 @@ func begin_voyage(mood: String) -> void:
 	_voyage_fish_start_count = fish.size()
 
 
-## Clears only transient voyage state. Album memories and companion progress stay intact.
+## Clears only transient voyage state. Album memories, boat decor, and companion progress stay intact.
 func reset_session() -> void:
 	voyage_active = false
 	remaining_seconds = VOYAGE_SECONDS
@@ -53,6 +54,21 @@ func reset_session() -> void:
 	voyage_record_created = false
 	pending_discovery_type = ""
 	pending_discovery_value = ""
+
+
+## Stores or clears one cosmetic boat-decor choice without creating rewards.
+func set_boat_decor(slot_id: String, item_id: String) -> void:
+	if slot_id == "":
+		return
+	if item_id == "":
+		boat_decor.erase(slot_id)
+	else:
+		boat_decor[slot_id] = item_id
+
+
+## Returns the process-lifetime cosmetic item stored in one boat slot.
+func get_boat_decor(slot_id: String) -> String:
+	return str(boat_decor.get(slot_id, ""))
 
 
 ## Advances the active voyage timer and reports when it reaches zero this tick.
