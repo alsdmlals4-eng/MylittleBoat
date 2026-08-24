@@ -14,10 +14,10 @@ const SCENERY_NAMES: Array[String] = ["일출", "비", "고래", "밤바다"]
 const FISH_NAMES: Array[String] = ["정어리", "전갱이", "고등어", "도미"]
 
 const MOOD_SKY_COLORS := {
-	"평온": Color(0.64, 0.84, 0.96, 1.0),
-	"지침": Color(0.66, 0.80, 0.88, 1.0),
-	"외로움": Color(0.60, 0.77, 0.91, 1.0),
-	"설렘": Color(0.72, 0.86, 0.95, 1.0),
+	"평온": Color(0.58, 0.76, 0.86, 1.0),
+	"지침": Color(0.60, 0.72, 0.80, 1.0),
+	"외로움": Color(0.55, 0.69, 0.82, 1.0),
+	"설렘": Color(0.66, 0.80, 0.88, 1.0),
 }
 
 const FIRST_DISCOVERY_MIN_SECONDS := 18.0

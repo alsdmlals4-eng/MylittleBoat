@@ -101,7 +101,7 @@
 
 기술 GREEN은 Human/player experience PASS가 아니다.
 
-## 10단계: Rest-first Direction → Repository Contract Sync
+## 10단계: Rest-first Direction → Repository Contract Sync — 완료
 
 목표:
 - Notion에서 승인된 `아무것도 하지 않아도 쉬는 5분 공간` 방향을 repository 구현 계약으로 명확히 동기화한다.
@@ -115,36 +115,57 @@
 
 이 단계는 **repository 계약 동기화**이며 실제 production audio/pet art가 구현됐다는 뜻이 아니다.
 
-## 11단계: Resting Core Asset Prototype — 다음 제작 단계
+## 11단계: Resting Core Technical Prototype — 구현 완료 / Human 품질 검증 전
 
-기능을 더 늘리기 전에 최소 자산으로 휴식 감각을 만듭니다.
+최종 자산을 기다리지 않고 구조·회귀를 먼저 검증하는 단계입니다.
 
-### Audio 최소 세트
+### 구현된 기술 구조
 
-1. `OceanBed` — 잔잔한 파도
-2. `NearWater` — 보트 가까운 잔물결
-3. `Wind` — 낮은 밀도 바람
-4. `BoatCreak` — 아주 드문 선체 소리
-5. 선택형 `PetFoley` — 작은 숨/기지개/움직임
+- `RestingSoundscape`를 AutoLoad로 등록해 메뉴/항해/앨범 Scene 전환에도 같은 인스턴스를 유지한다.
+- `scripts/audio/resting_soundscape.gd`가 4초 합성 `AudioStreamWAV` OceanBed를 한 번 생성하고 `-16 dB`에서 loop한다.
+- 합성 OceanBed는 `TECHNICAL_PROTOTYPE=true`이며 production 자연 파도 자산이 아니다.
+- 바다 material roughness/밝기, DirectionalLight, 마음별 하늘 톤을 더 부드러운 기술 범위로 조정한다.
+- `RestingPetPlaceholder` 1종을 둥근 기술 mesh로 배치하고, 12~24초 저밀도 idle + 아주 작은 호흡을 사용한다.
+- 펫 placeholder에는 배고픔·청소·피로·방치 의무가 없다.
+- `test_resting_core_contract.gd`가 persistent soundscape, loop/evidence class, pet care boundary, soft ocean/sky 범위를 검증한다.
 
-첫 기술 후보는 CC0 여부가 명시된 작은 seamless wave loop부터 A/B 테스트하되, 실제 파일과 라이선스를 다시 확인한 뒤 통합합니다.
+### 이 단계에서 주장할 수 없는 것
 
-### Visual 최소 세트
+- 합성 OceanBed가 실제로 편안한 파도소리다.
+- 현재 둥근 펫이 최종 캐릭터 디자인이다.
+- 현재 placeholder 바다/하늘이 최종 Visual PASS다.
+- 실제 모바일에서 시각/청취/조작이 편안하다.
 
-- 편안한 바다/하늘 color study
+따라서 상태는:
+
+`TECH_RESTING_CORE = PASS / AUDIO_REST_PASS = NOT_RUN / VISUAL_REST_PASS = NOT_RUN / PET_REST_PASS = NOT_RUN`
+
+## 12단계: Production Resting Asset A/B — 다음 제작 단계
+
+기능을 더 늘리기 전에 실제 자산으로 기술 placeholder를 교체합니다.
+
+### Audio
+
+1. `OceanBed A/B` 실제 자연 파도 후보를 청취한다.
+2. source URL / creator / license / original hash / runtime hash를 readback한다.
+3. 선택된 OceanBed를 persistent `RestingSoundscape`에 교체한다.
+4. `NearWater` 한 레이어만 추가한 뒤 다시 청취한다.
+5. 필요성이 확인되기 전에는 Wind / BoatCreak / PetFoley를 한꺼번에 추가하지 않는다.
+
+### Visual
+
+- 편안한 바다/하늘 production color study
 - 과하지 않은 수면 반사
 - 안정적인 수평선
-- 작은 구름/원거리 생명체 움직임
-- placeholder를 대체할 최소 보트 재질
-- 환경 톤은 부드럽게 유지하되 텍스트·버튼의 가독성은 별도 보호
+- 최소 보트 재질
+- 실제 펫 이미지/모델은 Visual 정책에 따라 `텍스트 brief → 명시 승인 → 1건 제작` 순서를 지킨다.
 
-### Pet 최소 세트
+### Pet
 
-첫 펫 1종으로 아래 idle만 검증합니다.
+첫 펫 1종으로 아래 존재감을 검증한다.
 
 - 바다 보기
-- 앉기
-- 눕기
+- 앉기 / 눕기
 - 졸기
 - 하품/기지개
 - 작은 귀/꼬리 반응
@@ -153,12 +174,12 @@
 
 **펫 수를 늘리기 전에 1종의 존재감이 실제로 편안한지 확인합니다.**
 
-## 12단계: Resting Core Human Validation
+## 13단계: Resting Core Human Validation
 
 제작 자산이 들어간 뒤 아래를 사람 눈/귀/손으로 검증합니다.
 
 1. 첫 30초에 조작 없이도 머물고 싶은가.
-2. 음악 OFF + 파도소리만으로 공간이 성립하는가.
+2. 음악 OFF + 실제 파도소리만으로 공간이 성립하는가.
 3. 5분이 `CALM`인가 `EMPTY`인가.
 4. 마음별 미세한 하늘 톤 차이가 감정을 강요하지 않고 자연스럽게 느껴지는가.
 5. 음원 loop seam/날카로운 고역/갑작스러운 큰 소리가 거슬리지 않는가.
