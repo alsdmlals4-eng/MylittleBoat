@@ -58,6 +58,11 @@ func _run() -> void:
 			_expect(material.roughness >= 0.85, "placeholder ocean must favor soft reflection over sharp glare")
 			_expect(material.albedo_color.v <= 0.75, "placeholder ocean must avoid excessively bright high-glare color")
 
+	var world_environment := scene.get_node_or_null("VoyageWorld/WorldEnvironment") as WorldEnvironment
+	_expect(world_environment != null and world_environment.environment != null, "resting prototype must expose a runtime sky environment")
+	if world_environment != null and world_environment.environment != null:
+		_expect(world_environment.environment.background_color.v <= 0.90, "runtime mood sky must stay inside the soft resting brightness ceiling")
+
 	scene.queue_free()
 	await process_frame
 	_finish()
