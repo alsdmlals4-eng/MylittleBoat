@@ -32,16 +32,16 @@ jobs:
         shell: bash
         run: |
           status=0
-          godot --headless --path . --script res://tests/test_calm_voyage_state.gd || status=1
-          godot --headless --path . --script res://tests/test_fishing_session.gd || status=1
-          godot --headless --path . --script res://tests/test_game_scene_contract.gd || status=1
-          godot --headless --path . --script res://tests/test_album_memory_contract.gd || status=1
-          godot --headless --path . --script res://tests/test_camera_input_contract.gd || status=1
-          godot --headless --path . --script res://tests/test_resting_core_contract.gd || status=1
-          godot --headless --path . --script res://tests/test_diorama_avatar_camera_contract.gd || status=1
-          godot --headless --path . --script res://tests/test_boat_decoration_contract.gd || status=1
-          godot --headless --path . --script res://tests/test_low_pressure_interaction_contract.gd || status=1
-          godot --headless --path . --script res://tests/test_boat_life_scene_contract.gd || status=1
+          timeout 20s godot --headless --path . --script res://tests/test_calm_voyage_state.gd || status=1
+          timeout 20s godot --headless --path . --script res://tests/test_fishing_session.gd || status=1
+          timeout 20s godot --headless --path . --script res://tests/test_game_scene_contract.gd || status=1
+          timeout 20s godot --headless --path . --script res://tests/test_album_memory_contract.gd || status=1
+          timeout 20s godot --headless --path . --script res://tests/test_camera_input_contract.gd || status=1
+          timeout 20s godot --headless --path . --script res://tests/test_resting_core_contract.gd || status=1
+          timeout 20s godot --headless --path . --script res://tests/test_diorama_avatar_camera_contract.gd || status=1
+          timeout 20s godot --headless --path . --script res://tests/test_boat_decoration_contract.gd || status=1
+          timeout 20s godot --headless --path . --script res://tests/test_low_pressure_interaction_contract.gd || status=1
+          timeout 20s godot --headless --path . --script res://tests/test_boat_life_scene_contract.gd || status=1
           exit "$status"
 
       - name: Smoke main menu scene
