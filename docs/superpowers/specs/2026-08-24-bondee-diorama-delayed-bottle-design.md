@@ -7,9 +7,9 @@ Base repository main at design start: `b6949a0b92f591bc099a5cf143b9fe32a863e45f`
 
 ## 0. Authority and migration note
 
-This design captures the user's latest approved product direction and therefore supersedes the older product assumptions that the game must be first-person-only, that the player body must never be visible, and that online bottle-letter sharing is forbidden.
+This design records the user's latest approved product direction and supersedes the older assumptions that the game must be first-person-only, the player body must never be visible, and online bottle-letter sharing is forbidden.
 
-The current `AGENTS.md` still contains those older constraints. **Do not implement against the new design by silently ignoring `AGENTS.md`.** The first implementation slice must update the project operating canon explicitly, then move runtime work forward under the new authority.
+The current `AGENTS.md` still contains those older constraints. The first implementation slice must update that operating canon explicitly before runtime work adopts this design. Do not silently ignore the old rules.
 
 Notion remains the human-facing design canon. Repository Markdown is the structured implementation mirror. Runtime claims still require Godot/code/test evidence.
 
@@ -17,20 +17,18 @@ Notion remains the human-facing design canon. Repository Markdown is the structu
 
 ## 1. Product North Star
 
-### One sentence
-
 **A small storybook boat diorama where the player's visible avatar and pet quietly live, decorate, rest, and exchange slowly drifting bottle letters without turning the experience into a realtime social network.**
 
-### Emotional priority
+Emotional priority:
 
 1. Rest and comfort.
-2. Personal attachment to avatar, pet, and boat.
+2. Attachment to avatar, pet, and boat.
 3. A sense that the boat is "my small place".
 4. Gentle object and pet interaction.
 5. Unexpected human warmth through bottle letters.
-6. Collection and customization as memory, not optimization.
+6. Collection/customization as memory, not optimization.
 
-No new system may make efficiency, urgency, social status, streaks, FOMO, ranking, or response pressure more important than the above order.
+Efficiency, urgency, social status, streaks, FOMO, ranking, or response pressure never outrank those goals.
 
 ---
 
@@ -38,53 +36,48 @@ No new system may make efficiency, urgency, social status, streaks, FOMO, rankin
 
 ### Before
 
-- Primary presentation: first-person sea appreciation.
-- Player body not visible.
-- Boat mainly functions as viewpoint/container.
-- Bottle letters are authored ambient content only.
-- Online social exchange prohibited.
+- first-person sea appreciation is the primary presentation;
+- player body not visible;
+- boat mainly functions as viewpoint/container;
+- bottle letters are authored ambient content only;
+- online social exchange prohibited.
 
 ### After
 
-- Primary presentation: **3/4 diorama camera** showing the player's avatar, pet, boat, decorations, and sea together.
-- Optional **Appreciation Camera** preserves the existing close sea-view/first-person-like relaxation mode.
-- Boat becomes a personal living space with low-pressure decoration and interaction.
-- Bottle letters become two systems:
-  - `FriendBottle`: delayed direct correspondence with an accepted friend.
-  - `DriftBottle`: delayed, limited correspondence with an unknown user.
-- Online scope stays isolated to social identity + bottle delivery + safety operations. Voyage, pet, decoration, album, fishing, soundscape, and rest loop remain local-first.
+- primary presentation becomes a **3/4 diorama camera** showing avatar + pet + boat + decorations + sea;
+- optional **Appreciation Camera** preserves the current sea-focused/first-person-like relaxation mode;
+- boat becomes a personal living space with low-pressure decoration and interaction;
+- bottle letters split into `FriendBottle` and `DriftBottle`;
+- online scope stays isolated to social identity, bottle delivery, friendship, and safety operations;
+- voyage, pet, decoration, album, fishing, soundscape, and rest loop remain local-first.
 
 ---
 
-## 3. Camera and avatar design
+## 3. Camera and avatar
 
-### Primary camera: 3/4 Boat Diorama
+### Primary camera — 3/4 Boat Diorama
 
-Requirements:
-
-- Show avatar + pet + useful portion of boat + horizon in one calm composition.
-- Keep camera movement slow, bounded, and predictable.
-- Mobile portrait remains the primary screen constraint.
-- Camera should not constantly follow tiny avatar movement with aggressive easing.
-- The player's decorations must remain readable without covering the sea.
+- Show avatar, pet, useful boat area, and horizon together.
+- Camera movement is slow, bounded, and predictable.
+- Mobile portrait remains the primary composition constraint.
+- Do not aggressively chase tiny avatar movement.
+- Decorations stay readable without hiding the sea.
 
 ### Appreciation Camera
-
-The existing appreciation idea is preserved, not deleted.
 
 Entering Appreciation Camera:
 
 - hides most nonessential UI;
 - shifts framing toward sea/horizon;
-- may place the avatar/pet at the edge or temporarily out of frame;
-- does not stop the voyage timer or soundscape;
-- does not increase rewards.
+- may place avatar/pet at edge or temporarily out of frame;
+- keeps voyage timer and soundscape running;
+- changes no rewards.
 
-This keeps the previous Resting Core investment useful while allowing a visible player character during normal play.
+This preserves the current Resting Core investment instead of throwing it away.
 
 ### Avatar MVP
 
-Visible avatar customization starts with only:
+Customization starts with:
 
 - body/base preset;
 - hair;
@@ -94,9 +87,9 @@ Visible avatar customization starts with only:
 - one small accessory slot;
 - color variants.
 
-No stat bonuses are attached to cosmetics.
+Cosmetics have no stats.
 
-Avatar low-pressure actions:
+Low-pressure actions:
 
 - sit;
 - rest/lie down where supported;
@@ -110,13 +103,13 @@ Avatar low-pressure actions:
 
 ---
 
-## 4. Boat decoration design
+## 4. Boat decoration
 
-### Selected approach: slot-zone decoration
+### Selected approach — slot-zone decoration
 
-Use explicit decoration zones instead of a freeform 3D editor for the first implementation.
+Use explicit zones instead of a freeform 3D editor in the first implementation.
 
-Recommended initial zones:
+Initial zones:
 
 1. bow-left;
 2. bow-right;
@@ -127,49 +120,26 @@ Recommended initial zones:
 7. wall/rail accent;
 8. pet corner.
 
-Each zone accepts a small compatible category set.
+Each zone accepts only compatible categories.
 
-### Why this approach
+Why selected:
 
-- predictable touch controls on portrait mobile;
-- lower overlap/clipping complexity;
-- lower save-data complexity;
-- easier camera composition;
-- easier to keep the boat visually calm;
-- compatible with later upgrade to constrained free placement if Human tests justify it.
+- predictable portrait-mobile touch controls;
+- lower clipping/overlap complexity;
+- simpler save data;
+- easier calm camera composition;
+- lower solo-development cost;
+- can later evolve into constrained free placement if Human tests justify it.
 
-### Decoration reward rule
+Good decor: lantern, mug, cushion, blanket, plant, framed voyage photo, shell, postcard, bottle shelf, pet cushion.
 
-Decor should represent memory and self-expression, not power.
-
-Good examples:
-
-- lantern;
-- mug;
-- cushion;
-- blanket;
-- plant;
-- framed voyage photo;
-- shell;
-- postcard;
-- bottle shelf;
-- pet cushion.
-
-Rejected as core:
-
-- rarity score;
-- decoration DPS/stat bonuses;
-- gacha pressure;
-- daily limited shops;
-- optimization bonuses for filling every slot.
+Rejected as core: rarity score, stat bonuses, gacha pressure, daily limited shops, optimization bonuses for filling every slot.
 
 ---
 
 ## 5. Interaction architecture
 
-Create one reusable interaction contract instead of implementing each prop as a special case.
-
-Conceptual interface:
+Use one reusable interaction contract instead of one-off prop scripts.
 
 ```text
 Interactable
@@ -189,176 +159,211 @@ Examples:
 - fishing rod → start quiet fishing;
 - bottle station → write bottle / check arrivals.
 
-Interaction constraints:
+Constraints:
 
-- no rapid repeated tapping for progression;
-- no failure penalty for ignoring interactions;
-- no interaction that forces the player to interrupt Appreciation Camera;
-- repeated interactions may vary animation/dialogue but must not become optimal farming.
+- no rapid-tap progression;
+- ignoring interactions never causes loss;
+- interactions never force exit from Appreciation Camera;
+- animation/dialogue variation may exist but cannot become optimal farming.
 
 ---
 
-## 6. Delayed Bottle Social overview
+## 6. Delayed Bottle Social common contract
 
-The social feature is deliberately **not realtime chat**.
+This is deliberately **not realtime chat**.
 
-### Common properties
+MVP message shape:
 
-- text only in MVP;
-- maximum 400 Unicode characters per letter;
-- one optional sticker from a developer-curated sticker set;
-- no user photo/file/audio attachment in MVP;
-- no typing indicator;
-- no online/presence indicator;
-- no read receipt;
-- no public profile browsing;
-- no follower/following counts;
-- no public feed;
-- no global chat;
-- no ranking or popularity score;
-- every sent message travels through a server-side delivery pipeline.
+- text only;
+- maximum 400 Unicode characters;
+- one optional developer-curated sticker;
+- no user image/file/audio attachment.
+
+Explicitly absent:
+
+- typing indicator;
+- online/presence indicator;
+- read receipt;
+- public profile browsing;
+- follower counts;
+- public feed;
+- global chat;
+- popularity/ranking score.
+
+Every message passes through a server-side delivery/safety pipeline.
 
 ### Healthy-backend delivery target
 
-`TARGET_DELIVERY <= 5 minutes` means the message is **server-receivable** by the recipient under healthy backend/network conditions.
+`TARGET_DELIVERY <= 5 minutes` means an **accepted** bottle becomes server-receivable by its assigned recipient within 5 minutes under healthy backend/network conditions.
 
-It does not guarantee a visible phone notification within 5 minutes if the recipient is offline, the app is closed, or backend/network service is degraded.
+It does not guarantee a visible phone notification if the recipient is offline, app-closed, or the backend/network is degraded.
 
-Selected timing:
+Timing contract:
 
 ```text
-server moderation/validation budget: <= 5 sec normal path
-deliver_at offset: random 45..210 sec
+normal moderation/validation budget: <= 5 sec
+deliver_at offset after acceptance: random 45..210 sec
 active-client poll interval: 20..30 sec
-healthy-path worst target: normally <= 245 sec
-safety margin to product target: 55 sec
+normal healthy-path upper target: <= 245 sec
+product-target margin: >= 55 sec
 ```
 
-The random delay is intentional product behavior, not technical latency.
+Random delay is product behavior, not accidental latency.
 
 ---
 
-## 7. FriendBottle
+## 7. Social eligibility and durable identity
 
-### Purpose
+### MVP age policy
 
-Slow correspondence with a known in-game friend without turning the game into a messenger.
+To avoid an ambiguous child-safety implementation, **all online social sending/receiving is 16+ in the MVP**.
 
-### Identity
+- declared under-16 users can use the full local rest/decor/pet/voyage game;
+- declared under-16 users cannot send/receive `FriendBottle` or `DriftBottle` in MVP;
+- lowering this threshold is a separate future policy/design change, not an implementation shortcut.
 
-Friend relationships require a **durable linked account**. An anonymous temporary account may play the local game and use offline systems, but must be linked before creating a durable friend relation.
+### Account stages
 
-Allowed durable login methods can be implemented incrementally, but the architecture must support linking the existing anonymous account instead of replacing its user id.
+1. `local_only` — no social account required for core game.
+2. `anonymous_social` — Supabase anonymous Auth creates a unique authenticated server identity for limited `DriftBottle` eligibility.
+3. `linked_social` — durable account link required for friendships and `FriendBottle`.
 
-### Flow
+MVP durable link method: **email OTP**. Platform OAuth can be added later without changing the user id.
+
+Anonymous identity must be linked, not replaced, when upgraded.
+
+---
+
+## 8. Friend discovery and FriendBottle
+
+### Adding a friend
+
+No public user search.
+
+Use a server-generated **8-character one-time Friend Invite Code**:
+
+- expires after 24 hours;
+- single-use after successful acceptance;
+- generated only for `linked_social` users;
+- code itself reveals no email or auth id;
+- accepting the code creates a pending friendship request;
+- friendship becomes accepted only after the receiving account confirms.
+
+A new `friend_invites` table stores only the hash of the active code, owner, expiry, use state, and timestamps.
+
+### FriendBottle flow
 
 ```text
-select friend
-→ write <= 400 chars + optional curated sticker
-→ server validation/moderation
-→ deliver_at assigned 45..210 sec later
-→ stored in friend's inbox
-→ active client discovers it at next poll
-→ friend may reply with another delayed bottle
+select accepted friend
+→ write <= 400 chars + optional sticker
+→ server safety validation
+→ deliver_at = accepted_at + random(45..210 sec)
+→ friend inbox
+→ active client discovers at next poll
+→ optional delayed reply
 ```
 
-FriendBottle still has delay. It must not become an instant-message bypass.
+Still delayed; no instant-message bypass.
 
-Rate limit baseline:
+Baseline server rate limits:
 
-- max 10 FriendBottle sends per hour;
-- max 50 FriendBottle sends per day;
-- server-enforced, not client-only.
+- 10 FriendBottle sends/hour;
+- 50/day.
 
 ---
 
-## 8. DriftBottle for unknown users
+## 9. DriftBottle for unknown users
 
 ### Purpose
 
-Create the feeling that a letter drifted from another quiet boat, not that the player entered random chat.
+Feel like a letter drifted from another quiet boat, not like entering a random chat room.
 
-### Eligibility
+### Additional eligibility
 
-MVP safety profile:
+In addition to 16+ social eligibility:
 
-- Terms/Community Guidelines accepted;
-- self-declared age **16+** for stranger matching;
+- Terms + Community Guidelines accepted;
 - account at least 10 minutes old;
 - at least one completed 5-minute voyage;
-- not currently rate-limited or restricted;
-- client may be anonymous-authenticated, but server identity is still a unique authenticated user id.
+- not restricted/rate-limited.
 
-Declared users under 16 do not receive/send `DriftBottle`; they may use local systems and, where account policy allows, `FriendBottle` only.
+### Acceptance and no-recipient rule
+
+The 5-minute delivery target begins only after the server has found an eligible recipient and **accepted** the send.
+
+If no eligible recipient exists at send time:
+
+- server returns `NO_RECIPIENT_AVAILABLE`;
+- no bottle row is accepted as sent;
+- client keeps/restores the letter as a local draft;
+- UI presents a calm retry-later state;
+- no false 5-minute promise is shown.
+
+This avoids silently queueing a stranger bottle for an unbounded time.
 
 ### Stranger identity
 
-The recipient does not receive the sender's durable account identifier or global profile.
+Each correspondence gets a server-generated ephemeral alias such as adjective+nature-noun+number.
 
-Each stranger correspondence gets an ephemeral server-generated pen-name, for example adjective+nature-noun+number. The alias is scoped to that correspondence only.
-
-No search can resolve that alias back to a global account.
+- alias is scoped to one stranger thread;
+- durable account id/global profile is hidden;
+- no alias search exists;
+- external contact exchange is filtered.
 
 ### Matching
 
-Server selects an eligible recipient who:
+Recipient must:
 
-- is not the sender;
-- is not blocked in either direction;
-- has not been recently over-matched with the sender;
-- is eligible for stranger bottles;
-- is within inbox capacity limits.
+- not be sender;
+- not be blocked either direction;
+- be 16+ and stranger-eligible;
+- be within inbox capacity;
+- not have been recently over-matched with the same sender.
 
 ### Limited stranger correspondence
 
-A stranger pairing may exchange at most **3 round trips** (maximum six letters total) before continuation requires a mutual friend opt-in.
+A stranger thread allows **at most 6 letters total**.
 
-At the limit:
+- server stores `message_count`;
+- when `message_count == 6`, thread moves to `friendship_gate`;
+- either user may end silently;
+- either may request `Continue as friends`;
+- only mutual independent consent creates a durable friendship;
+- no external contact data is revealed automatically.
 
-- either side may end silently;
-- either side may request `Continue as friends`;
-- only if both independently accept does the relationship become a durable `Friendship`;
-- no external contact information is revealed automatically.
+Baseline server rate limits:
 
-This intentionally prevents infinite anonymous-chat threads.
-
-Rate limit baseline:
-
-- max 3 new DriftBottle sends per hour;
-- max 10 new DriftBottle sends per day;
-- replies count toward the same stranger-social budget;
-- server-enforced.
+- 3 new/reply DriftBottle sends/hour;
+- 10/day.
 
 ---
 
-## 9. Safety, moderation, and store compliance
+## 10. Safety, moderation, and store compliance
 
-Bottle letters are UGC. Safety is a release requirement, not post-launch cleanup.
+Bottle letters are UGC. Safety is a release requirement.
 
-### Required before public stranger matching
+Required before any public `DriftBottle` enablement:
 
-- Terms of Use / Community Guidelines acceptance before sending UGC;
-- clearly defined prohibited content;
-- server-side pre-publication filtering;
+- Terms/Community Guidelines acceptance;
+- defined prohibited content;
+- pre-publication filtering;
 - report content;
 - report user;
 - block user;
 - immediate local hide after report/block;
 - moderation review queue;
-- developer contact/support path;
-- data retention/deletion policy;
-- age gating described above;
+- developer support/contact path;
+- retention/deletion policy;
+- age gate;
 - abuse/rate limiting;
-- audit receipt for moderation action.
+- moderation audit receipt.
 
-### Content restrictions in MVP
-
-Block or quarantine:
+Block or quarantine in MVP:
 
 - URLs;
 - email addresses;
 - phone numbers;
-- obvious social handles / external contact exchange patterns;
+- obvious social handles/external contact patterns;
 - sexual solicitation;
 - threats;
 - targeted harassment;
@@ -367,118 +372,98 @@ Block or quarantine:
 - exploitation/grooming patterns;
 - spam/repetition patterns.
 
-### Moderation pipeline
+Pipeline:
 
 ```text
 send request
 → authentication + eligibility
 → normalization
-→ length/sticker schema validation
+→ length/sticker validation
 → contact/URL deterministic filter
 → rate limit
 → server-side semantic moderation adapter
 → ALLOW / REJECT / QUARANTINE
-→ only ALLOW enters delivery queue
+→ only ALLOW enters delivery
 ```
 
-The semantic moderation adapter is server-only. Godot never contains a provider secret.
+Provider secrets are server-only.
 
-**Release gate:** `DriftBottle` remains server-feature-flag OFF unless a production moderation adapter, report/block flow, and moderation operation path are all working in the deployed environment.
+**Release gate:** `DriftBottle` remains feature-flag OFF unless production semantic moderation, report/block UX, moderation operations, Terms, and support contact are deployed and tested.
 
-### App-review positioning
+Apple/Google policy implication: the product must remain primarily a rest/boat/decor game with an incidental bottle-letter feature, not a random/anonymous chat product.
 
-The product must remain a rest/boat/decor game with an incidental bottle-letter feature. Do not redesign the home screen or marketing so random stranger communication becomes the app's primary purpose.
+Authoritative references checked during design:
 
-References checked during design:
-
-- Apple App Review Guidelines 1.2 User-Generated Content, including 2026 clarification for random/anonymous chat.
-- Google Play Developer Program UGC policy requiring terms, moderation, in-app report and block.
+- Apple App Review Guidelines 1.2 User-Generated Content and February 2026 clarification for random/anonymous chat.
+- Google Play Developer Program User Generated Content policy requiring terms, ongoing moderation, in-app report and block.
 
 ---
 
-## 10. Backend trade study
+## 11. Backend trade study
 
 ### A. Supabase — SELECTED FOR MVP
 
-Provides in one stack:
+Integrated strengths:
 
 - anonymous Auth;
-- account linking path;
+- account-link path;
 - Postgres relational model;
 - Row Level Security;
-- Edge Functions;
-- enough free-tier capacity for development and small closed testing.
+- Edge Functions.
 
-Current published Free-plan reference at design time:
+Published Free references at design time:
 
-- 500 MB database per project;
+- 500 MB database/project;
 - 50,000 MAU;
 - 500,000 Edge Function invocations;
 - 2 million Realtime messages;
 - Free projects may pause after one week of inactivity.
 
-We **do not need Supabase Realtime for bottle delivery**. Polling is selected because it supports the product fiction and reduces complexity.
+We do **not** use Realtime for delivery. Polling matches the fiction and lowers complexity.
 
-Risk: Free-plan pause means the 5-minute target cannot be treated as a hard uptime SLA on a dormant free project. Public-launch hosting is a separate deployment Gate.
+Risk: a dormant paused Free project means the 5-minute target is not a hard public-production uptime SLA. Hosting tier is re-Gated before public release.
 
-### B. Cloudflare Workers + D1 — STRONG ZERO-COST ALTERNATIVE
+### B. Cloudflare Workers + D1 — STRONG ZERO-COST FALLBACK
 
-Current free reference at design time:
+Published Free references at design time:
 
-- Workers: 100,000 requests/day;
-- D1: 5 million rows read/day;
-- D1: 100,000 rows written/day;
-- 5 GB total free D1 storage;
-- no equivalent inactivity pause, but daily limits fail closed when exhausted.
+- Workers 100,000 requests/day;
+- D1 5 million rows read/day;
+- D1 100,000 rows written/day;
+- D1 5 GB total free storage.
 
-Advantages:
+Strengths: excellent small-service cost profile, no equivalent inactivity pause.
 
-- excellent small-service cost profile;
-- explicit server function layer;
-- good fit for a narrow bottle service.
+Weaknesses: authentication/friend/security model becomes much more custom than Supabase Auth+RLS.
 
-Disadvantages:
+Keep as migration/fallback if Supabase operational cost/pause becomes a release problem.
 
-- no integrated user/friend authentication model comparable to Supabase Auth+RLS;
-- more custom security/account work;
-- increases implementation surface for a solo project.
+### C. Firebase Auth + Firestore — NOT SELECTED
 
-Decision: keep as migration/fallback option if Supabase operational cost or pause behavior becomes a real release problem.
-
-### C. Firebase Auth + Firestore — REJECT FOR CURRENT MVP
-
-Current free Firestore reference:
+Published Free Firestore references:
 
 - 1 GiB storage;
 - 50,000 document reads/day;
 - 20,000 document writes/day;
 - 10 GiB outbound/month;
-- anonymous authentication supported.
+- anonymous Auth supported.
 
-Advantages:
+Strengths: mature mobile auth and anonymous account linking.
 
-- mature mobile auth;
-- straightforward anonymous-to-linked account path.
-
-Disadvantages:
-
-- message/friend/report relations are less natural than Postgres for this design;
-- server-side moderation/routing adds another function/deployment concern;
-- cost behavior is read/write-operation centered and easier to make noisy with polling if queries are poorly structured.
-
-Decision: not selected.
+Weaknesses: this relational friend/thread/report model fits Postgres better; server moderation/routing adds another deployment concern; polling mistakes can create noisy document-read costs.
 
 ---
 
-## 11. Selected backend architecture
+## 12. Selected backend architecture
 
 ```text
 Godot 4.7
 ├─ local voyage / pet / decor / album / fishing / soundscape
 ├─ SocialSession
-│  ├─ anonymous auth bootstrap
-│  ├─ linked-account state
-│  └─ feature eligibility
+│  ├─ local_only
+│  ├─ anonymous_social
+│  ├─ linked_social
+│  └─ eligibility
 └─ BottleClient
    ├─ send_friend_bottle()
    ├─ send_drift_bottle()
@@ -486,7 +471,8 @@ Godot 4.7
    ├─ reply()
    ├─ report()
    ├─ block()
-   └─ request_friendship()
+   ├─ create_friend_invite()
+   └─ friendship_action()
         │
         ▼
 Supabase
@@ -496,11 +482,13 @@ Supabase
 │  ├─ send-bottle
 │  ├─ poll-inbox
 │  ├─ bottle-action
+│  ├─ friend-invite
 │  ├─ friendship-action
 │  └─ moderation/report intake
 └─ tables
    ├─ profiles
    ├─ social_consents
+   ├─ friend_invites
    ├─ friendships
    ├─ bottle_threads
    ├─ bottles
@@ -509,18 +497,18 @@ Supabase
    └─ moderation_actions
 ```
 
-Do not expose direct table write access for sensitive social state when an Edge Function can enforce the full invariant atomically.
+Sensitive social state is mutated through Edge Functions when full invariants must be enforced atomically.
 
 ---
 
-## 12. Data model
+## 13. Data model
 
 ### `profiles`
 
 - `user_id uuid primary key` → auth user;
-- `display_name text` → visible only where policy allows;
+- `display_name text`;
 - `age_bucket enum('under16','16plus')`;
-- `social_status enum('local_only','stranger_eligible','restricted')`;
+- `social_status enum('local_only','anonymous_social','linked_social','restricted')`;
 - `created_at timestamptz`;
 - `linked_identity boolean`.
 
@@ -531,6 +519,17 @@ Do not expose direct table write access for sensitive social state when an Edge 
 - `community_version text`;
 - `accepted_at timestamptz`;
 - primary key `(user_id, terms_version, community_version)`.
+
+### `friend_invites`
+
+- `id uuid`;
+- `owner_id uuid`;
+- `code_hash text unique`;
+- `expires_at timestamptz`;
+- `used_at timestamptz nullable`;
+- `created_at timestamptz`.
+
+Raw invite codes are returned once to the owner and are not stored in plaintext.
 
 ### `friendships`
 
@@ -548,7 +547,7 @@ Do not expose direct table write access for sensitive social state when an Edge 
 - `participant_b uuid`;
 - `stranger_alias_a text nullable`;
 - `stranger_alias_b text nullable`;
-- `round_trip_count int default 0`;
+- `message_count int default 0`;
 - `state enum('open','friendship_gate','closed','blocked')`;
 - timestamps.
 
@@ -561,13 +560,14 @@ Do not expose direct table write access for sensitive social state when an Edge 
 - `body text`;
 - `sticker_id text nullable`;
 - `created_at timestamptz`;
+- `accepted_at timestamptz`;
 - `deliver_at timestamptz`;
 - `delivered_at timestamptz nullable`;
 - `read_at timestamptz nullable`;
 - `moderation_state enum('allow','reject','quarantine')`;
 - `status enum('queued','available','read','deleted','expired')`.
 
-Database constraints must enforce `length <= 400` at the storage boundary as well as the Edge Function.
+Storage layer also enforces body length <= 400.
 
 ### `blocks`
 
@@ -576,7 +576,7 @@ Database constraints must enforce `length <= 400` at the storage boundary as wel
 - timestamp;
 - unique pair.
 
-A block immediately prevents future matching, thread continuation, and friend sends in both delivery checks and routing.
+Block immediately prevents matching, thread continuation, and friend delivery.
 
 ### `reports`
 
@@ -584,7 +584,7 @@ A block immediately prevents future matching, thread continuation, and friend se
 - reported user;
 - bottle id;
 - reason enum;
-- freeform detail optional and length-limited;
+- optional length-limited detail;
 - status;
 - created timestamp.
 
@@ -598,194 +598,165 @@ A block immediately prevents future matching, thread continuation, and friend se
 
 ---
 
-## 13. RLS and access boundaries
+## 14. RLS and access boundaries
 
-Minimum principles:
-
-- users can read their own profile and only approved public friend-facing fields of accepted friends;
-- users can read bottle content only when they are sender or recipient;
-- client cannot arbitrarily assign `recipient_id` for stranger matching;
-- client cannot set `moderation_state=allow`;
-- client cannot shorten `deliver_at`;
-- client cannot bypass rate limits by writing directly to `bottles`;
-- blocked relationships are checked server-side before every route/send;
-- moderation/report tables are not broadly readable;
-- service-role credentials never ship in Godot.
-
-Use authenticated user JWTs. Anonymous Auth users are still authenticated identities and must be distinguished by claim/account state where social policy requires it.
+- Users read their own profile and only approved friend-facing fields of accepted friends.
+- Users read bottle content only when sender or recipient.
+- Client cannot choose arbitrary `recipient_id` for stranger matching.
+- Client cannot set `moderation_state=allow`.
+- Client cannot shorten `deliver_at`.
+- Client cannot bypass rate limits by direct bottle insert.
+- Blocks are checked server-side before every route/send.
+- Report/moderation tables are not broadly readable.
+- Service-role credentials never ship in Godot.
+- Anonymous Auth is still an authenticated identity and is distinguished by account/social state.
 
 ---
 
-## 14. Offline and failure behavior
+## 15. Offline and failure behavior
 
-### Sending while offline
+### Send while offline
 
-- local draft may be saved;
-- UI says the bottle has **not left the boat yet**;
-- retry only after connectivity returns;
-- do not fabricate a `deliver_at` before server acceptance.
+- save local draft;
+- UI says bottle has not left the boat;
+- retry after connectivity;
+- do not fabricate `deliver_at` before server acceptance.
 
 ### Recipient offline
 
-- bottle becomes available in server inbox at/after `deliver_at`;
-- it remains unread until next successful poll/session;
-- no push notification is required in MVP.
+- bottle becomes available server-side at/after `deliver_at`;
+- remains unread until future poll/session;
+- no push notification required in MVP.
 
 ### Moderation unavailable
 
 - fail closed for `DriftBottle`;
-- FriendBottle may also fail closed until the required production safety policy says otherwise;
-- never silently route an unmoderated stranger message.
+- no unmoderated stranger routing.
 
 ### Backend paused/degraded
 
-- client shows a calm non-urgent state such as "오늘은 바다가 조금 멀리 흐르고 있어요";
-- no streak or reward loss;
-- local voyage/rest loop remains fully playable.
+- calm non-urgent error copy;
+- no streak/reward loss;
+- local voyage/rest/decor remains fully playable.
 
 ---
 
-## 15. Privacy and data minimization
+## 16. Privacy and data minimization
 
-MVP social backend should not require:
+MVP social backend does not require:
 
 - phone contacts;
 - precise location;
-- address book upload;
+- address-book upload;
 - public social graph;
 - real-world name;
 - user photos;
 - voice data.
 
-The bottle subsystem stores only what is necessary for authentication, social eligibility, routing, content moderation, blocking/reporting, and user-requested friendship.
+Store only what is needed for auth, age/social eligibility, routing, moderation, block/report, and requested friendship.
 
-External contact exchange is filtered in stranger correspondence so an ephemeral stranger alias does not become an accidental doxxing channel.
+External contact exchange is filtered in stranger correspondence.
 
 ---
 
-## 16. Integration with the rest loop
+## 17. Rest-loop integration
 
-Bottle social must remain ambient.
+Bottle arrival must stay ambient.
 
-### Arrival presentation
+Preferred presentation:
 
-Do not use a loud push-style popup while the player is resting.
-
-Preferred in-game treatment:
-
-- a bottle quietly appears near the boat / bottle basket;
-- small optional visual indicator;
+- bottle quietly appears near boat/bottle basket;
+- small optional indicator;
 - no countdown;
 - no "reply now" pressure;
-- unread bottles persist until the player chooses to read them.
+- unread bottle persists until chosen.
 
-### Rewards
+Permissible soft rewards: memory entry, decorative postcard frame, album log, optional curated sticker unlock after broad milestones.
 
-Receiving or replying to human bottles must not grant an economy advantage large enough to force social play.
-
-Permissible soft rewards:
-
-- memory entry;
-- decorative postcard frame;
-- album log;
-- optional cosmetic sticker unlock after broad milestones.
-
-Rejected:
-
-- daily reply streak;
-- social currency farming;
-- rarity ranking;
-- response-time bonus;
-- public popularity score.
+Rejected: reply streak, social currency farming, rarity ranking, response-time bonus, public popularity score.
 
 ---
 
-## 17. Implementation decomposition after spec review
+## 18. Implementation decomposition after written-spec review
 
-This architecture is too broad for one implementation PR. It must be split into independently testable slices.
-
-Recommended order:
+This architecture is intentionally split into testable slices rather than one giant PR.
 
 1. **Canon migration + Diorama camera/visible avatar shell**  
    Update AGENTS/Notion/repository direction, preserve Appreciation Camera, add avatar placeholder and camera contract. No backend.
 
 2. **Local decoration + Interactable contract**  
-   Slot zones, local save model, 3–5 representative props, pet/rail/cup interactions. No online dependency.
+   Slot zones, local save model, representative props, pet/rail/cup interactions. No cloud dependency.
 
 3. **Social fake-backend contract**  
-   Godot `BottleClient` interface + deterministic local fake implementing delayed FriendBottle/DriftBottle state transitions, tests for 5-minute target semantics, report/block, thread limits. No real cloud dependency yet.
+   Godot `BottleClient` interface + deterministic local fake implementing delayed FriendBottle/DriftBottle transitions, 5-minute acceptance semantics, report/block, invite-code, age gate, and 6-letter stranger limit.
 
 4. **Supabase schema/Auth/RLS/Edge Functions**  
-   Local Supabase development environment first, migration SQL, tests for unauthorized reads/writes, rate limits, delivery scheduling, block routing, stranger round-trip gate.
+   Local Supabase development first, SQL migrations, anonymous→email-OTP link, RLS/security tests, rate limits, delivery scheduling, block routing, invite flow, stranger gate.
 
-5. **Production moderation + release feature gate**  
-   Server-side moderation adapter, terms acceptance, report queue, block/report UX. Stranger matching remains OFF until this slice passes.
+5. **Production moderation + release gate**  
+   Separate focused design/benchmark for the concrete semantic moderation provider, then implement Terms, report queue, block/report UX and feature gating. `DriftBottle` remains OFF until this passes.
 
 6. **End-to-end delayed bottle integration**  
-   Replace fake backend with real adapter under the same client interface; polling; offline drafts; friend linking; healthy-path delivery timing evidence.
+   Replace fake adapter with real adapter under same client interface; polling; offline drafts; friendship; delivery evidence.
 
 7. **Human/device social-rest validation**  
-   Verify bottle arrival feels ambient, not urgent; verify moderation/report/block discoverability; verify 5-minute target in real network conditions; verify local rest remains functional during backend failure.
+   Verify arrivals feel ambient, safety actions are discoverable, delivery target holds on real networks, and backend failure never blocks rest gameplay.
 
-Each slice gets its own TDD red/green cycle, PR, exact-head CI, adversarial review, and Notion sync.
-
----
-
-## 18. Acceptance criteria for the architecture
-
-The future implementation is only faithful to this design if all are true:
-
-- normal gameplay visibly shows the player avatar and pet in a 3/4 boat diorama;
-- Appreciation Camera still offers a low-UI sea-focused rest view;
-- decoration has no stats or mandatory optimization;
-- object/pet interactions are optional and low-pressure;
-- FriendBottle and DriftBottle are delayed rather than realtime;
-- healthy backend design keeps active-client server receipt under the 5-minute target;
-- stranger communication has no directory, presence, typing, read receipt, or public feed;
-- stranger thread cannot continue indefinitely without mutual friend consent;
-- declared under-16 users cannot use stranger matching in the MVP safety profile;
-- reports and blocks are accessible in-app;
-- blocked users cannot be re-matched or deliver new bottles;
-- UGC moderation happens server-side before stranger delivery;
-- local voyage/rest/decor remains playable if social backend is unavailable;
-- no service-role or moderation-provider secret ships in the Godot client;
-- `DriftBottle` cannot be enabled for public release without the safety release gate.
+Every implementation slice receives its own TDD RED/GREEN, PR, exact-head CI, adversarial review, and Notion sync.
 
 ---
 
-## 19. Explicit non-goals
+## 19. Architecture acceptance criteria
 
-Not part of this design:
+Implementation is faithful only if:
+
+- normal play shows avatar + pet in 3/4 boat diorama;
+- Appreciation Camera still provides low-UI sea rest;
+- decor has no stats/mandatory optimization;
+- interactions remain optional/low-pressure;
+- FriendBottle and DriftBottle are delayed, not realtime;
+- accepted healthy-backend bottles target server availability under 5 minutes;
+- no-recipient DriftBottle is not falsely accepted;
+- all online social is 16+ in MVP;
+- FriendInvite codes are one-time, 8-character, 24-hour and server-generated;
+- stranger mode has no directory, presence, typing, read receipt, or public feed;
+- stranger thread stops at 6 letters unless mutual friendship consent succeeds;
+- report and block are in-app;
+- blocked users cannot re-match or deliver new bottles;
+- stranger UGC is moderated server-side before delivery;
+- local rest/decor/voyage remains playable without backend;
+- no server/moderation secret ships in Godot;
+- `DriftBottle` public feature flag cannot turn on before the safety release gate passes.
+
+---
+
+## 20. Explicit non-goals
 
 - realtime chat;
 - voice/video chat;
 - public timeline/feed;
-- social follower system;
-- location-based matching;
-- dating/matchmaking mechanics;
-- competitive popularity;
-- online co-op movement in the same boat world;
+- follower system;
+- location matching;
+- dating/matchmaking;
+- popularity competition;
+- online co-op movement in the same world;
 - marketplace/trading;
-- user-uploaded images/audio/files in bottle letters;
+- user-uploaded media in letters;
 - unrestricted external contact exchange;
 - backend dependency for basic single-player rest gameplay.
 
 ---
 
-## 20. Design decision summary
+## 21. Decision summary
 
-**Selected product architecture:** `Rest-first Bondee Boat Diorama + Delayed Bottle Social`.
-
-**Selected camera architecture:** 3/4 visible-avatar diorama for normal play + preserved Appreciation Camera for sea-focused rest.
-
-**Selected decoration architecture:** fixed slot zones first.
-
-**Selected interaction architecture:** reusable Interactable contract.
-
-**Selected social model:** delayed FriendBottle + rate-limited/limited-thread DriftBottle; mutual consent required to convert strangers into friends.
-
-**Selected backend for MVP:** Supabase Auth + Postgres/RLS + Edge Functions, with polling instead of Realtime.
-
-**Selected safety posture:** stranger matching is an incidental, gated UGC subsystem and remains disabled until production moderation/report/block/terms operations are deployable.
-
-**Selected cost posture:** develop on free/local-first infrastructure; re-evaluate hosting before public launch if Supabase Free pause/limits conflict with real delivery reliability.
+- Product: **Rest-first Bondee Boat Diorama + Delayed Bottle Social**.
+- Camera: 3/4 visible-avatar normal view + Appreciation Camera.
+- Decoration: fixed slot zones first.
+- Interaction: reusable `Interactable` contract.
+- Social age: all online social 16+ for MVP.
+- Friend discovery: durable linked account + one-time 8-char/24h Friend Invite Code.
+- Stranger social: delayed/rate-limited `DriftBottle`, server-assigned ephemeral alias, max 6 letters, mutual consent to become friends.
+- Delivery: accepted bottles use 45..210 sec intentional delay + 20..30 sec polling, target <=5 min under healthy conditions.
+- MVP backend: Supabase Auth + Postgres/RLS + Edge Functions, polling instead of Realtime.
+- Safety: stranger mode remains OFF until semantic moderation + Terms + report/block + operations are deployed/tested.
+- Cost: local/free-first development; hosting tier is re-Gated before public release if Supabase Free pause/limits conflict with real reliability.
