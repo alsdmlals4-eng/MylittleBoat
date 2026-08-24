@@ -113,12 +113,11 @@ func add_letter(entry: String) -> void:
 	_increase_affection()
 
 
-## Adds a caught fish as a quiet voyage memory.
+## Adds a caught fish as a quiet memory without turning fishing repetition into affection farming.
 func add_fish(entry: String) -> void:
 	fish.append(entry)
-	_increase_affection()
 
 
 func _increase_affection() -> void:
-	var collected_count := photos.size() + sceneries.size() + letters.size() + fish.size()
-	companion_affection = clampi(1 + int(collected_count / 2), 1, 3)
+	var relationship_memory_count := photos.size() + sceneries.size() + letters.size()
+	companion_affection = clampi(1 + int(relationship_memory_count / 2), 1, 3)
