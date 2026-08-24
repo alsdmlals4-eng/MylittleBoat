@@ -52,6 +52,7 @@ func _ready() -> void:
 	%LetterButton.pressed.connect(_record_pending_letter)
 	%SceneryButton.pressed.connect(_record_pending_scenery)
 	%AlbumButton.pressed.connect(_open_album)
+	%NextVoyageButton.pressed.connect(_start_next_voyage)
 
 	if GameState.pending_discovery_type != "":
 		_discovery_offer_remaining = DISCOVERY_OFFER_SECONDS
@@ -64,7 +65,7 @@ func _ready() -> void:
 	if GameState.remaining_seconds < 299.9 and not GameState.voyage_record_created:
 		message = "바다로 돌아왔습니다. 이어서 천천히 항해합니다."
 	elif GameState.voyage_record_created:
-		message = "오늘의 항해 기록이 남아 있습니다. 더 머물러도 좋아요."
+		message = "오늘의 항해 기록이 남아 있습니다. 더 머물거나 다음 항해를 준비해도 좋아요."
 	_update_ui(message)
 
 
@@ -76,7 +77,8 @@ func _process(delta: float) -> void:
 	var completed_now := GameState.tick_voyage(delta)
 	if completed_now:
 		GameState.complete_voyage()
-		_update_ui("오늘의 항해 기록이 만들어졌습니다. 이제 편히 머물러도 좋아요.")
+		_sync_next_voyage_button()
+		_update_ui("오늘의 항해 기록이 만들어졌습니다. 더 머물거나 다음 항해를 준비해도 좋아요.")
 	else:
 		_update_ui()
 
@@ -237,13 +239,27 @@ func _apply_appreciation_mode() -> void:
 	%AppreciationButton.visible = true
 	%AppreciationButton.text = "감상 끝내기" if GameState.appreciation_mode else "감상모드"
 	_sync_discovery_buttons()
+	_sync_next_voyage_button()
 	%FishingStatusLabel.visible = controls_visible and %FishingStatusLabel.text != ""
+
+
+func _sync_next_voyage_button() -> void:
+	%NextVoyageButton.visible = not GameState.appreciation_mode and GameState.voyage_record_created
 
 
 func _open_album() -> void:
 	if _fishing_session.is_waiting() or _fishing_session.is_bite_ready():
 		_fishing_session.cancel()
 	get_tree().change_scene_to_file("res://scenes/album.tscn")
+
+
+## Returns to mood selection only after this voyage has been recorded. Accumulated memories stay in GameState.
+func _start_next_voyage() -> void:
+	if not GameState.voyage_record_created:
+		return
+	if _fishing_session.is_waiting() or _fishing_session.is_bite_ready():
+		_fishing_session.cancel()
+	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
 
 
 func _update_ui(message: String = "") -> void:
