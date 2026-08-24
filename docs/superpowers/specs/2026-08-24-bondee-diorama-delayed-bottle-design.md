@@ -1,6 +1,6 @@
 # Rest-first Bondee Boat Diorama + Delayed Bottle Social Design
 
-Status: **USER-APPROVED DESIGN / IMPLEMENTATION GATED BY WRITTEN SPEC REVIEW**  
+Status: **USER-APPROVED DESIGN / READY FOR SLICED IMPLEMENTATION**  
 Date: 2026-08-24  
 Issue: #12  
 Base repository main at design start: `b6949a0b92f591bc099a5cf143b9fe32a863e45f`
