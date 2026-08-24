@@ -1,4 +1,4 @@
-# 항해 화면이 상태 연속성·감상·발견·낚시·마음 톤·다음 항해 흐름을 실제 UI/환경으로 표현하는지 검증한다.
+# 항해 화면이 디오라마·상태 연속성·감상·발견·낚시·마음 톤·다음 항해 흐름을 실제 UI/환경으로 표현하는지 검증한다.
 extends SceneTree
 
 var _failures := 0
@@ -42,7 +42,7 @@ func _run() -> void:
 	var fishing_button := scene.get_node_or_null("BottomPanel/ButtonGrid/FishingButton") as Button
 	var next_voyage_button := scene.get_node_or_null("BottomPanel/ButtonGrid/NextVoyageButton") as Button
 	var fishing_status := scene.get_node_or_null("TopPanel/TopVBox/FishingStatusLabel") as Label
-	var camera_rig := scene.get_node_or_null("VoyageWorld/CameraRig") as Node3D
+	var camera_rig := scene.get_node_or_null("VoyageWorld/DioramaCameraRig") as Node3D
 	var world_environment := scene.get_node_or_null("VoyageWorld/WorldEnvironment") as WorldEnvironment
 	var calm_environment_present := world_environment != null and world_environment.environment != null
 	var calm_color := Color.BLACK
@@ -72,9 +72,9 @@ func _run() -> void:
 		var before_y := camera_rig.position.y
 		scene.call("_cycle_speed")
 		scene.call("_process", 0.5)
-		_expect(not is_equal_approx(camera_rig.position.y, before_y), "speed control must produce observable drift/bob motion")
+		_expect(not is_equal_approx(camera_rig.position.y, before_y), "speed control must produce observable diorama drift/bob motion")
 	else:
-		_expect(false, "game scene must provide camera rig and speed behavior")
+		_expect(false, "game scene must provide diorama camera rig and speed behavior")
 
 	_expect(scene.has_method("_spawn_ambient_discovery"), "game scene must schedule ambient discoveries instead of permanent reward buttons")
 	_expect(scene.has_method("_handle_fishing_action"), "game scene must connect the calm fishing interaction")

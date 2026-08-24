@@ -1,8 +1,9 @@
-[gd_scene load_steps=11 format=3]
+[gd_scene load_steps=13 format=3]
 
 [ext_resource type="Script" path="res://scripts/voyage/game_scene.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/voyage/boat_camera_controller.gd" id="2"]
 [ext_resource type="Script" path="res://scripts/voyage/resting_pet_placeholder.gd" id="4"]
+[ext_resource type="Script" path="res://scripts/avatar/player_avatar_placeholder.gd" id="5"]
 
 [sub_resource type="Environment" id="Environment_sky"]
 background_mode = 1
@@ -35,6 +36,10 @@ rings = 10
 albedo_color = Color(0.82, 0.75, 0.66, 1)
 roughness = 0.96
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_avatar"]
+albedo_color = Color(0.72, 0.66, 0.82, 1)
+roughness = 0.94
+
 [node name="GameScene" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -54,14 +59,23 @@ environment = SubResource("Environment_sky")
 rotation = Vector3(-0.85, -0.35, 0)
 light_energy = 1.05
 
-[node name="CameraRig" type="Node3D" parent="VoyageWorld"]
-unique_name_in_owner = true
+[node name="DioramaCameraRig" type="Node3D" parent="VoyageWorld"]
+position = Vector3(3.8, 4.6, 6.7)
+rotation = Vector3(-0.52, 0.48, 0)
+
+[node name="DioramaCamera3D" type="Camera3D" parent="VoyageWorld/DioramaCameraRig"]
+current = true
+fov = 48.0
+near = 0.05
+far = 200.0
+
+[node name="AppreciationCameraRig" type="Node3D" parent="VoyageWorld"]
 position = Vector3(0, 1.35, 2.4)
 rotation = Vector3(-0.1, 0, 0)
 script = ExtResource("2")
 
-[node name="Camera3D" type="Camera3D" parent="VoyageWorld/CameraRig"]
-current = true
+[node name="AppreciationCamera3D" type="Camera3D" parent="VoyageWorld/AppreciationCameraRig"]
+current = false
 fov = 62.0
 near = 0.05
 far = 200.0
@@ -74,6 +88,22 @@ surface_material_override/0 = SubResource("StandardMaterial3D_ocean")
 position = Vector3(0, 0.18, 0.55)
 mesh = SubResource("BoxMesh_boat_bow")
 surface_material_override/0 = SubResource("StandardMaterial3D_boat")
+
+[node name="PlayerAvatarPlaceholder" type="Node3D" parent="VoyageWorld"]
+position = Vector3(-0.62, 0.72, 0.32)
+scale = Vector3(0.74, 0.74, 0.74)
+script = ExtResource("5")
+
+[node name="Body" type="MeshInstance3D" parent="VoyageWorld/PlayerAvatarPlaceholder"]
+scale = Vector3(0.62, 0.88, 0.48)
+mesh = SubResource("SphereMesh_pet")
+surface_material_override/0 = SubResource("StandardMaterial3D_avatar")
+
+[node name="Head" type="MeshInstance3D" parent="VoyageWorld/PlayerAvatarPlaceholder"]
+position = Vector3(0, 0.62, 0)
+scale = Vector3(0.64, 0.64, 0.64)
+mesh = SubResource("SphereMesh_pet")
+surface_material_override/0 = SubResource("StandardMaterial3D_avatar")
 
 [node name="RestingPetPlaceholder" type="Node3D" parent="VoyageWorld"]
 position = Vector3(0.9, 0.58, 0.38)

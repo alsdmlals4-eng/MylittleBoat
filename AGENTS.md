@@ -7,11 +7,15 @@ Codex and other coding agents should follow this file when working in this repos
 Project name: `my little boat`
 Engine: Godot 4.7 stable
 Language: GDScript
-Genre: first-person healing drifting boat game
+Genre: rest-first cozy boat diorama / healing voyage game
 
-The player sits in a small boat and watches the sea. The player body is not visible.
+Normal play shows a visible player avatar, pet, boat, decorations, and sea together through a calm 3/4 diorama camera. The existing sea-focused low-UI view is preserved as the optional `Appreciation Camera`.
 
-Do not add combat, failure states, competitive systems, ads, payments, or online letter sharing.
+Do not add combat, failure states, competitive systems, ads, payments, realtime/global/public chat, follower/ranking systems, or social pressure mechanics.
+
+Online scope is allowed only for the approved delayed `FriendBottle` / `DriftBottle` subsystem and its required identity, moderation, report, block, consent, and safety operations. Voyage, rest, pet, decoration, album, fishing, and soundscape remain local-first and playable without the backend.
+
+`DriftBottle` public enablement is forbidden until the approved release gate has production server-side moderation, Terms/Community Guidelines, 16+ age gating, in-app report/block, moderation operations, support contact, and verification evidence. See `docs/superpowers/specs/2026-08-24-bondee-diorama-delayed-bottle-design.md`.
 
 ## Authority bootstrap
 
@@ -37,23 +41,37 @@ Notion 승인이나 정적 이미지가 runtime 구현 성공을 의미하지 �
 
 ## Core Game Direction
 
+Normal presentation:
+- Visible player avatar + pet + boat + sea in a calm 3/4 diorama.
+- `Appreciation Camera` shifts focus toward the sea/horizon and hides most nonessential UI.
+- Camera mode changes must not alter voyage duration, rewards, or the persistent soundscape.
+
 Core controls:
 - Take Photo
-- Appreciation Mode
+- Appreciation Mode / Appreciation Camera
 - Speed Control
 
 Core loop:
 - Select today's mood.
-- Enter the sea scene.
-- Drift for 5 minutes.
+- Enter the 3/4 boat diorama.
+- Rest with the visible avatar and pet.
+- Optionally use low-pressure interactions, decoration, fishing, ambient discoveries, and delayed bottle letters as each slice is implemented.
+- Drift for about 5 minutes.
 - Create today's voyage record.
-- Continue idle appreciation mode.
+- Continue resting or begin another voyage.
+
+Supporting direction:
+- Boat decoration is self-expression/memory, not stats or optimization.
+- Object/pet interaction is optional and must not create chores or repeat-farming pressure.
+- `FriendBottle` and `DriftBottle` are delayed correspondence, not instant messaging.
+- Stranger bottle communication has no public directory, presence, typing indicator, read receipt, public feed, or popularity system.
 
 Rewards:
 - Companion affection.
 - Mood record.
 - Scenery collection.
 - Album-style collection.
+- Personal boat memories/decor as implemented.
 
 ## Work Style
 
@@ -73,8 +91,9 @@ Rewards:
 - Keep scene and node structures simple.
 - Use clear node names such as `MoodStatusLabel`, `TakePhotoButton`, and `AlbumView`.
 - Keep UI mobile-friendly first, with PC mouse input where it makes sense.
-- Prefer local-first systems before cloud sync, login, or online features.
+- Keep core rest/voyage/decor/pet systems local-first; isolate approved bottle-social networking behind dedicated interfaces.
 - Do not add combat, stamina, HP, enemies, damage, death, failure conditions, or ranking systems.
+- Do not add realtime/global/public social features outside the approved delayed bottle design.
 - Do not add paid assets or dependency-heavy plugins without explicit approval.
 - Update `README.md` when setup, controls, scenes, or test steps change.
 
@@ -154,5 +173,7 @@ Avoid ending Korean prose lines with a colon. Prefer a period, question mark, or
 - `scripts/core/`
 - `scripts/ui/`
 - `scripts/voyage/`
+- `scripts/avatar/`
 - `scripts/companion/`
 - `scripts/album/`
+- future approved social code should live behind a dedicated social/bottle boundary, not inside voyage state.

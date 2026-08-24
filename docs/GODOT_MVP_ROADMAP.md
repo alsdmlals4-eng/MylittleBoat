@@ -2,194 +2,313 @@
 
 `my little boat` Godot MVP를 **핵심 감정이 실제 플레이에서 작동하는지 검증하는 순서**로 진행합니다.
 
-> **Authority:** 사람용 기획·경험·시각 방향은 Notion 정본에서 승인합니다. 이 로드맵은 승인된 방향을 repository 구현·검증 단계로 옮기는 execution mirror입니다.
+> **Authority:** 사람용 기획·경험·시각 방향은 Notion 정본에서 승인합니다. 이 로드맵은 승인된 방향을 repository 구현·검증 단계로 옮기는 execution mirror입니다. 기술 GREEN은 Human/player experience PASS가 아닙니다.
 
 ## 1단계: 프로젝트 골격 — 완료
 
-완료 기준:
-- `project.godot`이 존재한다.
-- `scenes/main_menu.tscn`, `scenes/game.tscn`, `scenes/album.tscn`이 존재한다.
-- `scripts/core/`, `scripts/ui/`, `scripts/voyage/` 구조가 있다.
-- README와 협업 문서가 Godot 기준으로 정리되어 있다.
+- `project.godot`
+- `main_menu.tscn`, `game.tscn`, `album.tscn`
+- Godot 4.7 stable / GDScript
+- mobile portrait 우선 구조
 
 ## 2단계: 마음 선택 — 완료
 
-완료 기준:
-- 평온, 지침, 외로움, 설렘 버튼이 보인다.
-- 선택한 마음이 `GameState`에 저장된다.
-- 선택 후 게임 화면으로 이동한다.
-- 마음이 좋고/나쁜 날씨로 단정되지 않고 하늘 톤에 미세한 차이를 만든다.
-- 새 항해를 시작해도 이전 앨범 기억은 지우지 않는다.
+- 평온 / 지침 / 외로움 / 설렘
+- `GameState`에 선택 저장
+- 좋고/나쁜 날씨 판정 없이 하늘 톤만 미세하게 변경
+- 새 항해가 기존 실행 세션 기억을 지우지 않음
 
-## 3단계: 항해 화면 — 기술 골격 완료 / 실기기·시각 품질 검증 전
+## 3단계: Calm Voyage Vertical Slice — 완료
 
-완료 기준:
-- 플레이어 몸은 보이지 않는다.
-- 보트 앞부분, 바다, 하늘을 감상하는 구도가 있다.
-- 모바일 세로 화면 우선 구조가 있다.
-- PC 마우스 드래그 시야 회전이 있다.
-- `InputEventScreenDrag` 기반 모바일 화면 드래그 시야 회전이 있고 기존 pitch clamp와 수평 유지 규칙을 공유한다.
+- Scene 전환에도 이어지는 5분 항해
+- 사진찍기
+- 감상모드
+- 속도조절
+- authored Ambient Discovery
+- 선택형 조용한 낚시
+- 오늘의 항해 기록
+- 앨범 / 동반자 호감도
+- 다음 항해
+
+## 4단계: 기술 검증 자동화 — 완료
+
+- GitHub Actions Godot 4.7 stable
+- `actions/checkout@v7`
+- headless import
+- 집중 behavior contracts
+- main menu / game / album Scene smoke
+
+## 5단계: Rest-first Direction Contract — 완료
+
+- `docs/RESTING_EXPERIENCE_BIBLE.md`
+- wave-first soundscape
+- 관리 의무 없는 resting pet
+- soft sea + readable UI
+- `CHORES / FARMING / FOMO` 보호선
+
+## 6단계: Resting Core Technical Prototype — 완료 / Human 품질 미검증
+
+### 기술 구조
+
+- persistent `RestingSoundscape` AutoLoad
+- 4초 generated `AudioStreamWAV` OceanBed / `-16 dB` / loop
+- `TECHNICAL_PROTOTYPE=true`
+- ocean roughness/밝기 + light + runtime mood sky 기술 ceiling
+- `RestingPetPlaceholder` 12~24초 저밀도 idle
+- pet `has_care_obligation=false`
+
+자동 상태:
+
+`TECH_RESTING_CORE = PASS`
+
+품질 상태:
+
+`AUDIO_REST_PASS = NOT_RUN / VISUAL_REST_PASS = NOT_RUN / PET_REST_PASS = NOT_RUN`
+
+## 7단계: Bondee Diorama + Delayed Bottle Architecture — 설계/계획 완료
+
+승인된 제품 방향:
+
+- normal play = visible player + pet + boat + sea의 **3/4 Boat Diorama**
+- 기존 바다 중심 view = **Appreciation Camera**로 보존
+- Boat Decoration = 8개 slot-zone 우선
+- low-pressure reusable `Interactable`
+- FriendBottle / DriftBottle = delayed correspondence
+- core rest/voyage/decor/pet = local-first
+
+소셜 설계 핵심:
+
+- MVP online social 16+
+- message max 400 chars + curated sticker 1개
+- no public user directory / presence / typing / read receipt / feed / follower / ranking
+- accepted bottle healthy target `<= 5 minutes`
+- deliberate delay `45..210 sec`, active polling `20..30 sec`
+- `poll-inbox`가 `deliver_at <= server_now`를 availability로 판정
+- no eligible stranger recipient이면 전송을 accept하지 않고 local draft 유지
+- stranger thread 최대 6통 후 mutual friendship gate
+- Friend Invite = server-generated 8-char / 24h / one-time + invitee redemption + inviter confirmation
+- Supabase Auth + Postgres/RLS + Edge Functions selected for MVP
+- DriftBottle public flag는 production moderation + Terms + report/block + 운영 evidence 전까지 OFF
+
+정본:
+
+- `docs/superpowers/specs/2026-08-24-bondee-diorama-delayed-bottle-design.md`
+- `docs/superpowers/plans/2026-08-24-canon-migration-diorama-shell.md`
+
+## 8단계: Canon Migration + Diorama Shell — 기술 구현 완료 / Human visual QA 전
+
+이번 단계는 제품 설계를 실제 Scene/계약으로 옮기는 첫 구현 Slice입니다.
+
+### 운영 정본
+
+- `AGENTS.md`의 기존 `first-person only / invisible player / blanket online-letter prohibition`을 폐기했다.
+- normal presentation을 visible-avatar 3/4 diorama로 명시했다.
+- online은 approved delayed bottle subsystem에만 좁게 허용하며 realtime/global/public chat은 계속 금지한다.
+
+### Diorama normal camera
+
+- `VoyageWorld/DioramaCameraRig/DioramaCamera3D`
+- normal mode에서 `current=true`
+- fixed elevated 3/4 technical framing
+- speed 선택에 따른 아주 작은 drift feedback
+
+### Visible Avatar shell
+
+- `PlayerAvatarPlaceholder`
+- `TECHNICAL_PLACEHOLDER=true`
+- future cosmetic-slot contract:
+  - body
+  - hair
+  - top
+  - bottom
+  - head_accessory
+  - accessory
+  - color
+
+현재 primitive mesh는 최종 캐릭터 아트가 아니다.
+
+### Appreciation Camera preservation
+
+- 기존 draggable camera를 `AppreciationCameraRig/AppreciationCamera3D`로 보존
+- 감상모드에서만 current
+- 대부분의 비필수 UI를 숨김
+- voyage time / rewards / soundscape에 영향 없음
+- controller는 Appreciation camera가 `current`일 때만 mouse/touch drag를 처리
+- normal diorama mode에서 touch input을 훔치지 않음
+
+자동 상태:
+
+```text
+TECH_DIORAMA_SHELL = PASS
+VISIBLE_AVATAR_PLACEHOLDER = PASS
+APPRECIATION_CAMERA = PASS
+APPRECIATION_INPUT_ISOLATION = PASS
+```
 
 남은 증거:
-- 제작 아트/환경음이 들어간 상태의 Human 시각·감정 검증.
-- 실제 모바일 기기의 손감각, 터치 충돌, 버튼 크기, 텍스트 가독성 검증.
 
-## 4단계: 핵심 조작 — Vertical Slice 구현 완료
+```text
+HUMAN_DIORAMA_COMFORT = NOT_RUN
+FINAL_AVATAR_ART = NOT_INTEGRATED
+REAL_MOBILE_CAMERA_INPUT = NOT_RUN
+```
 
-완료 기준:
-- 사진찍기가 기록을 남긴다.
-- 감상모드가 실제로 비필수 UI를 숨기고 다시 돌아올 수 있다.
-- 속도조절이 느림 / 보통 / 빠름으로 순환하면서 보트·카메라의 미세 표류 리듬을 바꾼다.
-- 세 기능이 보상량이나 실패 조건을 바꾸지 않는다.
+## 9단계: Local Boat Decoration + Interactable — 다음 구현 단계
 
-## 5단계: 5분 항해 루프 — Vertical Slice 구현 완료
+백엔드를 붙이기 전에 **내 캐릭터·내 보트·내 펫이 생활하는 공간의 재미**를 local-only로 먼저 검증합니다.
 
-완료 기준:
-- 5분 타이머 상태를 `GameState`가 소유한다.
-- 앨범을 열었다 돌아와도 현재 항해 시간이 이어진다.
-- 활성 항해가 아닐 때 고아 항해 기록을 만들지 않는다.
-- 5분 종료 후 완료된 항해당 정확히 1개의 오늘의 항해 기록이 생성된다.
-- 종료 후에도 바다에 계속 머무를 수 있다.
-- 기록 후 `다음 항해`를 선택하면 누적 기억을 보존한 채 마음 선택 화면으로 돌아간다.
+### Boat Decoration MVP
 
-## 6단계: Ambient Discovery — Vertical Slice 구현 완료
+8개 slot-zone:
 
-완료 기준:
-- 병 속 편지 / 풍경은 상시 보상 버튼이 아니다.
-- 항해 중 기다린 뒤 하나의 작은 발견으로 나타난다.
-- 플레이어는 기록하거나 그냥 지나가게 둘 수 있다.
-- 놓쳐도 실패/손해가 없다.
-- 기록하면 앨범과 동반자 진행에 누적된다.
+1. bow-left
+2. bow-right
+3. center-left
+4. center-right
+5. rear-left
+6. rear-right
+7. rail accent
+8. pet corner
 
-## 7단계: 선택형 조용한 낚시 — Vertical Slice 구현 완료
+첫 대표 소품은 적은 수로 시작합니다. 예:
 
-완료 기준:
-- `캐스팅 → 기다림 → 입질 → 낚기`가 동작한다.
-- 기다리는 중 줄을 거두어도 실패 패널티가 없다.
-- 낚은 물고기는 앨범 기억으로 남는다.
-- 반복 낚시만으로 동반자 호감도를 가장 빠르게 올릴 수 없도록 호감도 파밍과 분리한다.
-- 낚시는 5분 항해와 바다 감상을 대체하지 않는 선택형 보조 콘텐츠다.
+- lantern
+- mug
+- cushion
+- blanket
+- plant
+- framed memory
+- shell/postcard
+- pet cushion
 
-현재 제외:
-- 어종 대량화
-- 미끼 / 낚싯대 장비 / 줄 내구도
-- 힘겨루기·텐션 미니게임
-- 판매 / 요리 / 가격 / 낚시 경제
-- 경쟁 점수 / 실패 패널티
+보호선:
 
-## 8단계: 앨범·동반자 기억 — Vertical Slice 구현 완료
+- 능력치 없음
+- rarity score 없음
+- 슬롯을 모두 채우는 최적화 보상 없음
+- gacha/daily-shop pressure 없음
 
-완료 기준:
-- 사진 / 풍경 / 편지 / 물고기 / 항해 기록 수가 보인다.
-- 각 유형의 최근 기록이 보인다.
-- 새 항해가 이전 기록을 삭제하지 않는다.
-- 여러 항해를 반복해도 같은 실행 세션 동안 기록이 누적된다.
-- 사진·풍경·편지 기억이 동반자 호감도 Lv 1~3에 반영된다.
-- 물고기는 개인적 기억으로 남되 낚시 반복이 관계 성장의 최적화 루프가 되지 않는다.
+### Interactable MVP
 
-현재 경계:
-- 앱 종료 후 재실행까지 유지하는 save file persistence는 아직 없다.
+재사용 계약으로 대표 3~4개만 먼저 검증합니다.
 
-## 9단계: 기술 검증 — PR 자동화 도입 완료
+```text
+Interactable
+- get_actions(actor_context)
+- can_interact(actor_context, action_id)
+- perform(actor_context, action_id)
+```
 
-완료 기준:
-- GitHub Actions에서 Godot 4.7 stable을 사용한다.
-- 현행 Node 24 기반 `actions/checkout@v7`을 사용한다.
-- headless project import가 성공한다.
-- 항해 상태 / 낚시 / game scene / album memory / camera input 계약 테스트가 성공한다.
-- main menu / game / album Scene smoke가 성공한다.
+초기 예:
 
-기술 GREEN은 Human/player experience PASS가 아니다.
+- pet → 쓰다듬기 / 같이 보기
+- rail → 기대기 / 바다 보기
+- cup → 들기 / 내려놓기
+- lantern → 켜기 / 끄기
 
-## 10단계: Rest-first Direction → Repository Contract Sync — 완료
+상태:
 
-목표:
-- Notion에서 승인된 `아무것도 하지 않아도 쉬는 5분 공간` 방향을 repository 구현 계약으로 명확히 동기화한다.
+`BOAT_DECORATION = NOT_IMPLEMENTED / INTERACTABLE_RUNTIME = NOT_IMPLEMENTED`
 
-완료 기준:
-- `docs/RESTING_EXPERIENCE_BIBLE.md`가 Notion 방향의 implementation mirror/acceptance contract로 사운드·바다·펫·UI·기능 보호선을 정의한다.
-- 파도/자연음을 BGM보다 우선하는 Audio North Star가 있다.
-- 펫을 관리 의무 없는 `resting companion`으로 정의한다.
-- 시각적으로 안정적인 수평선·부드러운 환경·느린 움직임을 보호하면서 UI 가독성은 유지한다.
-- `CHORES / FARMING / FOMO`를 만드는 기능을 명시적으로 차단한다.
+## 10단계: Social Fake Backend Contract — 예정
 
-이 단계는 **repository 계약 동기화**이며 실제 production audio/pet art가 구현됐다는 뜻이 아니다.
+실제 서버를 연결하기 전에 Godot 로컬 fake로 social semantics를 TDD합니다.
 
-## 11단계: Resting Core Technical Prototype — 구현 완료 / Human 품질 검증 전
+검증할 것:
 
-최종 자산을 기다리지 않고 구조·회귀를 먼저 검증하는 단계입니다.
+- 16+ eligibility
+- Friend Invite lifecycle
+- FriendBottle delay state
+- DriftBottle recipient acceptance semantics
+- no-recipient → local draft
+- 6-letter stranger cap
+- mutual friend gate
+- block/report behavior
+- offline draft
+- healthy accepted delivery target 계산
 
-### 구현된 기술 구조
+실제 Supabase 호출/secret 없음.
 
-- `RestingSoundscape`를 AutoLoad로 등록해 메뉴/항해/앨범 Scene 전환에도 같은 인스턴스를 유지한다.
-- `scripts/audio/resting_soundscape.gd`가 4초 합성 `AudioStreamWAV` OceanBed를 한 번 생성하고 `-16 dB`에서 loop한다.
-- 합성 OceanBed는 `TECHNICAL_PROTOTYPE=true`이며 production 자연 파도 자산이 아니다.
-- 바다 material roughness/밝기, DirectionalLight, 마음별 하늘 톤을 더 부드러운 기술 범위로 조정한다.
-- `RestingPetPlaceholder` 1종을 둥근 기술 mesh로 배치하고, 12~24초 저밀도 idle + 아주 작은 호흡을 사용한다.
-- 펫 placeholder에는 배고픔·청소·피로·방치 의무가 없다.
-- `test_resting_core_contract.gd`가 persistent soundscape, loop/evidence class, pet care boundary, soft ocean/sky 범위를 검증한다.
+## 11단계: Supabase Backend / Auth / RLS / Edge Functions — 예정
 
-### 이 단계에서 주장할 수 없는 것
+Social Fake 계약이 안정된 뒤 실제 backend adapter를 구현합니다.
 
-- 합성 OceanBed가 실제로 편안한 파도소리다.
-- 현재 둥근 펫이 최종 캐릭터 디자인이다.
-- 현재 placeholder 바다/하늘이 최종 Visual PASS다.
-- 실제 모바일에서 시각/청취/조작이 편안하다.
+- anonymous Auth
+- email OTP link
+- profiles / consent / invites / friendships / threads / bottles / blocks / reports
+- RLS
+- server rate limit
+- server-generated recipient/matching
+- `deliver_at` server timestamp
+- no secret in Godot
 
-따라서 상태는:
+공개 출시 전 Free-plan pause/limit가 5분 목표와 충돌하는지 별도 Deployment Gate를 다시 확인합니다.
 
-`TECH_RESTING_CORE = PASS / AUDIO_REST_PASS = NOT_RUN / VISUAL_REST_PASS = NOT_RUN / PET_REST_PASS = NOT_RUN`
+## 12단계: Production Moderation + Social Safety Release Gate — 예정
 
-## 12단계: Production Resting Asset A/B — 다음 제작 단계
+`DriftBottle`은 아래가 실제 배포·테스트되기 전 public OFF입니다.
 
-기능을 더 늘리기 전에 실제 자산으로 기술 placeholder를 교체합니다.
+- Terms / Community Guidelines
+- 16+ gate
+- URL/contact deterministic filter
+- production semantic moderation
+- report content/user
+- block
+- immediate local hide
+- moderation queue
+- developer support/contact
+- retention/deletion policy
+- audit receipt
+
+## 13단계: Real Delayed Bottle Integration — 예정
+
+fake adapter와 동일한 Godot client contract 아래 real backend adapter를 연결합니다.
+
+- FriendBottle
+- DriftBottle
+- polling 20~30 sec
+- offline draft
+- friendship conversion
+- delivery evidence
+- server/backend failure가 local rest를 막지 않는지 검증
+
+## 14단계: Production Resting Assets — 병렬/후속 제작
+
+실제 제품 품질을 위한 자산 단계입니다.
 
 ### Audio
 
-1. `OceanBed A/B` 실제 자연 파도 후보를 청취한다.
-2. source URL / creator / license / original hash / runtime hash를 readback한다.
-3. 선택된 OceanBed를 persistent `RestingSoundscape`에 교체한다.
-4. `NearWater` 한 레이어만 추가한 뒤 다시 청취한다.
-5. 필요성이 확인되기 전에는 Wind / BoatCreak / PetFoley를 한꺼번에 추가하지 않는다.
+1. 실제 자연 `OceanBed A/B` 청취
+2. source/license/hash readback
+3. 선택된 OceanBed를 persistent soundscape에 교체
+4. `NearWater` 1개 추가 후 재검증
 
 ### Visual
 
-- 편안한 바다/하늘 production color study
-- 과하지 않은 수면 반사
-- 안정적인 수평선
-- 최소 보트 재질
-- 실제 펫 이미지/모델은 Visual 정책에 따라 `텍스트 brief → 명시 승인 → 1건 제작` 순서를 지킨다.
+- Bondee-inspired storybook diorama production color study
+- rounded/matte player avatar
+- 첫 실제 pet 1종
+- boat material / representative decor
+- calm sea / sky / horizon
 
-### Pet
+이미지 작업은 프로젝트 Visual 정책대로 `텍스트 brief → 명시 승인 → 1건 제작` 순서를 유지합니다.
 
-첫 펫 1종으로 아래 존재감을 검증한다.
+## 15단계: Human / Real-device Validation
 
-- 바다 보기
-- 앉기 / 눕기
-- 졸기
-- 하품/기지개
-- 작은 귀/꼬리 반응
-- 가끔 플레이어 보기
-- 낚시 지켜보기
+실제 제작 자산과 주요 시스템이 들어간 뒤 확인합니다.
 
-**펫 수를 늘리기 전에 1종의 존재감이 실제로 편안한지 확인합니다.**
-
-## 13단계: Resting Core Human Validation
-
-제작 자산이 들어간 뒤 아래를 사람 눈/귀/손으로 검증합니다.
-
-1. 첫 30초에 조작 없이도 머물고 싶은가.
-2. 음악 OFF + 실제 파도소리만으로 공간이 성립하는가.
-3. 5분이 `CALM`인가 `EMPTY`인가.
-4. 마음별 미세한 하늘 톤 차이가 감정을 강요하지 않고 자연스럽게 느껴지는가.
-5. 음원 loop seam/날카로운 고역/갑작스러운 큰 소리가 거슬리지 않는가.
-6. 바다의 대비·반사·bob이 눈/멀미에 부담을 주지 않는가.
-7. 환경은 부드럽지만 핵심 UI는 충분히 읽히는가.
-8. 펫이 `관리해야 할 존재`가 아니라 `같이 쉬는 존재`로 느껴지는가.
-9. Ambient Discovery와 낚시가 체크리스트가 아니라 작은 발견으로 느껴지는가.
-10. 감상모드와 조작 UI가 바다 감상을 방해하지 않는가.
-11. 앨범/동반자와 `다음 항해` 흐름이 반복 플레이의 이유가 되는가.
-12. 모바일 세로 화면에서 손가락 입력과 텍스트 가독성이 충분한가.
+1. 3/4 portrait에서 Avatar + Pet + Boat + Sea가 편안하게 읽히는가.
+2. Avatar/Pet/Decor가 바다를 과하게 가리지 않는가.
+3. normal diorama → Appreciation Camera 전환이 자연스러운가.
+4. 실제 모바일에서 normal touch와 Appreciation drag가 충돌하지 않는가.
+5. 첫 30초에 아무것도 하지 않아도 머물고 싶은가.
+6. 음악 OFF + 실제 파도만으로 공간이 성립하는가.
+7. 5분이 `CALM`인가 `EMPTY`인가.
+8. Decoration/Interaction이 `CHORES`나 최적화 압박으로 느껴지지 않는가.
+9. 병편지가 instant messenger가 아니라 ambient human warmth로 느껴지는가.
+10. 신고/차단이 필요할 때 쉽게 찾을 수 있는가.
+11. healthy real network에서 accepted bottle delivery target이 측정되는가.
+12. backend가 죽어도 local rest/voyage/decor가 정상 플레이 가능한가.
 
 ### 검증 환경
 
@@ -197,5 +316,6 @@
 - 일반 PC/노트북 스피커
 - 모바일 스피커
 - 실제 모바일 세로 화면
+- healthy / degraded / offline network conditions
 
-이 Human evidence 전에는 풍경·편지·어종·펫 종류·동반자 반응의 대량 콘텐츠 생산을 진행하지 않는다.
+Human evidence 전에는 visual/audio/social 감정 품질을 완료로 주장하지 않습니다.

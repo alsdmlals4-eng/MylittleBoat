@@ -1,4 +1,4 @@
-# 5분 항해의 감상·발견·낚시 상호작용을 관리한다.
+# 5분 항해의 디오라마·감상 카메라와 발견·낚시 상호작용을 관리한다.
 extends Control
 
 const FISHING_SESSION_SCRIPT = preload("res://scripts/voyage/fishing_session.gd")
@@ -32,8 +32,11 @@ var _fishing_session = FISHING_SESSION_SCRIPT.new()
 var _discovery_wait_remaining := 0.0
 var _discovery_offer_remaining := 0.0
 var _drift_phase := 0.0
-var _camera_base_position := Vector3.ZERO
+var _diorama_camera_base_position := Vector3.ZERO
+var _appreciation_camera_base_position := Vector3.ZERO
 var _boat_base_position := Vector3.ZERO
+var _avatar_base_position := Vector3.ZERO
+var _pet_base_position := Vector3.ZERO
 
 
 func _ready() -> void:
@@ -41,8 +44,11 @@ func _ready() -> void:
 	if not GameState.voyage_active:
 		GameState.begin_voyage(GameState.selected_mood)
 
-	_camera_base_position = $VoyageWorld/CameraRig.position
+	_diorama_camera_base_position = $VoyageWorld/DioramaCameraRig.position
+	_appreciation_camera_base_position = $VoyageWorld/AppreciationCameraRig.position
 	_boat_base_position = $VoyageWorld/BoatBow.position
+	_avatar_base_position = $VoyageWorld/PlayerAvatarPlaceholder.position
+	_pet_base_position = $VoyageWorld/RestingPetPlaceholder.position
 	_apply_mood_tone()
 
 	%TakePhotoButton.pressed.connect(_take_photo)
@@ -98,7 +104,7 @@ func _take_photo() -> void:
 	_update_ui("사진을 한 장 남겼습니다. 동반자가 가까이 다가옵니다.")
 
 
-## Toggles quiet appreciation mode and actually reduces interface intervention.
+## Toggles quiet appreciation mode and switches between diorama life and sea-focused viewing.
 func _toggle_appreciation_mode() -> void:
 	if _fishing_session.is_waiting() or _fishing_session.is_bite_ready():
 		_fishing_session.cancel()
@@ -106,8 +112,17 @@ func _toggle_appreciation_mode() -> void:
 		_set_fishing_status("")
 	GameState.appreciation_mode = not GameState.appreciation_mode
 	_apply_appreciation_mode()
-	var message := "감상모드로 전환했습니다. 바다만 천천히 바라봅니다." if GameState.appreciation_mode else "기본 화면으로 돌아왔습니다."
+	var message := "감상모드로 전환했습니다. 바다만 천천히 바라봅니다." if GameState.appreciation_mode else "보트 디오라마로 돌아왔습니다."
 	_update_ui(message)
+
+
+func get_active_camera_mode() -> String:
+	return "appreciation" if GameState.appreciation_mode else "diorama"
+
+
+func _apply_camera_mode() -> void:
+	$VoyageWorld/DioramaCameraRig/DioramaCamera3D.current = not GameState.appreciation_mode
+	$VoyageWorld/AppreciationCameraRig/AppreciationCamera3D.current = GameState.appreciation_mode
 
 
 ## Cycles drift rhythm between slow, normal, and fast without changing rewards or voyage duration.
@@ -116,12 +131,16 @@ func _cycle_speed() -> void:
 	_update_ui("표류 리듬을 %s으로 바꿨습니다." % SPEED_NAMES[GameState.speed_index])
 
 
-## Applies a subtle camera/boat bob so speed control changes the felt drift rhythm.
+## Applies subtle shared boat-space bob plus camera drift without changing progression.
 func _apply_drift_motion(delta: float) -> void:
 	var speed_index := clampi(GameState.speed_index, 0, SPEED_MULTIPLIERS.size() - 1)
 	_drift_phase += maxf(delta, 0.0) * SPEED_MULTIPLIERS[speed_index]
-	$VoyageWorld/CameraRig.position.y = _camera_base_position.y + sin(_drift_phase * 1.2) * 0.025
-	$VoyageWorld/BoatBow.position.y = _boat_base_position.y + sin(_drift_phase * 1.05 + 0.45) * 0.035
+	$VoyageWorld/DioramaCameraRig.position.y = _diorama_camera_base_position.y + sin(_drift_phase * 1.2) * 0.018
+	$VoyageWorld/AppreciationCameraRig.position.y = _appreciation_camera_base_position.y + sin(_drift_phase * 1.2) * 0.025
+	var boat_bob := sin(_drift_phase * 1.05 + 0.45) * 0.035
+	$VoyageWorld/BoatBow.position.y = _boat_base_position.y + boat_bob
+	$VoyageWorld/PlayerAvatarPlaceholder.position.y = _avatar_base_position.y + boat_bob
+	$VoyageWorld/RestingPetPlaceholder.position.y = _pet_base_position.y + boat_bob
 
 
 func _schedule_next_discovery(first_discovery: bool = false) -> void:
@@ -238,6 +257,7 @@ func _apply_appreciation_mode() -> void:
 	%AlbumButton.visible = controls_visible
 	%AppreciationButton.visible = true
 	%AppreciationButton.text = "감상 끝내기" if GameState.appreciation_mode else "감상모드"
+	_apply_camera_mode()
 	_sync_discovery_buttons()
 	_sync_next_voyage_button()
 	%FishingStatusLabel.visible = controls_visible and %FishingStatusLabel.text != ""
