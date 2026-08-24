@@ -71,7 +71,7 @@ anchor_right = 1.0
 offset_left = 20.0
 offset_top = 20.0
 offset_right = -20.0
-offset_bottom = 126.0
+offset_bottom = 164.0
 grow_horizontal = 2
 
 [node name="TopVBox" type="VBoxContainer" parent="TopPanel"]
@@ -93,6 +93,14 @@ horizontal_alignment = 1
 unique_name_in_owner = true
 layout_mode = 2
 text = "동반자가 곁에서 조용히 바다를 바라봅니다."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="FishingStatusLabel" type="Label" parent="TopPanel/TopVBox"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = ""
 horizontal_alignment = 1
 autowrap_mode = 2
 
@@ -128,15 +136,22 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "속도: 보통"
 
-[node name="LetterButton" type="Button" parent="BottomPanel/ButtonGrid"]
+[node name="FishingButton" type="Button" parent="BottomPanel/ButtonGrid"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "편지 발견"
+text = "낚시"
+
+[node name="LetterButton" type="Button" parent="BottomPanel/ButtonGrid"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = "편지 읽고 기록하기"
 
 [node name="SceneryButton" type="Button" parent="BottomPanel/ButtonGrid"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
-text = "풍경 기록"
+text = "풍경 기록하기"
 
 [node name="AlbumButton" type="Button" parent="BottomPanel/ButtonGrid"]
 unique_name_in_owner = true
