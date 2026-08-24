@@ -2,6 +2,8 @@
 
 `my little boat` Godot MVP를 **핵심 감정이 실제 플레이에서 작동하는지 검증하는 순서**로 진행합니다.
 
+> **Authority:** 사람용 기획·경험·시각 방향은 Notion 정본에서 승인합니다. 이 로드맵은 승인된 방향을 repository 구현·검증 단계로 옮기는 execution mirror입니다.
+
 ## 1단계: 프로젝트 골격 — 완료
 
 완료 기준:
@@ -99,19 +101,19 @@
 
 기술 GREEN은 Human/player experience PASS가 아니다.
 
-## 10단계: Rest-first Experience Canon — 기획 정본화
+## 10단계: Rest-first Direction → Repository Contract Sync
 
 목표:
-- 프로젝트의 최상위 목표를 `기능이 많은 힐링 게임`이 아니라 **아무것도 하지 않아도 쉬는 5분 공간**으로 고정한다.
+- Notion에서 승인된 `아무것도 하지 않아도 쉬는 5분 공간` 방향을 repository 구현 계약으로 명확히 동기화한다.
 
 완료 기준:
-- `docs/RESTING_EXPERIENCE_BIBLE.md`가 사운드·바다·펫·UI·기능 보호선을 정의한다.
+- `docs/RESTING_EXPERIENCE_BIBLE.md`가 Notion 방향의 implementation mirror/acceptance contract로 사운드·바다·펫·UI·기능 보호선을 정의한다.
 - 파도/자연음을 BGM보다 우선하는 Audio North Star가 있다.
 - 펫을 관리 의무 없는 `resting companion`으로 정의한다.
-- 시각적으로 안정적인 수평선·저~중간 대비·느린 움직임을 보호한다.
+- 시각적으로 안정적인 수평선·부드러운 환경·느린 움직임을 보호하면서 UI 가독성은 유지한다.
 - `CHORES / FARMING / FOMO`를 만드는 기능을 명시적으로 차단한다.
 
-이 단계는 **경험 설계 정본화**이며 실제 production audio/pet art가 구현됐다는 뜻이 아니다.
+이 단계는 **repository 계약 동기화**이며 실제 production audio/pet art가 구현됐다는 뜻이 아니다.
 
 ## 11단계: Resting Core Asset Prototype — 다음 제작 단계
 
@@ -134,6 +136,7 @@
 - 안정적인 수평선
 - 작은 구름/원거리 생명체 움직임
 - placeholder를 대체할 최소 보트 재질
+- 환경 톤은 부드럽게 유지하되 텍스트·버튼의 가독성은 별도 보호
 
 ### Pet 최소 세트
 
@@ -159,11 +162,12 @@
 3. 5분이 `CALM`인가 `EMPTY`인가.
 4. 음원 loop seam/날카로운 고역/갑작스러운 큰 소리가 거슬리지 않는가.
 5. 바다의 대비·반사·bob이 눈/멀미에 부담을 주지 않는가.
-6. 펫이 `관리해야 할 존재`가 아니라 `같이 쉬는 존재`로 느껴지는가.
-7. Ambient Discovery와 낚시가 체크리스트가 아니라 작은 발견으로 느껴지는가.
-8. 감상모드와 조작 UI가 바다 감상을 방해하지 않는가.
-9. 앨범/동반자와 `다음 항해` 흐름이 반복 플레이의 이유가 되는가.
-10. 모바일 세로 화면에서 손가락 입력과 텍스트 가독성이 충분한가.
+6. 환경은 부드럽지만 핵심 UI는 충분히 읽히는가.
+7. 펫이 `관리해야 할 존재`가 아니라 `같이 쉬는 존재`로 느껴지는가.
+8. Ambient Discovery와 낚시가 체크리스트가 아니라 작은 발견으로 느껴지는가.
+9. 감상모드와 조작 UI가 바다 감상을 방해하지 않는가.
+10. 앨범/동반자와 `다음 항해` 흐름이 반복 플레이의 이유가 되는가.
+11. 모바일 세로 화면에서 손가락 입력과 텍스트 가독성이 충분한가.
 
 ### 검증 환경
 
