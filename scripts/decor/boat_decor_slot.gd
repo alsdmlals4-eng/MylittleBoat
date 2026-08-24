@@ -114,6 +114,8 @@ func _build_visual(shape: String) -> void:
 
 func _clear_visual() -> void:
 	if is_instance_valid(_visual):
+		if _visual.get_parent() == self:
+			remove_child(_visual)
 		_visual.queue_free()
 	_visual = null
 
