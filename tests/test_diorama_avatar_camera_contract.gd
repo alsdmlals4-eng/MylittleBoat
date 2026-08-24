@@ -32,6 +32,8 @@ func _run() -> void:
 	await process_frame
 
 	var avatar := scene.get_node_or_null("VoyageWorld/PlayerAvatarPlaceholder") as Node3D
+	var pet := scene.get_node_or_null("VoyageWorld/RestingPetPlaceholder") as Node3D
+	var boat := scene.get_node_or_null("VoyageWorld/BoatBow") as Node3D
 	_expect(avatar != null, "normal play must include a visible player avatar placeholder")
 	if avatar != null:
 		_expect(avatar.has_method("is_technical_placeholder"), "avatar must expose its evidence class")
@@ -50,6 +52,17 @@ func _run() -> void:
 	_expect(scene.has_method("get_active_camera_mode"), "game scene must expose active camera mode")
 	if scene.has_method("get_active_camera_mode"):
 		_expect(str(scene.call("get_active_camera_mode")) == "diorama", "normal camera mode must report diorama")
+
+	if avatar != null and pet != null and boat != null:
+		var avatar_relative_y_before: float = avatar.position.y - boat.position.y
+		var pet_relative_y_before: float = pet.position.y - boat.position.y
+		scene.call("_process", 0.5)
+		var avatar_relative_y_after: float = avatar.position.y - boat.position.y
+		var pet_relative_y_after: float = pet.position.y - boat.position.y
+		_expect(is_equal_approx(avatar_relative_y_after, avatar_relative_y_before), "visible avatar must co-move with boat bob instead of floating relative to the deck")
+		_expect(is_equal_approx(pet_relative_y_after, pet_relative_y_before), "resting pet must co-move with boat bob in the visible diorama")
+	else:
+		_expect(false, "diorama must expose avatar, pet, and boat for shared drift composition")
 
 	var appreciation_button := scene.get_node_or_null("BottomPanel/ButtonGrid/AppreciationButton") as Button
 	_expect(appreciation_button != null, "AppreciationButton must remain available")
