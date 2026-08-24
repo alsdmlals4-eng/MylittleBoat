@@ -1,3 +1,4 @@
+# 오늘의 마음을 선택하고 새 항해를 시작한다.
 extends Control
 
 
@@ -14,8 +15,7 @@ func _connect_mood_button(button: Button, mood: String) -> void:
 	)
 
 
-## Starts a new voyage with the selected mood.
+## Starts a new voyage with the selected mood while keeping accumulated memories.
 func _start_voyage(mood: String) -> void:
-	GameState.select_mood(mood)
-	GameState.reset_session()
+	GameState.begin_voyage(mood)
 	get_tree().change_scene_to_file("res://scenes/game.tscn")
