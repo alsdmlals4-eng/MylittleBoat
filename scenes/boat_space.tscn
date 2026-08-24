@@ -1,3 +1,119 @@
-[gd_scene format=3]
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://scripts/voyage/resting_pet_placeholder.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/avatar/player_avatar_placeholder.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/voyage/boat_rail_interactable.gd" id="3"]
+[ext_resource type="Script" path="res://scripts/decor/boat_decor_slot.gd" id="4"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_boat"]
+size = Vector3(2.8, 0.22, 2.4)
+
+[sub_resource type="StandardMaterial3D" id="Material_boat"]
+albedo_color = Color(0.89, 0.75, 0.54, 1)
+roughness = 0.72
+
+[sub_resource type="SphereMesh" id="SphereMesh_character"]
+radius = 0.45
+height = 0.9
+radial_segments = 20
+rings = 10
+
+[sub_resource type="StandardMaterial3D" id="Material_pet"]
+albedo_color = Color(0.82, 0.75, 0.66, 1)
+roughness = 0.96
+
+[sub_resource type="StandardMaterial3D" id="Material_avatar"]
+albedo_color = Color(0.72, 0.66, 0.82, 1)
+roughness = 0.94
+
+[sub_resource type="BoxMesh" id="BoxMesh_rail"]
+size = Vector3(2.55, 0.1, 0.1)
 
 [node name="BoatSpace" type="Node3D"]
+
+[node name="BoatBow" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.18, 0.55)
+mesh = SubResource("BoxMesh_boat")
+surface_material_override/0 = SubResource("Material_boat")
+
+[node name="PlayerAvatarPlaceholder" type="Node3D" parent="."]
+position = Vector3(-0.62, 0.72, 0.32)
+scale = Vector3(0.74, 0.74, 0.74)
+script = ExtResource("2")
+
+[node name="Body" type="MeshInstance3D" parent="PlayerAvatarPlaceholder"]
+scale = Vector3(0.62, 0.88, 0.48)
+mesh = SubResource("SphereMesh_character")
+surface_material_override/0 = SubResource("Material_avatar")
+
+[node name="Head" type="MeshInstance3D" parent="PlayerAvatarPlaceholder"]
+position = Vector3(0, 0.62, 0)
+scale = Vector3(0.64, 0.64, 0.64)
+mesh = SubResource("SphereMesh_character")
+surface_material_override/0 = SubResource("Material_avatar")
+
+[node name="RestingPetPlaceholder" type="Node3D" parent="."]
+position = Vector3(0.9, 0.58, 0.38)
+scale = Vector3(0.72, 0.72, 0.72)
+script = ExtResource("1")
+
+[node name="Body" type="MeshInstance3D" parent="RestingPetPlaceholder"]
+scale = Vector3(0.72, 0.58, 0.92)
+mesh = SubResource("SphereMesh_character")
+surface_material_override/0 = SubResource("Material_pet")
+
+[node name="Head" type="MeshInstance3D" parent="RestingPetPlaceholder"]
+position = Vector3(0, 0.28, -0.42)
+scale = Vector3(0.55, 0.55, 0.55)
+mesh = SubResource("SphereMesh_character")
+surface_material_override/0 = SubResource("Material_pet")
+
+[node name="BoatRail" type="Node3D" parent="."]
+position = Vector3(0, 0.63, -0.42)
+script = ExtResource("3")
+
+[node name="Visual" type="MeshInstance3D" parent="BoatRail"]
+mesh = SubResource("BoxMesh_rail")
+surface_material_override/0 = SubResource("Material_boat")
+
+[node name="BoatDecorSlots" type="Node3D" parent="."]
+
+[node name="BowLeft" type="Node3D" parent="BoatDecorSlots"]
+position = Vector3(-0.88, 0.42, -0.22)
+script = ExtResource("4")
+slot_id = "bow_left"
+
+[node name="BowRight" type="Node3D" parent="BoatDecorSlots"]
+position = Vector3(0.88, 0.42, -0.22)
+script = ExtResource("4")
+slot_id = "bow_right"
+
+[node name="CenterLeft" type="Node3D" parent="BoatDecorSlots"]
+position = Vector3(-1.0, 0.42, 0.38)
+script = ExtResource("4")
+slot_id = "center_left"
+
+[node name="CenterRight" type="Node3D" parent="BoatDecorSlots"]
+position = Vector3(1.0, 0.42, 0.38)
+script = ExtResource("4")
+slot_id = "center_right"
+
+[node name="RearLeft" type="Node3D" parent="BoatDecorSlots"]
+position = Vector3(-0.9, 0.42, 1.02)
+script = ExtResource("4")
+slot_id = "rear_left"
+
+[node name="RearRight" type="Node3D" parent="BoatDecorSlots"]
+position = Vector3(0.9, 0.42, 1.02)
+script = ExtResource("4")
+slot_id = "rear_right"
+
+[node name="RailAccent" type="Node3D" parent="BoatDecorSlots"]
+position = Vector3(0, 0.78, -0.46)
+script = ExtResource("4")
+slot_id = "rail_accent"
+
+[node name="PetCorner" type="Node3D" parent="BoatDecorSlots"]
+position = Vector3(0.78, 0.42, 0.92)
+script = ExtResource("4")
+slot_id = "pet_corner"
