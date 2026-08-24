@@ -4,6 +4,8 @@
 
 이 저장소는 **Godot 4.7 stable + GDScript** 기준으로 작업합니다. 전투, 실패, 경쟁, 결제, 광고, 온라인 편지 공유는 MVP 범위에서 제외합니다.
 
+> **Authority:** 사람용 프로젝트 개요·경험·시각·에셋 방향의 최신 승인 정본은 Notion입니다. 이 저장소의 Concept/Resting 문서는 그 방향을 코드·Scene·Test·자산 제작이 소비하도록 옮긴 implementation mirror/contract이며, 실제 런타임 사실은 repository 구현과 실행 증거가 우선합니다.
+
 ## 프로젝트 열기
 
 1. Godot 4.7 stable을 실행합니다.
@@ -66,7 +68,7 @@ MyLittleBoat/
 - 사진·낚시·발견은 선택이며 무시해도 손해가 없어야 합니다.
 - 수집·파밍·일일과제·FOMO가 휴식을 대체하지 않도록 차단합니다.
 
-상세 제작 판단은 `docs/RESTING_EXPERIENCE_BIBLE.md`, 오디오 자산 계약은 `assets/audio/README.md`를 따릅니다.
+사람용 방향은 Notion 정본에서 관리하고, repository 구현 보호선은 `docs/RESTING_EXPERIENCE_BIBLE.md`, 오디오 자산 계약은 `assets/audio/README.md`에 mirror합니다.
 
 ## 현재 Vertical Slice 기능
 
@@ -141,7 +143,8 @@ Godot 버전 확인
 ## 협업 방식
 
 ```text
-기획/정본 확정
+Notion 사람용 방향 승인
+→ repository structured mirror/contract 동기화
 → Godot에서 작은 prototype
 → Commit / Push
 → PR 자동 검증
@@ -154,8 +157,8 @@ Godot 버전 확인
 - `AGENTS.md`: AI/Codex가 지켜야 할 Godot 작업 규칙
 - `AI_COLLABORATION.md`: GPT/Codex 협업 방식
 - `CONTRIBUTING.md`: 기여와 테스트 기준
-- `docs/CONCEPT.md`: 게임 콘셉트
-- `docs/RESTING_EXPERIENCE_BIBLE.md`: 휴식 경험의 최상위 제작 정본
+- `docs/CONCEPT.md`: 승인된 사람용 방향의 repository concept mirror
+- `docs/RESTING_EXPERIENCE_BIBLE.md`: 휴식 경험의 구현용 structured mirror / acceptance contract
 - `docs/MVP_SCOPE.md`: MVP 범위와 금지선
 - `docs/GODOT_MVP_ROADMAP.md`: 현재 구현 단계와 다음 검증
 - `assets/audio/README.md`: 파도 중심 soundscape와 audio asset 계약
