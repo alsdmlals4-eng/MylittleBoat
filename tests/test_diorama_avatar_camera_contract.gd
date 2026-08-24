@@ -54,12 +54,12 @@ func _run() -> void:
 	var appreciation_button := scene.get_node_or_null("BottomPanel/ButtonGrid/AppreciationButton") as Button
 	_expect(appreciation_button != null, "AppreciationButton must remain available")
 	if appreciation_button != null:
-		var before_time := game_state.remaining_seconds
-		var before_speed := game_state.speed_index
-		var before_photos := game_state.photos.size()
-		var before_sceneries := game_state.sceneries.size()
-		var before_letters := game_state.letters.size()
-		var before_fish := game_state.fish.size()
+		var before_time: float = float(game_state.remaining_seconds)
+		var before_speed: int = int(game_state.speed_index)
+		var before_photos: int = game_state.photos.size()
+		var before_sceneries: int = game_state.sceneries.size()
+		var before_letters: int = game_state.letters.size()
+		var before_fish: int = game_state.fish.size()
 
 		appreciation_button.emit_signal("pressed")
 
@@ -70,8 +70,8 @@ func _run() -> void:
 		if scene.has_method("get_active_camera_mode"):
 			_expect(str(scene.call("get_active_camera_mode")) == "appreciation", "camera mode must report appreciation")
 
-		_expect(is_equal_approx(game_state.remaining_seconds, before_time), "camera toggle itself must not change voyage time")
-		_expect(game_state.speed_index == before_speed, "camera toggle must not change speed choice")
+		_expect(is_equal_approx(float(game_state.remaining_seconds), before_time), "camera toggle itself must not change voyage time")
+		_expect(int(game_state.speed_index) == before_speed, "camera toggle must not change speed choice")
 		_expect(game_state.photos.size() == before_photos, "camera toggle must not create photo rewards")
 		_expect(game_state.sceneries.size() == before_sceneries, "camera toggle must not create scenery rewards")
 		_expect(game_state.letters.size() == before_letters, "camera toggle must not create letter rewards")
