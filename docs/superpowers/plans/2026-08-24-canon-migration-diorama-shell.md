@@ -4,87 +4,78 @@
 
 **Goal:** Migrate the repository from first-person-only/invisible-player canon to the approved Bondee-inspired visible-avatar 3/4 boat diorama shell while preserving the existing sea-focused Appreciation Camera and all current voyage/rest/fishing behavior.
 
-**Architecture:** Keep the current game scene and Resting Core systems, but make a fixed 3/4 `DioramaCameraRig` the normal active camera and convert the existing draggable first-person rig into the optional `AppreciationCameraRig`. Add one clearly technical visible avatar placeholder with a small customization-slot contract. `GameScene` owns camera-mode switching from the existing `GameState.appreciation_mode`; no decoration system or online backend is introduced in this slice.
+**Architecture:** Keep the existing voyage scene and Resting Core systems. Add a fixed 3/4 `DioramaCameraRig` as the normal camera, convert the existing draggable rig into `AppreciationCameraRig`, and add one clearly technical visible avatar placeholder. `GameScene` switches cameras from `GameState.appreciation_mode`. The Appreciation Camera controller processes drag input only while its camera is current so it cannot steal normal diorama touch input.
 
-**Tech Stack:** Godot 4.7 stable, GDScript, `.tscn`, existing SceneTree contract tests, GitHub Actions Godot validation.
+**Tech Stack:** Godot 4.7 stable, GDScript, `.tscn`, SceneTree contract tests, GitHub Actions Godot validation.
 
 **Spec:** `docs/superpowers/specs/2026-08-24-bondee-diorama-delayed-bottle-design.md`
 
 ## Global Constraints
 
 - Godot 4.7 stable / GDScript.
-- Mobile portrait remains the primary screen constraint.
-- Normal play shows the player avatar and pet in a 3/4 boat diorama.
-- Appreciation Camera preserves the current sea-focused draggable view and low-UI rest behavior.
-- Appreciation Camera must not stop the voyage timer, soundscape, or alter rewards.
-- Existing fishing, Ambient Discovery, album, voyage-record, RestingSoundscape, and pet-resting contracts must remain green.
-- Avatar art in this slice is a clearly labeled technical placeholder, not production art.
-- No decoration editor, social fake backend, Supabase integration, FriendBottle, or DriftBottle runtime code in this slice.
-- Online social design is approved, but `DriftBottle` remains future-gated by moderation/safety implementation.
-- Do not add combat, HP, failure conditions, ranking, ads, payments, or progression pressure.
+- Mobile portrait remains primary.
+- Normal play shows avatar + pet + boat + sea in a 3/4 diorama.
+- Appreciation Camera preserves the existing sea-focused draggable view and low-UI rest behavior.
+- Camera switching does not stop voyage time, soundscape, or alter rewards.
+- Existing fishing, Ambient Discovery, album, voyage-record, RestingSoundscape, and pet-resting contracts remain green.
+- Avatar in this slice is `TECHNICAL_PLACEHOLDER`, not production art.
+- No decoration editor, Interactable runtime, fake social backend, Supabase, FriendBottle, or DriftBottle runtime in this slice.
+- Future online social is limited to the approved delayed bottle subsystem and its identity/safety operations; no realtime/global/public chat.
+- `DriftBottle` future public enablement remains gated by moderation, Terms, age gate, report, block, and operations evidence.
+- No combat, HP, failure conditions, ranking, ads, payments, gacha pressure, or progression pressure.
 
 ---
 
-## File Structure for This Slice
+## File Map
 
 **Create**
-- `scripts/avatar/player_avatar_placeholder.gd` — technical visible-avatar identity/customization-slot contract only.
-- `tests/test_diorama_avatar_camera_contract.gd` — RED/GREEN contract for visible avatar, normal 3/4 camera, Appreciation Camera switching, and no reward/timer mutation.
+- `scripts/avatar/player_avatar_placeholder.gd` — technical visible-avatar/customization-slot contract.
+- `tests/test_diorama_avatar_camera_contract.gd` — avatar + normal/appreciation camera-mode behavior.
 
 **Modify**
-- `AGENTS.md` — replace obsolete first-person/invisible-player/online-letter prohibition with the approved current operating canon and narrow online boundary.
-- `scenes/game.tscn` — add `DioramaCameraRig`, visible avatar placeholder mesh, and rename/reframe the old camera as `AppreciationCameraRig`.
-- `scripts/voyage/game_scene.gd` — own camera selection and drift bases for both rigs while preserving current gameplay.
-- `scripts/voyage/boat_camera_controller.gd` — update role/header language from first-person core camera to Appreciation Camera input controller; behavior stays the same.
-- `tests/test_game_scene_contract.gd` — update the drift-camera path after the explicit camera split and retain all previous assertions.
-- `tests/test_camera_input_contract.gd` — reframe assertions as Appreciation Camera input semantics without weakening clamp/horizon behavior.
-- `.github/workflows/godot-validation.yml` — run the new diorama/avatar contract.
-- `README.md` — describe implemented technical diorama shell and evidence ceiling.
-- `docs/CONCEPT.md` — mirror approved visible-avatar/boat-diorama product direction.
-- `docs/MVP_SCOPE.md` — distinguish implemented Slice 1 from future decoration/social work.
-- `docs/GODOT_MVP_ROADMAP.md` — mark Canon Migration + Diorama Shell state and next Slice 2.
+- `AGENTS.md`
+- `scenes/game.tscn`
+- `scripts/voyage/game_scene.gd`
+- `scripts/voyage/boat_camera_controller.gd`
+- `tests/test_game_scene_contract.gd`
+- `tests/test_camera_input_contract.gd`
+- `.github/workflows/godot-validation.yml`
+- `README.md`
+- `docs/CONCEPT.md`
+- `docs/MVP_SCOPE.md`
+- `docs/GODOT_MVP_ROADMAP.md`
 
 ---
 
-### Task 1: Migrate the repository operating canon
+### Task 1: Migrate repository operating canon
 
 **Files:**
 - Modify: `AGENTS.md`
 
-**Interfaces:**
-- Consumes: approved design spec section 0–3 and section 20.
-- Produces: authoritative repository instructions that permit visible avatar + 3/4 diorama and permit only the narrowly designed delayed bottle social subsystem in later slices.
+**Produces:** repository authority that explicitly permits visible-avatar 3/4 diorama normal play and only the approved delayed-bottle online boundary.
 
-- [ ] **Step 1: Replace obsolete project identity text**
+- [ ] **Step 1: Replace obsolete identity lines**
 
-Change:
-
-```text
-Genre: first-person healing drifting boat game
-The player sits in a small boat and watches the sea. The player body is not visible.
-Do not add ... online letter sharing.
-```
-
-To an explicit current canon equivalent:
+Replace the old first-person-only, invisible-player, and blanket online-letter prohibition with:
 
 ```text
 Genre: rest-first cozy boat diorama / healing voyage game
-Normal play uses a visible player avatar + pet + decorated boat in a 3/4 diorama camera.
+Normal play uses a visible player avatar + pet + boat in a 3/4 diorama camera.
 Appreciation Camera preserves the sea-focused low-UI view.
-Online scope is allowed only for the approved delayed FriendBottle / DriftBottle subsystem and its required identity/safety operations; the rest of the game remains local-first.
+Online scope is allowed only for the approved delayed FriendBottle / DriftBottle subsystem and required identity/safety operations; core rest/voyage/decor/pet systems remain local-first.
 ```
 
 - [ ] **Step 2: Update Core Game Direction**
 
-Add the new normal-play presentation and future supporting systems while preserving the 5-minute rest loop, photo, appreciation, speed, fishing, album, pet, and soundscape.
+Preserve the 5-minute rest loop, photo, appreciation, speed, fishing, album, pet, and soundscape. Add visible avatar, future boat decoration, low-pressure interaction, and delayed bottle social as approved supporting directions.
 
-- [ ] **Step 3: Add online safety boundary**
+- [ ] **Step 3: Add social safety boundary**
 
-State that future bottle-social runtime must follow the approved spec and cannot become realtime/global/public chat. `DriftBottle` public enablement requires moderation/report/block/Terms/age-gate evidence.
+State that bottle social cannot become realtime/global/public chat and that future `DriftBottle` release requires moderation/report/block/Terms/age-gate evidence.
 
-- [ ] **Step 4: Read back `AGENTS.md`**
+- [ ] **Step 4: Static readback**
 
-Verify there is no remaining unconditional statement that the player body must be invisible or that all online letter sharing is forbidden.
+Verify no unconditional `player body is not visible`, `first-person only`, or blanket `online letter sharing` prohibition remains.
 
 - [ ] **Step 5: Commit**
 
@@ -95,47 +86,56 @@ git commit -m "Migrate project canon to boat diorama direction"
 
 ---
 
-### Task 2: RED — define the visible-avatar and camera-mode contract
+### Task 2: RED — visible avatar and camera-mode contract
 
 **Files:**
 - Create: `tests/test_diorama_avatar_camera_contract.gd`
 - Modify: `.github/workflows/godot-validation.yml`
 
-**Interfaces:**
-- Consumes: existing `GameState.appreciation_mode`, `scenes/game.tscn`.
-- Produces: behavioral contract for `PlayerAvatarPlaceholder`, `DioramaCameraRig/DioramaCamera3D`, `AppreciationCameraRig/AppreciationCamera3D`, and `GameScene.get_active_camera_mode()`.
+**Produces:** contract for `PlayerAvatarPlaceholder`, `DioramaCameraRig/DioramaCamera3D`, `AppreciationCameraRig/AppreciationCamera3D`, and `GameScene.get_active_camera_mode()`.
 
-- [ ] **Step 1: Write failing contract**
+- [ ] **Step 1: Write failing SceneTree test**
 
-Create a SceneTree test with these assertions:
+Before scene instantiation, normalize state:
+
+```gdscript
+var game_state := root.get_node_or_null("GameState")
+_expect(game_state != null, "GameState autoload must exist")
+game_state.reset_session()
+game_state.voyage_active = true
+game_state.remaining_seconds = 123.0
+game_state.appreciation_mode = false
+```
+
+After instantiation assert:
 
 ```gdscript
 var avatar := scene.get_node_or_null("VoyageWorld/PlayerAvatarPlaceholder") as Node3D
 _expect(avatar != null, "normal play must include a visible player avatar placeholder")
 _expect(avatar.has_method("is_technical_placeholder"), "avatar must expose its evidence class")
-_expect(bool(avatar.call("is_technical_placeholder")), "current avatar must stay explicitly technical-placeholder evidence")
+_expect(bool(avatar.call("is_technical_placeholder")), "avatar must remain technical-placeholder evidence")
 
 var diorama_camera := scene.get_node_or_null("VoyageWorld/DioramaCameraRig/DioramaCamera3D") as Camera3D
 var appreciation_camera := scene.get_node_or_null("VoyageWorld/AppreciationCameraRig/AppreciationCamera3D") as Camera3D
-_expect(diorama_camera != null, "normal play must provide a DioramaCamera3D")
-_expect(appreciation_camera != null, "appreciation mode must preserve the sea-focused camera")
-_expect(diorama_camera.current, "diorama camera must be active in normal play")
+_expect(diorama_camera != null, "normal play must provide DioramaCamera3D")
+_expect(appreciation_camera != null, "appreciation mode must preserve a sea-focused camera")
+_expect(diorama_camera.current, "diorama camera must be current in normal play")
 _expect(not appreciation_camera.current, "appreciation camera must be inactive in normal play")
-_expect(scene.has_method("get_active_camera_mode"), "game scene must expose active camera mode for contract tests")
-_expect(str(scene.call("get_active_camera_mode")) == "diorama", "normal play camera mode must be diorama")
+_expect(scene.has_method("get_active_camera_mode"), "game scene must expose camera mode")
+_expect(str(scene.call("get_active_camera_mode")) == "diorama", "normal camera mode must be diorama")
 ```
 
-Then press `%AppreciationButton`, await one frame, and assert:
+Snapshot `remaining_seconds`, `speed_index`, and photo/scenery/letter/fish counts. Press `%AppreciationButton`, await one frame, then assert:
 
 ```gdscript
-_expect(not diorama_camera.current, "diorama camera must yield during appreciation mode")
-_expect(appreciation_camera.current, "appreciation camera must become active")
+_expect(not diorama_camera.current, "diorama camera must yield in appreciation mode")
+_expect(appreciation_camera.current, "appreciation camera must become current")
 _expect(str(scene.call("get_active_camera_mode")) == "appreciation", "camera mode must report appreciation")
 ```
 
-Also snapshot `GameState.remaining_seconds`, `speed_index`, photo/letter/scenery/fish counts before toggling and assert the toggle itself changes none of them.
+Assert the toggle itself changed none of the snapshotted progression values.
 
-- [ ] **Step 2: Add the new test to CI**
+- [ ] **Step 2: Add test to CI**
 
 Add:
 
@@ -143,15 +143,13 @@ Add:
 godot --headless --path . --script res://tests/test_diorama_avatar_camera_contract.gd || status=1
 ```
 
-to the focused behavior contracts.
+- [ ] **Step 3: Open implementation PR and observe RED**
 
-- [ ] **Step 3: Open/update the implementation PR and run CI**
-
-Expected RED failures must be specifically about missing avatar/diorama/appreciation camera split or missing camera-mode method. Existing contracts should remain PASS.
+Expected failures: missing avatar, missing camera split, missing camera-mode API. Existing contracts should remain PASS.
 
 - [ ] **Step 4: Inspect RED logs**
 
-Do not implement until the failing test demonstrates the missing feature rather than a syntax/path mistake.
+If failure is syntax/path setup rather than missing behavior, fix the test and rerun until RED is semantically correct.
 
 - [ ] **Step 5: Commit**
 
@@ -162,21 +160,20 @@ git commit -m "Test visible avatar and diorama camera contract"
 
 ---
 
-### Task 3: GREEN — add the technical avatar shell and normal 3/4 diorama camera
+### Task 3: GREEN — technical avatar shell and 3/4 diorama camera
 
 **Files:**
 - Create: `scripts/avatar/player_avatar_placeholder.gd`
 - Modify: `scenes/game.tscn`
 - Modify: `scripts/voyage/game_scene.gd`
 
-**Interfaces:**
-- Produces:
-  - `PlayerAvatarPlaceholder.is_technical_placeholder() -> bool`
-  - `PlayerAvatarPlaceholder.get_customization_slots() -> Array[String]`
-  - `GameScene.get_active_camera_mode() -> String`
-  - `GameScene._apply_camera_mode() -> void`
+**Produces:**
+- `PlayerAvatarPlaceholder.is_technical_placeholder() -> bool`
+- `PlayerAvatarPlaceholder.get_customization_slots() -> Array[String]`
+- `GameScene.get_active_camera_mode() -> String`
+- `GameScene._apply_camera_mode() -> void`
 
-- [ ] **Step 1: Implement minimal avatar placeholder script**
+- [ ] **Step 1: Implement avatar placeholder contract**
 
 ```gdscript
 # 보이는 플레이어 캐릭터의 기술용 외형·커스터마이즈 슬롯 계약을 제공한다.
@@ -200,26 +197,22 @@ func get_customization_slots() -> Array[String]:
     return CUSTOMIZATION_SLOTS.duplicate()
 ```
 
-No movement, inventory, stats, network identity, or final avatar art in this slice.
+- [ ] **Step 2: Add visible rounded avatar mesh**
 
-- [ ] **Step 2: Add placeholder mesh to `game.tscn`**
+Create `VoyageWorld/PlayerAvatarPlaceholder` with rounded primitive body/head meshes and matte material. Position it so avatar and `RestingPetPlaceholder` are both visible in portrait diorama composition. Do not imply final art quality.
 
-Create `VoyageWorld/PlayerAvatarPlaceholder` with rounded primitive body/head meshes and a matte material. Keep it clearly separate from `RestingPetPlaceholder` and positioned so both are readable in portrait diorama framing.
+- [ ] **Step 3: Split camera rigs**
 
-- [ ] **Step 3: Split cameras in `game.tscn`**
-
-Create:
+Scene structure:
 
 ```text
-VoyageWorld/DioramaCameraRig/DioramaCamera3D   current=true
-VoyageWorld/AppreciationCameraRig/AppreciationCamera3D current=false
+VoyageWorld/DioramaCameraRig/DioramaCamera3D             current=true
+VoyageWorld/AppreciationCameraRig/AppreciationCamera3D   current=false
 ```
 
-Move the existing draggable camera controller to `AppreciationCameraRig`. Give the new Diorama camera a fixed 3/4 elevated transform that sees avatar + pet + boat + horizon.
+Move the existing `boat_camera_controller.gd` onto `AppreciationCameraRig`. Set `DioramaCameraRig` to a fixed elevated 3/4 transform showing avatar + pet + boat + horizon.
 
-- [ ] **Step 4: Add camera-mode switching in `game_scene.gd`**
-
-Implement:
+- [ ] **Step 4: Implement camera selection**
 
 ```gdscript
 func get_active_camera_mode() -> String:
@@ -230,15 +223,15 @@ func _apply_camera_mode() -> void:
     $VoyageWorld/AppreciationCameraRig/AppreciationCamera3D.current = GameState.appreciation_mode
 ```
 
-Call `_apply_camera_mode()` inside `_apply_appreciation_mode()` so UI and camera always transition from the same state.
+Call `_apply_camera_mode()` from `_apply_appreciation_mode()`.
 
-- [ ] **Step 5: Preserve speed/drift feedback in both modes**
+- [ ] **Step 5: Preserve speed/drift feedback**
 
-Store base positions for both camera rigs and apply only small vertical drift to each so speed control remains observable in the currently active camera. Do not change voyage duration or rewards.
+Store base positions for both camera rigs and apply small vertical drift to both. Existing speed choices still change felt drift but never duration/reward.
 
 - [ ] **Step 6: Run exact-head CI**
 
-Expected: new diorama/avatar contract GREEN; existing contracts may reveal path assumptions that now need Task 4 migration.
+Expected: new avatar/camera contract GREEN. Fix only production behavior needed by the contract.
 
 - [ ] **Step 7: Commit**
 
@@ -249,43 +242,77 @@ git commit -m "Add visible avatar and diorama camera shell"
 
 ---
 
-### Task 4: REFACTOR — migrate old camera-path contracts without weakening them
+### Task 4: RED/GREEN — Appreciation Camera must not steal normal diorama input
 
 **Files:**
 - Modify: `scripts/voyage/boat_camera_controller.gd`
-- Modify: `tests/test_game_scene_contract.gd`
 - Modify: `tests/test_camera_input_contract.gd`
+- Modify: `tests/test_game_scene_contract.gd`
 
-**Interfaces:**
-- Preserves existing input behavior: mouse drag + `InputEventScreenDrag`, pitch clamp `[-28, 18]`, roll `0`.
-- Reframes that behavior as Appreciation Camera input rather than normal first-person presentation.
+**Produces:** `boat_camera_controller.gd` handles mouse/touch drag only when its child `AppreciationCamera3D.current == true`.
 
-- [ ] **Step 1: Update controller role comment only**
+- [ ] **Step 1: Extend camera input test with an inactive-camera RED case**
 
-Change the source header to describe sea-focused Appreciation Camera drag input. Do not change sensitivity/clamp behavior unless a failing test requires it.
+Construct the rig with a child camera named `AppreciationCamera3D`, set `current = false`, send `InputEventScreenDrag`, and assert rotation is unchanged:
 
-- [ ] **Step 2: Update game-scene drift assertion path**
+```gdscript
+camera.current = false
+var inactive_before := rig.rotation_degrees
+var inactive_drag := InputEventScreenDrag.new()
+inactive_drag.relative = Vector2(28.0, -14.0)
+rig.call("_unhandled_input", inactive_drag)
+_expect(rig.rotation_degrees == inactive_before, "inactive Appreciation Camera must not consume diorama drag behavior")
+```
 
-Replace old `VoyageWorld/CameraRig` lookup with `VoyageWorld/DioramaCameraRig`, because normal-play speed feedback must be observable on the active diorama camera.
+Then set `camera.current = true`, send the same drag, and preserve existing assertions for changed rotation, roll `0`, and pitch clamp `[-28, 18]`.
 
-- [ ] **Step 3: Reword camera input contract**
+- [ ] **Step 2: Run CI and verify RED**
 
-Keep the same input simulation and numeric assertions, but describe it as Appreciation Camera behavior.
+Expected RED: inactive Appreciation Camera still rotates because the old controller has no active-camera gate.
 
-- [ ] **Step 4: Run full CI**
+- [ ] **Step 3: Implement minimal active-camera gate**
 
-Expected: all behavior contracts + three scene smokes PASS.
+In `boat_camera_controller.gd` add:
 
-- [ ] **Step 5: Commit**
+```gdscript
+@onready var _controlled_camera := get_node_or_null("AppreciationCamera3D") as Camera3D
+
+func _is_input_active() -> bool:
+    return _controlled_camera != null and _controlled_camera.current
+```
+
+Start `_unhandled_input(event)` with:
+
+```gdscript
+if not _is_input_active():
+    _dragging = false
+    return
+```
+
+Keep existing sensitivity, pitch clamp, yaw, and zero-roll behavior unchanged.
+
+- [ ] **Step 4: Update role/header language**
+
+Describe the script as the sea-focused Appreciation Camera PC/touch drag controller, not the normal first-person camera.
+
+- [ ] **Step 5: Update game-scene contract path**
+
+Replace its normal-play drift lookup from old `VoyageWorld/CameraRig` to `VoyageWorld/DioramaCameraRig`. Retain all prior behavior assertions.
+
+- [ ] **Step 6: Run full CI**
+
+Expected: all existing contracts + new diorama/avatar contract PASS; all three scene smokes PASS.
+
+- [ ] **Step 7: Commit**
 
 ```bash
-git add scripts/voyage/boat_camera_controller.gd tests/test_game_scene_contract.gd tests/test_camera_input_contract.gd
-git commit -m "Preserve appreciation camera input contracts"
+git add scripts/voyage/boat_camera_controller.gd tests/test_camera_input_contract.gd tests/test_game_scene_contract.gd
+git commit -m "Gate appreciation camera drag input"
 ```
 
 ---
 
-### Task 5: Synchronize repository human-readable mirrors with implemented Slice 1
+### Task 5: Synchronize repository mirrors with implemented Slice 1
 
 **Files:**
 - Modify: `README.md`
@@ -293,41 +320,38 @@ git commit -m "Preserve appreciation camera input contracts"
 - Modify: `docs/MVP_SCOPE.md`
 - Modify: `docs/GODOT_MVP_ROADMAP.md`
 
-**Interfaces:**
-- Consumes: implemented runtime truth from Tasks 1–4.
-- Produces: repository mirrors that do not falsely claim decor/social runtime exists yet.
+**Produces:** repository mirrors that distinguish implemented technical shell from future decor/social systems.
 
-- [ ] **Step 1: README**
+- [ ] **Step 1: README evidence table/text**
 
-State:
+State exactly:
 
 ```text
 TECH_DIORAMA_SHELL = implemented
 VISIBLE_AVATAR_PLACEHOLDER = implemented
 APPRECIATION_CAMERA = preserved
 BOAT_DECORATION = NOT_IMPLEMENTED
+INTERACTABLE_RUNTIME = NOT_IMPLEMENTED
 FRIEND_BOTTLE = NOT_IMPLEMENTED
 DRIFT_BOTTLE = NOT_IMPLEMENTED
 ```
 
-Do not call placeholder visual quality PASS.
+- [ ] **Step 2: Concept and MVP Scope**
 
-- [ ] **Step 2: Concept/MVP Scope**
-
-Replace first-person-only language with 3/4 visible-avatar normal play + optional Appreciation Camera. Keep online bottle systems as approved future scope, not runtime evidence.
+Replace first-person-only language with visible-avatar 3/4 normal play + optional Appreciation Camera. Keep bottle social as approved future runtime scope.
 
 - [ ] **Step 3: Roadmap**
 
-Add/mark:
+Add:
 
 ```text
 Canon Migration + Diorama Shell — implemented / Human visual QA NOT_RUN
-Next: Local Decoration + Interactable
+Next — Local Decoration + Interactable
 ```
 
-- [ ] **Step 4: Static readback**
+- [ ] **Step 4: Static stale-language scan**
 
-Search the touched mirrors for stale unconditional phrases such as `player body is not visible`, `first-person only`, or `online letter sharing forbidden` and remove only those now-invalid statements.
+Read touched mirrors and remove only unconditional now-invalid phrases such as `player body is not visible`, `first-person only`, or blanket `online letter sharing forbidden`.
 
 - [ ] **Step 5: Commit**
 
@@ -338,65 +362,62 @@ git commit -m "Sync diorama shell implementation mirrors"
 
 ---
 
-### Task 6: Final verification, adversarial review, merge, and Notion evidence sync
+### Task 6: Exact verification, adversarial review, merge, and Notion sync
 
 **Files:**
-- No new runtime files unless review reveals a concrete defect.
+- Runtime/docs only if a concrete review defect is found.
 - Update Notion after merge.
-
-**Interfaces:**
-- Consumes: exact PR head and CI evidence.
-- Produces: merged main SHA + Notion `SYNCED` evidence for implemented Slice 1 while future systems remain `REPO_UPDATE_REQUIRED`.
 
 - [ ] **Step 1: Exact-head verification**
 
-Verify the PR head SHA and ensure the latest Godot 4.7 workflow run on that exact head is SUCCESS.
+Confirm PR head SHA and latest Godot 4.7 workflow on that exact head is `SUCCESS`.
 
-- [ ] **Step 2: Whole-state adversarial review loop 1–5**
+- [ ] **Step 2: Whole-state adversarial review, five clean loops**
 
 Attack at minimum:
 
-1. old first-person/no-online canon still silently controlling implementation;
-2. Appreciation Camera losing existing touch/mouse behavior or affecting rewards/timer;
-3. visible avatar blocking sea/pet or becoming final-art evidence by accident;
-4. 3/4 camera making speed bob/motion sickness worse or UI unreadable in portrait;
-5. docs/Notion claiming decoration/social backend exists when only the shell exists.
+1. stale first-person/no-online canon still governing future work;
+2. Appreciation Camera input handling stealing normal diorama touch input or changing timer/rewards;
+3. avatar placeholder being mistaken for final art or obscuring pet/sea;
+4. 3/4 camera/drift creating excessive motion or breaking portrait composition at the technical-contract level;
+5. README/Notion claiming decor/social backend runtime exists when only Slice 1 exists.
 
-Any new valid finding resets the clean-loop count after correction according to project workflow.
+A newly discovered valid defect is corrected and the clean-loop count restarts according to project workflow.
 
 - [ ] **Step 3: PR review surfaces**
 
-Check changed files, full patch, comments, reviews, unresolved threads, and base-main movement.
+Inspect changed filenames, full patch, comments, reviews, unresolved threads, and base-main movement.
 
 - [ ] **Step 4: Merge with expected head SHA**
 
-Use squash merge only after exact-head CI and review are clean.
+Squash only after exact-head verification and review are clean.
 
 - [ ] **Step 5: Postmerge readback**
 
-Verify new `main` SHA and merged files. Confirm the current-task issue closes if linked.
+Verify `main` SHA and merged files and ensure the current implementation issue closes if linked.
 
-- [ ] **Step 6: Notion sync**
+- [ ] **Step 6: Notion evidence sync**
 
 Update:
 
-- Project Registry `Repo Main SHA`, revision, notes;
+- Project Registry main SHA/revision/notes;
 - Home current state;
-- `3/4 디오라마 플레이어·카메라` record → `SYNCED` with merged SHA;
-- existing core loop source/evidence as appropriate;
+- `3/4 디오라마 플레이어·카메라` → `SYNCED` with merged SHA;
+- voyage core loop source/evidence where applicable;
 - Production Handoff receipt.
 
-Leave `보트 꾸미기 슬롯 존`, `저압력 상호작용 시스템`, `FriendBottle`, `DriftBottle`, and social-safety runtime records as future/not-implemented (`REPO_UPDATE_REQUIRED`) unless actually implemented in a later slice.
+Keep `보트 꾸미기 슬롯 존`, `저압력 상호작용 시스템`, `FriendBottle`, `DriftBottle`, and `병편지 소셜 안전·모더레이션` as future runtime work (`REPO_UPDATE_REQUIRED`) until their own slices are implemented.
 
 - [ ] **Step 7: Final evidence ceiling**
 
-Report separately:
+Report:
 
 ```text
-Godot contract/scene behavior = PASS if CI proves it
+Godot contract/scene behavior = PASS if exact-head CI proves it
 Visible avatar technical shell = PASS
 3/4 camera technical shell = PASS
 Appreciation Camera preservation = PASS
+Appreciation input isolation = PASS
 Human visual comfort = NOT_RUN
 Final avatar art = NOT_INTEGRATED
 Boat decoration runtime = NOT_IMPLEMENTED
