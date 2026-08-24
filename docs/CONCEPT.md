@@ -22,7 +22,7 @@
 
 **목표는 이기는 것이 아니라 쉬는 것입니다.**
 
-플레이어가 사진을 찍지 않고, 낚시를 하지 않고, 발견이나 상호작용을 지나쳐도 경험이 실패하지 않습니다. 파도와 바다, 보트의 미세한 흔들림, 보이는 플레이어와 옆에서 쉬는 펫만으로도 머물고 싶어야 합니다.
+플레이어가 사진을 찍지 않고, 낚시를 하지 않고, 꾸미기·발견·상호작용을 지나쳐도 경험이 실패하지 않습니다. 파도와 바다, 보트의 미세한 흔들림, 보이는 플레이어와 옆에서 쉬는 펫만으로도 머물고 싶어야 합니다.
 
 사운드는 장식이 아닙니다. **잔잔한 파도소리와 자연음은 화면을 적극적으로 보지 않을 때도 휴식 경험을 유지하는 핵심 콘텐츠**입니다. 음악은 선택 사항이며, 음악이 꺼져 있어도 경험이 성립해야 합니다.
 
@@ -32,23 +32,60 @@
 
 `Appreciation Mode`를 켜면 기존 sea-focused 카메라가 활성화되고 대부분의 비필수 UI가 숨겨집니다. 이 전환은 항해 시간·보상·사운드스케이프를 바꾸지 않습니다. Appreciation Camera의 마우스/화면 드래그 입력은 해당 카메라가 실제 활성 상태일 때만 동작해 정상 디오라마 터치를 빼앗지 않습니다.
 
-항해 중 사진·속도조절·Ambient Discovery·조용한 낚시는 모두 선택입니다. 시스템은 플레이어를 계속 호출하지 않고, 무시해도 손해가 없어야 합니다.
+항해 중 사진·속도조절·Ambient Discovery·조용한 낚시·보트 꾸미기·작은 상호작용은 모두 선택입니다. 시스템은 플레이어를 계속 호출하지 않고, 무시해도 손해가 없어야 합니다.
 
 펫은 관리 대상이 아닙니다. 배고픔·청소·피로·방치 패널티 없이 바다를 바라보고, 눕고, 졸고, 가끔 플레이어를 보는 **정서적 동반자**입니다.
 
-## 승인된 다음 확장
+## 구현된 Local Boat Life 기술 Slice
 
 ### Boat Decoration
 
-보트는 본디의 개인 공간처럼 점차 나만의 흔적이 쌓이는 장소가 됩니다. 첫 구현은 자유배치보다 모바일에 적합한 **8개 슬롯 존**을 사용합니다. 꾸미기 아이템에는 능력치·희귀도 점수·가챠 압박을 붙이지 않습니다.
+보트는 본디식 개인 공간처럼 점차 나만의 흔적이 쌓이는 장소가 됩니다. 첫 기술 구현은 자유배치 3D editor 대신 모바일에 적합한 **8개 slot-zone**을 사용합니다.
 
-현재 상태: **설계 승인 / 런타임 NOT_IMPLEMENTED**.
+- `bow_left`
+- `bow_right`
+- `center_left`
+- `center_right`
+- `rear_left`
+- `rear_right`
+- `rail_accent`
+- `pet_corner`
+
+현재 starter decor는 `lantern / mug / cushion / plant / postcard / pet_cushion` 6종의 primitive technical placeholder입니다. 슬롯 호환성은 catalog가 소유하고, 유효하지 않은 배치는 저장 상태를 바꾸지 않습니다. 교체·비우기는 비용과 손실이 없습니다.
+
+꾸미기 상태는 `GameState`에 `slot_id -> item_id`로 보관되어 **Scene 전환과 새 항해 동안 유지**되지만, 앱 종료/재실행을 넘는 save-file persistence는 아직 없습니다. 아이템에는 능력치·가격·희귀도 점수·재화·가챠·슬롯 완성 보너스가 없습니다.
 
 ### Low-pressure Interaction
 
-펫·난간·쿠션·랜턴·컵·앨범·낚싯대·병편지 스테이션을 재사용 가능한 `Interactable` 계약으로 묶습니다. 무시해도 손해가 없고 반복 탭 파밍이 되지 않아야 합니다.
+펫·난간·현재 배치된 장식은 재사용 가능한 공통 계약을 사용합니다.
 
-현재 상태: **설계 승인 / 런타임 NOT_IMPLEMENTED**.
+```text
+get_actions(actor_context)
+can_interact(actor_context, action_id)
+perform(actor_context, action_id)
+```
+
+대표 행동은 펫 쓰다듬기/같이 바다 보기, 난간 기대기/바다 보기, 랜턴 불빛 바꾸기, 컵 들어보기 등입니다. 행동은 component-local posture/toggle 또는 차분한 메시지만 바꾸며, 호감도·항해 시간·사진·수집·보상·Appreciation 상태를 올리지 않습니다.
+
+### BoatSpace + Compact UI
+
+`BoatSpace`가 Boat/Avatar/Pet/Rail/DecorSlots의 공통 공간 owner가 되어 bob을 한 번만 적용합니다. 그래서 앞으로 장식 종류가 늘어도 각 child에 별도 동기화 코드를 추가하지 않습니다.
+
+기술 UI는 기존 BottomPanel에 `꾸미기`와 `상호작용` 버튼 2개만 추가하고, 각 패널은 `OptionButton`으로 슬롯/아이템/대상/행동을 선택합니다. 8개 슬롯을 항상 화면에 노출하거나 자유 3D drag editor를 만들지 않았습니다. Appreciation Mode에서는 새 버튼이 숨겨지고 열린 패널도 닫히며, 감상 종료 후 자동 재오픈하지 않습니다.
+
+현재 기술 상태:
+
+```text
+TECH_BOAT_DECORATION = PASS
+LOW_PRESSURE_INTERACTABLE = PASS
+BOAT_LIFE_TECH_UI = PASS
+DECOR_HUMAN_USABILITY = NOT_RUN
+REAL_MOBILE_DECOR_QA = NOT_RUN
+FINAL_DECOR_ART = NOT_INTEGRATED
+APP_RESTART_DECOR_PERSISTENCE = NOT_IMPLEMENTED
+```
+
+## 승인된 다음 확장
 
 ### Delayed Bottle Social
 
@@ -72,6 +109,7 @@
 - 무시해도 손해가 없다.
 - 바다·파도·캐릭터·펫보다 UI/보상을 더 신경 쓰게 하지 않는다.
 - 반복 파밍이나 효율 최적화가 최선의 플레이가 되지 않는다.
+- 꾸미기가 인벤토리 관리나 능력치 최적화가 되지 않는다.
 - 소셜은 즉답 압박이나 인기 경쟁을 만들지 않는다.
 - 백엔드 장애가 기본 휴식 플레이를 막지 않는다.
 - 1인 개발 유지비가 핵심 휴식 품질보다 커지지 않는다.
@@ -87,6 +125,7 @@
 - 강제 일일과제 / 체크리스트 압박
 - 펫 배고픔·청소·피로·방치 패널티
 - 반복 터치/낚시/상호작용 파밍을 핵심 성장으로 만드는 구조
+- 꾸미기 능력치·희귀도 점수·가챠·daily-shop FOMO
 - 결제
 - 광고
 - 실시간/글로벌/공개 채팅
