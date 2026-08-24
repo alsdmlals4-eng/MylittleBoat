@@ -1,16 +1,25 @@
-# Resting Core technical audio prototype.
-# This creates a deterministic, low-level loop so playback/loop architecture can be tested
-# without pretending a final natural-ocean recording has been approved.
+# Persistent Resting Core technical audio prototype.
+# This creates one deterministic low-level loop for playback/loop architecture tests.
+# It is not a final natural-ocean recording and cannot earn AUDIO_REST_PASS.
 extends Node
 
 const SAMPLE_RATE := 16000
 const LOOP_SECONDS := 4
 const TECHNICAL_PROTOTYPE := true
+const OCEAN_BED_VOLUME_DB := -16.0
 
-@onready var ocean_bed: AudioStreamPlayer = $OceanBed
+var ocean_bed: AudioStreamPlayer
 
 
 func _ready() -> void:
+	ocean_bed = get_node_or_null("OceanBed") as AudioStreamPlayer
+	if ocean_bed == null:
+		ocean_bed = AudioStreamPlayer.new()
+		ocean_bed.name = "OceanBed"
+		ocean_bed.autoplay = true
+		ocean_bed.volume_db = OCEAN_BED_VOLUME_DB
+		add_child(ocean_bed)
+
 	if ocean_bed.stream == null:
 		ocean_bed.stream = _build_technical_ocean_loop()
 	if not ocean_bed.playing:
