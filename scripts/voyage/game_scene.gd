@@ -60,10 +60,20 @@ func _ready() -> void:
 	%AppreciationButton.pressed.connect(_toggle_appreciation_mode)
 	%SpeedButton.pressed.connect(_cycle_speed)
 	%FishingButton.pressed.connect(_handle_fishing_action)
+	%DecorButton.pressed.connect(_open_decor_panel)
+	%InteractButton.pressed.connect(_open_interaction_panel)
+	%DecorSlotOption.item_selected.connect(_on_decor_slot_selected)
+	%DecorApplyButton.pressed.connect(_apply_selected_decor)
+	%DecorClearButton.pressed.connect(_clear_selected_decor)
+	%DecorCloseButton.pressed.connect(_close_decor_panel)
+	%InteractionTargetOption.item_selected.connect(_on_interaction_target_selected)
+	%InteractionPerformButton.pressed.connect(_perform_selected_interaction)
+	%InteractionCloseButton.pressed.connect(_close_interaction_panel)
 	%LetterButton.pressed.connect(_record_pending_letter)
 	%SceneryButton.pressed.connect(_record_pending_scenery)
 	%AlbumButton.pressed.connect(_open_album)
 	%NextVoyageButton.pressed.connect(_start_next_voyage)
+	_populate_decor_slot_options()
 	if GameState.pending_discovery_type != "":
 		_discovery_offer_remaining = DISCOVERY_OFFER_SECONDS
 	else:
@@ -156,6 +166,180 @@ func _get_decor_slot(slot_id: String) -> Node:
 	if not DECOR_SLOT_NODE_NAMES.has(slot_id):
 		return null
 	return get_node_or_null("VoyageWorld/BoatSpace/BoatDecorSlots/%s" % str(DECOR_SLOT_NODE_NAMES[slot_id]))
+
+
+func _populate_decor_slot_options() -> void:
+	%DecorSlotOption.clear()
+	for slot_id in _decor_catalog.get_slot_ids():
+		%DecorSlotOption.add_item(_decor_catalog.get_slot_label(slot_id))
+		%DecorSlotOption.set_item_metadata(%DecorSlotOption.item_count - 1, slot_id)
+	if %DecorSlotOption.item_count > 0:
+		%DecorSlotOption.select(0)
+	_refresh_decor_item_options()
+
+
+func _on_decor_slot_selected(_index: int) -> void:
+	_refresh_decor_item_options()
+
+
+func _refresh_decor_item_options() -> void:
+	%DecorItemOption.clear()
+	var slot_id := _get_selected_metadata(%DecorSlotOption)
+	if slot_id == "":
+		return
+	var compatible_items := _decor_catalog.get_compatible_item_ids(slot_id)
+	var stored_item := GameState.get_boat_decor(slot_id)
+	var stored_index := -1
+	for item_id in compatible_items:
+		var definition := _decor_catalog.get_item_definition(item_id)
+		%DecorItemOption.add_item(str(definition.get("label", item_id)))
+		var index := %DecorItemOption.item_count - 1
+		%DecorItemOption.set_item_metadata(index, item_id)
+		if item_id == stored_item:
+			stored_index = index
+	if %DecorItemOption.item_count > 0:
+		%DecorItemOption.select(stored_index if stored_index >= 0 else 0)
+
+
+func _apply_selected_decor() -> void:
+	var slot_id := _get_selected_metadata(%DecorSlotOption)
+	var item_id := _get_selected_metadata(%DecorItemOption)
+	if slot_id == "" or item_id == "":
+		return
+	if apply_boat_decor(slot_id, item_id):
+		var definition := _decor_catalog.get_item_definition(item_id)
+		_update_ui("%s에 %s을 조용히 놓았습니다." % [_decor_catalog.get_slot_label(slot_id), str(definition.get("label", item_id))])
+		_refresh_interaction_targets()
+
+
+func _clear_selected_decor() -> void:
+	var slot_id := _get_selected_metadata(%DecorSlotOption)
+	if slot_id == "":
+		return
+	clear_boat_decor(slot_id)
+	_update_ui("%s 자리를 비웠습니다. 잃는 것은 없습니다." % _decor_catalog.get_slot_label(slot_id))
+	_refresh_decor_item_options()
+	_refresh_interaction_targets()
+
+
+func _open_decor_panel() -> void:
+	if GameState.appreciation_mode:
+		return
+	$InteractionPanel.visible = false
+	$DecorPanel.visible = true
+	_refresh_decor_item_options()
+
+
+func _close_decor_panel() -> void:
+	$DecorPanel.visible = false
+
+
+func _open_interaction_panel() -> void:
+	if GameState.appreciation_mode:
+		return
+	$DecorPanel.visible = false
+	$InteractionPanel.visible = true
+	_refresh_interaction_targets()
+
+
+func _close_interaction_panel() -> void:
+	$InteractionPanel.visible = false
+
+
+func get_interaction_target_ids() -> Array[String]:
+	var result: Array[String] = []
+	for target_id in ["pet", "rail"]:
+		var node := _get_interaction_target_node(target_id)
+		if node != null and node.has_method("get_actions") and not node.call("get_actions", {}).is_empty():
+			result.append(target_id)
+	for slot_id in _decor_catalog.get_slot_ids():
+		var slot := _get_decor_slot(slot_id)
+		if slot == null or GameState.get_boat_decor(slot_id) == "":
+			continue
+		if slot.has_method("get_actions") and not slot.call("get_actions", {}).is_empty():
+			result.append("decor:%s" % slot_id)
+	return result
+
+
+func perform_interaction(target_id: String, action_id: String) -> Dictionary:
+	var target := _get_interaction_target_node(target_id)
+	if target == null or not target.has_method("can_interact") or not target.has_method("perform"):
+		return {"ok": false, "target_id": target_id, "action_id": action_id, "message": ""}
+	if not bool(target.call("can_interact", {}, action_id)):
+		return {"ok": false, "target_id": target_id, "action_id": action_id, "message": ""}
+	return target.call("perform", {}, action_id)
+
+
+func _get_interaction_target_node(target_id: String) -> Node:
+	if target_id == "pet":
+		return get_node_or_null("VoyageWorld/BoatSpace/RestingPetPlaceholder")
+	if target_id == "rail":
+		return get_node_or_null("VoyageWorld/BoatSpace/BoatRail")
+	if target_id.begins_with("decor:"):
+		return _get_decor_slot(target_id.trim_prefix("decor:"))
+	return null
+
+
+func _get_interaction_target_label(target_id: String) -> String:
+	if target_id == "pet":
+		return "동반자"
+	if target_id == "rail":
+		return "보트 난간"
+	if target_id.begins_with("decor:"):
+		var slot_id := target_id.trim_prefix("decor:")
+		var item_id := GameState.get_boat_decor(slot_id)
+		var definition := _decor_catalog.get_item_definition(item_id)
+		return "%s · %s" % [_decor_catalog.get_slot_label(slot_id), str(definition.get("label", item_id))]
+	return target_id
+
+
+func _refresh_interaction_targets() -> void:
+	%InteractionTargetOption.clear()
+	for target_id in get_interaction_target_ids():
+		%InteractionTargetOption.add_item(_get_interaction_target_label(target_id))
+		%InteractionTargetOption.set_item_metadata(%InteractionTargetOption.item_count - 1, target_id)
+	if %InteractionTargetOption.item_count > 0:
+		%InteractionTargetOption.select(0)
+	_refresh_interaction_actions()
+
+
+func _on_interaction_target_selected(_index: int) -> void:
+	_refresh_interaction_actions()
+
+
+func _refresh_interaction_actions() -> void:
+	%InteractionActionOption.clear()
+	var target_id := _get_selected_metadata(%InteractionTargetOption)
+	var target := _get_interaction_target_node(target_id)
+	if target == null or not target.has_method("get_actions"):
+		return
+	var actions: Array = target.call("get_actions", {})
+	for action in actions:
+		if not action is Dictionary:
+			continue
+		var action_id := str(action.get("id", ""))
+		if action_id == "":
+			continue
+		%InteractionActionOption.add_item(str(action.get("label", action_id)))
+		%InteractionActionOption.set_item_metadata(%InteractionActionOption.item_count - 1, action_id)
+	if %InteractionActionOption.item_count > 0:
+		%InteractionActionOption.select(0)
+
+
+func _perform_selected_interaction() -> void:
+	var target_id := _get_selected_metadata(%InteractionTargetOption)
+	var action_id := _get_selected_metadata(%InteractionActionOption)
+	if target_id == "" or action_id == "":
+		return
+	var result := perform_interaction(target_id, action_id)
+	if bool(result.get("ok", false)):
+		_update_ui(str(result.get("message", "")))
+
+
+func _get_selected_metadata(option: OptionButton) -> String:
+	if option == null or option.item_count <= 0 or option.selected < 0:
+		return ""
+	return str(option.get_item_metadata(option.selected))
 
 
 func _cycle_speed() -> void:
@@ -274,9 +458,14 @@ func _apply_appreciation_mode() -> void:
 	%TakePhotoButton.visible = controls_visible
 	%SpeedButton.visible = controls_visible
 	%FishingButton.visible = controls_visible
+	%DecorButton.visible = controls_visible
+	%InteractButton.visible = controls_visible
 	%AlbumButton.visible = controls_visible
 	%AppreciationButton.visible = true
 	%AppreciationButton.text = "감상 끝내기" if GameState.appreciation_mode else "감상모드"
+	if GameState.appreciation_mode:
+		$DecorPanel.visible = false
+		$InteractionPanel.visible = false
 	_apply_camera_mode()
 	_sync_discovery_buttons()
 	_sync_next_voyage_button()
