@@ -23,18 +23,30 @@ func _run() -> void:
 	var ocean_bed := scene.get_node_or_null("RestingSoundscape/OceanBed") as AudioStreamPlayer
 	_expect(soundscape != null, "game scene must have a dedicated RestingSoundscape owner")
 	_expect(ocean_bed != null, "RestingSoundscape must expose an OceanBed AudioStreamPlayer")
+	if soundscape != null:
+		_expect(soundscape.has_method("is_technical_prototype"), "soundscape must expose its evidence class")
+		if soundscape.has_method("is_technical_prototype"):
+			_expect(bool(soundscape.call("is_technical_prototype")), "current generated soundscape must stay explicitly TECHNICAL_PROTOTYPE")
 	if ocean_bed != null:
 		_expect(ocean_bed.stream != null, "OceanBed must have a technical prototype stream wired")
 		_expect(ocean_bed.autoplay, "OceanBed must autoplay so doing nothing still produces the resting space")
 		_expect(ocean_bed.volume_db <= -8.0, "technical OceanBed must start conservatively below -8 dB")
+		var wave := ocean_bed.stream as AudioStreamWAV
+		_expect(wave != null, "technical OceanBed must use an inspectable AudioStreamWAV loop")
+		if wave != null:
+			_expect(wave.loop_mode == AudioStreamWAV.LOOP_FORWARD, "technical OceanBed must loop continuously")
+			_expect(wave.loop_end > wave.loop_begin, "technical OceanBed loop range must be valid")
 
 	var pet := scene.get_node_or_null("VoyageWorld/RestingPetPlaceholder") as Node3D
 	_expect(pet != null, "game scene must include one clearly-placeholder resting pet")
 	if pet != null:
 		_expect(pet.has_method("get_resting_state"), "resting pet controller must expose its current low-pressure idle state")
 		_expect(pet.has_method("get_next_idle_seconds"), "resting pet controller must expose the next idle interval for testability")
+		_expect(pet.has_method("has_care_obligation"), "resting pet must expose whether it creates a care obligation")
 		if pet.has_method("get_next_idle_seconds"):
 			_expect(float(pet.call("get_next_idle_seconds")) >= 10.0, "pet idle interval must be long enough to avoid attention-seeking behavior")
+		if pet.has_method("has_care_obligation"):
+			_expect(not bool(pet.call("has_care_obligation")), "resting pet placeholder must not create hunger/cleaning/fatigue obligations")
 
 	var ocean := scene.get_node_or_null("VoyageWorld/OceanPlane") as MeshInstance3D
 	_expect(ocean != null, "resting prototype must keep an explicit OceanPlane")
