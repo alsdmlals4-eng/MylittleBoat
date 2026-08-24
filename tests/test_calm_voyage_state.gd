@@ -41,8 +41,11 @@ func _run() -> void:
 	_expect(is_equal_approx(state.remaining_seconds, 300.0), "begin_voyage must start the 5-minute baseline")
 
 	var fish_before: int = state.fish.size()
+	var affection_before_fish: int = state.companion_affection
 	state.add_fish("정어리")
-	_expect(state.fish.size() == fish_before + 1, "add_fish must append one fish memory")
+	state.add_fish("전갱이")
+	_expect(state.fish.size() == fish_before + 2, "add_fish must append fish memories")
+	_expect(state.companion_affection == affection_before_fish, "repeat fishing must not become the fastest companion-affection farming loop")
 
 	var records_before: int = state.voyage_records.size()
 	state.complete_voyage()
