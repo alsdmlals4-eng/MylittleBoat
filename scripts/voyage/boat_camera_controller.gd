@@ -1,7 +1,8 @@
-# 1인칭 보트 카메라 회전을 관리한다.
+# 1인칭 보트 카메라의 PC 마우스와 모바일 화면 드래그 회전을 관리한다.
 extends Node3D
 
 @export var mouse_sensitivity := 0.12
+@export var touch_sensitivity := 0.12
 @export var min_pitch_degrees := -28.0
 @export var max_pitch_degrees := 18.0
 
@@ -20,15 +21,22 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		_dragging = event.pressed
 	elif event is InputEventMouseMotion and _dragging:
-		_yaw_degrees -= event.relative.x * mouse_sensitivity
-		_pitch_degrees = clampf(_pitch_degrees - event.relative.y * mouse_sensitivity, min_pitch_degrees, max_pitch_degrees)
-		_apply_camera_rotation()
+		_rotate_from_delta(event.relative, mouse_sensitivity)
+		get_viewport().set_input_as_handled()
+	elif event is InputEventScreenDrag:
+		_rotate_from_delta(event.relative, touch_sensitivity)
 		get_viewport().set_input_as_handled()
 
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_MOUSE_EXIT:
 		_dragging = false
+
+
+func _rotate_from_delta(delta: Vector2, sensitivity: float) -> void:
+	_yaw_degrees -= delta.x * sensitivity
+	_pitch_degrees = clampf(_pitch_degrees - delta.y * sensitivity, min_pitch_degrees, max_pitch_degrees)
+	_apply_camera_rotation()
 
 
 func _apply_camera_rotation() -> void:

@@ -1,0 +1,49 @@
+name: Godot 4.7 validation
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Godot 4.7
+        uses: chickensoft-games/setup-godot@v2.4.1
+        with:
+          version: 4.7.0
+          use-dotnet: false
+          include-templates: false
+
+      - name: Verify Godot version
+        run: godot --version
+
+      - name: Import project headlessly
+        run: godot --headless --path . --quit
+
+      - name: Run focused behavior contracts
+        shell: bash
+        run: |
+          status=0
+          godot --headless --path . --script res://tests/test_calm_voyage_state.gd || status=1
+          godot --headless --path . --script res://tests/test_fishing_session.gd || status=1
+          godot --headless --path . --script res://tests/test_game_scene_contract.gd || status=1
+          godot --headless --path . --script res://tests/test_album_memory_contract.gd || status=1
+          godot --headless --path . --script res://tests/test_camera_input_contract.gd || status=1
+          exit "$status"
+
+      - name: Smoke main menu scene
+        run: godot --headless --path . --scene "res://scenes/main_menu.tscn" --quit-after 1
+
+      - name: Smoke game scene
+        run: godot --headless --path . --scene "res://scenes/game.tscn" --quit-after 1
+
+      - name: Smoke album scene
+        run: godot --headless --path . --scene "res://scenes/album.tscn" --quit-after 1
