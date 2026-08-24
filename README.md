@@ -41,6 +41,7 @@ MyLittleBoat/
     test_fishing_session.gd
     test_game_scene_contract.gd
     test_album_memory_contract.gd
+    test_camera_input_contract.gd
   assets/
     images/
     audio/
@@ -62,7 +63,7 @@ MyLittleBoat/
 - 마음 선택 4종: 평온, 지침, 외로움, 설렘
 - 선택한 마음에 따라 좋고/나쁨을 판정하지 않고 하늘 톤만 미세하게 달라짐
 - 모바일 세로 화면 우선 UI
-- PC 마우스 드래그 카메라 입력
+- PC 마우스 드래그 + 모바일 화면 드래그 카메라 입력
 - 사진찍기
 - 실제 UI 개입을 줄이는 감상모드
 - 느림 / 보통 / 빠름에 따라 미세한 표류 리듬이 달라지는 속도조절
@@ -72,6 +73,7 @@ MyLittleBoat/
 - 실패 패널티·점수·판매 경제가 없는 낚시
 - 낚은 물고기는 앨범 기억에 남지만 반복 낚시가 동반자 호감도 파밍 수단이 되지는 않음
 - 5분 종료 시 항해당 정확히 1개의 오늘의 항해 기록
+- 기록 후 바다에 계속 머물거나 `다음 항해`로 마음 선택 화면에 돌아갈 수 있음
 - 사진 / 풍경 / 편지 / 물고기 / 항해 기록이 같은 실행 세션 동안 누적되는 앨범
 - 사진·풍경·편지 기억에 따라 변하는 동반자 호감도 Lv 1~3
 
@@ -81,19 +83,21 @@ MyLittleBoat/
 
 - 앨범을 열었다가 바다로 돌아와도 현재 항해 타이머와 상태가 이어집니다.
 - 새 항해를 시작해도 이전 사진·풍경·편지·물고기·항해 기록과 동반자 진행은 지우지 않습니다.
+- 활성 항해가 없으면 `complete_voyage()`가 고아 기록을 만들지 않습니다.
 - 다만 앱을 완전히 종료했다가 다시 실행했을 때까지 유지되는 save file persistence는 아직 구현하지 않았습니다.
 - 사진은 아직 실제 PNG 파일을 저장하지 않고 텍스트 기록으로 남깁니다.
 - 낚시는 현재 조용한 보조 콘텐츠만 구현하며 어종 대량화, 미끼, 장비, 판매, 요리, 낚시 경제는 다음 기획 결정 전까지 추가하지 않습니다.
+- 모바일 화면 드래그는 자동 입력 계약으로 기술 연결을 검증했지만 실제 스마트폰 손감각·버튼 크기·가독성은 아직 `NOT_RUN`입니다.
 - 제작 아트·오디오와 최종 모바일 실기기/Human QA는 별도 단계입니다.
 
 ## 현재 Godot 골격
 
 - `scenes/main_menu.tscn`: 오늘의 마음 선택 후 새 항해 시작
-- `scenes/game.tscn`: 1인칭 보트 감상, 5분 상태, 핵심 조작, Ambient Discovery, 선택형 낚시
+- `scenes/game.tscn`: 1인칭 보트 감상, 5분 상태, 핵심 조작, Ambient Discovery, 선택형 낚시, 다음 항해 진입
 - `scenes/album.tscn`: 사진·풍경·편지·물고기·항해 기록 확인
 - `scripts/core/game_state.gd`: Scene 전환보다 오래 살아야 하는 현재 항해 상태와 누적 기억을 보관하는 AutoLoad
 - `scripts/voyage/fishing_session.gd`: 실패 없는 `IDLE → WAITING → BITE_READY → IDLE` 낚시 상태 머신
-- `scripts/voyage/boat_camera_controller.gd`: PC 마우스 드래그 카메라 회전
+- `scripts/voyage/boat_camera_controller.gd`: PC 마우스와 모바일 화면 드래그 시야 회전
 
 ## 자동 검증
 
@@ -106,10 +110,11 @@ Godot 버전 확인
 → 낚시 상태 계약
 → game scene 의미 계약
 → album memory 계약
+→ camera input 계약
 → main menu / game / album scene smoke
 ```
 
-이 자동 검증은 코드·Scene 동작을 증명하지만 **게임이 실제로 편안하고 기억에 남는지**까지 증명하지 않습니다. Human usability / player emotion은 직접 플레이 관찰 전까지 `NOT_RUN`입니다.
+이 자동 검증은 코드·Scene 동작을 증명하지만 **게임이 실제로 편안하고 기억에 남는지**, 실제 휴대폰에서 손가락 조작이 편한지까지 증명하지 않습니다. Human usability / player emotion / real-device QA는 직접 관찰 전까지 `NOT_RUN`입니다.
 
 ## 협업 방식
 
@@ -141,8 +146,10 @@ Godot에서 작업
 - [ ] Godot 4.7 stable에서 프로젝트가 import 된다.
 - [ ] `main_menu.tscn`, `game.tscn`, `album.tscn`이 headless smoke에서 열린다.
 - [ ] 새 항해가 누적 앨범 기록을 삭제하지 않는다.
+- [ ] 활성 항해가 없을 때 고아 항해 기록이 생기지 않는다.
 - [ ] 앨범 왕복 뒤 현재 항해 시간이 이어진다.
 - [ ] 완료된 항해는 기록을 정확히 1개 만든다.
+- [ ] 완료 후 `다음 항해` 경로가 나타난다.
 - [ ] 마음이 하늘 톤에 미세한 실제 차이를 만든다.
 - [ ] 감상모드가 실제로 비필수 UI를 숨기고 다시 돌아올 수 있다.
 - [ ] 속도조절이 카메라/보트의 미세 표류 리듬을 바꾼다.
@@ -150,6 +157,7 @@ Godot에서 작업
 - [ ] 낚시는 캐스팅 → 기다림 → 입질 → 낚기 상태를 갖고 취소해도 패널티가 없다.
 - [ ] 반복 낚시만으로 동반자 호감도를 파밍할 수 없다.
 - [ ] 앨범에 물고기와 항해 기록도 표시된다.
+- [ ] synthetic 모바일 화면 드래그가 카메라를 돌리면서 pitch clamp와 수평을 보존한다.
 
 ### 사람 검증
 
@@ -159,6 +167,7 @@ Godot에서 작업
 - [ ] 편지·풍경·낚시가 체크리스트보다 작은 발견처럼 느껴지는가.
 - [ ] 감상모드와 버튼이 바다 감상을 방해하지 않는가.
 - [ ] 모바일 세로 화면에서 핵심 조작이 잘 보이고 누르기 쉬운가.
+- [ ] 모바일 화면 드래그 감도가 편안한가.
 - [ ] PC 마우스 카메라가 과하게 움직이거나 수평선을 불편하게 만들지 않는가.
 
 ## 제외한 것
