@@ -38,8 +38,8 @@ func _run() -> void:
 			_expect(wave.loop_mode == AudioStreamWAV.LOOP_FORWARD, "technical OceanBed must loop continuously")
 			_expect(wave.loop_end > wave.loop_begin, "technical OceanBed loop range must be valid")
 
-	var pet := scene.get_node_or_null("VoyageWorld/RestingPetPlaceholder") as Node3D
-	_expect(pet != null, "game scene must include one clearly-placeholder resting pet")
+	var pet := scene.get_node_or_null("VoyageWorld/BoatSpace/RestingPetPlaceholder") as Node3D
+	_expect(pet != null, "BoatSpace must include one clearly-placeholder resting pet")
 	if pet != null:
 		_expect(pet.has_method("get_resting_state"), "resting pet controller must expose its current low-pressure idle state")
 		_expect(pet.has_method("get_next_idle_seconds"), "resting pet controller must expose the next idle interval for testability")
