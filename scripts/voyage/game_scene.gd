@@ -137,11 +137,11 @@ func _spawn_ambient_discovery() -> void:
 	if GameState.pending_discovery_type != "":
 		return
 	if randi() % 2 == 0:
-		var letter := LETTER_TEXTS.pick_random()
+		var letter: String = str(LETTER_TEXTS.pick_random())
 		GameState.set_pending_discovery("letter", letter)
 		_update_ui("물결 사이로 작은 병 하나가 천천히 떠올랐습니다.")
 	else:
-		var scenery := SCENERY_NAMES.pick_random()
+		var scenery: String = str(SCENERY_NAMES.pick_random())
 		GameState.set_pending_discovery("scenery", scenery)
 		_update_ui("멀리서 %s 풍경이 눈에 들어옵니다." % scenery)
 	_discovery_offer_remaining = DISCOVERY_OFFER_SECONDS
@@ -179,8 +179,8 @@ func _sync_discovery_buttons() -> void:
 ## Starts, cancels, or resolves one low-friction fishing wait.
 func _handle_fishing_action() -> void:
 	if _fishing_session.is_bite_ready():
-		var fish_name := FISH_NAMES.pick_random()
-		var caught := _fishing_session.resolve_catch(fish_name)
+		var fish_name: String = str(FISH_NAMES.pick_random())
+		var caught: String = str(_fishing_session.resolve_catch(fish_name))
 		if caught != "":
 			GameState.add_fish(caught)
 			_set_fishing_status("%s 한 마리를 낚아 항해 기억에 남겼습니다." % caught)
