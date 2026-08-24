@@ -104,6 +104,93 @@ text = ""
 horizontal_alignment = 1
 autowrap_mode = 2
 
+[node name="DecorPanel" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -170.0
+offset_top = -520.0
+offset_right = 170.0
+offset_bottom = -292.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="DecorVBox" type="VBoxContainer" parent="DecorPanel"]
+layout_mode = 2
+
+[node name="DecorTitle" type="Label" parent="DecorPanel/DecorVBox"]
+layout_mode = 2
+text = "보트 꾸미기 · 기술 미리보기"
+horizontal_alignment = 1
+
+[node name="DecorSlotOption" type="OptionButton" parent="DecorPanel/DecorVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="DecorItemOption" type="OptionButton" parent="DecorPanel/DecorVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="DecorApplyButton" type="Button" parent="DecorPanel/DecorVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "놓기 / 바꾸기"
+
+[node name="DecorClearButton" type="Button" parent="DecorPanel/DecorVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "비우기"
+
+[node name="DecorCloseButton" type="Button" parent="DecorPanel/DecorVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "닫기"
+
+[node name="InteractionPanel" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -170.0
+offset_top = -500.0
+offset_right = 170.0
+offset_bottom = -292.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="InteractionVBox" type="VBoxContainer" parent="InteractionPanel"]
+layout_mode = 2
+
+[node name="InteractionTitle" type="Label" parent="InteractionPanel/InteractionVBox"]
+layout_mode = 2
+text = "작은 상호작용"
+horizontal_alignment = 1
+
+[node name="InteractionTargetOption" type="OptionButton" parent="InteractionPanel/InteractionVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="InteractionActionOption" type="OptionButton" parent="InteractionPanel/InteractionVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="InteractionPerformButton" type="Button" parent="InteractionPanel/InteractionVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "천천히 해보기"
+
+[node name="InteractionCloseButton" type="Button" parent="InteractionPanel/InteractionVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "닫기"
+
 [node name="BottomPanel" type="PanelContainer" parent="."]
 layout_mode = 1
 anchors_preset = 12
@@ -111,7 +198,7 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 16.0
-offset_top = -268.0
+offset_top = -292.0
 offset_right = -16.0
 offset_bottom = -20.0
 grow_horizontal = 2
@@ -140,6 +227,16 @@ text = "속도: 보통"
 unique_name_in_owner = true
 layout_mode = 2
 text = "낚시"
+
+[node name="DecorButton" type="Button" parent="BottomPanel/ButtonGrid"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "꾸미기"
+
+[node name="InteractButton" type="Button" parent="BottomPanel/ButtonGrid"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "상호작용"
 
 [node name="LetterButton" type="Button" parent="BottomPanel/ButtonGrid"]
 unique_name_in_owner = true
