@@ -43,8 +43,9 @@ func _run() -> void:
 	var fishing_status := scene.get_node_or_null("TopPanel/TopVBox/FishingStatusLabel") as Label
 	var camera_rig := scene.get_node_or_null("VoyageWorld/CameraRig") as Node3D
 	var world_environment := scene.get_node_or_null("VoyageWorld/WorldEnvironment") as WorldEnvironment
+	var calm_environment_present := world_environment != null and world_environment.environment != null
 	var calm_color := Color.BLACK
-	if world_environment != null and world_environment.environment != null:
+	if calm_environment_present:
 		calm_color = world_environment.environment.background_color
 
 	_expect(timer_label != null and timer_label.text == "02:03", "game scene must resume GameState.remaining_seconds after a scene round trip")
@@ -81,7 +82,7 @@ func _run() -> void:
 	root.add_child(excited_scene)
 	await process_frame
 	var excited_environment := excited_scene.get_node_or_null("VoyageWorld/WorldEnvironment") as WorldEnvironment
-	if world_environment == null or excited_environment == null or excited_environment.environment == null:
+	if not calm_environment_present or excited_environment == null or excited_environment.environment == null:
 		_expect(false, "game scene must expose a mood-tintable WorldEnvironment")
 	else:
 		var excited_color := excited_environment.environment.background_color
