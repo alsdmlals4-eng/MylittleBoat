@@ -22,6 +22,8 @@
 - No decoration editor, Interactable runtime, fake social backend, Supabase, FriendBottle, or DriftBottle runtime in this slice.
 - Future online social is limited to the approved delayed bottle subsystem and its identity/safety operations; no realtime/global/public chat.
 - `DriftBottle` future public enablement remains gated by moderation, Terms, age gate, report, block, and operations evidence.
+- Friend invite semantics are defined by the spec as one-time 8-character/24h code → invitee redemption → inviter confirmation; Slice 1 does not implement them.
+- Accepted bottle delivery timing uses `deliver_at <= server_now` polling semantics; Slice 1 does not implement server delivery.
 - No combat, HP, failure conditions, ranking, ads, payments, gacha pressure, or progression pressure.
 
 ---
