@@ -2,7 +2,20 @@
 
 `my little boat`의 오디오는 **파도소리만 들어도 쉬는 느낌이 드는가**를 최우선으로 판단합니다.
 
-현재 이 폴더에는 production audio가 없습니다. 아래는 자산 구조와 승인 기준이며, 후보 URL이 존재한다고 해서 게임에 통합됐다는 뜻은 아닙니다.
+현재 이 폴더에는 **production audio asset이 없습니다.** 아래는 자산 구조와 승인 기준이며, 후보 URL이 존재한다고 해서 게임에 통합됐다는 뜻은 아닙니다.
+
+## 0. 현재 Technical Prototype
+
+- `RestingSoundscape`는 `project.godot` AutoLoad로 존재해 메뉴/항해/앨범 Scene 전환에도 유지됩니다.
+- `scripts/audio/resting_soundscape.gd`가 4초짜리 합성 `AudioStreamWAV`를 런타임에서 한 번 생성하고 loop합니다.
+- 기본 볼륨은 `-16 dB`입니다.
+- 이 소리는 **외부 자연 녹음이 아니라 playback/loop/지속성 구조를 검증하기 위한 TECHNICAL_PROTOTYPE**입니다.
+- 자동 테스트는 `TECHNICAL_PROTOTYPE=true`, loop mode, 낮은 기본 볼륨, persistent AutoLoad를 검증합니다.
+- 이 합성음을 듣고 `AUDIO_REST_PASS`를 판정하지 않습니다. 실제 자연 파도 자산 + Human listening이 필요합니다.
+
+현재 evidence:
+
+`TECH_AUDIO_WIRING = PASS / PRODUCTION_OCEAN_AUDIO = NOT_INTEGRATED / HUMAN_LISTENING = NOT_RUN`
 
 ## 1. Audio North Star
 
@@ -97,7 +110,7 @@ assets/audio/ui/<action>.ogg
 
 ## 6. Human Listening Gate
 
-실제 오디오 통합 후 아래를 직접 확인하기 전에는 `AUDIO_REST_PASS`를 주장하지 않습니다.
+실제 자연 오디오 통합 후 아래를 직접 확인하기 전에는 `AUDIO_REST_PASS`를 주장하지 않습니다.
 
 1. 눈을 감고 30초 들어도 편안한가?
 2. 5분 동안 loop 반복이 거슬리지 않는가?
@@ -106,5 +119,4 @@ assets/audio/ui/<action>.ogg
 5. 헤드폰·일반 스피커·모바일 스피커에서 모두 지나치게 피곤하지 않은가?
 6. 음악 OFF에서도 공간이 비어 보이지 않는가?
 
-현재 상태: **PRODUCTION AUDIO NOT_INTEGRATED / HUMAN LISTENING NOT_RUN**
-
+현재 상태: **TECH_AUDIO_WIRING PASS / PRODUCTION AUDIO NOT_INTEGRATED / HUMAN LISTENING NOT_RUN**
