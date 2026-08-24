@@ -44,8 +44,14 @@ func _run() -> void:
 			var rear := slots.get_node_or_null("RearRight")
 			if left != null and left.has_method("get_item_id"):
 				_expect(str(left.call("get_item_id")) == "lantern", "stored lantern rendered")
+				var lantern_visual := left.get_node_or_null("TechnicalDecorVisual") as MeshInstance3D
+				_expect(lantern_visual != null, "stored lantern must create a technical visual")
+				if lantern_visual != null:
+					_expect(lantern_visual.get_active_material(0) != null, "technical lantern visual must have a material")
 			if rear != null and rear.has_method("get_item_id"):
 				_expect(str(rear.call("get_item_id")) == "mug", "stored mug rendered")
+				var mug_visual := rear.get_node_or_null("TechnicalDecorVisual") as MeshInstance3D
+				_expect(mug_visual != null, "stored mug must create a technical visual")
 
 	_expect(scene.has_method("apply_boat_decor"), "decor mutation route required")
 	_expect(scene.has_method("clear_boat_decor"), "decor clear route required")
