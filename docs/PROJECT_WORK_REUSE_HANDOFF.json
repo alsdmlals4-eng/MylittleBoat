@@ -2,7 +2,8 @@
   "schema_version": 1,
   "project": "MY_LITTLE_BOAT",
   "closed_out_at": "2026-08-25",
-  "baseline_main": "e312f9f764051c8a4b25bd6206174498f5353c8e",
+  "pre_closeout_main": "e312f9f764051c8a4b25bd6206174498f5353c8e",
+  "closeout_merged_main": "d2f8d2b883ff86208a7c0b0dedb99352f95f9edd",
   "selected_modules": [],
   "reuse_mode": [
     "REUSE_EXISTING_PROJECT_CANON",
@@ -15,23 +16,26 @@
     "docs/PROJECT_WORK_REUSE_HANDOFF.json"
   ],
   "verification_evidence": [
-    "GitHub main readback e312f9f764051c8a4b25bd6206174498f5353c8e",
+    "GitHub postmerge main readback d2f8d2b883ff86208a7c0b0dedb99352f95f9edd",
+    "PR #23 exact head dd88c8a8363e6fe7d184d66de9d13132790df6ba / Godot 4.7 validation #143 SUCCESS",
     "PR #19 fresh readback OPEN head 1dc768485ece548c01589d9814851b862ac50e10",
     "Notion Asset Library server readback for approved visual proof 01",
-    "Notion native preview attachment created for approved visual proof 02",
+    "Notion Asset Library Notion-owned prod-files-secure preview readback for approved visual proof 02",
     "Human Home updated to approved visual proof count 2",
-    "Visual Bible readback includes 새벽/밝음/해질녘/밤 time-of-day canon"
+    "Visual Bible readback includes 새벽/밝음/해질녘/밤 time-of-day canon",
+    "Project Registry Revision 16 synced to d2f8d2b883ff86208a7c0b0dedb99352f95f9edd"
   ],
   "evidence_ceiling": {
     "visual_direction": "APPROVED",
     "approved_visual_proofs": 2,
     "notion_server_readback": "PASS",
     "human_visible_client_render_for_proof_02": "NOT_RUN",
+    "high_resolution_notion_source_delivery_for_proof_02": "NOT_PROVEN_BY_PREVIEW_FALLBACK",
     "final_runtime_handpainted_slice": "NOT_RUN",
     "final_avatar_pet_boat_sea_art": "NOT_INTEGRATED",
     "real_mobile_qa": "NOT_RUN"
   },
-  "rollback": "Docs-only closeout branch can be reverted as one PR; Notion approval metadata can be corrected without changing runtime. Approved image provenance must not be deleted when preview attachment is replaced.",
+  "rollback": "Docs-only closeout can be reverted by the closeout/correction PRs; Notion approval metadata can be corrected without changing runtime. Approved image provenance must not be deleted when preview attachment is replaced.",
   "project_only_lessons": [
     "HANDPAINTED_STORYBOOK_3D_DIORAMA specific art canon and four time-of-day palette intent",
     "exact player silhouette/pet/decor candidates remain My Little Boat-specific"
@@ -40,7 +44,9 @@
     {
       "candidate": "NOTION_INLINE_SVG_RASTER_PREVIEW_FALLBACK",
       "disposition": "CORROBORATES_EXISTING_BCP_2026_032",
-      "new_bcp_required": false
+      "new_bcp_required": false,
+      "base_implementation_pr": 689,
+      "base_implementation_pr_policy": "PRE_EXISTING_READ_ONLY"
     },
     {
       "candidate": "BATCH_STUDY_IN_ONE_APPROVED_IMAGE_RESULT",
