@@ -6,6 +6,33 @@
 
 정상 플레이는 플레이어·펫·보트·바다가 함께 보이는 **3/4 Boat Diorama**를 사용하고, 원할 때는 기존 바다 중심 경험을 **Appreciation Camera**로 전환해 UI 개입을 줄이고 수평선과 파도에 집중합니다.
 
+## Visual Style Mirror
+
+The people-readable visual canon is owned by the Notion Visual Bible. The current approved direction is `SOFT_STORYBOOK_3D_DIORAMA`.
+
+Implementation-facing summary:
+
+- rounded, simplified, large-form stylized 3D silhouettes;
+- soft matte / lightly painterly materials rather than photoreal PBR emphasis;
+- stable horizon and low-to-medium environmental contrast;
+- visible avatar + resting pet + personal boat + sea readable together in the normal 3/4 camera;
+- readable functional contrast for text, buttons, and selection state;
+- slow, bounded, predictable motion;
+- decoration adds lived-in attachment without hiding the sea;
+- Appreciation Camera remains the quieter sea/horizon-focused alternate view;
+- do not reproduce identifiable Bondee / Animal Crossing / Spirit City / Garden Galaxy proportions, UI, branding, or trade dress.
+
+Evidence boundary:
+
+```text
+VISUAL_STYLE_DIRECTION = APPROVED
+REPRESENTATIVE_VISUAL_GDD_IMAGE = NOT_YET_PRODUCED
+FINAL_AVATAR_ART = NOT_INTEGRATED
+FINAL_PET_ART = NOT_INTEGRATED
+FINAL_BOAT/SEA_ART = NOT_INTEGRATED
+HUMAN_VISUAL_COMFORT_VALIDATION = NOT_RUN
+```
+
 ## 핵심 감정
 
 우선순위는 다음과 같습니다.
