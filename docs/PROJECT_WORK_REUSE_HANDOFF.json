@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "project": "MY_LITTLE_BOAT",
+  "closed_out_at": "2026-08-25",
+  "baseline_main": "e312f9f764051c8a4b25bd6206174498f5353c8e",
+  "selected_modules": [],
+  "reuse_mode": [
+    "REUSE_EXISTING_PROJECT_CANON",
+    "REUSE_BASE_BCP_2026_032_PREVIEW_FALLBACK_PATTERN",
+    "PROJECT_ONLY_EXTRACT"
+  ],
+  "project_paths_changed": [
+    "docs/handoffs/2026-08-25-handpainted-visual-closeout.md",
+    "docs/learning/2026-08-25-handpainted-visual-and-notion-delivery-lessons.md",
+    "docs/PROJECT_WORK_REUSE_HANDOFF.json"
+  ],
+  "verification_evidence": [
+    "GitHub main readback e312f9f764051c8a4b25bd6206174498f5353c8e",
+    "PR #19 fresh readback OPEN head 1dc768485ece548c01589d9814851b862ac50e10",
+    "Notion Asset Library server readback for approved visual proof 01",
+    "Notion native preview attachment created for approved visual proof 02",
+    "Human Home updated to approved visual proof count 2",
+    "Visual Bible readback includes 새벽/밝음/해질녘/밤 time-of-day canon"
+  ],
+  "evidence_ceiling": {
+    "visual_direction": "APPROVED",
+    "approved_visual_proofs": 2,
+    "notion_server_readback": "PASS",
+    "human_visible_client_render_for_proof_02": "NOT_RUN",
+    "final_runtime_handpainted_slice": "NOT_RUN",
+    "final_avatar_pet_boat_sea_art": "NOT_INTEGRATED",
+    "real_mobile_qa": "NOT_RUN"
+  },
+  "rollback": "Docs-only closeout branch can be reverted as one PR; Notion approval metadata can be corrected without changing runtime. Approved image provenance must not be deleted when preview attachment is replaced.",
+  "project_only_lessons": [
+    "HANDPAINTED_STORYBOOK_3D_DIORAMA specific art canon and four time-of-day palette intent",
+    "exact player silhouette/pet/decor candidates remain My Little Boat-specific"
+  ],
+  "base_promotion_candidates": [
+    {
+      "candidate": "NOTION_INLINE_SVG_RASTER_PREVIEW_FALLBACK",
+      "disposition": "CORROBORATES_EXISTING_BCP_2026_032",
+      "new_bcp_required": false
+    },
+    {
+      "candidate": "BATCH_STUDY_IN_ONE_APPROVED_IMAGE_RESULT",
+      "disposition": "OBSERVATION_ONLY",
+      "new_bcp_required": false,
+      "reason": "single-project evidence; current image approval contract already protects one-result boundary"
+    },
+    {
+      "candidate": "APPROVAL_STATE_CONSUMER_DRIFT_SCAN",
+      "disposition": "ALREADY_COVERED_BY_BASE_POST_CHANGE_READBACK",
+      "new_bcp_required": false
+    }
+  ]
+}
