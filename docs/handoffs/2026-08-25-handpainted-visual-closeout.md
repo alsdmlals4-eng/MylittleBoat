@@ -16,7 +16,8 @@
 
 - project: `MY_LITTLE_BOAT`
 - repository: `alsdmlals4-eng/MylittleBoat`
-- handoff baseline main: `e312f9f764051c8a4b25bd6206174498f5353c8e`
+- pre-closeout baseline main: `e312f9f764051c8a4b25bd6206174498f5353c8e`
+- closeout merged main: `d2f8d2b883ff86208a7c0b0dedb99352f95f9edd`
 - current detailed visual canon: `HANDPAINTED_STORYBOOK_3D_DIORAMA`
 - parent visual philosophy: `SOFT_STORYBOOK_3D_DIORAMA`
 - normal presentation: visible avatar + resting pet + personal boat + sea in calm 3/4 diorama
