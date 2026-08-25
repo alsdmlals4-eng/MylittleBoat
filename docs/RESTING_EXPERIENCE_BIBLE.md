@@ -179,6 +179,100 @@
 - Human QA에서 불편이 확인되면 bob/환경 motion을 더 낮추거나 끌 수 있는 경로를 우선 고려한다.
 - 날씨 변화는 위협보다 분위기 변화로 읽혀야 한다.
 
+### 상세 그림체 정본 · `HANDPAINTED_STORYBOOK_3D_DIORAMA`
+
+`SOFT_STORYBOOK_3D_DIORAMA`는 상위 Visual 철학으로 유지하고, 실제 제작의 현재 상세 방향은 `HANDPAINTED_STORYBOOK_3D_DIORAMA`를 사용합니다. **3D geometry와 현재 카메라/보트 구조는 유지하되 최종 프레임이 glossy CG보다 움직이는 그림책처럼 읽히는 것**이 목표입니다.
+
+#### Character
+
+- 실루엣·자세·큰 옷/머리 덩어리가 얼굴보다 먼저 읽혀야 합니다.
+- 얼굴은 모바일 거리에서 필요한 만큼만 단순하게 표현하고 큰 유리눈·매끈한 beauty skin·과도한 속눈썹/블러시를 피합니다.
+- 머리카락은 수많은 가닥보다 2~4개의 큰 painted mass를 우선합니다.
+- 최종 성별·나이·머리·복장은 비교 시안 B가 결정하지 않습니다.
+
+#### Pet
+
+- 펫은 수집 마스코트가 아니라 같이 쉬는 존재입니다.
+- 최종 종은 아직 정하지 않으며 비교 시안 B의 강아지는 reference일 뿐입니다.
+- 눕기·바다 보기·졸기·기지개 같은 큰 resting pose와 낮은 빈도의 idle을 우선합니다.
+
+#### Boat / Props
+
+- 현재 BoatSpace와 slot-zone decoration 구조를 유지합니다.
+- photoreal wood grain보다 hand-painted value variation, broad brush breakup, worn-soft edge를 우선합니다.
+- 랜턴·컵·쿠션·식물·엽서·펫 쿠션은 생활 흔적으로 읽히되 바다를 가릴 만큼 쌓지 않습니다.
+
+#### Sea / Sky
+
+- 안정적인 수평선과 넓은 painted sky/water shape를 우선합니다.
+- 반사는 낮은 빈도로 제한하고, photoreal water simulation보다 deliberate color/value grouping을 우선합니다.
+- 날씨와 시간 변화는 위협적 spectacle보다 부드러운 분위기 변화로 읽혀야 합니다.
+
+#### Materials
+
+- matte-biased material과 reduced specular response를 기본으로 합니다.
+- painted albedo가 시각 identity를 주도하고 PBR micro-detail은 보조로 제한합니다.
+- 값과 색의 작은 불균일성은 authored brush decision처럼 보여야 하며 생성 노이즈처럼 랜덤하지 않아야 합니다.
+
+#### Lighting
+
+- 한 방향의 넓고 부드러운 key light와 soft fill을 우선합니다.
+- 캐릭터만 강한 spotlight/rim-light로 강조하지 않고 sea/horizon을 큰 value mass로 유지합니다.
+- 과도한 bloom/glow는 모바일 판독성을 해치면 제거합니다.
+
+#### Motion
+
+- idle·hair/cloth·boat bob·water motion은 느리고 낮은 진폭으로 유지합니다.
+- high-frequency squash/stretch, procedural jiggle, 지속적인 attention-call 움직임을 피합니다.
+- 그림책 같은 정지 프레임 인상이 normal play와 Appreciation Camera 전환 중에도 유지되어야 합니다.
+
+#### Implementation preservation
+
+다음 현재 구조를 시각 스타일 변경 때문에 교체하지 않습니다.
+
+- normal 3/4 diorama camera
+- Appreciation Camera
+- BoatSpace hierarchy
+- slot-zone decoration
+- low-pressure interaction surfaces
+- avatar + pet + boat shared-space/bob relationship
+- mobile portrait presentation
+- local-first core gameplay
+
+#### First production validation slice
+
+전체 자산을 교체하기 전에 아래 최소 slice만 먼저 검증합니다.
+
+```text
+1 neutral handpainted 3D test player
++ 1 temporary resting-pet style treatment without species canonization
++ existing boat material pass
++ sea/sky color treatment
++ 1 small decor cluster
++ Normal / Appreciation Camera comparison
+```
+
+이 slice는 아직 구현하지 않았습니다. 아래 질문을 실제 runtime/mobile에서 증명하기 전 대량 asset conversion으로 넘어가지 않습니다.
+
+1. 캐릭터가 generic AI 3D처럼 보이지 않는가?
+2. 실제 540×960 gameplay 거리에서 hand-authored 인상이 남는가?
+3. 캐릭터 얼굴보다 sea/horizon과 `내 작은 장소`가 먼저 읽히는가?
+4. idle/bob 중에도 illustrated feel이 유지되는가?
+5. 현재 Godot 4.7 mobile renderer와 1인 개발 비용에 맞는가?
+
+#### Evidence Gate
+
+```text
+HANDPAINTED_3D_RUNTIME_SLICE = NOT_RUN
+MOBILE_30S_VISUAL_REVIEW = NOT_RUN
+MOBILE_5M_VISUAL_REVIEW = NOT_RUN
+HANDPAINTED_MOTION_REVIEW = NOT_RUN
+HANDPAINTED_PERFORMANCE_REVIEW = NOT_RUN
+HUMAN_STYLE_APPROVAL = NOT_RUN
+```
+
+비교 시안 B는 `USER_PREFERRED_REFERENCE`이며 최종 캐릭터·펫·UI·보트·팔레트 정본이나 승인 production asset이 아닙니다.
+
 ### EMPTY 방지
 
 `잔잔함`을 `아무것도 없음`으로 만들지 않습니다.
