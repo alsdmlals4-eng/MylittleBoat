@@ -404,7 +404,8 @@ Idle은 계속 바쁘게 바뀌지 않습니다. **긴 정지/호흡 구간 사�
 - 기술 Avatar/Pet는 보트 bob과 상대 위치를 유지한다.
 - 펫은 관리 의무 없는 동반자다.
 - 수집/낚시는 휴식을 대체하지 않는 선택형 보조 콘텐츠다.
-- Boat Decoration / Interactable / FriendBottle / DriftBottle은 승인된 설계지만 아직 런타임 구현되지 않았다.
+- Boat Decoration과 reusable Low-pressure Interactable은 current main에 기술 구현되어 있으며, Human mobile usability/final art quality는 아직 `NOT_RUN / NOT_INTEGRATED`다.
+- FriendBottle / DriftBottle 제품·안전 설계는 승인됐지만 **real network/auth/moderation/public social runtime은 current main에 구현되지 않았다.** PR #19의 local fake backend는 이 문서 정본 rollout과 독립된 open workstream이다.
 
 아직 확정할 수 없는 것:
 
