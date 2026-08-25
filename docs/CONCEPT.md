@@ -8,28 +8,48 @@
 
 ## Visual Style Mirror
 
-The people-readable visual canon is owned by the Notion Visual Bible. The current approved direction is `SOFT_STORYBOOK_3D_DIORAMA`.
+The people-readable visual canon is owned by the Notion Visual Bible.
+
+Visual hierarchy:
+
+```text
+SOFT_STORYBOOK_3D_DIORAMA
+= broad parent visual philosophy
+
+HANDPAINTED_STORYBOOK_3D_DIORAMA
+= current detailed visual-style canon
+```
+
+The refinement preserves the existing 3D boat/camera/decor/interaction structure. It does **not** convert the project into a full 2D game.
 
 Implementation-facing summary:
 
-- rounded, simplified, large-form stylized 3D silhouettes;
-- soft matte / lightly painterly materials rather than photoreal PBR emphasis;
-- stable horizon and low-to-medium environmental contrast;
-- visible avatar + resting pet + personal boat + sea readable together in the normal 3/4 camera;
-- readable functional contrast for text, buttons, and selection state;
-- slow, bounded, predictable motion;
+- silhouette before face: player recognition comes from posture, large authored hair/clothing masses, and a small number of deliberate shape anchors;
+- minimal face detail at gameplay distance; avoid large glassy eyes, smooth beauty-render skin, and generic AI illustration face templates;
+- hair reads as 2–4 large painted masses rather than many glossy strands;
+- 3D geometry remains the foundation while painted albedo, broad value grouping, and controlled surface irregularity carry the style identity;
+- matte-biased materials and reduced specular response take priority over photoreal PBR micro-detail;
+- stable horizon and low-to-medium environmental contrast remain protected;
+- visible avatar + resting pet + personal boat + sea remain readable together in the normal 3/4 camera;
+- the sea/horizon stays visually more important than character beauty, prop density, or UI decoration;
+- readable functional contrast remains mandatory for text, buttons, and selection state;
+- motion remains slow, bounded, and low amplitude so the illustrated still-frame quality survives idle/bob transitions;
 - decoration adds lived-in attachment without hiding the sea;
 - Appreciation Camera remains the quieter sea/horizon-focused alternate view;
+- comparison B is a `USER_PREFERRED_REFERENCE`, not final player identity, pet species, UI, boat, palette, or approved project asset;
+- `DIORAMA_PIXEL` and `HD2D_COZY_PIXEL` remain alternatives, not the selected current canon;
 - do not reproduce identifiable Bondee / Animal Crossing / Spirit City / Garden Galaxy proportions, UI, branding, or trade dress.
 
 Evidence boundary:
 
 ```text
 VISUAL_STYLE_DIRECTION = APPROVED
-REPRESENTATIVE_VISUAL_GDD_IMAGE = NOT_YET_PRODUCED
+DETAILED_VISUAL_STYLE_CANON = HANDPAINTED_STORYBOOK_3D_DIORAMA
+APPROVED_REPRESENTATIVE_VISUAL_GDD = NOT_YET_PRODUCED
 FINAL_AVATAR_ART = NOT_INTEGRATED
 FINAL_PET_ART = NOT_INTEGRATED
 FINAL_BOAT/SEA_ART = NOT_INTEGRATED
+HANDPAINTED_3D_RUNTIME_SLICE = NOT_RUN
 HUMAN_VISUAL_COMFORT_VALIDATION = NOT_RUN
 ```
 
