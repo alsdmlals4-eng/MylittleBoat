@@ -1,6 +1,6 @@
 # Current Planning & Visual Work
 
-> Stable current-work pointer for the **pre-implementation planning and visual closeout** of `MY_LITTLE_BOAT`. This file is a router/handoff, not a second game-design canon.
+> Stable current-work pointer for the **pre-implementation planning and visual closeout** of `MY_LITTLE_BOAT`. This is a router/handoff, not a second game-design canon.
 
 ## Current task
 
@@ -10,7 +10,7 @@ mode: GPT_PLANNING_VISUAL_CLOSEOUT
 current_goal: COMPLETE_PRE_IMPLEMENTATION_PLANNING_AND_VISUALS
 current_owner: GPT_NONCODING_PLANNING_VISUAL_OWNER
 next_godot_owner: CODEX_AFTER_VISUAL_CLOSEOUT_ONLY
-current_main_at_router_creation: 2ecfaa5fd52f45e90bed2abc978af653486fa5e0
+implementation_baseline: RESOLVE_CURRENT_COMPLETED_MAIN_AT_RESUME
 concurrent_pr_19: READ_ONLY_NO_ABSORPTION
 image_generation_now: NOT_REQUESTED
 status: PLANNING_VISUAL_CLOSEOUT_IN_PROGRESS
@@ -18,11 +18,30 @@ status: PLANNING_VISUAL_CLOSEOUT_IN_PROGRESS
 
 The user's current priority is explicit: **finish planning and image work first; do not start the Godot production slice yet.**
 
-At every resume, re-read current `main`, Project Notion, approved Visual records, and current user decisions. Historical implementation-ready packets remain available but are paused until this closeout is complete.
+At every resume, re-read current `main`, Project Notion, approved Visual records, current open PRs, and latest user decisions. Historical implementation-ready packets remain available but are paused until this closeout is complete.
+
+## Direct discovery package
+
+Human/product authority:
+
+- Notion Human Home: `3c41b237-eb1c-8194-8b8e-d88362cafafa`
+- Notion Visual Bible: `3c11b237-eb1c-81ae-97f3-dc28a0905304`
+- Notion Asset Library: `3c11b237-eb1c-8120-b7db-d48e11756146`
+- Notion Project Plan: `3c11b237-eb1c-810c-80dd-e57ab44c9b23`
+- Notion Production Handoff: `3c11b237-eb1c-81b0-b281-ec54d67c9552`
+- Notion AI Evidence: `3c61b237-eb1c-812f-a9f5-f5a116a98370`
+
+Repository support:
+
+- approved style spec: `docs/superpowers/specs/2026-08-25-handpainted-storybook-3d-diorama-design.md`
+- exact Image A/B/C briefs: `docs/visual/2026-08-26-preimplementation-image-briefs.md`
+- fresh visual-closeout benchmark evidence: `docs/research/2026-08-26-planning-visual-closeout-benchmark.md`
+- earlier runtime-technique benchmark evidence: `docs/research/2026-08-26-first-production-visual-slice-benchmark-evidence.md`
+- paused downstream Godot handoff: `docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md`
 
 ## Why Godot implementation is paused
 
-The visual direction is approved, but the visual planning is not asset-complete:
+The visual direction is approved, but the representative visual decisions are not closed:
 
 ```text
 VISUAL_STYLE_DIRECTION = APPROVED
@@ -36,24 +55,7 @@ FINAL_TIME_OF_DAY_VISUAL_SET = NOT_PRODUCED
 FINAL_RUNTIME_ART = NOT_INTEGRATED
 ```
 
-Starting Godot art translation before those choices are narrowed would turn placeholder implementation into an accidental design authority and increase rework.
-
-## Authority
-
-Human/product authority:
-
-- Notion Human Home: `3c41b237-eb1c-8194-8b8e-d88362cafafa`
-- Notion Visual Bible: `3c11b237-eb1c-81ae-97f3-dc28a0905304`
-- Notion Asset Library: `3c11b237-eb1c-8120-b7db-d48e11756146`
-- Notion Project Plan: `3c11b237-eb1c-810c-80dd-e57ab44c9b23`
-- Notion Production Handoff: `3c11b237-eb1c-81b0-b281-ec54d67c9552`
-- Notion AI Evidence: `3c61b237-eb1c-812f-a9f5-f5a116a98370`
-
-Repository mirrors/support:
-
-- `docs/superpowers/specs/2026-08-25-handpainted-storybook-3d-diorama-design.md`
-- `docs/research/2026-08-26-first-production-visual-slice-benchmark-evidence.md`
-- `docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md` — **paused downstream handoff**, not the current work entrypoint.
+Starting Godot art translation before these choices are narrowed would let technical placeholder decisions become accidental design authority and would increase rework.
 
 ## Product decisions already protected
 
@@ -75,117 +77,87 @@ Do not reopen without new user direction:
 
 ### Approved Production Visual Proof 01
 
-Use for:
-- total frame mood;
-- Normal + Appreciation composition relationship;
-- matte hand-painted material direction;
-- wide calm sea/horizon;
-- low visual noise and lived-in boat feeling.
+Use for total-frame mood, Normal/Appreciation relationship, matte hand-painted material direction, calm sea/horizon, low visual noise, and lived-in boat feeling.
 
-Do not treat as final character/pet/UI/runtime geometry.
+Do not treat it as final character/pet/UI/runtime geometry.
 
 ### Approved Production Visual Proof 02
 
-Use for:
-- three player-silhouette directions;
-- quiet companion species/pose exploration;
-- boat-life/decor cluster language;
-- low-detail face and silhouette-first identity.
+Use for player-silhouette exploration, quiet companion species/pose exploration, boat-life/decor cluster language, low-detail face, and silhouette-first identity.
 
 Do not treat any depicted player or pet as final canon until an explicit selection is recorded.
 
-## Planning closeout questions
-
-The pre-implementation planning phase is complete only after these are answered at the **design meaning level**:
+## Planning decisions to close
 
 1. **Player identity anchor**
-   - Which silhouette family becomes the representative default?
-   - What 1 primary and 1 secondary shape anchor make the avatar recognizable at 540×960?
-   - What hair/clothing mass language is representative without fixing unnecessary lore?
+   - representative silhouette family;
+   - one primary + one secondary recognizable shape anchor at 540×960;
+   - representative hair/clothing mass language without unnecessary lore lock-in.
 
 2. **Pet identity**
-   - Which one species becomes the first representative companion?
-   - Which resting pose is the default read?
-   - What silhouette keeps the pet supportive rather than mascot-dominant?
+   - first representative species;
+   - default resting pose/relationship;
+   - silhouette that remains supportive rather than mascot-dominant.
 
 3. **Boat memory signature**
-   - Which 3–5 existing decor motifs define “my small place on the sea” in the representative frame?
-   - Which one warm light/accent becomes the emotional anchor?
-   - What clutter ceiling keeps the sea visible?
+   - 3–5 representative existing decor motifs;
+   - one warm living accent;
+   - clutter ceiling that preserves the sea.
 
 4. **Atmosphere set**
-   - Dawn / Bright / Sunset / Night must feel like the same place through color/light/water response, not separate maps.
-   - One state may be chosen as the representative marketing/GDD frame, but all four need coherent intent.
+   - dawn / bright / sunset / night remain the same place through color, light, water, and living-light response;
+   - choose one representative state for the final Visual GDD only after comparison.
 
-5. **UI presence in representative visual**
-   - Define only the amount and hierarchy of UI visible in the representative Visual GDD.
-   - Do not prematurely finalize typography, icon family, or every panel.
+5. **Representative UI presence**
+   - lock only how much UI is visible and its hierarchy in the representative frame;
+   - do not prematurely finalize typography, icon family, or every panel.
 
 6. **Representative Visual GDD**
-   - One final approved image must explain normal 3/4 play, avatar + pet relationship, personal boat/decor, sea-first hierarchy, and the quiet interaction/UI layer.
-   - It is the bridge from planning to product implementation; it is still not proof of runtime quality.
+   - one final approved image explains normal 3/4 play, avatar + pet relationship, personal boat/decor, sea-first hierarchy, and quiet interaction/UI presence;
+   - it bridges planning to implementation but does not prove runtime quality.
 
-## Minimal Visual closeout sequence
+## Minimal three-image closeout
 
-Do **not** make a large concept-art backlog. Reuse Proof 01/02 and close the remaining decisions with at most three new approved image results.
+Do **not** create a large concept-art backlog. Reuse Proof 01/02 and close the remaining decisions with at most three new approved image results.
 
 ### Image A — Player + Pet Identity Board
 
-Purpose: convert Proof 02 exploration into explicit representative identity decisions.
-
-One board should contain:
-- 3 player identity candidates derived from the already approved silhouette language;
-- 3 quiet pet candidates or a tightened comparison of the Proof-02 species families;
-- same camera/scale assumptions so silhouette comparison is fair;
-- no elaborate UI/background composition competing with the subjects.
+Use the exact brief in `docs/visual/2026-08-26-preimplementation-image-briefs.md`.
 
 Must answer:
 - player candidate A/B/C preference;
 - first pet species preference;
-- default resting pose;
-- which face/hair/clothing details are intentionally **not** canonized.
+- default resting relationship;
+- details intentionally left non-canon.
 
 ### Image B — Boat / Sea / Four-Time Atmosphere Board
 
-Purpose: lock the environmental and personal-space language before runtime translation.
-
-One board should contain:
-- one consistent representative boat composition;
-- a small 3–5 item lived-in decor cluster using existing motifs;
-- dawn / bright / sunset / night variants of the **same** scene;
-- stable horizon and sea-first hierarchy;
-- one representative warm living accent such as lantern light.
+Use the exact brief in `docs/visual/2026-08-26-preimplementation-image-briefs.md`.
 
 Must answer:
-- representative time-of-day preference for the final Visual GDD;
+- representative time-of-day preference;
 - atmosphere differences without changing map identity;
 - decor density ceiling;
 - boat/sea value hierarchy.
 
 ### Image C — Representative Visual GDD
 
-Produce only **after A and B decisions are recorded**.
+Generate only **after Image A and Image B selections are recorded**.
 
-One representative image should show:
-- selected representative player identity;
+Must combine only approved A/B decisions and explain:
+- selected representative player;
 - selected first companion species/resting relationship;
-- personal boat with selected decor language;
-- selected representative time-of-day;
+- selected personal boat/decor language;
+- selected representative time state;
 - sea/horizon dominant composition;
-- restrained, readable representative UI/affordance presence;
-- visual explanation of Normal play and, if the composition supports it, a small Appreciation-view inset rather than a second unrelated key art.
+- restrained representative UI/affordance presence;
+- Normal play and, only if useful, a small Appreciation-view inset.
 
-This image becomes:
-
-```text
-APPROVED_REPRESENTATIVE_VISUAL_GDD
-```
-
-only after explicit user visual approval and Notion Asset Library upload/readback.
+It becomes `APPROVED_REPRESENTATIVE_VISUAL_GDD` only after explicit user visual approval and Notion Asset Library upload/readback.
 
 ## Visual generation policy
 
-The user has not yet explicitly requested generation in the current turn. Therefore:
+The user has not yet explicitly requested image generation in the current turn. Therefore:
 
 ```text
 IMAGE_A = NOT_RUN
@@ -195,25 +167,25 @@ IMAGE_C = NOT_RUN
 
 Before each generated result:
 
-1. Write a text brief grounded in current Notion canon.
+1. Use the exact current text brief.
 2. Verify it does not silently decide unrelated lore/gameplay/UI.
-3. Generate only when the user explicitly requests the image.
+3. Generate only on explicit user image request.
 4. Treat one generated result as one evidence item; do not claim unseen alternates.
 5. Record prompt/provenance/approval status in the Asset Library.
-6. If rejected, preserve the rejection reason as design evidence; do not overwrite it as if it never existed.
+6. Preserve rejection reasons as design evidence.
 
 ## Benchmark disposition
 
-Current external benchmark evidence is used as **principle evidence only**:
+Full locators and evidence are in `docs/research/2026-08-26-planning-visual-closeout-benchmark.md`.
 
-- **ADAPT — Spirit City: Lofi Sessions:** strong attachment comes from readable avatar identity + customizable personal space + companion presence; reject its productivity/XP pressure for My Little Boat.
-- **ADAPT — Dordogne:** authored painterly surface and restrained shader complexity support the “moving illustrated world” goal; do not copy its watercolor treatment literally.
-- **REFERENCE_ONLY — SEASON: A letter to the future:** proves a distinctive illustrated 3D world can use more custom rendering, but its production context does not justify shader-heavy preproduction here.
-- **REJECT — identifiable trade-dress copying:** no direct reuse of another title’s character proportions, UI composition, palette package, branded decor, or signature scene.
+- **ADAPT — Spirit City: Lofi Sessions:** readable avatar identity + personal space + companion presence; reject productivity/XP pressure.
+- **ADAPT — Dordogne:** authored painterly surface + camera-aware composition + restrained technical complexity; do not copy literal watercolor treatment.
+- **REFERENCE_ONLY / ADAPT selectively — SEASON: A letter to the future:** simplification, silhouette/readability, believable time-of-day mood; do not infer that My Little Boat needs its custom shader stack.
+- **REJECT — identifiable trade-dress copying.**
 
 ## Exit gate before Codex/Godot resumes
 
-Godot implementation remains paused until all are true:
+All must be true:
 
 ```text
 PLAYER_REPRESENTATIVE_IDENTITY = APPROVED
@@ -227,9 +199,9 @@ VISUAL_BIBLE_CURRENT_DECISIONS = SYNCED
 PROJECT_PLAN_CURRENT_NEXT_WORK = SYNCED
 ```
 
-Then update `docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md` from paused to implementation-ready and re-run fresh project/main/Notion readback before any Scene/Resource/GDScript mutation.
+Then update `docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md` from paused to implementation-ready and fresh-read repository default branch + Project Notion + actual Godot structure before any Scene/Resource/GDScript mutation.
 
-## Evidence ceiling while this work is active
+## Evidence ceiling while active
 
 ```text
 PLANNING_VISUAL_CLOSEOUT = IN_PROGRESS
