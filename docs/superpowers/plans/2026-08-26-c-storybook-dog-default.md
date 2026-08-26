@@ -200,11 +200,11 @@ docs/evidence/2026-08-26-c-storybook-dog-default/normal_540x960.png
 docs/evidence/2026-08-26-c-storybook-dog-default/appreciation_540x960.png
 ```
 
-- [ ] **Step 2: Inspect both PNGs before documenting status**
+- [x] **Step 2: Inspect both PNGs before documenting status**
 
 Confirm the Normal image shows C silhouette + dog + boat + sea, and Appreciation is sea/horizon-first with only the compact exit action. If either fails, adjust only camera/visual values required by the spec, then recapture.
 
-- [ ] **Step 3: Update current status without overstating approval**
+- [x] **Step 3: Update current status without overstating approval**
 
 Set these values in the roadmap and current handoff:
 
@@ -216,7 +216,7 @@ REAL_DEVICE_TOUCH_QA = DEFERRED_BY_USER
 
 Add the capture directory and `test_handpainted_visual_slice_contract.gd` to README’s implementation evidence list. Do not mark final art, production asset bundle, or real-device QA complete.
 
-- [ ] **Step 4: Run final local verification**
+- [x] **Step 4: Run final local verification**
 
 Run:
 
@@ -229,7 +229,7 @@ Get-ChildItem tests -Filter 'test_*.gd' | Sort-Object Name | ForEach-Object { & 
 git diff --check
 ```
 
-- [ ] **Step 5: Commit and push the complete bounded slice**
+- [x] **Step 5: Commit and push the complete bounded slice**
 
 ```powershell
 git add scenes/boat_space.tscn tests/test_handpainted_visual_slice_contract.gd tests/capture_first_production_visual_slice.gd docs/evidence/2026-08-26-c-storybook-dog-default README.md docs/GODOT_MVP_ROADMAP.md docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md
@@ -246,13 +246,13 @@ git push -u origin codex/c-storybook-dog-default
 - Consumes: the pushed `codex/c-storybook-dog-default` branch and parent PR #35 branch.
 - Produces: a reviewable stacked PR with CI evidence; no automatic merge while user visual approval remains outstanding.
 
-- [ ] **Step 1: Create the stacked PR**
+- [x] **Step 1: Create the stacked PR**
 
 ```powershell
 gh pr create --base codex/first-production-visual-slice-impl --head codex/c-storybook-dog-default --title "Add C and dog storybook defaults" --body "C 니트·긴 머리 주인공과 강아지 기본 3D diorama를 추가합니다. PR #35를 기반으로 하며, gameplay/보상/돌봄/소셜/PR #19에는 변경이 없습니다. 540×960 runtime capture와 focused contract를 포함합니다."
 ```
 
-- [ ] **Step 2: Verify the exact PR head CI result**
+- [x] **Step 2: Verify the exact PR head CI result**
 
 Run:
 
@@ -262,6 +262,6 @@ gh pr checks --watch
 
 Expected: `Godot 4.7 validation` passes on the exact stacked PR head.
 
-- [ ] **Step 3: Request only the remaining user visual decision**
+- [x] **Step 3: Request only the remaining user visual decision**
 
 Provide the two runtime captures and ask whether C+dog, boat, and sea read as the intended moving storybook. Keep real-device touch QA explicitly deferred and do not merge either visual PR until the user chooses the merge path.
