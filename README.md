@@ -200,10 +200,17 @@ headless project import
 4. **Supabase/Auth/RLS/Moderation/Real Delayed Bottle** — Social Fake 계약이 current main에 안전하게 정합된 뒤 별도 보안·계정·release gate로 진행합니다.
 5. **Production audio / four time-of-day layer / final avatar·pet·boat·decor assets** — First Production Visual Slice의 runtime/Human evidence를 보고 제작 순서를 다시 계산합니다.
 
-현재 Implementation Ready/Codex handoff:
+현재 Godot 제품 구현의 **첫 진입점**:
+
+- `docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md` — current Goal/보호 범위/evidence ceiling과 구현 방법 자율성의 stable router.
+
+Supporting planning artifacts:
 
 - `docs/superpowers/plans/2026-08-26-first-production-visual-slice.md`
 - `docs/handoffs/2026-08-26-first-production-visual-slice-codex.md`
+- `docs/research/2026-08-26-first-production-visual-slice-benchmark-evidence.md`
+
+v1 plan/handoff의 정확한 Node 이름·테스트 형태는 planning example이며, current router의 outcome/acceptance/protected semantics가 우선합니다.
 
 ## Human 검증 — 아직 NOT_RUN
 

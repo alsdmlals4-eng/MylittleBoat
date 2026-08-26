@@ -2,6 +2,16 @@
 
 Codex에게 작업을 맡길 때는 **현재 Notion/AGENTS 정본과 실제 런타임 증거를 먼저 확인하고, 한 번에 작은 검증 가능한 Slice**를 구현하도록 요청합니다.
 
+## 현재 실행 진입점
+
+현재 실제 Godot 제품 구현을 시작할 때는 먼저 다음 stable pointer를 읽습니다.
+
+`docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md`
+
+이 파일은 현재 Goal·보호 범위·evidence ceiling·fresh-read source를 압축하는 router입니다. 과거 계획의 예시 Node 이름이나 내부 구현 형태를 그대로 구현하라는 뜻이 아니며, Codex는 current GitHub + Notion + 실제 Godot 구조를 fresh-read한 뒤 승인된 결과를 만족하는 최소 안전 구현법을 선택합니다.
+
+현재 `FIRST_PRODUCTION_VISUAL_SLICE`의 이전 v1 plan/handoff에 있는 `VisualStudy` 같은 정확한 Node 이름·테스트 형태는 **illustrative planning sketch**입니다. binding 항목은 player outcome, 승인/보호 의미, TDD-before-implementation, acceptance/evidence ceiling, PR #19 격리, 이미지 생성 금지입니다.
+
 ## 예시 1: 마음 선택 개선
 
 ```text
