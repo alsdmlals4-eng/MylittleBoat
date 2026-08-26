@@ -1,14 +1,15 @@
 # Current Godot Product Implementation
 
-> **PAUSED DOWNSTREAM HANDOFF.** The current project work is not Godot implementation. Start with `docs/handoffs/CURRENT_PLANNING_VISUAL_WORK.md`.
+> **PAUSED DOWNSTREAM HANDOFF.** Start with `docs/handoffs/CURRENT_PLANNING_VISUAL_WORK.md`.
 
 ## Current state
 
 ```yaml
 project: MY_LITTLE_BOAT
 mode: CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF
-status: PAUSED_PENDING_PLANNING_VISUAL_CLOSEOUT
+status: PAUSED_PENDING_CONSUMER_CONTRACTS
 current_work_router: docs/handoffs/CURRENT_PLANNING_VISUAL_WORK.md
+image_asset_policy: CONSUMER_FIRST_ASSET
 implementation_baseline: RESOLVE_CURRENT_COMPLETED_MAIN_AT_CODEX_START
 implementation_owner_after_unpause: CODEX_GODOT_PRODUCT_IMPLEMENTATION_OWNER
 final_review_owner: GPT_FINAL_IMPLEMENTATION_REVIEW
@@ -16,13 +17,9 @@ concurrent_pr_19: READ_ONLY_NO_ABSORPTION
 image_generation_by_codex: FORBIDDEN
 ```
 
-The user explicitly chose to **finish planning and image work before the First Production Visual Slice**. Do not create a Godot implementation branch, Scene/Resource/GDScript change, product TDD RED, or runtime art translation while this file is paused.
+The user corrected the visual pipeline: do not build explanatory image sheets as deliverables. Produce only image files with a concrete game/runtime consumer.
 
-## Approved customization input now waiting downstream
-
-The old assumption of one exclusive representative avatar and one exclusive first pet species is superseded.
-
-When unpaused, implementation planning must preserve these approved feature meanings:
+## Approved customization semantics waiting downstream
 
 ```text
 CHARACTER_SELECTION_SET
@@ -40,59 +37,104 @@ PET_CUSHION_CUSTOMIZATION
 = APPROVED_AT_FEATURE_MEANING_LEVEL
 ```
 
-These are cosmetic/personalization choices, not class/stat/rarity/monetization choices.
+These are cosmetic/personalization choices only. They must not create class/stat/rarity/gacha/monetization/progression differences.
 
-Do not invent a parallel customization inventory by default. When implementation resumes, first evaluate reuse of the existing local-first Boat Decoration/state architecture for cushion customization while keeping character/pet selection semantics appropriately separated.
+## Image-consumer rule
+
+Before an image asset is generated, planning must define:
+
+```text
+asset_path
+consumer
+runtime_role
+spec
+fallback
+validation
+```
+
+An image is not DONE until the intended Godot consumer loads the exact file and runtime evidence shows it in use.
+
+Current main has no production image consumer yet:
+
+```text
+assets/images = README only
+.png references = 0 observed
+albedo_texture references = 0 observed
+Main Menu / Album = ColorRect backgrounds
+Boat / Avatar / Pet = primitive mesh + color-only material
+Decor = primitive mesh + albedo_color
+```
+
+## First candidate consumer batches
+
+### Pet cushion textures
+
+Target meaning:
+- `item_id = pet_cushion`
+- intended material property = `StandardMaterial3D.albedo_texture`
+- runtime role = player-visible pet-cushion appearance customization
+
+### Postcard textures
+
+Target meaning:
+- `item_id = postcard`
+- intended material property = `StandardMaterial3D.albedo_texture`
+- runtime role = authored visible postcard/memory artwork
+
+These are candidates, not yet implemented consumers.
+
+## Deferred image categories
+
+Do not create until the corresponding consumer exists:
+
+- character/pet albedo textures → production mesh + UV required;
+- boat/general decor textures → production mesh + UV required unless a stable primitive consumer is intentionally retained;
+- sky/time-of-day bitmaps → only if Environment adopts panorama/sky textures;
+- sea normal/noise maps → only if the sea material/shader samples them;
+- UI icons → only after TextureButton/TextureRect/theme-icon consumers are approved;
+- main-menu/album backgrounds → current ColorRect means no image asset is needed.
+
+`Image C / Representative Visual GDD` is cancelled as a required production image.
 
 ## Unpause gate
 
-Codex/Godot work resumes only after the current planning/visual owner records all of the following as approved/synced:
+Godot product implementation may resume for a consumer-first asset slice when all are true for at least one asset batch:
 
 ```text
-CHARACTER_SELECTION_SET = APPROVED
-PET_SELECTION_SET = APPROVED
-PET_CUSHION_CUSTOMIZATION = APPROVED_AT_FEATURE_MEANING_LEVEL
-BOAT_DECOR_REPRESENTATIVE_LANGUAGE = APPROVED
-FOUR_TIME_ATMOSPHERE_DIRECTION = APPROVED
-REPRESENTATIVE_UI_PRESENCE = APPROVED_AT_MEANING_LEVEL
-APPROVED_REPRESENTATIVE_VISUAL_GDD = PRODUCED_AND_APPROVED
-ASSET_LIBRARY_READBACK = PASS
-VISUAL_BIBLE_CURRENT_DECISIONS = SYNCED
-PROJECT_PLAN_CURRENT_NEXT_WORK = SYNCED
+ASSET_CONSUMER_CONTRACT = APPROVED
+ASSET_PATH = FIXED
+CONSUMER_TARGET = FIXED
+IMPORT_SPEC = FIXED
+RUNTIME_ROLE = FIXED
+FALLBACK_BEHAVIOR = FIXED
+TDD/VALIDATION_PLAN = READY
+PR_19 = READ_ONLY_NO_ABSORPTION
 ```
 
-At that point, fresh-read the completed default branch, Project Notion, actual Godot files/tests, current open PRs, and toolchain before rewriting this handoff as implementation-ready.
+Then Codex may implement the smallest safe consumer wiring. After the consumer exists and is validated, GPT image generation may produce the exact asset for that consumer, followed by runtime integration verification.
 
 ## Protected downstream scope
-
-When eventually resumed, the First Production Visual Slice still must preserve:
 
 - rest-first Core Loop, voyage duration/rewards, and mood meaning;
 - Normal vs Appreciation Camera semantics and input isolation;
 - BoatSpace shared bob ownership;
 - 8 decor slot IDs and six current item IDs/compatibility/state meaning;
 - low-pressure interaction reward isolation;
-- care-obligation-free pet meaning across every selectable species;
+- care-obligation-free pet semantics across selectable species;
 - cosmetic selection must not alter rewards, timer, progression pressure, social eligibility, or care obligation;
 - local-first core;
-- PR #19 as an independent workstream unless explicitly reopened.
-
-Exact future Node names, scene hierarchy, test implementation, mesh choice, material values, customization UI timing, and internal file split remain Codex implementation choices after fresh-read. Historical v1 examples such as `VisualStudy` are non-binding planning sketches.
+- PR #19 remains an independent workstream unless explicitly reopened.
 
 ## Evidence ceiling while paused
 
 ```text
-PLANNING_VISUAL_CLOSEOUT = IN_PROGRESS
-IMAGE_A_VISUAL_APPROVAL = PASS
-CHARACTER_SELECTION_SET = APPROVED
-PET_SELECTION_SET = APPROVED
-PET_CUSHION_CUSTOMIZATION = APPROVED_AT_FEATURE_MEANING_LEVEL
-IMAGE_B = NOT_RUN
-IMAGE_C = NOT_RUN
-HANDPAINTED_3D_RUNTIME_SLICE = NOT_RUN
+CONSUMER_FIRST_ASSET_POLICY = ACTIVE
+REFERENCE_IMAGES = APPROVED_BUT_NOT_RUNTIME_ASSETS
+CURRENT_RUNTIME_IMAGE_CONSUMERS = 0
+PET_CUSHION_TEXTURES = CONSUMER_CONTRACT_CANDIDATE
+POSTCARD_TEXTURES = CONSUMER_CONTRACT_CANDIDATE
+NEW_GAME_IMAGE_GENERATION = PAUSED
 PRODUCT_TDD_RED_GREEN = NOT_RUN
-MOBILE_30S_VISUAL_REVIEW = NOT_RUN
-MOBILE_5M_VISUAL_REVIEW = NOT_RUN
-HUMAN_RUNTIME_STYLE_APPROVAL = NOT_RUN
+HANDPAINTED_3D_RUNTIME_SLICE = NOT_RUN
 REAL_DEVICE_TOUCH_QA = NOT_RUN
 ```
