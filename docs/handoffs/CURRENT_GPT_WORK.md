@@ -47,6 +47,16 @@ The three cushion files and one Bright Boat postcard file are the only active re
 
 Dawn/Sunset postcard sources are P2 reuse candidates, not active required files.
 
+## Cross-session source access fallback
+
+The approved source images were generated in an earlier chat. Their source records, hashes, generation locators and detailed visual fingerprints are durable, but **the original chat binary itself is not assumed to be accessible in GPT Work**.
+
+If GPT Work can access an approved source binary/preview, use it as `REUSE_WITH_EDIT` reference.
+
+If it cannot, do **not** claim the source was viewed and do not block the work solely on that missing chat attachment. Re-create the runtime asset from the approved motif/composition fingerprint in the detailed handoff + Notion source record, preserve the recorded identity constraints, and obtain explicit user approval of the new final runtime file before `IMPLEMENTATION_READY`.
+
+The old hash/gen_id are provenance for the approved source, not proof that the new Work result is identical. Record a new hash/provenance for every final runtime file.
+
 ## Role boundary
 
 GPT Work owns:
