@@ -40,16 +40,16 @@
 - soft sea + readable UI
 - `CHORES / FARMING / FOMO` 보호선
 
-## 6단계: Resting Core Technical Prototype — 완료 / Human 품질 미검증
+## 6단계: Resting Core Authored Ocean Candidate — 구현 / Human 품질 미검증
 
 - persistent `RestingSoundscape`
-- generated technical OceanBed
+- 16초 stereo authored OceanBed
 - soft ocean/light/mood-sky ceiling
 - `RestingPetPlaceholder` 저밀도 idle
 
-`TECH_RESTING_CORE = PASS`
+`AUTHORED_OCEAN_BED_RUNTIME = PASS`
 
-`AUDIO_REST_PASS / VISUAL_REST_PASS / PET_REST_PASS = NOT_RUN`
+`AUDIO_REST_HUMAN_LISTENING / VISUAL_REST_PASS / PET_REST_PASS = NOT_RUN`
 
 ## 7단계: Bondee Diorama + Delayed Bottle Architecture — 설계/계획 완료
 
