@@ -76,6 +76,7 @@ func _build_visual(shape: String) -> void:
 	var mesh_instance := MeshInstance3D.new()
 	mesh_instance.name = "TechnicalDecorVisual"
 	var material := StandardMaterial3D.new()
+	material.metallic = 0.0
 	material.roughness = 0.88
 
 	match shape:
@@ -141,6 +142,7 @@ func _add_postcard_front_face(postcard_body: MeshInstance3D) -> void:
 	face.mesh = mesh
 	face.position.z = 0.018
 	var material := StandardMaterial3D.new()
+	material.metallic = 0.0
 	material.roughness = 0.88
 	material.albedo_color = Color.WHITE
 	_apply_texture_if_available(material, _visual_assets.get_postcard_texture_path())
