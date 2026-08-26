@@ -3,7 +3,7 @@ extends SceneTree
 
 const EVIDENCE_DIRECTORY := "res://docs/evidence/2026-08-27-four-time-atmosphere"
 const IDENTITY_TEST_SAVE_PATH := "user://capture_four_time_identity.cfg"
-const TIME_OF_DAY_IDS: Array[String] = ["dawn", "bright", "sunset", "night"]
+const TIME_OF_DAY_CATALOG_SCRIPT = preload("res://scripts/voyage/time_of_day_catalog.gd")
 
 
 func _init() -> void:
@@ -23,7 +23,8 @@ func _capture() -> void:
 	game_state.set_identity_storage_path(IDENTITY_TEST_SAVE_PATH)
 	game_state.set_selected_player_style("c_loose_knit")
 	game_state.set_selected_pet_type("dog")
-	for time_of_day_id in TIME_OF_DAY_IDS:
+	var time_of_day_catalog = TIME_OF_DAY_CATALOG_SCRIPT.new()
+	for time_of_day_id in time_of_day_catalog.get_time_of_day_ids():
 		if not await _capture_pair(game_state, time_of_day_id):
 			_restore_identity_storage(game_state)
 			return
@@ -97,4 +98,3 @@ func _restore_identity_storage(game_state: Node) -> void:
 func _fail(message: String) -> void:
 	printerr("FAILED: %s" % message)
 	quit(1)
-

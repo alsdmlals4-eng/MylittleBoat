@@ -2,6 +2,7 @@
 extends SceneTree
 
 const CATALOG_PATH := "res://scripts/voyage/time_of_day_catalog.gd"
+const CAPTURE_PATH := "res://tests/capture_four_time_atmosphere.gd"
 
 var _failures := 0
 
@@ -31,8 +32,14 @@ func _run() -> void:
 			_expect(game_state.get_selected_time_of_day() == "sunset", "valid time must remain selected")
 			_expect(game_state.selected_mood == before_mood, "time selection must not change mood")
 			_expect(game_state.companion_affection == before_affection and game_state.photos.size() == before_photos, "time selection must not create progression")
-			game_state.select_time_of_day("invalid")
-			_expect(game_state.get_selected_time_of_day() == "bright", "invalid GameState value must normalize to Bright")
+		game_state.select_time_of_day("invalid")
+		_expect(game_state.get_selected_time_of_day() == "bright", "invalid GameState value must normalize to Bright")
+		game_state.selected_time_of_day = "corrupt"
+		_expect(game_state.get_selected_time_of_day() == "bright", "corrupt public GameState value must read as Bright")
+		game_state.select_time_of_day("bright")
+	var capture_source := FileAccess.get_file_as_string(CAPTURE_PATH)
+	_expect(capture_source.contains("get_time_of_day_ids"), "capture must use the catalog time ID source")
+	_expect(not capture_source.contains("const TIME_OF_DAY_IDS"), "capture must not duplicate approved time IDs")
 	_finish()
 
 
@@ -50,4 +57,3 @@ func _finish() -> void:
 	else:
 		printerr("FAILED: %d time-of-day assertions" % _failures)
 		quit(1)
-

@@ -56,7 +56,7 @@ func select_time_of_day(value: String) -> void:
 
 ## Returns the current process-lifetime visual atmosphere selection.
 func get_selected_time_of_day() -> String:
-	return selected_time_of_day
+	return _time_of_day_catalog.normalize_time_of_day(selected_time_of_day)
 
 
 ## Starts a fresh five-minute voyage while preserving accumulated memories and boat decoration.
