@@ -53,4 +53,3 @@ func _finish() -> void:
 	else:
 		printerr("FAILED: %d main menu time-of-day assertions" % _failures)
 		quit(1)
-

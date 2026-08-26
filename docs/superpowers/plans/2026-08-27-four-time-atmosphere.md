@@ -193,4 +193,3 @@ State `FOUR_TIME_ATMOSPHERE_AUTOMATED = PASS`, `FOUR_TIME_RUNTIME_CAPTURE = PASS
 git add tests/capture_four_time_atmosphere.gd docs/evidence/2026-08-27-four-time-atmosphere docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md docs/GODOT_MVP_ROADMAP.md README.md
 git commit -m "Document four-time atmosphere evidence"
 ```
-

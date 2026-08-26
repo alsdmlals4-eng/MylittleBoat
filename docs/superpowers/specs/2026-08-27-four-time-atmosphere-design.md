@@ -109,4 +109,3 @@ All values are implementation-level, deliberately restrained candidates rather t
 Run Godot import, the new focused contracts, all existing contracts, and Main Menu/Game scene smokes. Capture the same scene in each time/camera pair after automated setup. No manual phone check is required in this slice.
 
 Rollback is one current-task PR revert: remove the catalog, menu selector, GameState selection, visual application, tests, captures, and status documentation. Existing Bright art remains untouched.
-

@@ -81,4 +81,3 @@ func _finish() -> void:
 	else:
 		printerr("FAILED: %d game scene time-of-day assertions" % _failures)
 		quit(1)
-
