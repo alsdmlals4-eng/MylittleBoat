@@ -1,147 +1,126 @@
 # Current Planning & Visual Work
 
-> Stable current-work router for `MY_LITTLE_BOAT` image production.
+> Stable current-work router for `MY_LITTLE_BOAT` game-consumable image production.
 
 ## Current task
 
 ```yaml
 project: MY_LITTLE_BOAT
-mode: GPT_GAME_IMAGE_CONSUMER_PLANNING
-current_goal: DEFINE_REAL_GAME_IMAGE_CONSUMERS_BEFORE_GENERATION
+mode: GPT_REMAINING_IMAGE_GOALS
 current_owner: GPT_NONCODING_PLANNING_VISUAL_OWNER
-concurrent_pr_19: READ_ONLY_NO_ABSORPTION
 policy: CONSUMER_FIRST_ASSET
-image_generation: PAUSED_UNTIL_CONSUMER_READY
-status: CONSUMER_MANIFEST_IN_PROGRESS
+current_goal: REVIEW_AND_COMPLETE_ACTIVE_IMAGE_GOALS_BEFORE_CODEX
+status: GOAL_QUEUE_READY_FOR_USER_REVIEW
+concurrent_pr_19: READ_ONLY_NO_ABSORPTION
+codex_product_build: HOLD_UNTIL_ACTIVE_IMAGES_IMPLEMENTATION_READY
 ```
 
-The user explicitly corrected the image-production rule:
+Latest user pipeline is binding:
 
-> Create images only when they have a real game consumer. Do not create explanatory sheets as deliverables.
+```text
+current canon/runtime audit
+→ existing image inventory + reuse check
+→ consumer gap analysis
+→ Remaining Image Goals
+→ user review/approval
+→ GPT image production
+→ Notion registration
+→ Codex Integration Goals
+→ Codex implementation
+→ runtime screenshots/play verification
+```
 
-## Authority
+Do not ask Codex to create images. Do not require Codex to create an image consumer before GPT image production when the consumer contract can already be defined safely from approved product semantics.
 
-Human/product authority:
+## Current authority/support
+
+Human canon:
 - Notion Human Home: `3c41b237-eb1c-8194-8b8e-d88362cafafa`
 - Notion Visual Bible: `3c11b237-eb1c-81ae-97f3-dc28a0905304`
 - Notion Asset Library: `3c11b237-eb1c-8120-b7db-d48e11756146`
 - Notion Visual Production Checklist: `3c81b237-eb1c-810c-b3f8-fce023a453cb`
+- Notion Game Image Blueprint: `3c81b237-eb1c-81dd-bc85-d0eb927671c8`
 
-Repository authority/support:
-- consumer manifest: `docs/visual/2026-08-26-game-image-consumer-manifest.md`
-- approved Image A customization decision: `docs/visual/2026-08-26-image-a-customization-decision.md`
-- paused Godot handoff: `docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md`
+Repository planning:
+- remaining image goal queue: `docs/visual/2026-08-26-remaining-image-goals.md`
+- consumer audit/manifest: `docs/visual/2026-08-26-game-image-consumer-manifest.md`
+- Codex integration goal queue: `docs/handoffs/2026-08-26-image-codex-integration-goals.md`
+- downstream Godot router: `docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md`
 
-## Reference images already approved
+## Current image state
 
-The following are preserved as planning references, but are **not counted as runtime image assets**:
+```text
+APPROVED_REFERENCE_VISUALS = 4
+APPROVED_MOTIF_SOURCE_IMAGES = 6
+IMPLEMENTATION_READY_IMAGE_ASSETS = 0
+IMPLEMENTED_IMAGE_ASSETS = 0
+RUNTIME_VERIFIED_IMAGE_ASSETS = 0
+P0_AUTHORED_IMAGE_GOALS = 0
+ACTIVE_P1_IMAGE_GOALS = 2
+```
 
+Approved references retained but not runtime assets:
 - Visual Proof 01
 - Visual Proof 02
 - Image A — Player + Pet Customization Board
 - Image B — Boat / Sea / Four-Time Atmosphere Board
 
-`Image C / Representative Visual GDD` is cancelled as a required image deliverable.
+The six approved cushion/postcard generated images preserve approved motif/color/composition decisions, but their current presentation-render form is not a production albedo/face asset. They are `NEEDS_REVISION` for runtime use.
 
-## Current-main runtime audit
+## Active Image Goal Queue
 
-Current main currently has no production image consumer:
+### IMG-01 — Pet Cushion Runtime Surface Set · P1
+
+Produce exactly three flat surface files from the approved motifs:
 
 ```text
-assets/images = README only
-.png references = 0 observed
-albedo_texture references = 0 observed
-Main Menu = ColorRect background
-Album = ColorRect background
-Boat/Avatar/Pet = primitive mesh + color-only StandardMaterial3D
-Decor = primitive mesh + albedo_color construction
+cushion_stripe.png
+cushion_moon.png
+cushion_floral.png
 ```
 
-Therefore:
+They must not contain rendered cushion geometry, rim, drop shadow, tuft depth or baked directional lighting.
+
+### IMG-02 — Postcard Memory Face Set · P1
+
+Produce exactly three normalized 4:3 postcard face files from the approved compositions:
 
 ```text
-CURRENT_RUNTIME_IMAGE_CONSUMERS = 0
+postcard_dawn.png
+postcard_boat_bright.png
+postcard_boat_sunset.png
 ```
 
-Do not generate another gameplay image until a concrete consumer contract is ready.
+They must not contain external presentation canvas/drop shadow around the intended card face.
 
-## Consumer-first rule
+## Explicit non-goals / deferred
 
-Every generated game image must have all six before generation:
+Do not create now:
+- Main Menu static background — current ColorRect is sufficient; a static image would invent a new consumer and may diverge from the actual 3D game.
+- Album authored screenshots — eventual photos should be runtime captures.
+- fake 2D character/pet portraits — selection thumbnails should derive from the real 3D assets.
+- exact character/pet/boat UV sheets — blocked until production geometry/consumer exists.
+- sky/sea bitmaps — conditional on actual material/shader technique; prefer simple color/light/procedural route.
+- UI icon pack — current text controls work; only reopen after a binding icon consumer/polish need.
+- release/store art — P3 and platform/branding dependent.
 
-```text
-asset_path
-consumer
-runtime_role
-spec
-fallback
-validation
-```
+## After user approves this queue
 
-A generated image is DONE only after the intended Godot consumer actually loads it and it is visible in runtime evidence.
-
-## First candidate consumers
-
-### Pet cushion textures
+Proceed in order:
 
 ```text
-item_id = pet_cushion
-intended consumer = Boat Decoration pet cushion material
-intended property = StandardMaterial3D.albedo_texture
-runtime role = player-visible cushion appearance customization
-```
-
-This is the strongest first candidate because the user already approved pet cushion customization and the stable item id already exists.
-
-### Postcard textures
-
-```text
-item_id = postcard
-intended consumer = Boat Decoration postcard material
-intended property = StandardMaterial3D.albedo_texture
-runtime role = authored personal/memory image on placed postcard decor
-```
-
-This is also strong because the item id already exists and the visual surface is naturally image-driven.
-
-## Deferred until consumer exists
-
-Do not generate these yet:
-
-- character/pet albedo textures — blocked by production mesh + UV;
-- boat/general decor textures — blocked by production mesh + UV unless current primitives are deliberately retained;
-- sky/time-of-day bitmaps — only if Environment adopts a panorama/sky texture consumer;
-- sea normal/noise maps — only if the sea material/shader actually samples them;
-- UI icons — only after a TextureButton/TextureRect/theme-icon consumer is approved;
-- main-menu/album backgrounds — current screens use ColorRect, so no image is needed now.
-
-## Runtime-generated images
-
-- Album/voyage photos should come from actual runtime capture, not authored concept art.
-- Character/pet selection thumbnails should preferably derive from the real production 3D assets so the thumbnail matches what the player receives.
-
-## Current next work
-
-```text
-1. Freeze explanatory-image production.
-2. Complete the game image consumer manifest.
-3. Promote only one small consumer batch to READY_TO_GENERATE.
-4. Recommended first batch: pet cushion textures + postcard textures.
-5. Define exact file path, size, alpha/color-space/import behavior and runtime consumer.
-6. Only then generate those image assets.
-7. Godot product owner wires them and proves exact-file runtime consumption.
+IMG-01 text contract → generate/edit → review → user approval → Notion registration
+IMG-02 text contract → generate/edit → review → user approval → Notion registration
+then update downstream handoff to READY_FOR_CODEX_IMAGE_INTEGRATION
 ```
 
 ## Evidence ceiling
 
 ```text
-CONSUMER_FIRST_ASSET_POLICY = ACTIVE
-REFERENCE_IMAGES = APPROVED_BUT_NOT_RUNTIME_ASSETS
-IMAGE_C_REPRESENTATIVE_VISUAL_GDD = CANCELLED
-CURRENT_RUNTIME_IMAGE_CONSUMERS = 0
-PET_CUSHION_TEXTURES = CONSUMER_CONTRACT_CANDIDATE
-POSTCARD_TEXTURES = CONSUMER_CONTRACT_CANDIDATE
-NEW_GAME_IMAGE_GENERATION = PAUSED
-HANDPAINTED_3D_RUNTIME_SLICE = NOT_RUN
-REAL_DEVICE_QA = NOT_RUN
+GOAL_QUEUE = READY_FOR_USER_REVIEW
+NEW_IMAGE_GENERATION_FOR_GOALS = NOT_RUN
+CODEX_IMAGE_INTEGRATION = NOT_RUN
+GODOT_RUNTIME = NOT_RUN
+MOBILE_30S_REVIEW = NOT_RUN
+MOBILE_5M_REVIEW = NOT_RUN
 ```
