@@ -32,3 +32,6 @@ exports/
 
 # Local asset vault
 .asset-vault/
+
+# Isolated local agent workspaces
+.worktrees/
