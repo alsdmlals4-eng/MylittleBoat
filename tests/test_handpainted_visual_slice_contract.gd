@@ -24,6 +24,18 @@ func _run() -> void:
 	_expect(avatar != null and avatar.get_node_or_null("VisualStudy") != null, "avatar needs VisualStudy")
 	_expect(pet != null and pet.get_node_or_null("VisualStudy") != null, "pet needs VisualStudy")
 	_expect(boat != null and boat.get_node_or_null("VisualStudy") != null, "boat needs VisualStudy")
+	var c_default := avatar.get_node_or_null("VisualStudy/StorybookCDefault") as Node3D if avatar != null else null
+	var dog_default := pet.get_node_or_null("VisualStudy/StorybookDogDefault") as Node3D if pet != null else null
+	var hull_pass := boat.get_node_or_null("VisualStudy/StorybookHullPass") as Node3D if boat != null else null
+	_expect(c_default != null, "avatar needs StorybookCDefault")
+	_expect(dog_default != null, "pet needs StorybookDogDefault")
+	_expect(hull_pass != null, "boat needs StorybookHullPass")
+	if c_default != null:
+		for node_name in ["HairMass", "KnitMass", "SkirtMass", "LeftBoot", "RightBoot", "Pendant"]:
+			_expect(c_default.get_node_or_null(node_name) is MeshInstance3D, "C default missing %s" % node_name)
+	if dog_default != null:
+		for node_name in ["DogBody", "DogHead", "LeftEar", "RightEar"]:
+			_expect(dog_default.get_node_or_null(node_name) is MeshInstance3D, "dog default missing %s" % node_name)
 	if avatar != null:
 		_expect(avatar.has_method("is_technical_placeholder"), "avatar keeps placeholder evidence API")
 		if avatar.has_method("is_technical_placeholder"):
