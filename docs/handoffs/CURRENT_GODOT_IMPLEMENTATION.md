@@ -153,6 +153,11 @@ IDENTITY_AUTOMATED_CONTRACTS = PASS
 IDENTITY_RUNTIME_CAPTURE = PASS
 IDENTITY_REAL_DEVICE_MOBILE_QA = DEFERRED
 REAL_DEVICE_TOUCH_QA = NOT_RUN
+FOUR_TIME_ATMOSPHERE = IMPLEMENTED_CURRENT_TASK_PR_PENDING
+FOUR_TIME_ATMOSPHERE_AUTOMATED = PASS
+FOUR_TIME_RUNTIME_CAPTURE = PASS
+FOUR_TIME_REAL_DEVICE_MOBILE_QA = DEFERRED
+FOUR_TIME_HUMAN_COMFORT_REVIEW = NOT_RUN
 ```
 
 ## Current implementation packet
@@ -168,3 +173,4 @@ REAL_DEVICE_TOUCH_QA = NOT_RUN
 - `BoatDecorPersistence` stores only cosmetic `boat_decor` and `boat_decor_appearances` in `user://boat_decor_v1.cfg`. The service handles missing or wrong-typed data as an empty boat; no voyage, reward, affection, memory, camera, or social state is persisted. Automated local restore proof passes, while real-device QA remains deferred by user.
 - `RestingSoundscape` now owns a 16-second stereo authored `OceanBed` runtime candidate at a conservative -18 dB. It preserves the wave-first layer priority and does not alter voyage, reward, camera, or social state. Automated loop wiring passes; human headset/speaker/mobile listening remains `NOT_RUN`.
 - Runtime identity selection is local-first: the main-menu `내 모습과 동반자` panel stores one approved player ID and one pet ID only in `user://identity_profile_v1.cfg`. C knit + dog preserves `FinalDioramaCard` unchanged; all other pairs use the shared boat/sea pass plus exactly one selected player card and one selected pet card. Five new 1024×1024 transparent runtime cards are individually registered in Notion Asset Library with SHA-256/provenance/durable repo locators. Normal and Appreciation GPU runtime captures for C+dog and B+otter are stored at `docs/evidence/2026-08-27-runtime-identity-selection/`. User mobile touch QA remains deferred.
+- The four-time atmosphere layer is a process-lifetime pre-voyage choice only: Dawn / Bright / Sunset / Night apply the approved restrained environment, key-light, and shared backdrop modulation to the same scene. Bright preserves the approved Bright sea art; no image binary, map, shader, audio, timer, reward, identity, decor, social, or postcard-variant behavior was added. Eight OpenGL 540×960 Normal/Appreciation captures and hashes are at `docs/evidence/2026-08-27-four-time-atmosphere/`. Human comfort and real-device mobile QA remain deferred.

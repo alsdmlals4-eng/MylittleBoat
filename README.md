@@ -54,6 +54,12 @@
 - 기본 조합은 승인된 C 니트·긴 머리 + 강아지이며, 기존 최종 디오라마 합성 이미지를 그대로 사용합니다.
 - 선택은 기기 로컬 `user://identity_profile_v1.cfg`에만 저장되며 보트 꾸미기 저장과 분리됩니다.
 
+### 오늘의 빛
+
+- 메인 메뉴에서 새벽·밝음·해질녘·밤 중 다음 항해의 빛을 고릅니다. 기본값은 밝음입니다.
+- 선택은 같은 보트·바다·수평선·주인공·동반자·카메라를 유지한 채 환경광·키라이트·바다 배경의 절제된 색만 바꿉니다.
+- 시간, 보상, 친밀도, 낚시, 발견, 꾸미기, 소셜, 저장 상태에는 영향을 주지 않습니다. 앱 재시작 뒤에도 선택을 보존하지 않습니다.
+
 ### Local Boat Decoration + Low-pressure Interaction
 
 `BoatSpace`가 BoatBow / Avatar / Pet / Rail / DecorSlots를 함께 소유하며 drift bob을 한 번만 받습니다.
@@ -207,6 +213,7 @@ headless project import
 → approved runtime image assets
 → local cosmetic identity profile and visual route
 → main-menu cosmetic selector
+→ four-time atmosphere catalog / menu selector / shared game-scene application
 → main menu / game / album Scene smoke
 ```
 
@@ -220,7 +227,7 @@ headless project import
 2. **Human visual validation** — 현재 사용자 결정 게이트. 540×960에서 30초/5분, Normal/Appreciation, bob/idle motion을 보고 `CALM / EMPTY / NOISY`, sea-first hierarchy, visual fatigue를 판단합니다. 실제 기기 터치 검증은 사용자의 요청에 따라 뒤로 미룹니다.
 3. **PR #19 Social Fake Backend** — 별도 독립 workstream으로 OPEN / READ_ONLY / NO ABSORPTION입니다. 현재 visual workstream에서 rebase·merge·수정하지 않으며, social 작업을 명시적으로 재개할 때 latest `main`과 다시 reconcile합니다.
 4. **Supabase/Auth/RLS/Moderation/Real Delayed Bottle** — Social Fake 계약이 current main에 안전하게 정합된 뒤 별도 보안·계정·release gate로 진행합니다.
-5. **Production audio / four time-of-day layer / final avatar·pet·boat·decor assets** — First Production Visual Slice의 runtime/Human evidence를 보고 제작 순서를 다시 계산합니다.
+5. **Production audio / final avatar·pet·boat·decor assets** — First Production Visual Slice와 four-time atmosphere의 runtime evidence를 보고 제작 순서를 다시 계산합니다.
 
 현재 Godot 제품 구현의 **첫 진입점**:
 
