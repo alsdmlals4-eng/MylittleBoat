@@ -182,10 +182,17 @@ HANDPAINTED_STORYBOOK_3D_DIORAMA approved canon
 - existing sea/sky/light treatment.
 - custom watercolor shader, broad asset replacement, four-state time behavior는 이번 Slice에서 제외.
 
-실행 계약:
+현재 실제 Godot 제품 구현의 **첫 진입점**:
+
+- `docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md` — current Goal/보호 범위/evidence ceiling과 Codex 구현 방법 자율성의 stable router.
+
+Supporting planning artifacts:
 
 - `docs/superpowers/plans/2026-08-26-first-production-visual-slice.md`
 - `docs/handoffs/2026-08-26-first-production-visual-slice-codex.md`
+- `docs/research/2026-08-26-first-production-visual-slice-benchmark-evidence.md`
+
+v1 plan/handoff의 정확한 Node 이름·테스트 형태는 planning example이며 current router의 outcome/acceptance/protected semantics가 우선합니다.
 
 증거 ceiling:
 
