@@ -1,13 +1,13 @@
 # Current Godot Product Implementation
 
-> **READY FOR CODEX IMAGE INTEGRATION.** Start with a fresh read of completed `main`, Project Notion, this router, and the current Godot project. The approved image files below may now enter CODEX-IMG-01/02 only; their runtime proof remains Codex work.
+> **CODEX IMAGE INTEGRATION COMPLETE.** The four approved runtime images are merged into `main`, have passed GitHub Godot validation, and retain user-approved 540×960 runtime proof. Begin a new product slice only after a fresh read of completed `main`, Project Notion, and this router.
 
 ## Current state
 
 ```yaml
 project: MY_LITTLE_BOAT
 mode: CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF
-status: CODEX_IMAGE_RUNTIME_VERIFIED_COMMITTED_AWAITING_MERGE_DECISION
+status: CODEX_IMAGE_INTEGRATION_COMPLETE_MERGED_MAIN
 current_work_router: docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md
 image_goal_source: docs/visual/2026-08-26-remaining-image-goals.md
 codex_image_goal_source: docs/handoffs/2026-08-26-image-codex-integration-goals.md
@@ -36,7 +36,7 @@ USER_APPROVED_IMAGE_GOALS
 
 Codex does not create/edit images and does not start CODEX-IMG-01/02 before their required files are `IMPLEMENTATION_READY` with Notion readback.
 
-## Active image integration goals implemented, awaiting visual proof
+## Completed image integration goals
 
 ### CODEX-IMG-01 — Pet Cushion Runtime Surface Integration
 
@@ -133,11 +133,12 @@ IMG_02_FINAL_FILES = 1 / 1 IMPLEMENTATION_READY
 IMG_01_NOTION_READBACK = PASS
 IMG_02_NOTION_READBACK = PASS
 DURABLE_BINARY_LOCATORS = PASS
-CODEX_IMG_01 = RUNTIME_VERIFIED_USER_APPROVED_COMMITTED_AWAITING_MERGE_DECISION
-CODEX_IMG_02 = RUNTIME_VERIFIED_USER_APPROVED_COMMITTED_AWAITING_MERGE_DECISION
+CODEX_IMG_01 = RUNTIME_VERIFIED_USER_APPROVED_MERGED_MAIN
+CODEX_IMG_02 = RUNTIME_VERIFIED_USER_APPROVED_MERGED_MAIN
 CODEX_LOCAL_WIRING_ASSETS = 4
-IMPLEMENTED_IMAGE_ASSETS = 4_COMMITTED_PENDING_MERGE
+IMPLEMENTED_IMAGE_ASSETS = 4_MERGED_MAIN
 RUNTIME_VERIFIED_IMAGE_ASSETS = 4
+CI = GODOT_4_7_VALIDATION_PASS_RUN_155
 HANDPAINTED_3D_RUNTIME_SLICE = RUNTIME_PROOF_USER_APPROVED
 REAL_DEVICE_TOUCH_QA = NOT_RUN
 ```
@@ -148,4 +149,4 @@ REAL_DEVICE_TOUCH_QA = NOT_RUN
 - `pet_cushion` keeps its existing base item ID and has only `stripe`, `moon`, and `floral` cosmetic appearances.
 - `postcard` keeps one default Bright Boat front face and no appearance selector or new collection/progression state.
 - `tests/test_runtime_image_asset_contract.gd` proves exact runtime texture paths, material consumers, fallback behavior, and core-state isolation.
-- Headless import, all 12 contracts, and all three scene smokes passed. Live 540×960 captures exist for Stripe, Moon, Floral, and Bright Boat postcard at `docs/evidence/2026-08-26-runtime-image-integration/`; editor diagnostics report 0 errors and the user approved the runtime review. The scoped integration is committed on `codex/runtime-image-integration`; `IMPLEMENTED` remains pending a deliberate merge decision.
+- Headless import, all 12 contracts, and all three scene smokes passed. Live 540×960 captures exist for Stripe, Moon, Floral, and Bright Boat postcard at `docs/evidence/2026-08-26-runtime-image-integration/`; editor diagnostics report 0 errors and the user approved the runtime review. The scoped integration is merged to `main` through PR #34 at merge commit `647e403bba4b9a537052d16963b469be10236be4`; GitHub Actions Godot 4.7 validation run #155 passed.
