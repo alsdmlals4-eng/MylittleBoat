@@ -1,22 +1,22 @@
 # Current Planning & Visual Work
 
-> Stable router for the current `MY_LITTLE_BOAT` noncoding visual phase. The active executor is GPT Work. Start with `docs/handoffs/CURRENT_GPT_WORK.md`.
+> The approved noncoding image-production phase is complete. Continue with Codex image integration through `docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md`.
 
 ## Current state
 
 ```yaml
 project: MY_LITTLE_BOAT
-mode: GPT_WORK_IMAGE_PRODUCTION
-current_owner: GPT_WORK_NONCODING_VISUAL_OWNER
+mode: GPT_WORK_IMAGE_PRODUCTION_CLOSEOUT
+current_owner: CODEX_GODOT_PRODUCT_IMPLEMENTATION_OWNER
 policy: CONSUMER_FIRST_ASSET
-status: HANDOFF_READY_FOR_GPT_WORK
-current_work_router: docs/handoffs/CURRENT_GPT_WORK.md
+status: COMPLETE_READY_FOR_CODEX_IMAGE_INTEGRATION
+current_work_router: docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md
 handoff_packet: docs/handoffs/2026-08-26-gpt-work-image-production-handoff.md
 concurrent_pr_19: READ_ONLY_NO_ABSORPTION
-codex_product_build: HOLD_UNTIL_ACTIVE_IMAGES_IMPLEMENTATION_READY
+codex_product_build: IMAGE_INTEGRATION_READY
 ```
 
-The Remaining Image Goal Queue has been reviewed by the user and is approved for execution in GPT Work.
+The four required runtime files have user approval, Asset Library readback, and durable binary locator PASS. GPT Work made no Godot Scene, Resource, or GDScript product change.
 
 ## Active image queue
 
@@ -30,7 +30,7 @@ IMG-02 / P1 — Default Postcard Memory Face
 - postcard_boat_bright.png
 ```
 
-Required count before Codex: **4 implementation-ready runtime image files**.
+Required count before Codex: **4 implementation-ready runtime image files**. This requirement is met.
 
 Dawn/Sunset postcard source compositions remain P2 reuse candidates. They are not active required files and must not trigger a new postcard-variant system.
 
@@ -63,22 +63,24 @@ CODEX_ROUTER = READY_FOR_CODEX_IMAGE_INTEGRATION
 GODOT_PRODUCT_CHANGES_BY_GPT_WORK = 0
 ```
 
-Until that gate is satisfied:
+The gate is satisfied. Codex must still perform import, wiring, and runtime proof; GPT Work must not do those tasks.
 
-- do not start Godot product implementation;
-- do not claim runtime verification;
-- do not generate deferred image categories merely because they are possible;
+Until Codex has performed that downstream work, GPT Work must:
+
+- not start Godot product implementation;
+- not claim runtime verification;
+- not generate deferred image categories merely because they are possible;
 - keep PR #19 isolated.
 
-## Evidence ceiling at handoff
+## Evidence ceiling at Codex handoff
 
 ```text
 GOAL_QUEUE = USER_APPROVED
 ACTIVE_P1_REQUIRED_FILES = 4
-IMPLEMENTATION_READY_IMAGE_ASSETS = 0
+IMPLEMENTATION_READY_IMAGE_ASSETS = 4
 IMPLEMENTED_IMAGE_ASSETS = 0
 RUNTIME_VERIFIED_IMAGE_ASSETS = 0
-GPT_WORK_IMAGE_PRODUCTION = NOT_RUN
-CODEX_IMAGE_INTEGRATION = NOT_RUN
+GPT_WORK_IMAGE_PRODUCTION = COMPLETE
+CODEX_IMAGE_INTEGRATION = READY_TO_START
 GODOT_RUNTIME = NOT_RUN
 ```

@@ -3,6 +3,7 @@ extends Control
 
 const FISHING_SESSION_SCRIPT = preload("res://scripts/voyage/fishing_session.gd")
 const DECOR_CATALOG_SCRIPT = preload("res://scripts/decor/boat_decor_catalog.gd")
+const DECOR_VISUAL_ASSETS_SCRIPT = preload("res://scripts/decor/decor_visual_assets.gd")
 
 const SPEED_NAMES: Array[String] = ["느림", "보통", "빠름"]
 const SPEED_MULTIPLIERS: Array[float] = [0.65, 1.0, 1.45]
@@ -39,6 +40,7 @@ const FISHING_WAIT_MAX_SECONDS := 12.0
 
 var _fishing_session = FISHING_SESSION_SCRIPT.new()
 var _decor_catalog = DECOR_CATALOG_SCRIPT.new()
+var _decor_visual_assets = DECOR_VISUAL_ASSETS_SCRIPT.new()
 var _discovery_wait_remaining := 0.0
 var _discovery_offer_remaining := 0.0
 var _drift_phase := 0.0
@@ -63,6 +65,7 @@ func _ready() -> void:
 	%DecorButton.pressed.connect(_open_decor_panel)
 	%InteractButton.pressed.connect(_open_interaction_panel)
 	%DecorSlotOption.item_selected.connect(_on_decor_slot_selected)
+	%DecorItemOption.item_selected.connect(_on_decor_item_selected)
 	%DecorApplyButton.pressed.connect(_apply_selected_decor)
 	%DecorClearButton.pressed.connect(_clear_selected_decor)
 	%DecorCloseButton.pressed.connect(_close_decor_panel)
@@ -134,15 +137,19 @@ func _apply_camera_mode() -> void:
 	$VoyageWorld/AppreciationCameraRig/AppreciationCamera3D.current = GameState.appreciation_mode
 
 
-func apply_boat_decor(slot_id: String, item_id: String) -> bool:
+func apply_boat_decor(slot_id: String, item_id: String, appearance_id: String = "") -> bool:
 	if not _decor_catalog.is_compatible(slot_id, item_id):
 		return false
 	var slot: Node = _get_decor_slot(slot_id)
 	if slot == null or not slot.has_method("apply_item"):
 		return false
-	if not bool(slot.call("apply_item", item_id)):
+	if not bool(slot.call("apply_item", item_id, appearance_id)):
 		return false
 	GameState.set_boat_decor(slot_id, item_id)
+	if item_id == "pet_cushion" and slot.has_method("get_appearance_id"):
+		GameState.set_boat_decor_appearance(slot_id, str(slot.call("get_appearance_id")))
+	else:
+		GameState.set_boat_decor_appearance(slot_id, "")
 	return true
 
 
@@ -158,7 +165,7 @@ func _apply_stored_boat_decor() -> void:
 		var item_id := GameState.get_boat_decor(slot_id)
 		if item_id == "":
 			clear_boat_decor(slot_id)
-		elif not apply_boat_decor(slot_id, item_id):
+		elif not apply_boat_decor(slot_id, item_id, GameState.get_boat_decor_appearance(slot_id)):
 			clear_boat_decor(slot_id)
 
 
@@ -182,6 +189,10 @@ func _on_decor_slot_selected(_index: int) -> void:
 	_refresh_decor_item_options()
 
 
+func _on_decor_item_selected(_index: int) -> void:
+	_refresh_decor_appearance_options()
+
+
 func _refresh_decor_item_options() -> void:
 	%DecorItemOption.clear()
 	var slot_id := _get_selected_metadata(%DecorSlotOption)
@@ -199,6 +210,27 @@ func _refresh_decor_item_options() -> void:
 			stored_index = index
 	if %DecorItemOption.item_count > 0:
 		%DecorItemOption.select(stored_index if stored_index >= 0 else 0)
+	_refresh_decor_appearance_options()
+
+
+func _refresh_decor_appearance_options() -> void:
+	%DecorAppearanceOption.clear()
+	var item_id := _get_selected_metadata(%DecorItemOption)
+	var slot_id := _get_selected_metadata(%DecorSlotOption)
+	var is_pet_cushion := item_id == "pet_cushion"
+	%DecorAppearanceOption.visible = is_pet_cushion
+	if not is_pet_cushion:
+		return
+	var stored_appearance := GameState.get_boat_decor_appearance(slot_id)
+	var selected_index := 0
+	for appearance_id in _decor_visual_assets.get_cushion_appearance_ids():
+		%DecorAppearanceOption.add_item(_decor_visual_assets.get_cushion_appearance_label(appearance_id))
+		var index: int = %DecorAppearanceOption.item_count - 1
+		%DecorAppearanceOption.set_item_metadata(index, appearance_id)
+		if appearance_id == stored_appearance:
+			selected_index = index
+	if %DecorAppearanceOption.item_count > 0:
+		%DecorAppearanceOption.select(selected_index)
 
 
 func _apply_selected_decor() -> void:
@@ -206,7 +238,8 @@ func _apply_selected_decor() -> void:
 	var item_id := _get_selected_metadata(%DecorItemOption)
 	if slot_id == "" or item_id == "":
 		return
-	if apply_boat_decor(slot_id, item_id):
+	var appearance_id := _get_selected_metadata(%DecorAppearanceOption) if item_id == "pet_cushion" else ""
+	if apply_boat_decor(slot_id, item_id, appearance_id):
 		var definition := _decor_catalog.get_item_definition(item_id)
 		_update_ui("%s에 %s을 조용히 놓았습니다." % [_decor_catalog.get_slot_label(slot_id), str(definition.get("label", item_id))])
 		_refresh_interaction_targets()

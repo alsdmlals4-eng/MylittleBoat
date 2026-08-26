@@ -1,19 +1,19 @@
 # Current Godot Product Implementation
 
-> **PAUSED DOWNSTREAM HANDOFF.** The active worker is GPT Work. Start current project continuation with `docs/handoffs/CURRENT_GPT_WORK.md`; do not begin Godot product implementation yet.
+> **READY FOR CODEX IMAGE INTEGRATION.** Start with a fresh read of completed `main`, Project Notion, this router, and the current Godot project. The approved image files below may now enter CODEX-IMG-01/02 only; their runtime proof remains Codex work.
 
 ## Current state
 
 ```yaml
 project: MY_LITTLE_BOAT
 mode: CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF
-status: PAUSED_DURING_GPT_WORK_IMAGE_PRODUCTION
-current_work_router: docs/handoffs/CURRENT_GPT_WORK.md
+status: CODEX_IMAGE_RUNTIME_VERIFIED_COMMITTED_AWAITING_MERGE_DECISION
+current_work_router: docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md
 image_goal_source: docs/visual/2026-08-26-remaining-image-goals.md
 codex_image_goal_source: docs/handoffs/2026-08-26-image-codex-integration-goals.md
 image_asset_policy: CONSUMER_FIRST_ASSET
 implementation_baseline: RESOLVE_CURRENT_COMPLETED_MAIN_AT_CODEX_START
-implementation_owner_after_unpause: CODEX_GODOT_PRODUCT_IMPLEMENTATION_OWNER
+implementation_owner: CODEX_GODOT_PRODUCT_IMPLEMENTATION_OWNER
 final_review_owner: GPT_FINAL_IMPLEMENTATION_REVIEW
 concurrent_pr_19: READ_ONLY_NO_ABSORPTION
 image_generation_by_codex: FORBIDDEN
@@ -36,7 +36,7 @@ USER_APPROVED_IMAGE_GOALS
 
 Codex does not create/edit images and does not start CODEX-IMG-01/02 before their required files are `IMPLEMENTATION_READY` with Notion readback.
 
-## Active image integration goals waiting downstream
+## Active image integration goals implemented, awaiting visual proof
 
 ### CODEX-IMG-01 — Pet Cushion Runtime Surface Integration
 
@@ -123,17 +123,29 @@ At Codex start, fresh-read current completed main, Project Notion, actual Godot 
 - local-first core;
 - PR #19 remains independent.
 
-## Evidence ceiling while paused
+## Current Codex evidence
 
 ```text
 IMAGE_GOAL_QUEUE = USER_APPROVED
-GPT_WORK_IMAGE_PRODUCTION = NEXT / NOT_RUN
-IMG_01_FINAL_FILES = 0 / 3 IMPLEMENTATION_READY
-IMG_02_FINAL_FILES = 0 / 1 IMPLEMENTATION_READY
-CODEX_IMG_01 = NOT_RUN
-CODEX_IMG_02 = NOT_RUN
-IMPLEMENTED_IMAGE_ASSETS = 0
-RUNTIME_VERIFIED_IMAGE_ASSETS = 0
-HANDPAINTED_3D_RUNTIME_SLICE = NOT_RUN
+GPT_WORK_IMAGE_PRODUCTION = COMPLETE
+IMG_01_FINAL_FILES = 3 / 3 IMPLEMENTATION_READY
+IMG_02_FINAL_FILES = 1 / 1 IMPLEMENTATION_READY
+IMG_01_NOTION_READBACK = PASS
+IMG_02_NOTION_READBACK = PASS
+DURABLE_BINARY_LOCATORS = PASS
+CODEX_IMG_01 = RUNTIME_VERIFIED_USER_APPROVED_COMMITTED_AWAITING_MERGE_DECISION
+CODEX_IMG_02 = RUNTIME_VERIFIED_USER_APPROVED_COMMITTED_AWAITING_MERGE_DECISION
+CODEX_LOCAL_WIRING_ASSETS = 4
+IMPLEMENTED_IMAGE_ASSETS = 4_COMMITTED_PENDING_MERGE
+RUNTIME_VERIFIED_IMAGE_ASSETS = 4
+HANDPAINTED_3D_RUNTIME_SLICE = RUNTIME_PROOF_USER_APPROVED
 REAL_DEVICE_TOUCH_QA = NOT_RUN
 ```
+
+## Current implementation packet
+
+- `scripts/decor/decor_visual_assets.gd` maps the three exact cushion textures and one exact Bright Boat postcard texture, with a missing-path neutral fallback.
+- `pet_cushion` keeps its existing base item ID and has only `stripe`, `moon`, and `floral` cosmetic appearances.
+- `postcard` keeps one default Bright Boat front face and no appearance selector or new collection/progression state.
+- `tests/test_runtime_image_asset_contract.gd` proves exact runtime texture paths, material consumers, fallback behavior, and core-state isolation.
+- Headless import, all 12 contracts, and all three scene smokes passed. Live 540×960 captures exist for Stripe, Moon, Floral, and Bright Boat postcard at `docs/evidence/2026-08-26-runtime-image-integration/`; editor diagnostics report 0 errors and the user approved the runtime review. The scoped integration is committed on `codex/runtime-image-integration`; `IMPLEMENTED` remains pending a deliberate merge decision.

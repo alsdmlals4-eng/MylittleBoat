@@ -1,35 +1,25 @@
-# Current GPT Work
+# Current GPT Work Closeout
 
-> Stable session handoff for the next GPT Work run. Re-resolve current completed `main` and Project Notion at start; this file is a router, not a second product canon.
+> The GPT Work image-production phase is closed. This file preserves its result; continue product work from `docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md`.
 
 ```yaml
 project: MY_LITTLE_BOAT
-mode: GPT_WORK_IMAGE_PRODUCTION
-status: READY_FOR_GPT_WORK_IMAGE_PRODUCTION
-current_owner: GPT_WORK_NONCODING_VISUAL_OWNER
+mode: GPT_WORK_IMAGE_PRODUCTION_CLOSEOUT
+status: COMPLETE_READY_FOR_CODEX_IMAGE_INTEGRATION
+current_owner: CODEX_GODOT_PRODUCT_IMPLEMENTATION_OWNER
 handoff_packet: docs/handoffs/2026-08-26-gpt-work-image-production-handoff.md
 image_goal_queue: docs/visual/2026-08-26-remaining-image-goals.md
 consumer_manifest: docs/visual/2026-08-26-game-image-consumer-manifest.md
 codex_integration_goals: docs/handoffs/2026-08-26-image-codex-integration-goals.md
-codex_product_build: HOLD_UNTIL_ACTIVE_IMAGES_IMPLEMENTATION_READY
+codex_product_build: IMAGE_INTEGRATION_READY
 concurrent_pr_19: READ_ONLY_NO_ABSORPTION
 ```
 
-## First action
+## Completion result
 
-Fresh-read:
+All four active files have user approval, Notion Asset Library registration/readback, a new SHA-256/provenance record, and a Codex-recoverable durable binary locator. Continue with a fresh read through `docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md`.
 
-1. project `AGENTS.md`;
-2. current completed `main`;
-3. this router;
-4. `docs/handoffs/2026-08-26-gpt-work-image-production-handoff.md`;
-5. Remaining Image Goals + consumer manifest;
-6. Notion Home / Game Image Blueprint / Visual Production Checklist / Visual Bible / Asset Library;
-7. open PRs and current image evidence.
-
-Then execute **IMG-01 Pet Cushion Runtime Surface Set** only.
-
-## Current active production queue
+## Closed production queue
 
 ```text
 IMG-01 / P1
@@ -43,23 +33,17 @@ IMG-02 / P1
 - postcard_boat_bright.png
 ```
 
-The three cushion files and one Bright Boat postcard file are the only active required image files before Codex unless the user explicitly changes scope.
+The three cushion files and one Bright Boat postcard file are the complete active set now ready for Codex integration.
 
 Dawn/Sunset postcard sources are P2 reuse candidates, not active required files.
 
-## Cross-session source access fallback
+## Source and provenance note
 
-The approved source images were generated in an earlier chat. Their source records, hashes, generation locators and detailed visual fingerprints are durable, but **the original chat binary itself is not assumed to be accessible in GPT Work**.
+The final files have their own hashes and provenance in individual Asset Library records. The prior Dawn/Sunset postcard sources remain P2 reuse candidates and are retained in the Reference/Draft archive only.
 
-If GPT Work can access an approved source binary/preview, use it as `REUSE_WITH_EDIT` reference.
+## Completed role boundary
 
-If it cannot, do **not** claim the source was viewed and do not block the work solely on that missing chat attachment. Re-create the runtime asset from the approved motif/composition fingerprint in the detailed handoff + Notion source record, preserve the recorded identity constraints, and obtain explicit user approval of the new final runtime file before `IMPLEMENTATION_READY`.
-
-The old hash/gen_id are provenance for the approved source, not proof that the new Work result is identical. Record a new hash/provenance for every final runtime file.
-
-## Role boundary
-
-GPT Work owns:
+GPT Work completed:
 
 - fresh-read/reconciliation;
 - image generation/editing;
@@ -69,7 +53,7 @@ GPT Work owns:
 - image-production documentation and handoff preparation;
 - final transition to Codex readiness after image closeout.
 
-GPT Work does **not** own:
+GPT Work did **not** perform:
 
 - Godot Scene/Resource/GDScript product implementation;
 - runtime wiring/import testing;
@@ -77,7 +61,7 @@ GPT Work does **not** own:
 - PR #19 changes;
 - speculative extra image production.
 
-## Completion gate for this Work phase
+## Completion gate result
 
 ```text
 IMG_01 = 3 IMPLEMENTATION_READY files + Notion readback PASS
@@ -88,4 +72,4 @@ CURRENT_GODOT_IMPLEMENTATION = READY_FOR_CODEX_IMAGE_INTEGRATION
 GODOT_PRODUCT_CHANGES_BY_GPT_WORK = 0
 ```
 
-Until then, do not claim the image phase complete and do not start Codex integration.
+All conditions above are satisfied. `IMPLEMENTED` and `RUNTIME_VERIFIED` remain Codex-owned and are not claimed by this closeout.

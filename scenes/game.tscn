@@ -135,6 +135,11 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 
+[node name="DecorAppearanceOption" type="OptionButton" parent="DecorPanel/DecorVBox"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
 [node name="DecorApplyButton" type="Button" parent="DecorPanel/DecorVBox"]
 unique_name_in_owner = true
 layout_mode = 2
