@@ -203,6 +203,12 @@ APPRECIATION_540X960_RUNTIME_CAPTURE = PASS
 HANDPAINTED_3D_RUNTIME_SLICE = USER_APPROVED_MERGED_MAIN
 C_DOG_DEFAULT_RUNTIME_CAPTURE = PASS
 C_DOG_HUMAN_VISUAL_APPROVAL = PASS
+COSMETIC_IDENTITY_SELECTION = IMPLEMENTED_LOCAL_FIRST
+DEFAULT_IDENTITY_C_DOG = PRESERVED
+IDENTITY_RUNTIME_ASSET_LOCATORS = PASS
+IDENTITY_AUTOMATED_CONTRACTS = PASS
+IDENTITY_RUNTIME_CAPTURE = PASS
+IDENTITY_REAL_DEVICE_MOBILE_QA = DEFERRED
 MOBILE_30S_VISUAL_REVIEW = NOT_RUN
 MOBILE_5M_VISUAL_REVIEW = NOT_RUN
 HUMAN_STYLE_APPROVAL = NOT_RUN
@@ -293,10 +299,10 @@ Social Fake 계약이 future current main에 안전하게 정합된 뒤 실제 b
 
 - First Production Visual Slice 결과를 기준으로 final asset pipeline 결정
 - four-state `새벽 / 밝음 / 해질녘 / 밤` atmosphere layer는 별도 bounded Slice
-- final player identity / pet species는 별도 승인 결정
+- 승인된 player identity / pet species의 로컬 선택·보존은 구현됨. 임의 편집·unlock·progression은 보류.
 - representative final decor / boat / sea assets는 runtime proof 뒤 제작
 
-이미지 제작은 `텍스트 brief → 명시 승인 → 1건 제작` 순서를 유지합니다.
+이미지 제작은 concrete runtime consumer가 있을 때만 진행하며, 사용자가 위임한 범위에서는 Codex가 검수·로컬 저장·Notion 정본 등록을 자동으로 수행합니다.
 
 ## 15단계: Human / Real-device Validation
 
