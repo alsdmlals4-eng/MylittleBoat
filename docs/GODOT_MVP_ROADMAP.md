@@ -159,9 +159,63 @@ FINAL_DECOR_ART = NOT_INTEGRATED
 APP_RESTART_DECOR_PERSISTENCE = NOT_IMPLEMENTED
 ```
 
-## 10단계: Social Fake Backend Contract — 다음 구현 단계
+## 10단계 진입 전 Current Priority Overlay · 2026-08-26
 
-실제 서버 연결 전 Godot local fake로 social semantics를 TDD합니다.
+8월 25일 hand-painted visual canon/approved proof closeout 이후, completed `main`에서 가장 큰 증거 공백은 **승인된 visual direction과 실제 primitive runtime 사이**입니다. 따라서 현재 mainline next work는 아래 bounded proof입니다.
+
+### First Production Visual Slice — Implementation Ready / Godot Build Next
+
+```text
+HANDPAINTED_STORYBOOK_3D_DIORAMA approved canon
+→ actual game.tscn / BoatSpace bounded visual study
+→ 540x960 Normal + Appreciation runtime comparison
+→ technical regression
+→ 30s / 5m Human visual review
+```
+
+범위:
+
+- neutral player visual study. 최종 identity canonization 금지.
+- non-species resting companion treatment. 최종 pet species canonization 금지.
+- existing boat material/shape pass.
+- existing dynamic decor rendering pass + small cluster through current decor system.
+- existing sea/sky/light treatment.
+- custom watercolor shader, broad asset replacement, four-state time behavior는 이번 Slice에서 제외.
+
+실행 계약:
+
+- `docs/superpowers/plans/2026-08-26-first-production-visual-slice.md`
+- `docs/handoffs/2026-08-26-first-production-visual-slice-codex.md`
+
+증거 ceiling:
+
+```text
+HANDPAINTED_3D_RUNTIME_SLICE = NOT_RUN
+MOBILE_30S_VISUAL_REVIEW = NOT_RUN
+MOBILE_5M_VISUAL_REVIEW = NOT_RUN
+HUMAN_STYLE_APPROVAL = NOT_RUN
+FINAL_AVATAR_ART = NOT_INTEGRATED
+FINAL_PET_ART = NOT_INTEGRATED
+FINAL_BOAT_SEA_ART = NOT_INTEGRATED
+```
+
+## 10단계: Social Fake Backend Contract — 독립 OPEN workstream / 현재 visual workstream에서는 READ_ONLY
+
+PR #19 `Implement deterministic local social fake backend`에 local fake 구현과 과거 exact-head CI 증거가 존재하지만, 현재 completed `main`에서 갈라진 독립 workstream입니다.
+
+현재 visual workstream에서는:
+
+```text
+READ_ONLY
+NO_ABSORPTION
+NO_REBASE
+NO_MERGE
+NO_CLOSE
+```
+
+Social 작업을 명시적으로 다시 시작할 때 latest completed `main`과 PR #19 exact head/CI/review/thread를 다시 reconcile합니다.
+
+승인된 fake semantics:
 
 - 16+ eligibility
 - Friend Invite lifecycle
@@ -174,11 +228,11 @@ APP_RESTART_DECOR_PERSISTENCE = NOT_IMPLEMENTED
 - offline draft
 - healthy accepted delivery target 계산
 
-실제 Supabase 호출/secret은 아직 넣지 않습니다.
+실제 Supabase 호출/secret은 아직 current main에 넣지 않습니다.
 
 ## 11단계: Supabase Backend / Auth / RLS / Edge Functions — 예정
 
-Social Fake 계약 안정 후 실제 backend adapter를 구현합니다.
+Social Fake 계약이 future current main에 안전하게 정합된 뒤 실제 backend adapter를 구현합니다.
 
 - auth / account link
 - profiles / consent / invites / friendships / threads / bottles / blocks / reports
@@ -211,7 +265,7 @@ Social Fake 계약 안정 후 실제 backend adapter를 구현합니다.
 - delivery evidence
 - backend 장애 시 local rest/voyage/decor 정상 유지
 
-## 14단계: Production Resting Assets — 병렬/후속 제작
+## 14단계: Production Resting Assets — First Production Visual Slice 증거 뒤 재계산
 
 ### Audio
 
@@ -222,11 +276,10 @@ Social Fake 계약 안정 후 실제 backend adapter를 구현합니다.
 
 ### Visual
 
-- storybook diorama production color study
-- rounded/matte player avatar
-- 첫 실제 pet 1종
-- boat material / representative decor
-- calm sea / sky / horizon
+- First Production Visual Slice 결과를 기준으로 final asset pipeline 결정
+- four-state `새벽 / 밝음 / 해질녘 / 밤` atmosphere layer는 별도 bounded Slice
+- final player identity / pet species는 별도 승인 결정
+- representative final decor / boat / sea assets는 runtime proof 뒤 제작
 
 이미지 제작은 `텍스트 brief → 명시 승인 → 1건 제작` 순서를 유지합니다.
 
