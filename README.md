@@ -118,7 +118,9 @@ BOAT_LIFE_TECH_UI = PASS
 증거 ceiling:
 
 ```text
-HANDPAINTED_3D_RUNTIME_SLICE = NOT_RUN
+C_DOG_DEFAULT_RUNTIME_CAPTURE = PASS
+C_DOG_HUMAN_VISUAL_APPROVAL = NOT_RUN
+HANDPAINTED_3D_RUNTIME_SLICE = CAPTURED_AWAITING_HUMAN_REVIEW
 MOBILE_30S_VISUAL_REVIEW = NOT_RUN
 MOBILE_5M_VISUAL_REVIEW = NOT_RUN
 DECOR_HUMAN_USABILITY = NOT_RUN
@@ -198,7 +200,7 @@ headless project import
 
 현재 completed `main`의 다음 mainline은 승인된 그림체를 실제 게임 화면으로 옮기는 **First Production Visual Slice**입니다.
 
-1. **First Production Visual Slice** — 기술 런타임 증거 완료. `game.tscn` / `BoatSpace`에 neutral player visual study, non-species pet treatment, boat/decor matte pass, sea/sky/light tuning, 540×960 Normal/Appreciation capture, CI contract coverage가 반영되었습니다. 최종 캐릭터/펫 정체성, 시간대 동작, asset bundle은 고정하지 않습니다.
+1. **First Production Visual Slice** — C 니트·긴 머리 주인공과 강아지 기본 실루엣의 기술 런타임 증거까지 완료되었습니다. `game.tscn` / `BoatSpace`에 matte 3D character/pet/boat pass와 540×960 Normal/Appreciation capture가 반영되었습니다. 다른 선택 외형, 시간대 동작, final asset bundle은 고정하지 않습니다.
 2. **Human visual validation** — 현재 사용자 결정 게이트. 540×960에서 30초/5분, Normal/Appreciation, bob/idle motion을 보고 `CALM / EMPTY / NOISY`, sea-first hierarchy, visual fatigue를 판단합니다. 실제 기기 터치 검증은 사용자의 요청에 따라 뒤로 미룹니다.
 3. **PR #19 Social Fake Backend** — 별도 독립 workstream으로 OPEN / READ_ONLY / NO ABSORPTION입니다. 현재 visual workstream에서 rebase·merge·수정하지 않으며, social 작업을 명시적으로 재개할 때 latest `main`과 다시 reconcile합니다.
 4. **Supabase/Auth/RLS/Moderation/Real Delayed Bottle** — Social Fake 계약이 current main에 안전하게 정합된 뒤 별도 보안·계정·release gate로 진행합니다.
@@ -213,6 +215,9 @@ Supporting planning artifacts:
 - `docs/superpowers/specs/2026-08-26-first-production-visual-slice-design.md`
 - `docs/superpowers/plans/2026-08-26-first-production-visual-slice-reconciled.md`
 - `docs/evidence/2026-08-26-first-production-visual-slice/`
+- `docs/superpowers/specs/2026-08-26-c-storybook-dog-default-design.md`
+- `docs/superpowers/plans/2026-08-26-c-storybook-dog-default.md`
+- `docs/evidence/2026-08-26-c-storybook-dog-default/`
 
 v1 plan/handoff의 정확한 Node 이름·테스트 형태는 planning example이며, current router의 outcome/acceptance/protected semantics가 우선합니다.
 

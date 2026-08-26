@@ -1,7 +1,7 @@
 # 첫 production visual slice의 headless runtime 증거 이미지를 저장한다.
 extends SceneTree
 
-const EVIDENCE_DIRECTORY := "res://docs/evidence/2026-08-26-first-production-visual-slice"
+const EVIDENCE_DIRECTORY := "res://docs/evidence/2026-08-26-c-storybook-dog-default"
 
 
 func _init() -> void:
@@ -10,6 +10,11 @@ func _init() -> void:
 
 func _capture() -> void:
 	root.size = Vector2i(540, 960)
+	var directory_error := DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(EVIDENCE_DIRECTORY))
+	if directory_error != OK:
+		printerr("FAILED: could not create runtime evidence directory (error %d)" % directory_error)
+		quit(1)
+		return
 	var packed_scene := load("res://scenes/game.tscn") as PackedScene
 	if packed_scene == null:
 		printerr("FAILED: game scene must load for runtime capture")
@@ -18,8 +23,6 @@ func _capture() -> void:
 	var scene := packed_scene.instantiate()
 	root.add_child(scene)
 	await _wait_for_frames(10)
-	var top_panel := scene.get_node_or_null("TopPanel") as PanelContainer
-	print("NORMAL_TOP_PANEL: visible=%s rect=%s" % [top_panel != null and top_panel.visible, top_panel.get_rect() if top_panel != null else Rect2()])
 	if not _save_runtime_image("normal_540x960.png"):
 		quit(1)
 		return
