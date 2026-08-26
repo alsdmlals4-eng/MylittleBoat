@@ -12,13 +12,13 @@ current_owner: GPT_NONCODING_PLANNING_VISUAL_OWNER
 next_godot_owner: CODEX_AFTER_VISUAL_CLOSEOUT_ONLY
 implementation_baseline: RESOLVE_CURRENT_COMPLETED_MAIN_AT_RESUME
 concurrent_pr_19: READ_ONLY_NO_ABSORPTION
-image_generation_now: NOT_REQUESTED
+current_visual_step: IMAGE_B_BOAT_SEA_FOUR_TIME_ATMOSPHERE
 status: PLANNING_VISUAL_CLOSEOUT_IN_PROGRESS
 ```
 
-The user's current priority is explicit: **finish planning and image work first; do not start the Godot production slice yet.**
+The user's priority remains explicit: **finish planning and image work first; do not start the Godot production slice yet.**
 
-At every resume, re-read current `main`, Project Notion, approved Visual records, current open PRs, and latest user decisions. Historical implementation-ready packets remain available but are paused until this closeout is complete.
+At every resume, re-read current `main`, Project Notion, approved Visual records, current open PRs, and latest user decisions. Historical implementation-ready packets remain paused until this closeout is complete.
 
 ## Direct discovery package
 
@@ -34,28 +34,30 @@ Human/product authority:
 Repository support:
 
 - approved style spec: `docs/superpowers/specs/2026-08-25-handpainted-storybook-3d-diorama-design.md`
-- exact Image A/B/C briefs: `docs/visual/2026-08-26-preimplementation-image-briefs.md`
-- fresh visual-closeout benchmark evidence: `docs/research/2026-08-26-planning-visual-closeout-benchmark.md`
-- earlier runtime-technique benchmark evidence: `docs/research/2026-08-26-first-production-visual-slice-benchmark-evidence.md`
+- Image A customization decision: `docs/visual/2026-08-26-image-a-customization-decision.md`
+- original A/B/C pre-generation briefs: `docs/visual/2026-08-26-preimplementation-image-briefs.md`
+- visual-closeout benchmark evidence: `docs/research/2026-08-26-planning-visual-closeout-benchmark.md`
 - paused downstream Godot handoff: `docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md`
 
-## Why Godot implementation is paused
+## Why Godot implementation is still paused
 
-The visual direction is approved, but the representative visual decisions are not closed:
+The art direction and Image A customization set are approved, but the environment/final representative visual decisions are not closed:
 
 ```text
 VISUAL_STYLE_DIRECTION = APPROVED
 DETAILED_VISUAL_STYLE_CANON = HANDPAINTED_STORYBOOK_3D_DIORAMA
-APPROVED_PRODUCTION_VISUAL_PROOFS = 2
+IMAGE_A_VISUAL_APPROVAL = PASS
+CHARACTER_SELECTION_SET = APPROVED
+PET_SELECTION_SET = APPROVED
+PET_CUSHION_CUSTOMIZATION = APPROVED_AT_FEATURE_MEANING_LEVEL
+BOAT_DECOR_REPRESENTATIVE_LANGUAGE = NOT_YET_CLOSED
+FOUR_TIME_ATMOSPHERE_DIRECTION = NOT_YET_CLOSED
+REPRESENTATIVE_UI_PRESENCE = NOT_YET_CLOSED
 APPROVED_REPRESENTATIVE_VISUAL_GDD = NOT_YET_PRODUCED
-FINAL_AVATAR_IDENTITY = UNDECIDED
-FINAL_PET_SPECIES = UNDECIDED
-FINAL_REPRESENTATIVE_BOAT_DECOR_LANGUAGE = PARTIALLY_DEFINED
-FINAL_TIME_OF_DAY_VISUAL_SET = NOT_PRODUCED
 FINAL_RUNTIME_ART = NOT_INTEGRATED
 ```
 
-Starting Godot art translation before these choices are narrowed would let technical placeholder decisions become accidental design authority and would increase rework.
+Starting Godot art translation now would still allow environment/UI placeholder choices to become accidental design authority.
 
 ## Product decisions already protected
 
@@ -73,110 +75,147 @@ Do not reopen without new user direction:
 - four atmosphere states: dawn / bright / sunset / night;
 - no paid-asset dependency, no runtime generative AI, no social-workstream absorption.
 
-## Existing Visual evidence to reuse
+## Approved Image A — customization canon
 
-### Approved Production Visual Proof 01
+Image A is approved as a **customization-system visual proof**, not as a one-winner selection board.
 
-Use for total-frame mood, Normal/Appreciation relationship, matte hand-painted material direction, calm sea/horizon, low visual noise, and lived-in boat feeling.
+### Character selection
 
-Do not treat it as final character/pet/UI/runtime geometry.
+All three base style families are selectable:
 
-### Approved Production Visual Proof 02
+```text
+A = SOFT_HOODED_LAYER
+B = SHORT_CAPE_SAILOR_LAYER_RHYTHM
+C = LOOSE_KNIT_LONG_HAIR_MASS
+```
 
-Use for player-silhouette exploration, quiet companion species/pose exploration, boat-life/decor cluster language, low-detail face, and silhouette-first identity.
+They are visual choices only. They do not create class/stat/rarity/monetization differences.
 
-Do not treat any depicted player or pet as final canon until an explicit selection is recorded.
+### Pet selection
 
-## Planning decisions to close
+The first selectable pet set is:
 
-1. **Player identity anchor**
-   - representative silhouette family;
-   - one primary + one secondary recognizable shape anchor at 540×960;
-   - representative hair/clothing mass language without unnecessary lore lock-in.
+```text
+CAT
+RABBIT
+DOG
+OTTER_LIKE
+```
 
-2. **Pet identity**
-   - first representative species;
-   - default resting pose/relationship;
-   - silhouette that remains supportive rather than mascot-dominant.
+All share the same no-obligation resting-companion semantics.
 
-3. **Boat memory signature**
-   - 3–5 representative existing decor motifs;
+### Pet cushion customization
+
+`PET_CUSHION_CUSTOMIZATION = APPROVED_AT_FEATURE_MEANING_LEVEL`.
+
+The exact cushion catalog, UI location, persistence mechanics, and number of variants are not yet fixed. Those details must later reuse the existing Boat Decoration architecture where feasible rather than creating a parallel inventory system by default.
+
+### Image A evidence
+
+- user visual approval: `PASS`
+- generation locator: `gen_id 608ba7ff-441b-4c58-b415-94c79a9d7ae6`
+- original observed PNG: `1535×1024`
+- original SHA-256: `5de0a90edad069003be0aa4f2935223ab86883701e51263ca8e3cc36760e7946`
+- Notion Asset Library record: added 2026-08-26
+- Notion-native preview: attached; original local binary itself is represented by provenance metadata because the current connector path cannot directly ingest it.
+
+## Current planning decisions still to close
+
+1. **Boat memory signature**
+   - representative 3–5 existing decor motifs;
    - one warm living accent;
-   - clutter ceiling that preserves the sea.
+   - clutter ceiling that keeps the sea/horizon dominant.
 
-4. **Atmosphere set**
+2. **Four-time atmosphere set**
    - dawn / bright / sunset / night remain the same place through color, light, water, and living-light response;
-   - choose one representative state for the final Visual GDD only after comparison.
+   - choose one representative time state for the final Visual GDD after comparison.
 
-5. **Representative UI presence**
+3. **Representative UI presence**
    - lock only how much UI is visible and its hierarchy in the representative frame;
-   - do not prematurely finalize typography, icon family, or every panel.
+   - do not prematurely finalize typography, icon family, every panel, or customization flow timing.
 
-6. **Representative Visual GDD**
-   - one final approved image explains normal 3/4 play, avatar + pet relationship, personal boat/decor, sea-first hierarchy, and quiet interaction/UI presence;
+4. **Representative Visual GDD**
+   - one final approved image explains normal 3/4 play, customization-capable avatar/pet relationship, personal boat/decor, sea-first hierarchy, and quiet interaction/UI presence;
+   - the depicted character/pet pair is an **example loadout**, not the only playable identity;
    - it bridges planning to implementation but does not prove runtime quality.
 
-## Minimal three-image closeout
+## Current visual sequence
 
-Do **not** create a large concept-art backlog. Reuse Proof 01/02 and close the remaining decisions with at most three new approved image results.
+### Image A — Player + Pet Customization Board
 
-### Image A — Player + Pet Identity Board
+```text
+STATUS = APPROVED
+```
 
-Use the exact brief in `docs/visual/2026-08-26-preimplementation-image-briefs.md`.
+Closed decisions:
+- three selectable character style families;
+- four selectable pet species families;
+- pet cushion customization as a feature axis.
 
-Must answer:
-- player candidate A/B/C preference;
-- first pet species preference;
-- default resting relationship;
-- details intentionally left non-canon.
+Do not ask the user to reduce A/B/C or the pet set to one exclusive winner unless the user later changes direction.
 
 ### Image B — Boat / Sea / Four-Time Atmosphere Board
 
-Use the exact brief in `docs/visual/2026-08-26-preimplementation-image-briefs.md`.
+```text
+STATUS = NEXT / NOT_RUN
+```
 
-Must answer:
-- representative time-of-day preference;
-- atmosphere differences without changing map identity;
-- decor density ceiling;
-- boat/sea value hierarchy.
+Use one exact boat/camera/decor composition across four equal variants:
+
+```text
+DAWN | BRIGHT | SUNSET | NIGHT
+```
+
+Keep character/pet detail omitted or as small neutral silhouettes so the environment comparison stays controlled.
+
+Image B must answer:
+- whether all four states unmistakably read as the same place;
+- representative time-of-day preference for Image C;
+- 3–5 item decor cluster and clutter ceiling;
+- one warm living-light accent;
+- sea/horizon versus boat/decor value hierarchy;
+- whether any time state becomes too dramatic, high-contrast, or gamey for rest-first use.
+
+Do not change map identity, boat layout, camera, or decor positions between time states merely to make each panel more attractive.
 
 ### Image C — Representative Visual GDD
 
-Generate only **after Image A and Image B selections are recorded**.
+```text
+STATUS = BLOCKED_BY_IMAGE_B
+```
 
-Must combine only approved A/B decisions and explain:
-- selected representative player;
-- selected first companion species/resting relationship;
-- selected personal boat/decor language;
-- selected representative time state;
-- sea/horizon dominant composition;
-- restrained representative UI/affordance presence;
-- Normal play and, only if useful, a small Appreciation-view inset.
+Generate only after Image B decisions are recorded.
+
+Image C must:
+- use one **representative example** from the approved character/pet selection sets, not imply exclusivity;
+- show personal boat/decor language selected from Image B;
+- use the selected representative time state;
+- keep sea/horizon dominant;
+- show restrained representative UI/affordance presence;
+- show Normal play and, only if useful, a small Appreciation-view inset;
+- communicate that avatar/pet/cushion are customizable in supporting planning text without turning the key frame into a catalog screen.
 
 It becomes `APPROVED_REPRESENTATIVE_VISUAL_GDD` only after explicit user visual approval and Notion Asset Library upload/readback.
 
 ## Visual generation policy
 
-The user has not yet explicitly requested image generation in the current turn. Therefore:
-
 ```text
-IMAGE_A = NOT_RUN
+IMAGE_A = APPROVED
 IMAGE_B = NOT_RUN
 IMAGE_C = NOT_RUN
 ```
 
-Before each generated result:
+Before each new generated result:
 
-1. Use the exact current text brief.
+1. Use the current text brief and latest user decisions.
 2. Verify it does not silently decide unrelated lore/gameplay/UI.
-3. Generate only on explicit user image request.
-4. Treat one generated result as one evidence item; do not claim unseen alternates.
-5. Record prompt/provenance/approval status in the Asset Library.
-6. Preserve rejection reasons as design evidence.
+3. Treat one generated result as one evidence item; do not claim unseen alternates.
+4. Record generation provenance and approval status in the Asset Library.
+5. Preserve rejection reasons as design evidence.
 
 ## Benchmark disposition
 
-Full locators and evidence are in `docs/research/2026-08-26-planning-visual-closeout-benchmark.md`.
+Full locators and evidence remain in `docs/research/2026-08-26-planning-visual-closeout-benchmark.md`.
 
 - **ADAPT — Spirit City: Lofi Sessions:** readable avatar identity + personal space + companion presence; reject productivity/XP pressure.
 - **ADAPT — Dordogne:** authored painterly surface + camera-aware composition + restrained technical complexity; do not copy literal watercolor treatment.
@@ -188,8 +227,9 @@ Full locators and evidence are in `docs/research/2026-08-26-planning-visual-clos
 All must be true:
 
 ```text
-PLAYER_REPRESENTATIVE_IDENTITY = APPROVED
-FIRST_PET_SPECIES_AND_RESTING_READ = APPROVED
+CHARACTER_SELECTION_SET = APPROVED
+PET_SELECTION_SET = APPROVED
+PET_CUSHION_CUSTOMIZATION = APPROVED_AT_FEATURE_MEANING_LEVEL
 BOAT_DECOR_REPRESENTATIVE_LANGUAGE = APPROVED
 FOUR_TIME_ATMOSPHERE_DIRECTION = APPROVED
 REPRESENTATIVE_UI_PRESENCE = APPROVED_AT_MEANING_LEVEL
@@ -205,7 +245,10 @@ Then update `docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md` from paused to imple
 
 ```text
 PLANNING_VISUAL_CLOSEOUT = IN_PROGRESS
-IMAGE_A = NOT_RUN
+IMAGE_A_VISUAL_APPROVAL = PASS
+CHARACTER_SELECTION_SET = APPROVED
+PET_SELECTION_SET = APPROVED
+PET_CUSHION_CUSTOMIZATION = APPROVED_AT_FEATURE_MEANING_LEVEL
 IMAGE_B = NOT_RUN
 IMAGE_C = NOT_RUN
 APPROVED_REPRESENTATIVE_VISUAL_GDD = NOT_YET_PRODUCED
