@@ -139,7 +139,7 @@ FINAL_DECOR_ART = NOT_INTEGRATED
 FINAL_BOAT_SEA_ART = NOT_INTEGRATED
 ```
 
-The current 540×960 portrait target is the primary product proof. r5.4 `pc_standard / pc_wide_or_ultrawide / mobile_landscape` checks are representative technical/responsive probes unless and until the project explicitly expands product target semantics. `ko/en/ja/zh-*` readiness and the Chinese locale variant remain unresolved project-wide requirements; this visual-only slice must not falsely close them.
+The current 540×960 portrait viewport is the **primary visual proof target** because it is the actual runtime profile in `project.godot`. Separately, the r5.4 project contract requires responsive semantic-parity coverage for `pc_standard`, `pc_wide_or_ultrawide`, and `mobile_landscape`; Codex must run the representative technical probes that are feasible in its environment and report any missing profile as `NOT_RUN/PARTIAL`, not erase the requirement. These profiles are delivery/semantic-parity requirements and do not by themselves redefine the final store/release platform set. `ko/en/ja/zh-*` readiness and the required Chinese locale variant declaration remain unresolved project-wide requirements; this visual-only slice must not falsely close them or add untranslated user-facing strings.
 
 ## Required result packet
 
