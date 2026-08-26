@@ -2,8 +2,10 @@
 extends Control
 
 const IDENTITY_CATALOG_SCRIPT = preload("res://scripts/identity/identity_visual_catalog.gd")
+const TIME_OF_DAY_CATALOG_SCRIPT = preload("res://scripts/voyage/time_of_day_catalog.gd")
 
 var _identity_catalog = IDENTITY_CATALOG_SCRIPT.new()
+var _time_of_day_catalog = TIME_OF_DAY_CATALOG_SCRIPT.new()
 
 
 func _ready() -> void:
@@ -15,7 +17,9 @@ func _ready() -> void:
 	%IdentityCloseButton.pressed.connect(_hide_identity_panel)
 	%PlayerStyleOption.item_selected.connect(_on_player_style_selected)
 	%PetTypeOption.item_selected.connect(_on_pet_type_selected)
+	%TimeOfDayOption.item_selected.connect(_on_time_of_day_selected)
 	_populate_identity_options()
+	_populate_time_of_day_options()
 	_refresh_identity_summary()
 
 
@@ -67,6 +71,21 @@ func _on_pet_type_selected(index: int) -> void:
 	%PetTypeOption.select(index)
 	GameState.set_selected_pet_type(str(%PetTypeOption.get_item_metadata(index)))
 	_refresh_identity_summary()
+
+
+func _populate_time_of_day_options() -> void:
+	%TimeOfDayOption.clear()
+	for time_of_day_id in _time_of_day_catalog.get_time_of_day_ids():
+		%TimeOfDayOption.add_item(_time_of_day_catalog.get_label(time_of_day_id))
+		%TimeOfDayOption.set_item_metadata(%TimeOfDayOption.item_count - 1, time_of_day_id)
+	_select_option_by_id(%TimeOfDayOption, GameState.get_selected_time_of_day())
+
+
+func _on_time_of_day_selected(index: int) -> void:
+	if index < 0 or index >= %TimeOfDayOption.item_count:
+		return
+	%TimeOfDayOption.select(index)
+	GameState.select_time_of_day(str(%TimeOfDayOption.get_item_metadata(index)))
 
 
 func _refresh_identity_summary() -> void:
