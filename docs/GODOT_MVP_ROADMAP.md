@@ -163,14 +163,14 @@ APP_RESTART_DECOR_PERSISTENCE = NOT_IMPLEMENTED
 
 8월 25일 hand-painted visual canon/approved proof closeout 이후, completed `main`에서 가장 큰 증거 공백은 **승인된 visual direction과 실제 primitive runtime 사이**입니다. 따라서 현재 mainline next work는 아래 bounded proof입니다.
 
-### First Production Visual Slice — Implementation Ready / Godot Build Next
+### First Production Visual Slice — Runtime capture + technical validation complete / Human review pending
 
 ```text
 HANDPAINTED_STORYBOOK_3D_DIORAMA approved canon
 → actual game.tscn / BoatSpace bounded visual study
-→ 540x960 Normal + Appreciation runtime comparison
+→ 540x960 Normal + Appreciation runtime capture
 → technical regression
-→ 30s / 5m Human visual review
+→ 30s / 5m Human visual review (current gate)
 ```
 
 범위:
@@ -197,10 +197,14 @@ v1 plan/handoff의 정확한 Node 이름·테스트 형태는 planning example�
 증거 ceiling:
 
 ```text
-HANDPAINTED_3D_RUNTIME_SLICE = NOT_RUN
+TECH_VISUAL_SLICE = PASS
+NORMAL_540X960_RUNTIME_CAPTURE = PASS
+APPRECIATION_540X960_RUNTIME_CAPTURE = PASS
+HANDPAINTED_3D_RUNTIME_SLICE = CAPTURED_AWAITING_HUMAN_REVIEW
 MOBILE_30S_VISUAL_REVIEW = NOT_RUN
 MOBILE_5M_VISUAL_REVIEW = NOT_RUN
 HUMAN_STYLE_APPROVAL = NOT_RUN
+REAL_DEVICE_TOUCH_QA = DEFERRED_BY_USER
 FINAL_AVATAR_ART = NOT_INTEGRATED
 FINAL_PET_ART = NOT_INTEGRATED
 FINAL_BOAT_SEA_ART = NOT_INTEGRATED
