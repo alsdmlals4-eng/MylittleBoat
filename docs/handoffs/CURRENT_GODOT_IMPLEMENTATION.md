@@ -1,14 +1,14 @@
 # Current Godot Product Implementation
 
-> **PAUSED DOWNSTREAM HANDOFF.** Start with `docs/handoffs/CURRENT_PLANNING_VISUAL_WORK.md`.
+> **PAUSED DOWNSTREAM HANDOFF.** The active worker is GPT Work. Start current project continuation with `docs/handoffs/CURRENT_GPT_WORK.md`; do not begin Godot product implementation yet.
 
 ## Current state
 
 ```yaml
 project: MY_LITTLE_BOAT
 mode: CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF
-status: PAUSED_UNTIL_ACTIVE_IMAGE_GOALS_IMPLEMENTATION_READY
-current_work_router: docs/handoffs/CURRENT_PLANNING_VISUAL_WORK.md
+status: PAUSED_DURING_GPT_WORK_IMAGE_PRODUCTION
+current_work_router: docs/handoffs/CURRENT_GPT_WORK.md
 image_goal_source: docs/visual/2026-08-26-remaining-image-goals.md
 codex_image_goal_source: docs/handoffs/2026-08-26-image-codex-integration-goals.md
 image_asset_policy: CONSUMER_FIRST_ASSET
@@ -22,20 +22,19 @@ image_generation_by_codex: FORBIDDEN
 ## Binding pipeline
 
 ```text
-Remaining Image Goals
-→ user goal approval
-→ GPT image generation/editing
-→ GPT review
+USER_APPROVED_IMAGE_GOALS
+→ GPT Work image generation/editing
+→ GPT Work runtime-asset review
 → user asset approval
-→ Notion asset registration
+→ Notion final asset registration + durable binary locator
 → IMPLEMENTATION_READY
-→ Codex Integration Goals
-→ Godot import/wiring
-→ runtime screenshots/play verification
-→ GPT final review
+→ GPT Work changes this router to READY_FOR_CODEX_IMAGE_INTEGRATION
+→ CODEX-IMG-01 / CODEX-IMG-02
+→ Godot import/wiring/runtime proof
+→ GPT final implementation review
 ```
 
-Codex does not create/edit images and does not start CODEX-IMG-01/02 before their required files are `IMPLEMENTATION_READY`.
+Codex does not create/edit images and does not start CODEX-IMG-01/02 before their required files are `IMPLEMENTATION_READY` with Notion readback.
 
 ## Active image integration goals waiting downstream
 
@@ -59,7 +58,7 @@ Waits for exactly:
 res://assets/images/decor/postcard/postcard_boat_bright.png
 ```
 
-P1 integrates one default visual face only. Dawn/Sunset source compositions are P2 reuse candidates; **do not** create a postcard variant selector/state merely to use them.
+P1 integrates one default visual face only. Dawn/Sunset source compositions are P2 reuse candidates. Do not create a postcard variant selector/state merely to use them.
 
 Full tasks/acceptance: `docs/handoffs/2026-08-26-image-codex-integration-goals.md`.
 
@@ -104,12 +103,13 @@ IMG_01_3_FILES = IMPLEMENTATION_READY
 IMG_01_NOTION_READBACK = PASS
 IMG_02_1_FILE = IMPLEMENTATION_READY
 IMG_02_NOTION_READBACK = PASS
+DURABLE_BINARY_LOCATORS = PASS
 EXACT_ASSET_PATHS = FIXED
 CODEX_INTEGRATION_GOALS = CURRENT
 PR_19 = READ_ONLY_NO_ABSORPTION
 ```
 
-At Codex start, fresh-read current completed main, Notion, actual Godot files/tests, open PRs and toolchain. Use semantic TDD and runtime proof.
+At Codex start, fresh-read current completed main, Project Notion, actual Godot files/tests, open PRs and toolchain. Use semantic TDD and runtime proof. GPT Work must stop before making Scene/Resource/GDScript product changes.
 
 ## Protected downstream scope
 
@@ -126,9 +126,10 @@ At Codex start, fresh-read current completed main, Notion, actual Godot files/te
 ## Evidence ceiling while paused
 
 ```text
-IMAGE_GOAL_QUEUE = READY_FOR_USER_REVIEW
-IMG_01 = NEEDS_REVISION / 3 REQUIRED FILES
-IMG_02 = NEEDS_REVISION / 1 REQUIRED FILE
+IMAGE_GOAL_QUEUE = USER_APPROVED
+GPT_WORK_IMAGE_PRODUCTION = NEXT / NOT_RUN
+IMG_01_FINAL_FILES = 0 / 3 IMPLEMENTATION_READY
+IMG_02_FINAL_FILES = 0 / 1 IMPLEMENTATION_READY
 CODEX_IMG_01 = NOT_RUN
 CODEX_IMG_02 = NOT_RUN
 IMPLEMENTED_IMAGE_ASSETS = 0
