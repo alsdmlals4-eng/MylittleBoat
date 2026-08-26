@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3]
+[gd_scene load_steps=21 format=3]
 
 [ext_resource type="Script" path="res://scripts/voyage/resting_pet_placeholder.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/avatar/player_avatar_placeholder.gd" id="2"]
@@ -9,6 +9,12 @@
 [ext_resource type="Texture2D" path="res://assets/images/runtime/storybook/boat_default_storybook.png" id="7"]
 [ext_resource type="Script" path="res://scripts/visual/storybook_art_card.gd" id="8"]
 [ext_resource type="Texture2D" path="res://assets/images/runtime/storybook/boat_c_dog_diorama_storybook.png" id="9"]
+[ext_resource type="Script" path="res://scripts/identity/identity_visual_router.gd" id="10"]
+[ext_resource type="Texture2D" path="res://assets/images/runtime/storybook/avatar_a_soft_hooded_storybook.png" id="11"]
+[ext_resource type="Texture2D" path="res://assets/images/runtime/storybook/avatar_b_short_cape_storybook.png" id="12"]
+[ext_resource type="Texture2D" path="res://assets/images/runtime/storybook/pet_cat_storybook.png" id="13"]
+[ext_resource type="Texture2D" path="res://assets/images/runtime/storybook/pet_rabbit_storybook.png" id="14"]
+[ext_resource type="Texture2D" path="res://assets/images/runtime/storybook/pet_otter_storybook.png" id="15"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_boat"]
 size = Vector3(2.8, 0.22, 2.4)
@@ -274,52 +280,54 @@ scale = Vector3(0.08, 3.8, 1.0)
 mesh = SubResource("BoxMesh_rail")
 surface_material_override/0 = SubResource("Material_study_wood_dark")
 
-[node name="StorybookCDefault" type="Node3D" parent="PlayerAvatarPlaceholder/VisualStudy"]
+[node name="AvatarCards" type="Node3D" parent="PlayerAvatarPlaceholder/VisualStudy"]
+
+[node name="c_loose_knit" type="Node3D" parent="PlayerAvatarPlaceholder/VisualStudy/AvatarCards"]
 visible = false
 
-[node name="FaceMass" type="MeshInstance3D" parent="PlayerAvatarPlaceholder/VisualStudy/StorybookCDefault"]
+[node name="FaceMass" type="MeshInstance3D" parent="PlayerAvatarPlaceholder/VisualStudy/AvatarCards/c_loose_knit"]
 position = Vector3(0, 0.62, 0.12)
 scale = Vector3(0.58, 0.58, 0.54)
 mesh = SubResource("SphereMesh_character")
 surface_material_override/0 = SubResource("Material_study_cream")
 
-[node name="HairMass" type="MeshInstance3D" parent="PlayerAvatarPlaceholder/VisualStudy/StorybookCDefault"]
+[node name="HairMass" type="MeshInstance3D" parent="PlayerAvatarPlaceholder/VisualStudy/AvatarCards/c_loose_knit"]
 position = Vector3(0, 0.67, -0.06)
 scale = Vector3(0.72, 0.84, 0.62)
 mesh = SubResource("SphereMesh_character")
 surface_material_override/0 = SubResource("Material_c_hair")
 
-[node name="KnitMass" type="MeshInstance3D" parent="PlayerAvatarPlaceholder/VisualStudy/StorybookCDefault"]
+[node name="KnitMass" type="MeshInstance3D" parent="PlayerAvatarPlaceholder/VisualStudy/AvatarCards/c_loose_knit"]
 position = Vector3(0, 0.0, 0)
 scale = Vector3(0.64, 0.82, 0.5)
 mesh = SubResource("SphereMesh_character")
 surface_material_override/0 = SubResource("Material_c_knit")
 
-[node name="SkirtMass" type="MeshInstance3D" parent="PlayerAvatarPlaceholder/VisualStudy/StorybookCDefault"]
+[node name="SkirtMass" type="MeshInstance3D" parent="PlayerAvatarPlaceholder/VisualStudy/AvatarCards/c_loose_knit"]
 position = Vector3(0, -0.42, 0)
 scale = Vector3(0.82, 1.0, 0.82)
 mesh = SubResource("CylinderMesh_c_skirt")
 surface_material_override/0 = SubResource("Material_c_skirt")
 
-[node name="LeftBoot" type="MeshInstance3D" parent="PlayerAvatarPlaceholder/VisualStudy/StorybookCDefault"]
+[node name="LeftBoot" type="MeshInstance3D" parent="PlayerAvatarPlaceholder/VisualStudy/AvatarCards/c_loose_knit"]
 position = Vector3(-0.2, -0.75, 0.06)
 scale = Vector3(0.26, 0.28, 0.38)
 mesh = SubResource("SphereMesh_character")
 surface_material_override/0 = SubResource("Material_c_boot")
 
-[node name="RightBoot" type="MeshInstance3D" parent="PlayerAvatarPlaceholder/VisualStudy/StorybookCDefault"]
+[node name="RightBoot" type="MeshInstance3D" parent="PlayerAvatarPlaceholder/VisualStudy/AvatarCards/c_loose_knit"]
 position = Vector3(0.2, -0.75, 0.06)
 scale = Vector3(0.26, 0.28, 0.38)
 mesh = SubResource("SphereMesh_character")
 surface_material_override/0 = SubResource("Material_c_boot")
 
-[node name="Pendant" type="MeshInstance3D" parent="PlayerAvatarPlaceholder/VisualStudy/StorybookCDefault"]
+[node name="Pendant" type="MeshInstance3D" parent="PlayerAvatarPlaceholder/VisualStudy/AvatarCards/c_loose_knit"]
 position = Vector3(0, 0.06, 0.43)
 scale = Vector3(0.1, 0.1, 0.1)
 mesh = SubResource("SphereMesh_character")
 surface_material_override/0 = SubResource("Material_c_pendant")
 
-[node name="ArtCard" type="Sprite3D" parent="PlayerAvatarPlaceholder/VisualStudy/StorybookCDefault"]
+[node name="ArtCard" type="Sprite3D" parent="PlayerAvatarPlaceholder/VisualStudy/AvatarCards/c_loose_knit"]
 position = Vector3(0, 0.02, 0.24)
 pixel_size = 0.00175
 billboard = 1
@@ -328,34 +336,58 @@ texture = ExtResource("5")
 script = ExtResource("8")
 fallback_nodes = [NodePath("../FaceMass"), NodePath("../HairMass"), NodePath("../KnitMass"), NodePath("../SkirtMass"), NodePath("../LeftBoot"), NodePath("../RightBoot"), NodePath("../Pendant")]
 
-[node name="StorybookDogDefault" type="Node3D" parent="RestingPetPlaceholder/VisualStudy"]
+[node name="a_soft_hooded" type="Node3D" parent="PlayerAvatarPlaceholder/VisualStudy/AvatarCards"]
 visible = false
 
-[node name="DogBody" type="MeshInstance3D" parent="RestingPetPlaceholder/VisualStudy/StorybookDogDefault"]
+[node name="ArtCard" type="Sprite3D" parent="PlayerAvatarPlaceholder/VisualStudy/AvatarCards/a_soft_hooded"]
+position = Vector3(0, 0.02, 0.24)
+pixel_size = 0.00175
+billboard = 1
+no_depth_test = false
+texture = ExtResource("11")
+script = ExtResource("8")
+
+[node name="b_short_cape" type="Node3D" parent="PlayerAvatarPlaceholder/VisualStudy/AvatarCards"]
+visible = false
+
+[node name="ArtCard" type="Sprite3D" parent="PlayerAvatarPlaceholder/VisualStudy/AvatarCards/b_short_cape"]
+position = Vector3(0, 0.02, 0.24)
+pixel_size = 0.00175
+billboard = 1
+no_depth_test = false
+texture = ExtResource("12")
+script = ExtResource("8")
+
+[node name="PetCards" type="Node3D" parent="RestingPetPlaceholder/VisualStudy"]
+
+[node name="dog" type="Node3D" parent="RestingPetPlaceholder/VisualStudy/PetCards"]
+visible = false
+
+[node name="DogBody" type="MeshInstance3D" parent="RestingPetPlaceholder/VisualStudy/PetCards/dog"]
 position = Vector3(0, 0.02, 0)
 scale = Vector3(0.98, 0.42, 1.08)
 mesh = SubResource("SphereMesh_character")
 surface_material_override/0 = SubResource("Material_dog_fur")
 
-[node name="DogHead" type="MeshInstance3D" parent="RestingPetPlaceholder/VisualStudy/StorybookDogDefault"]
+[node name="DogHead" type="MeshInstance3D" parent="RestingPetPlaceholder/VisualStudy/PetCards/dog"]
 position = Vector3(0, 0.24, 0.44)
 scale = Vector3(0.52, 0.46, 0.5)
 mesh = SubResource("SphereMesh_character")
 surface_material_override/0 = SubResource("Material_dog_fur")
 
-[node name="LeftEar" type="MeshInstance3D" parent="RestingPetPlaceholder/VisualStudy/StorybookDogDefault"]
+[node name="LeftEar" type="MeshInstance3D" parent="RestingPetPlaceholder/VisualStudy/PetCards/dog"]
 position = Vector3(-0.3, 0.2, 0.43)
 scale = Vector3(0.2, 0.38, 0.23)
 mesh = SubResource("SphereMesh_character")
 surface_material_override/0 = SubResource("Material_dog_ear")
 
-[node name="RightEar" type="MeshInstance3D" parent="RestingPetPlaceholder/VisualStudy/StorybookDogDefault"]
+[node name="RightEar" type="MeshInstance3D" parent="RestingPetPlaceholder/VisualStudy/PetCards/dog"]
 position = Vector3(0.3, 0.2, 0.43)
 scale = Vector3(0.2, 0.38, 0.23)
 mesh = SubResource("SphereMesh_character")
 surface_material_override/0 = SubResource("Material_dog_ear")
 
-[node name="ArtCard" type="Sprite3D" parent="RestingPetPlaceholder/VisualStudy/StorybookDogDefault"]
+[node name="ArtCard" type="Sprite3D" parent="RestingPetPlaceholder/VisualStudy/PetCards/dog"]
 position = Vector3(0, 0.18, 0.18)
 pixel_size = 0.002
 billboard = 1
@@ -363,6 +395,39 @@ no_depth_test = false
 texture = ExtResource("6")
 script = ExtResource("8")
 fallback_nodes = [NodePath("../DogBody"), NodePath("../DogHead"), NodePath("../LeftEar"), NodePath("../RightEar")]
+
+[node name="cat" type="Node3D" parent="RestingPetPlaceholder/VisualStudy/PetCards"]
+visible = false
+
+[node name="ArtCard" type="Sprite3D" parent="RestingPetPlaceholder/VisualStudy/PetCards/cat"]
+position = Vector3(0, 0.18, 0.18)
+pixel_size = 0.002
+billboard = 1
+no_depth_test = false
+texture = ExtResource("13")
+script = ExtResource("8")
+
+[node name="rabbit" type="Node3D" parent="RestingPetPlaceholder/VisualStudy/PetCards"]
+visible = false
+
+[node name="ArtCard" type="Sprite3D" parent="RestingPetPlaceholder/VisualStudy/PetCards/rabbit"]
+position = Vector3(0, 0.18, 0.18)
+pixel_size = 0.002
+billboard = 1
+no_depth_test = false
+texture = ExtResource("14")
+script = ExtResource("8")
+
+[node name="otter" type="Node3D" parent="RestingPetPlaceholder/VisualStudy/PetCards"]
+visible = false
+
+[node name="ArtCard" type="Sprite3D" parent="RestingPetPlaceholder/VisualStudy/PetCards/otter"]
+position = Vector3(0, 0.18, 0.18)
+pixel_size = 0.002
+billboard = 1
+no_depth_test = false
+texture = ExtResource("15")
+script = ExtResource("8")
 
 [node name="StorybookHullPass" type="Node3D" parent="BoatBow/VisualStudy"]
 visible = false
@@ -406,3 +471,6 @@ pixel_size = 0.0017
 billboard = 1
 no_depth_test = false
 texture = ExtResource("9")
+
+[node name="IdentityVisualRouter" type="Node" parent="."]
+script = ExtResource("10")
