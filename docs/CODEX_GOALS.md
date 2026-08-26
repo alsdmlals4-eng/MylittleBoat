@@ -2,15 +2,27 @@
 
 Codex에게 작업을 맡길 때는 **현재 Notion/AGENTS 정본과 실제 런타임 증거를 먼저 확인하고, 한 번에 작은 검증 가능한 Slice**를 구현하도록 요청합니다.
 
-## 현재 실행 진입점
+## 현재 상태 · Codex 구현 일시중지
 
-현재 실제 Godot 제품 구현을 시작할 때는 먼저 다음 stable pointer를 읽습니다.
+현재 프로젝트 작업은 Godot 구현이 아니라 **기획·이미지 Closeout**입니다.
+
+현재 전체 작업 진입점:
+
+`docs/handoffs/CURRENT_PLANNING_VISUAL_WORK.md`
+
+Godot 구현 진입점:
 
 `docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md`
 
-이 파일은 현재 Goal·보호 범위·evidence ceiling·fresh-read source를 압축하는 router입니다. 과거 계획의 예시 Node 이름이나 내부 구현 형태를 그대로 구현하라는 뜻이 아니며, Codex는 current GitHub + Notion + 실제 Godot 구조를 fresh-read한 뒤 승인된 결과를 만족하는 최소 안전 구현법을 선택합니다.
+단, 현재 Godot handoff는 `PAUSED_PENDING_PLANNING_VISUAL_CLOSEOUT`입니다. 플레이어 대표 정체성, 첫 펫 종/휴식 인상, 보트·소품 대표 언어, 4시간대 분위기, 대표 UI 존재감, 최종 Representative Visual GDD가 승인·정본화되기 전에는 Codex 제품 구현을 시작하지 않습니다.
 
-현재 `FIRST_PRODUCTION_VISUAL_SLICE`의 이전 v1 plan/handoff에 있는 `VisualStudy` 같은 정확한 Node 이름·테스트 형태는 **illustrative planning sketch**입니다. binding 항목은 player outcome, 승인/보호 의미, TDD-before-implementation, acceptance/evidence ceiling, PR #19 격리, 이미지 생성 금지입니다.
+이미지 생성/생성형 편집은 Codex가 수행하지 않습니다. Visual이 필요하면 GPT/user visual workflow에서 승인한 뒤 Notion Asset Library를 통해 전달합니다.
+
+## 구현 재개 후 원칙
+
+기획·Visual Closeout이 끝난 뒤 `CURRENT_GODOT_IMPLEMENTATION.md`가 다시 implementation-ready로 전환되면 Codex는 current GitHub + Notion + 실제 Godot 구조를 fresh-read한 뒤 승인된 결과를 만족하는 최소 안전 구현법을 선택합니다.
+
+과거 `FIRST_PRODUCTION_VISUAL_SLICE` v1 plan/handoff의 `VisualStudy` 같은 정확한 Node 이름·테스트 형태는 **illustrative planning sketch**이며 구현 강제가 아닙니다. binding 항목은 player outcome, 승인/보호 의미, TDD-before-implementation, acceptance/evidence ceiling, PR #19 격리, 이미지 생성 금지입니다.
 
 ## 예시 1: 마음 선택 개선
 
