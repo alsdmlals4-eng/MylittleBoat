@@ -21,14 +21,12 @@ image_generation_by_codex: FORBIDDEN
 
 ## Binding pipeline
 
-The latest user instruction requires image planning/production to finish **before** Codex product integration for the active image goals:
-
 ```text
 Remaining Image Goals
 → user goal approval
 → GPT image generation/editing
 → GPT review
-→ user image approval
+→ user asset approval
 → Notion asset registration
 → IMPLEMENTATION_READY
 → Codex Integration Goals
@@ -37,13 +35,13 @@ Remaining Image Goals
 → GPT final review
 ```
 
-Do not ask Codex to create/edit images. Do not start CODEX-IMG-01 or CODEX-IMG-02 while their image files are below `IMPLEMENTATION_READY`.
+Codex does not create/edit images and does not start CODEX-IMG-01/02 before their required files are `IMPLEMENTATION_READY`.
 
 ## Active image integration goals waiting downstream
 
 ### CODEX-IMG-01 — Pet Cushion Runtime Surface Integration
 
-Waits for:
+Waits for exactly:
 
 ```text
 res://assets/images/decor/pet_cushion/cushion_stripe.png
@@ -51,21 +49,19 @@ res://assets/images/decor/pet_cushion/cushion_moon.png
 res://assets/images/decor/pet_cushion/cushion_floral.png
 ```
 
-These are three cosmetic visual variants of the stable `pet_cushion` meaning. Implementation must not create stats, rarity, cost, gacha, care obligation or a separate progression system.
+Three cosmetic visual variants of the existing `pet_cushion` meaning. No stat/rarity/cost/gacha/care/progression semantics.
 
-### CODEX-IMG-02 — Postcard Memory Face Integration
+### CODEX-IMG-02 — Default Postcard Memory Face Integration
 
-Waits for:
+Waits for exactly:
 
 ```text
-res://assets/images/decor/postcard/postcard_dawn.png
 res://assets/images/decor/postcard/postcard_boat_bright.png
-res://assets/images/decor/postcard/postcard_boat_sunset.png
 ```
 
-These are cosmetic visual variants of the stable `postcard` meaning. They must remain quiet decor/memory traces.
+P1 integrates one default visual face only. Dawn/Sunset source compositions are P2 reuse candidates; **do not** create a postcard variant selector/state merely to use them.
 
-Full implementation tasks/acceptance are in `docs/handoffs/2026-08-26-image-codex-integration-goals.md`.
+Full tasks/acceptance: `docs/handoffs/2026-08-26-image-codex-integration-goals.md`.
 
 ## Approved customization semantics waiting downstream
 
@@ -83,53 +79,56 @@ PET_SELECTION_SET
 
 PET_CUSHION_CUSTOMIZATION
 = THREE_APPROVED_VISUAL_VARIANTS / COSMETIC_ONLY
+
+POSTCARD_P1
+= ONE_APPROVED_DEFAULT_FACE / NO_VARIANT_SYSTEM
 ```
 
-The exact Godot variant-state representation remains Codex's implementation choice after fresh-read. Preserve existing `pet_cushion` and `postcard` base semantics and current decor compatibility.
+Exact Godot implementation details remain Codex choices after fresh-read. Preserve existing `pet_cushion` and `postcard` base meanings and compatibility.
 
-## Do not invent image consumers for deferred categories
+## Deferred consumers
 
-- Main Menu / Album authored backgrounds are not required; current ColorRect/live-world routes remain valid.
-- character/pet selection thumbnails should derive from actual 3D previews.
-- exact UV-specific character/pet/boat texture sheets stay blocked by production geometry.
-- sky/sea bitmap assets are conditional on actual material technique; prefer simple color/light/procedural methods.
-- UI icons remain deferred until a binding runtime need exists.
-- release/store art is P3 and not this implementation slice.
+Do not invent consumers to absorb extra art:
+
+- Main Menu/Album authored backgrounds are not required now.
+- character/pet selection thumbnails derive from actual 3D previews.
+- exact UV-specific character/pet/boat texture sheets are blocked by production geometry.
+- sky/sea bitmap assets are conditional; prefer simple color/light/procedural route.
+- UI icons are deferred until a binding consumer/readability need exists.
+- app icon/store/marketing is P3 after release targets/branding lock.
 
 ## Codex unpause gate
 
-Both active image goals must be ready unless the user explicitly narrows the batch:
-
 ```text
-IMG_01_FILES = IMPLEMENTATION_READY
+IMG_01_3_FILES = IMPLEMENTATION_READY
 IMG_01_NOTION_READBACK = PASS
-IMG_02_FILES = IMPLEMENTATION_READY
+IMG_02_1_FILE = IMPLEMENTATION_READY
 IMG_02_NOTION_READBACK = PASS
 EXACT_ASSET_PATHS = FIXED
 CODEX_INTEGRATION_GOALS = CURRENT
 PR_19 = READ_ONLY_NO_ABSORPTION
 ```
 
-At Codex start, fresh-read current completed main, Notion, actual Godot files/tests, current open PRs, and toolchain. Use semantic TDD and runtime proof. Do not treat historical exact Node/test sketches as binding implementation internals.
+At Codex start, fresh-read current completed main, Notion, actual Godot files/tests, open PRs and toolchain. Use semantic TDD and runtime proof.
 
 ## Protected downstream scope
 
-- rest-first Core Loop, voyage duration/rewards, and mood meaning;
-- Normal vs Appreciation Camera semantics and input isolation;
+- rest-first Core Loop, voyage duration/rewards and mood meaning;
+- Normal/Appreciation Camera semantics and input isolation;
 - BoatSpace shared bob ownership;
 - 8 decor slot IDs and existing six base item meanings/compatibility;
 - low-pressure interaction reward isolation;
 - care-obligation-free pet semantics;
-- cosmetic variants must not alter rewards, timer, progression pressure, social eligibility or care obligation;
+- cosmetic visuals must not alter rewards, timer, progression pressure, social eligibility or care obligation;
 - local-first core;
-- PR #19 remains an independent workstream.
+- PR #19 remains independent.
 
 ## Evidence ceiling while paused
 
 ```text
 IMAGE_GOAL_QUEUE = READY_FOR_USER_REVIEW
-IMG_01 = NEEDS_REVISION
-IMG_02 = NEEDS_REVISION
+IMG_01 = NEEDS_REVISION / 3 REQUIRED FILES
+IMG_02 = NEEDS_REVISION / 1 REQUIRED FILE
 CODEX_IMG_01 = NOT_RUN
 CODEX_IMG_02 = NOT_RUN
 IMPLEMENTED_IMAGE_ASSETS = 0
