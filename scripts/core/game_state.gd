@@ -13,6 +13,7 @@ var letters: Array[String] = []
 var fish: Array[String] = []
 var voyage_records: Array[String] = []
 var boat_decor: Dictionary = {}
+var boat_decor_appearances: Dictionary = {}
 
 # Scene 전환에도 유지되어야 하는 현재 항해 상태다.
 var voyage_active := false
@@ -62,6 +63,7 @@ func set_boat_decor(slot_id: String, item_id: String) -> void:
 		return
 	if item_id == "":
 		boat_decor.erase(slot_id)
+		boat_decor_appearances.erase(slot_id)
 	else:
 		boat_decor[slot_id] = item_id
 
@@ -69,6 +71,21 @@ func set_boat_decor(slot_id: String, item_id: String) -> void:
 ## Returns the process-lifetime cosmetic item stored in one boat slot.
 func get_boat_decor(slot_id: String) -> String:
 	return str(boat_decor.get(slot_id, ""))
+
+
+## Stores or clears a cosmetic appearance without changing the stable decor item meaning.
+func set_boat_decor_appearance(slot_id: String, appearance_id: String) -> void:
+	if slot_id == "":
+		return
+	if appearance_id == "":
+		boat_decor_appearances.erase(slot_id)
+	else:
+		boat_decor_appearances[slot_id] = appearance_id
+
+
+## Returns the stored cosmetic appearance for one boat decor slot.
+func get_boat_decor_appearance(slot_id: String) -> String:
+	return str(boat_decor_appearances.get(slot_id, ""))
 
 
 ## Advances the active voyage timer and reports when it reaches zero this tick.

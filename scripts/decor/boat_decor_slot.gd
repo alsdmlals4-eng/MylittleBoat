@@ -3,18 +3,24 @@ extends Node3D
 
 const CATALOG_SCRIPT = preload("res://scripts/decor/boat_decor_catalog.gd")
 const INTERACTION_SCRIPT = preload("res://scripts/interaction/low_pressure_interactable.gd")
+const VISUAL_ASSETS_SCRIPT = preload("res://scripts/decor/decor_visual_assets.gd")
 
 @export var slot_id := ""
 
 var _catalog = CATALOG_SCRIPT.new()
 var _interaction = INTERACTION_SCRIPT.new()
+var _visual_assets = VISUAL_ASSETS_SCRIPT.new()
 var _item_id := ""
+var _appearance_id := ""
+var _active_texture_path := ""
 var _visual: Node3D = null
 
 
-func apply_item(item_id: String) -> bool:
+func apply_item(item_id: String, appearance_id: String = "") -> bool:
 	if item_id == "":
 		_item_id = ""
+		_appearance_id = ""
+		_active_texture_path = ""
 		_clear_visual()
 		_interaction.configure("decor:%s" % slot_id, "빈 꾸미기 슬롯", [])
 		return true
@@ -22,6 +28,8 @@ func apply_item(item_id: String) -> bool:
 		return false
 
 	_item_id = item_id
+	_appearance_id = _visual_assets.normalize_cushion_appearance(appearance_id) if item_id == "pet_cushion" else ""
+	_active_texture_path = ""
 	_clear_visual()
 	var definition := _catalog.get_item_definition(item_id)
 	_build_visual(str(definition.get("shape", "")))
@@ -36,6 +44,14 @@ func apply_item(item_id: String) -> bool:
 
 func get_item_id() -> String:
 	return _item_id
+
+
+func get_appearance_id() -> String:
+	return _appearance_id
+
+
+func get_active_texture_path() -> String:
+	return _active_texture_path
 
 
 func is_technical_placeholder() -> bool:
@@ -80,6 +96,8 @@ func _build_visual(shape: String) -> void:
 			mesh.size = Vector3(0.48, 0.12, 0.42)
 			mesh_instance.mesh = mesh
 			material.albedo_color = Color(0.76, 0.67, 0.76, 1.0) if shape == "cushion" else Color(0.72, 0.66, 0.56, 1.0)
+			if shape == "pet_cushion":
+				_apply_texture_if_available(material, _visual_assets.get_cushion_texture_path(_appearance_id))
 		"plant":
 			var mesh := CylinderMesh.new()
 			mesh.top_radius = 0.14
@@ -103,6 +121,9 @@ func _build_visual(shape: String) -> void:
 	add_child(mesh_instance)
 	_visual = mesh_instance
 
+	if shape == "postcard":
+		_add_postcard_front_face(mesh_instance)
+
 	if shape == "lantern":
 		var light := OmniLight3D.new()
 		light.name = "TechnicalLanternLight"
@@ -110,6 +131,29 @@ func _build_visual(shape: String) -> void:
 		light.light_energy = 0.16
 		light.visible = false
 		_visual.add_child(light)
+
+
+func _add_postcard_front_face(postcard_body: MeshInstance3D) -> void:
+	var face := MeshInstance3D.new()
+	face.name = "TechnicalPostcardFace"
+	var mesh := QuadMesh.new()
+	mesh.size = Vector2(0.42, 0.26)
+	face.mesh = mesh
+	face.position.z = 0.018
+	var material := StandardMaterial3D.new()
+	material.roughness = 0.88
+	material.albedo_color = Color.WHITE
+	_apply_texture_if_available(material, _visual_assets.get_postcard_texture_path())
+	face.set_surface_override_material(0, material)
+	postcard_body.add_child(face)
+
+
+func _apply_texture_if_available(material: StandardMaterial3D, texture_path: String) -> void:
+	var texture := _visual_assets.load_texture_if_available(texture_path)
+	if texture == null:
+		return
+	material.albedo_texture = texture
+	_active_texture_path = texture_path
 
 
 func _clear_visual() -> void:

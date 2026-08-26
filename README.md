@@ -79,7 +79,7 @@ pet_cushion
 - invalid placement는 state를 바꾸지 않습니다.
 - replace/clear는 비용·손실이 없습니다.
 - stats / rarity / price / currency / gacha / fill bonus / daily-shop FOMO가 없습니다.
-- `GameState.boat_decor`에는 `slot_id -> item_id`만 저장합니다.
+- `GameState.boat_decor`는 `slot_id -> item_id`를 유지하고, 펫 쿠션의 순수 외형만 별도 cosmetic appearance로 저장합니다.
 - Scene 전환과 새 항해에는 유지되지만 앱 재시작 저장은 아직 없습니다.
 - primitive mesh는 **TECHNICAL_PLACEHOLDER**이며 final art가 아닙니다.
 
@@ -97,7 +97,7 @@ perform(actor_context, action_id)
 
 - BottomPanel의 `꾸미기`, `상호작용` 버튼 2개
 - hidden DecorPanel / InteractionPanel
-- OptionButton으로 slot/item/target/action 선택
+- OptionButton으로 slot/item/target/action 선택, 펫 쿠션일 때만 줄무늬·달·꽃 외형 선택
 - compatible item만 노출
 - 패널 상호 배타적 open
 - Appreciation Mode에서 새 버튼 hide + 열린 panel close
@@ -125,7 +125,7 @@ DECOR_HUMAN_USABILITY = NOT_RUN
 REAL_MOBILE_DECOR_QA = NOT_RUN
 FINAL_AVATAR_ART = NOT_INTEGRATED
 FINAL_PET_ART = NOT_INTEGRATED
-FINAL_DECOR_ART = NOT_INTEGRATED
+FINAL_DECOR_ART = CODEX_RUNTIME_PROOF_USER_APPROVED_COMMITTED_AWAITING_MERGE_DECISION
 FINAL_BOAT_SEA_ART = NOT_INTEGRATED
 APP_RESTART_DECOR_PERSISTENCE = NOT_IMPLEMENTED
 PRODUCTION_OCEAN_AUDIO = NOT_INTEGRATED
@@ -147,6 +147,7 @@ scripts/
   avatar/player_avatar_placeholder.gd
   core/game_state.gd
   decor/boat_decor_catalog.gd
+  decor/decor_visual_assets.gd
   decor/boat_decor_slot.gd
   interaction/low_pressure_interactable.gd
   voyage/boat_rail_interactable.gd
@@ -166,6 +167,7 @@ tests/
   test_low_pressure_interaction_contract.gd
   test_boat_life_scene_contract.gd
   test_boat_life_ui_contract.gd
+  test_runtime_image_asset_contract.gd
 ```
 
 ## 자동 검증
@@ -185,6 +187,7 @@ headless project import
 → low-pressure interaction
 → boat life scene
 → boat life UI
+→ approved runtime image assets
 → main menu / game / album Scene smoke
 ```
 
