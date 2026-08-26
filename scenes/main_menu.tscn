@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3 uid="uid://dc14chliwkcqq"]
 
-[ext_resource type="Script" path="res://scripts/ui/main_menu.gd" id="1"]
+[ext_resource type="Script" uid="uid://wjx42bpjlw3o" path="res://scripts/ui/main_menu.gd" id="1"]
 
-[node name="MainMenu" type="Control"]
+[node name="MainMenu" type="Control" unique_id=1209837312]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,7 +11,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="ColorRect" parent="." unique_id=1684193943]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -20,7 +20,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.66, 0.86, 0.94, 1)
 
-[node name="Margin" type="MarginContainer" parent="."]
+[node name="Margin" type="MarginContainer" parent="." unique_id=2133448707]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -32,48 +32,47 @@ theme_override_constants/margin_top = 72
 theme_override_constants/margin_right = 28
 theme_override_constants/margin_bottom = 72
 
-[node name="Panel" type="PanelContainer" parent="Margin"]
+[node name="Panel" type="PanelContainer" parent="Margin" unique_id=1408011398]
 layout_mode = 2
 
-[node name="VBox" type="VBoxContainer" parent="Margin/Panel"]
+[node name="VBox" type="VBoxContainer" parent="Margin/Panel" unique_id=1800956530]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="TitleLabel" type="Label" parent="Margin/Panel/VBox"]
+[node name="TitleLabel" type="Label" parent="Margin/Panel/VBox" unique_id=1559169372]
 layout_mode = 2
 text = "my little boat"
 horizontal_alignment = 1
 
-[node name="MoodLabel" type="Label" parent="Margin/Panel/VBox"]
+[node name="MoodLabel" type="Label" parent="Margin/Panel/VBox" unique_id=841921788]
 unique_name_in_owner = true
 layout_mode = 2
 text = "오늘의 마음을 골라주세요"
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="CalmButton" type="Button" parent="Margin/Panel/VBox"]
+[node name="CalmButton" type="Button" parent="Margin/Panel/VBox" unique_id=856276171]
 unique_name_in_owner = true
 layout_mode = 2
 text = "평온"
 
-[node name="TiredButton" type="Button" parent="Margin/Panel/VBox"]
+[node name="TiredButton" type="Button" parent="Margin/Panel/VBox" unique_id=1040081381]
 unique_name_in_owner = true
 layout_mode = 2
 text = "지침"
 
-[node name="LonelyButton" type="Button" parent="Margin/Panel/VBox"]
+[node name="LonelyButton" type="Button" parent="Margin/Panel/VBox" unique_id=1597213271]
 unique_name_in_owner = true
 layout_mode = 2
 text = "외로움"
 
-[node name="ExcitedButton" type="Button" parent="Margin/Panel/VBox"]
+[node name="ExcitedButton" type="Button" parent="Margin/Panel/VBox" unique_id=1897650332]
 unique_name_in_owner = true
 layout_mode = 2
 text = "설렘"
 
-[node name="NoteLabel" type="Label" parent="Margin/Panel/VBox"]
+[node name="NoteLabel" type="Label" parent="Margin/Panel/VBox" unique_id=1688965790]
 layout_mode = 2
 text = "전투와 실패 없이, 오늘의 바다로 천천히 떠납니다."
 horizontal_alignment = 1
 autowrap_mode = 2
-
