@@ -4,6 +4,7 @@ extends Control
 const FISHING_SESSION_SCRIPT = preload("res://scripts/voyage/fishing_session.gd")
 const DECOR_CATALOG_SCRIPT = preload("res://scripts/decor/boat_decor_catalog.gd")
 const DECOR_VISUAL_ASSETS_SCRIPT = preload("res://scripts/decor/decor_visual_assets.gd")
+const TIME_OF_DAY_CATALOG_SCRIPT = preload("res://scripts/voyage/time_of_day_catalog.gd")
 
 const SPEED_NAMES: Array[String] = ["느림", "보통", "빠름"]
 const SPEED_MULTIPLIERS: Array[float] = [0.65, 1.0, 1.45]
@@ -25,7 +26,6 @@ const DECOR_SLOT_NODE_NAMES := {
 	"pet_corner": "PetCorner",
 }
 const MOOD_SKY_COLORS := {
-	"평온": Color(0.58, 0.76, 0.86, 1.0),
 	"지침": Color(0.60, 0.72, 0.80, 1.0),
 	"외로움": Color(0.55, 0.69, 0.82, 1.0),
 	"설렘": Color(0.66, 0.80, 0.88, 1.0),
@@ -41,12 +41,14 @@ const FISHING_WAIT_MAX_SECONDS := 12.0
 var _fishing_session = FISHING_SESSION_SCRIPT.new()
 var _decor_catalog = DECOR_CATALOG_SCRIPT.new()
 var _decor_visual_assets = DECOR_VISUAL_ASSETS_SCRIPT.new()
+var _time_of_day_catalog = TIME_OF_DAY_CATALOG_SCRIPT.new()
 var _discovery_wait_remaining := 0.0
 var _discovery_offer_remaining := 0.0
 var _drift_phase := 0.0
 var _diorama_camera_base_position := Vector3.ZERO
 var _appreciation_camera_base_position := Vector3.ZERO
 var _boat_space_base_position := Vector3.ZERO
+var _time_of_day_background_color := Color(0.58, 0.76, 0.86, 1.0)
 
 
 func _ready() -> void:
@@ -56,6 +58,7 @@ func _ready() -> void:
 	_diorama_camera_base_position = $VoyageWorld/DioramaCameraRig.position
 	_appreciation_camera_base_position = $VoyageWorld/AppreciationCameraRig.position
 	_boat_space_base_position = $VoyageWorld/BoatSpace.position
+	_apply_time_of_day_tone()
 	_apply_mood_tone()
 	_apply_stored_boat_decor()
 	%TakePhotoButton.pressed.connect(_take_photo)
@@ -108,8 +111,27 @@ func _apply_mood_tone() -> void:
 	var world_environment := $VoyageWorld/WorldEnvironment as WorldEnvironment
 	if world_environment.environment == null:
 		return
-	var mood_color: Color = MOOD_SKY_COLORS.get(GameState.selected_mood, MOOD_SKY_COLORS["평온"])
-	world_environment.environment.background_color = mood_color
+	if GameState.selected_mood == "평온":
+		world_environment.environment.background_color = _time_of_day_background_color
+		return
+	var mood_color: Color = MOOD_SKY_COLORS.get(GameState.selected_mood, _time_of_day_background_color)
+	world_environment.environment.background_color = _time_of_day_background_color.lerp(mood_color, 0.18)
+
+
+func _apply_time_of_day_tone() -> void:
+	var tone := _time_of_day_catalog.get_visual_tone(GameState.get_selected_time_of_day())
+	_time_of_day_background_color = tone["background_color"] as Color
+	var world_environment := $VoyageWorld/WorldEnvironment as WorldEnvironment
+	if world_environment.environment != null:
+		world_environment.environment.background_color = _time_of_day_background_color
+		world_environment.environment.ambient_light_color = tone["ambient_color"] as Color
+		world_environment.environment.ambient_light_energy = float(tone["ambient_energy"])
+	var sun_light := $VoyageWorld/SunLight as DirectionalLight3D
+	sun_light.light_color = tone["light_color"] as Color
+	sun_light.light_energy = float(tone["light_energy"])
+	var backdrop_modulate := tone["backdrop_modulate"] as Color
+	$VoyageWorld/DioramaCameraRig/DioramaCamera3D/SeaBackdrop.modulate = backdrop_modulate
+	$VoyageWorld/AppreciationCameraRig/AppreciationCamera3D/SeaBackdrop.modulate = backdrop_modulate
 
 
 func _take_photo() -> void:
