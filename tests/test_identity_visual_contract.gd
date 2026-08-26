@@ -55,6 +55,7 @@ func _assert_visual_routes() -> void:
 		return
 	game_state.set_identity_storage_path(GAME_STATE_TEST_SAVE_PATH)
 	await _expect_visual_route("c_loose_knit", "dog", "final_composite")
+	await _expect_visual_route("c_loose_knit", "cat", "layered_subjects")
 	await _expect_visual_route("a_soft_hooded", "dog", "layered_subjects")
 	await _expect_visual_route("b_short_cape", "otter", "layered_subjects")
 	game_state.set_identity_storage_path("user://identity_profile_v1.cfg")
@@ -84,8 +85,12 @@ func _expect_visual_route(player_style_id: String, pet_type_id: String, expected
 			var avatar_cards := scene.get_node_or_null("PlayerAvatarPlaceholder/VisualStudy/AvatarCards")
 			var pet_cards := scene.get_node_or_null("RestingPetPlaceholder/VisualStudy/PetCards")
 			_expect(final_card != null and not final_card.visible, "non-default pair must hide C + dog composite")
-			_expect(_visible_child_count(avatar_cards) == 1, "layered route must show exactly one player card")
-			_expect(_visible_child_count(pet_cards) == 1, "layered route must show exactly one pet card")
+			var selected_avatar := _get_selected_avatar_node(scene, player_style_id)
+			var selected_pet := _get_selected_pet_node(scene, pet_type_id)
+			_expect(selected_avatar != null and selected_avatar.visible, "layered route must show the selected player card")
+			_expect(selected_pet != null and selected_pet.visible, "layered route must show the selected pet card")
+			_expect(_visible_child_count(avatar_cards) + int(player_style_id == "c_loose_knit") == 1, "layered route must show exactly one player card")
+			_expect(_visible_child_count(pet_cards) + int(pet_type_id == "dog") == 1, "layered route must show exactly one pet card")
 	scene.queue_free()
 	await process_frame
 
@@ -100,6 +105,16 @@ func _visible_child_count(parent: Node) -> int:
 		elif child is Node3D and child.visible:
 			visible_count += 1
 	return visible_count
+
+
+func _get_selected_avatar_node(scene: Node, player_style_id: String) -> Node3D:
+	var path := "PlayerAvatarPlaceholder/VisualStudy/StorybookCDefault" if player_style_id == "c_loose_knit" else "PlayerAvatarPlaceholder/VisualStudy/AvatarCards/%s" % player_style_id
+	return scene.get_node_or_null(path) as Node3D
+
+
+func _get_selected_pet_node(scene: Node, pet_type_id: String) -> Node3D:
+	var path := "RestingPetPlaceholder/VisualStudy/StorybookDogDefault" if pet_type_id == "dog" else "RestingPetPlaceholder/VisualStudy/PetCards/%s" % pet_type_id
+	return scene.get_node_or_null(path) as Node3D
 
 
 func _remove_game_state_test_save() -> void:

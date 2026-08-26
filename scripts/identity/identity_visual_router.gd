@@ -12,6 +12,8 @@ var _pet_type_id := "dog"
 @onready var _shared_hull_pass := _boat_space.get_node_or_null("BoatBow/VisualStudy/StorybookHullPass") as Node3D
 @onready var _avatar_cards := _boat_space.get_node_or_null("PlayerAvatarPlaceholder/VisualStudy/AvatarCards")
 @onready var _pet_cards := _boat_space.get_node_or_null("RestingPetPlaceholder/VisualStudy/PetCards")
+@onready var _default_avatar_card := _boat_space.get_node_or_null("PlayerAvatarPlaceholder/VisualStudy/StorybookCDefault") as Node3D
+@onready var _default_pet_card := _boat_space.get_node_or_null("RestingPetPlaceholder/VisualStudy/StorybookDogDefault") as Node3D
 
 
 func _ready() -> void:
@@ -28,6 +30,10 @@ func apply_selection(player_style_id: String, pet_type_id: String) -> void:
 		_shared_hull_pass.visible = not is_default
 	_set_group_visibility(_avatar_cards, _player_style_id, not is_default)
 	_set_group_visibility(_pet_cards, _pet_type_id, not is_default)
+	if _default_avatar_card != null:
+		_default_avatar_card.visible = not is_default and _player_style_id == _catalog.DEFAULT_PLAYER_STYLE
+	if _default_pet_card != null:
+		_default_pet_card.visible = not is_default and _pet_type_id == _catalog.DEFAULT_PET_TYPE
 
 
 func get_active_visual_route() -> Dictionary:
