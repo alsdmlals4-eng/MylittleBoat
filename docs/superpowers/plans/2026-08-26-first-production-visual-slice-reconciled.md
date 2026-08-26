@@ -182,7 +182,6 @@ Run the actual scene, capture Normal and Appreciation views, and save the two PN
 
 Set the roadmap and README to `TECH_VISUAL_SLICE = PASS` only after automated contracts, smokes, and runtime evidence pass. Leave `HUMAN_DIORAMA_COMFORT`, `HUMAN_STYLE_APPROVAL`, and `REAL_DEVICE_TOUCH_QA` as `NOT_RUN`.
 
-- [ ] **Step 4: Run the full suite and commit the completed slice**
+- [x] **Step 4: Run the full suite and commit the completed slice**
 
 Run all focused contracts, three scene smokes, `git diff --check`, and GitHub Actions on the exact PR head. Commit only current-slice files.
-
