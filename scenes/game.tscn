@@ -49,8 +49,8 @@ near = 0.05
 far = 200.0
 
 [node name="AppreciationCameraRig" type="Node3D" parent="VoyageWorld"]
-position = Vector3(0, 1.35, 2.4)
-rotation = Vector3(-0.1, 0, 0)
+position = Vector3(0, 2.2, 6.8)
+rotation = Vector3(-0.16, 0, 0)
 script = ExtResource("2")
 
 [node name="AppreciationCamera3D" type="Camera3D" parent="VoyageWorld/AppreciationCameraRig"]

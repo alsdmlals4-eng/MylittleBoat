@@ -488,6 +488,8 @@ func _set_fishing_status(message: String) -> void:
 func _apply_appreciation_mode() -> void:
 	var controls_visible := not GameState.appreciation_mode
 	$TopPanel.visible = controls_visible
+	$BottomPanel.offset_top = -56.0 if GameState.appreciation_mode else -176.0
+	$BottomPanel/ButtonGrid.columns = 1 if GameState.appreciation_mode else 2
 	%TakePhotoButton.visible = controls_visible
 	%SpeedButton.visible = controls_visible
 	%FishingButton.visible = controls_visible

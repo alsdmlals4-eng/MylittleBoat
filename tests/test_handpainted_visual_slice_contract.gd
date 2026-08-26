@@ -32,6 +32,13 @@ func _run() -> void:
 		_expect(pet.has_method("has_care_obligation"), "pet keeps care evidence API")
 		if pet.has_method("has_care_obligation"):
 			_expect(not bool(pet.call("has_care_obligation")), "visual study cannot add pet chores")
+	var appreciation_button := scene.get_node_or_null("BottomPanel/ButtonGrid/AppreciationButton") as Button
+	var bottom_panel := scene.get_node_or_null("BottomPanel") as PanelContainer
+	_expect(appreciation_button != null, "appreciation exit button must remain available")
+	if appreciation_button != null:
+		appreciation_button.emit_signal("pressed")
+		await process_frame
+		_expect(bottom_panel != null and bottom_panel.offset_top > -96.0, "appreciation mode must collapse the empty control panel")
 
 	for owner in [avatar, pet, boat]:
 		if owner == null:
