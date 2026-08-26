@@ -59,5 +59,66 @@
       "disposition": "ALREADY_COVERED_BY_BASE_POST_CHANGE_READBACK",
       "new_bcp_required": false
     }
-  ]
+  ],
+  "current_preflight_2026_08_26": {
+    "task": "REMAINING_GAME_IMAGE_GOALS_AND_CODEX_INTEGRATION_QUEUE",
+    "project_main_baseline": "d4d5e57027e1c83d1ae3504fce484fd4a11d8015",
+    "base_main_observed": "05d44bba978f4cff0fc94ade8e54825f5d6c80f0",
+    "selected_modules": [],
+    "reuse_mode": [
+      "REUSE_EXISTING_PROJECT_CANON",
+      "REUSE_APPROVED_VISUAL_REFERENCES",
+      "REUSE_APPROVED_CUSHION_AND_POSTCARD_MOTIFS_WITH_EDIT",
+      "REUSE_EXISTING_BOAT_DECOR_ITEM_AND_SLOT_SEMANTICS"
+    ],
+    "reuse_decisions": {
+      "visual_proof_01": "REUSE_AS_IS_REFERENCE",
+      "visual_proof_02": "REUSE_AS_IS_REFERENCE",
+      "image_a": "REUSE_AS_IS_REFERENCE",
+      "image_b": "REUSE_AS_IS_REFERENCE",
+      "cushion_sources": "REUSE_WITH_EDIT",
+      "postcard_sources": "REUSE_WITH_EDIT",
+      "main_menu_static_background": "REJECT_NOW",
+      "album_authored_images": "REJECT_NOW_USE_RUNTIME_CAPTURE",
+      "character_pet_fake_2d_portraits": "REJECT_USE_REAL_3D_PREVIEW",
+      "uv_specific_character_pet_boat_textures": "DEFER_BLOCKED_BY_PRODUCTION_GEOMETRY",
+      "sea_sky_bitmaps": "CONDITIONAL_ONLY_IF_RUNTIME_CONSUMER_REQUIRES",
+      "ui_icon_pack": "DEFER_NO_BINDING_CONSUMER"
+    },
+    "alternatives_reviewed": [
+      "A_BROAD_STATIC_IMAGE_PRODUCTION_NOW_REJECT",
+      "B_CONSUMER_STABLE_PLANAR_SURFACE_ASSETIZATION_ADOPT",
+      "C_UV_SPECIFIC_TEXTURE_PRODUCTION_BEFORE_GEOMETRY_REJECT_NOW_DEFER"
+    ],
+    "project_paths_changed": [
+      "docs/visual/2026-08-26-remaining-image-goals.md",
+      "docs/handoffs/2026-08-26-image-codex-integration-goals.md",
+      "docs/handoffs/CURRENT_PLANNING_VISUAL_WORK.md",
+      "docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md",
+      "docs/PROJECT_WORK_REUSE_HANDOFF.json"
+    ],
+    "verification_evidence": [
+      "fresh project main and Base main readback",
+      "project AGENTS and current Notion Home/Visual/Blueprint/Asset Library readback",
+      "current scenes and scripts confirm zero production image binaries/runtime image references",
+      "approved source motif hashes recorded in Notion Asset Library as WIP/NEEDS_REVISION",
+      "open PR #19 observed and kept READ_ONLY_NO_ABSORPTION"
+    ],
+    "evidence_ceiling": {
+      "goal_queue": "PLANNED",
+      "approved_reference_visuals": 4,
+      "approved_motif_source_images": 6,
+      "implementation_ready_image_assets": 0,
+      "implemented_image_assets": 0,
+      "runtime_verified_image_assets": 0,
+      "new_image_generation_this_task": "NOT_RUN"
+    },
+    "rollback": "Current task changes are planning/Notion records only; no Godot product files or image binaries are mutated. The task PR can be reverted independently; source image approval provenance remains preserved.",
+    "project_only_lessons": [
+      "Rendered object presentation images are not automatically valid runtime albedo assets; preserve approval while classifying runtime status separately.",
+      "For My Little Boat, the first justified authored runtime images are consumer-stable cushion surface motifs and postcard face art, not static menu backgrounds or fake selection portraits."
+    ],
+    "base_promotion_candidates": [],
+    "reuse_learning_handoff": "NO_NEW_REUSE_LEARNING_FOR_BASE"
+  }
 }
