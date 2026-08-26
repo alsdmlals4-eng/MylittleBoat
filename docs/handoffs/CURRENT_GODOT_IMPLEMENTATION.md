@@ -16,16 +16,18 @@ implementation_baseline: RESOLVE_CURRENT_COMPLETED_MAIN_AT_CODEX_START
 implementation_owner: CODEX_GODOT_PRODUCT_IMPLEMENTATION_OWNER
 final_review_owner: GPT_FINAL_IMPLEMENTATION_REVIEW
 concurrent_pr_19: READ_ONLY_NO_ABSORPTION
-image_generation_by_codex: FORBIDDEN
+image_generation_by_codex: ALLOWED_BY_USER_AUTO_ASSET_POLICY_2026_08_26
+image_registration_policy: AUTO_CREATE_REVIEW_NOTION_AND_PROJECT_LOCAL
+visual_reference_lock: HANDPAINTED_STORYBOOK_3D_DIORAMA
 ```
 
 ## Binding pipeline
 
 ```text
-USER_APPROVED_IMAGE_GOALS
-→ GPT Work image generation/editing
-→ GPT Work runtime-asset review
-→ user asset approval
+RUNTIME_CONSUMER_OR_CLEAR_VISUAL_NEED
+→ Codex image generation/editing when required
+→ reference-lock runtime-asset review
+→ project-local binary storage
 → Notion final asset registration + durable binary locator
 → IMPLEMENTATION_READY
 → GPT Work changes this router to READY_FOR_CODEX_IMAGE_INTEGRATION
@@ -34,7 +36,7 @@ USER_APPROVED_IMAGE_GOALS
 → GPT final implementation review
 ```
 
-Codex does not create/edit images and does not start CODEX-IMG-01/02 before their required files are `IMPLEMENTATION_READY` with Notion readback.
+The user has authorized automatic image creation and final registration for assets Codex judges necessary. Each generated result must still be runtime-reviewed, stored both project-locally and in Notion Asset Library, and preserve the approved `HANDPAINTED_STORYBOOK_3D_DIORAMA` visual language. Use warm dark wood, rounded restrained silhouettes, matte hand-painted surfaces, small-life props, and a calm expansive horizon; do not drift into generic glossy CG or copy a reference board.
 
 ## Completed image integration goals
 
@@ -122,6 +124,7 @@ At Codex start, fresh-read current completed main, Project Notion, actual Godot 
 - cosmetic visuals must not alter rewards, timer, progression pressure, social eligibility or care obligation;
 - local-first core;
 - PR #19 remains independent.
+- New image work may proceed automatically only when it has a concrete runtime consumer or prevents a clear visual gap in the approved diorama. Do not generate speculative menu backgrounds, icon packs, UV texture sheets, or presentation-only art.
 
 ## Current Codex evidence
 
