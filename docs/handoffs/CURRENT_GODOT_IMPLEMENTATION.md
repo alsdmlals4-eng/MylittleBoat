@@ -139,10 +139,10 @@ CODEX_LOCAL_WIRING_ASSETS = 4
 IMPLEMENTED_IMAGE_ASSETS = 4_MERGED_MAIN
 RUNTIME_VERIFIED_IMAGE_ASSETS = 4
 CI = GODOT_4_7_VALIDATION_PASS_RUN_155
-FIRST_PRODUCTION_VISUAL_SLICE = CODEX_RUNTIME_CAPTURE_COMPLETE_AWAITING_HUMAN_VISUAL_REVIEW
-HANDPAINTED_3D_RUNTIME_SLICE = CAPTURED_AWAITING_HUMAN_REVIEW
+FIRST_PRODUCTION_VISUAL_SLICE = CODEX_RUNTIME_CAPTURE_USER_APPROVED_MERGED_MAIN
+HANDPAINTED_3D_RUNTIME_SLICE = USER_APPROVED_MERGED_MAIN
 C_DOG_DEFAULT_RUNTIME_CAPTURE = PASS
-C_DOG_HUMAN_VISUAL_APPROVAL = NOT_RUN
+C_DOG_HUMAN_VISUAL_APPROVAL = PASS
 REAL_DEVICE_TOUCH_QA = NOT_RUN
 ```
 
@@ -154,4 +154,4 @@ REAL_DEVICE_TOUCH_QA = NOT_RUN
 - `tests/test_runtime_image_asset_contract.gd` proves exact runtime texture paths, material consumers, fallback behavior, and core-state isolation.
 - Headless import, all 12 contracts, and all three scene smokes passed. Live 540×960 captures exist for Stripe, Moon, Floral, and Bright Boat postcard at `docs/evidence/2026-08-26-runtime-image-integration/`; editor diagnostics report 0 errors and the user approved the runtime review. The scoped integration is merged to `main` through PR #34 at merge commit `647e403bba4b9a537052d16963b469be10236be4`; GitHub Actions Godot 4.7 validation run #155 passed.
 - The First Production Visual Slice adds neutral avatar/non-species companion/boat `VisualStudy` layers, matte decor and ocean treatment, and compact Appreciation controls. Reproducible 540×960 Normal and Appreciation captures are at `docs/evidence/2026-08-26-first-production-visual-slice/`; these are runtime evidence only and await the user's 30-second/5-minute visual review.
-- The approved default direction is C knit/long-hair player + dog. Its bounded 3D proof keeps the current placeholder/care-free semantics and stores 540×960 Normal/Appreciation capture at `docs/evidence/2026-08-26-c-storybook-dog-default/`; it remains below final-art and human visual approval.
+- The approved default direction is C knit/long-hair player + dog. Its bounded 3D proof keeps the current placeholder/care-free semantics and stores 540×960 Normal/Appreciation capture at `docs/evidence/2026-08-26-c-storybook-dog-default/`; the user approved it and it merged to `main` through PR #36 at merge commit `0e5f6c7c47d5b1415a3954b3fd6aee84ec17ff8f`. It remains below final art and real-device touch QA.
