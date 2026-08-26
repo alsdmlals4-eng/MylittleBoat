@@ -1,11 +1,13 @@
 # My Little Boat — Game Image Consumer Manifest
 
-Status: `CONSUMER_FIRST_ASSET_POLICY / IMAGE_GENERATION_PAUSED_UNTIL_READY`
+Status: `CONSUMER_FIRST_ASSET_POLICY / ACTIVE_GOALS_DEFINED`
 Date: 2026-08-26
+
+> Current Goal authority: `docs/visual/2026-08-26-remaining-image-goals.md`. This file owns the consumer inventory and deferred-consumer rules; it does not replace the Image Goal acceptance packets.
 
 ## Policy
 
-An image is produced only when it has a concrete Godot consumer.
+An image is produced only when it has a concrete current or approved planned game consumer.
 
 Every image asset must define:
 
@@ -20,150 +22,161 @@ validation
 
 Reference boards and explanatory sheets do not count as game-consumable assets.
 
+The approved sequence is:
+
+```text
+consumer contract
+→ Image Goal
+→ GPT image generation/editing
+→ user asset approval
+→ Notion Asset Library registration
+→ IMPLEMENTATION_READY
+→ Codex import/wiring
+→ runtime screenshot/play verification
+```
+
+Codex does not create or edit images.
+
 ## Current-main audit
 
 Current repository evidence shows:
 
-- `assets/images/` contains only its README; no production image binary is currently stored there.
-- no current `.png` reference was found in project code/scenes.
-- no current `albedo_texture` reference was found.
-- `scenes/main_menu.tscn` uses `ColorRect` for its background.
-- `scenes/album.tscn` uses `ColorRect` for its background.
-- `scenes/boat_space.tscn` uses primitive meshes and color-only `StandardMaterial3D` placeholders.
-- `scripts/decor/boat_decor_slot.gd` constructs primitive decor meshes and sets `albedo_color`; it does not load texture files.
+- `assets/images/` contains only its README; production image binary = `0`.
+- no current `.png` resource reference was observed in project code/scenes.
+- no current `albedo_texture` reference was observed.
+- `scenes/main_menu.tscn` and `scenes/album.tscn` use `ColorRect` backgrounds.
+- `scenes/game.tscn` uses color-only Environment/Ocean materials and text UI.
+- `scenes/boat_space.tscn` uses primitive meshes and color-only materials.
+- `scripts/decor/boat_decor_slot.gd` constructs primitive decor and sets `albedo_color`.
 
 Therefore:
 
 ```text
-CURRENT_RUNTIME_IMAGE_CONSUMERS = 0
+IMPLEMENTED_GAME_IMAGE_ASSETS = 0
+RUNTIME_VERIFIED_GAME_IMAGE_ASSETS = 0
+P0_AUTHORED_IMAGE_GOALS = 0
 ```
-
-Do not generate another gameplay image until a consumer contract below reaches `READY_TO_GENERATE`.
 
 ## Approved references retained, not counted as runtime assets
 
-- Visual Proof 01 — approved reference
-- Visual Proof 02 — approved reference
-- Image A — approved customization reference
-- Image B — approved time-of-day/boat atmosphere reference
-
-These can guide production, but the files themselves are not required runtime assets unless a specific consumer is later created for them.
+- Visual Proof 01 — `APPROVED / REFERENCE_ONLY`
+- Visual Proof 02 — `APPROVED / REFERENCE_ONLY`
+- Image A — `APPROVED / REFERENCE_ONLY`
+- Image B — `APPROVED / REFERENCE_ONLY`
+- older player/pet board before the dog-inclusive Image A — `SUPERSEDED`
+- planning/checklist infographics — `REFERENCE_ONLY / NOT_GAME_ASSET`
 
 `Image C / Representative Visual GDD` is cancelled as a required production image.
 
-## Candidate consumer contracts
+## Active consumer contracts
 
-### 1. Pet cushion textures
+### IMG-01 / Pet cushion runtime surface set
 
 ```yaml
-status: CONSUMER_CONTRACT_CANDIDATE
-asset_path: res://assets/images/decor/pet_cushion/
+status: IMAGE_GOAL_DEFINED_NEEDS_REVISION
+asset_path:
+  - res://assets/images/decor/pet_cushion/cushion_stripe.png
+  - res://assets/images/decor/pet_cushion/cushion_moon.png
+  - res://assets/images/decor/pet_cushion/cushion_floral.png
 consumer_item_id: pet_cushion
-consumer_target: Boat Decoration pet_cushion visual material
-intended_property: StandardMaterial3D.albedo_texture
+consumer_target: Boat Decoration PetCorner / pet_cushion visual material
+intended_property: StandardMaterial3D.albedo_texture or equivalent simple material input
 runtime_role: player-visible cushion appearance customization
-fallback: existing color-only material
+spec: 1024x1024 opaque sRGB flat surface art
+fallback: current color-only pet_cushion visual remains safe if a texture is missing
+validation: actual 540x960 runtime screenshot for all three variants after Codex integration
 ```
 
-Why first:
-- `pet_cushion` already exists as a stable decor item meaning.
-- the user explicitly approved pet cushion customization.
-- it is cosmetic and does not affect stats/rewards.
+The current user-approved rendered cushion images are **source motif references**, not direct albedo maps. Their outer cushion geometry, tufting and lighting must not be baked into the final surface files.
 
-Before generation:
-- choose minimal variant count;
-- define how the chosen texture maps to the actual cushion mesh;
-- define import size/color-space expectations;
-- ensure the consumer will actually load the file.
-
-### 2. Postcard face textures
+### IMG-02 / Postcard memory face set
 
 ```yaml
-status: CONSUMER_CONTRACT_CANDIDATE
-asset_path: res://assets/images/decor/postcard/
+status: IMAGE_GOAL_DEFINED_NEEDS_REVISION
+asset_path:
+  - res://assets/images/decor/postcard/postcard_dawn.png
+  - res://assets/images/decor/postcard/postcard_boat_bright.png
+  - res://assets/images/decor/postcard/postcard_boat_sunset.png
 consumer_item_id: postcard
-consumer_target: Boat Decoration postcard visual material
-intended_property: StandardMaterial3D.albedo_texture
-runtime_role: readable personal/memory artwork on placed postcard decor
-fallback: existing neutral color-only postcard material
+consumer_target: Boat Decoration rail/postcard front-face material
+intended_property: StandardMaterial3D.albedo_texture or equivalent face texture
+runtime_role: quiet personal/memory art visible on placed postcard decor
+spec: 1024x768 4:3 opaque sRGB normalized card-face art
+fallback: current neutral color-only postcard visual remains safe if a texture is missing
+validation: actual 540x960 normal-camera screenshot for all three variants after Codex integration
 ```
 
-Why first:
-- `postcard` already exists as a stable decor item.
-- the object is visually planar and suited to authored 2D art.
-- a small number of variants can be directly player-visible without expanding core systems.
+The current user-approved postcard renders preserve the approved compositions but must be normalized to the actual face texture. External presentation canvas/drop shadow does not belong in the runtime asset.
 
-Before generation:
-- confirm face orientation/UV mapping;
-- define 1–3 initial variants only;
-- define import size and alpha policy;
-- verify 3/4-camera readability.
+## Deferred / no current authored-image requirement
 
-## Deferred until their consumer exists
+### Main Menu background
 
-### Character / pet albedo textures
+Status: `NO_REQUIRED_AUTHORED_IMAGE`.
 
-Status: `BLOCKED_BY_PRODUCTION_MESH_AND_UV`.
+Current ColorRect is valid. Do not invent a static background consumer merely to use an image. Re-open only after a deliberate screen implementation choice, preferably checking whether live 3D/current world treatment is a better fit.
 
-Do not generate character/pet texture sheets until the actual 3D mesh and UV layout exist. The approved Image A remains reference only.
+### Album background / album photos
 
-### Boat / general decor albedo textures
+Status: `NO_AUTHORED_BACKGROUND_REQUIRED / RUNTIME_CAPTURE_FUTURE`.
 
-Status: `BLOCKED_BY_PRODUCTION_MESH_AND_UV`.
+Player photo content should ultimately come from actual runtime capture rather than authored fake voyage screenshots.
 
-If color-only materials are sufficient, skip bitmap generation entirely.
+### Character / Pet selection portraits
 
-### Sky / time-of-day images
+Status: `DERIVE_FROM_REAL_3D`.
+
+Do not create fake 2D selection portraits. Use actual production model previews/renders once those assets exist.
+
+### Character / Pet / Boat exact albedo maps
+
+Status: `BLOCKED_BY_PRODUCTION_GEOMETRY_AND_CONSUMER`.
+
+Do not pre-generate UV-specific texture sheets. If a stable bitmap material consumer is later established, open a new Image Goal with the exact geometry/material contract.
+
+### Sky / time-of-day bitmap assets
 
 Status: `CONDITIONAL`.
 
-Generate only if the Godot Environment explicitly adopts a panorama/sky texture consumer. If Dawn/Bright/Sunset/Night are implemented with colors/lights/material parameters, create no sky bitmap.
-
-Image B is a reference, not a runtime sky image.
+Use Image B as reference. Prefer color/light/simple/procedural implementation. Create panorama/sky bitmaps only if runtime technique explicitly requires them.
 
 ### Sea normal/noise maps
 
 Status: `CONDITIONAL`.
 
-Generate only if the final sea material/shader samples texture maps. Prefer no image when simple/procedural material is sufficient.
+Create only if the selected sea material actually samples texture maps and a simple/procedural route is insufficient.
 
 ### UI icons
 
-Status: `BLOCKED_BY_UI_TEXTURE_CONSUMER`.
+Status: `DEFER_NO_BINDING_CONSUMER`.
 
-Current UI is text Button/ColorRect based. Generate icons only after a concrete `TextureButton`, `TextureRect`, theme icon, or equivalent consumer is approved.
+Current text buttons are functional. Open an icon Image Goal only after a concrete button/theme consumer and player-readability need are established.
 
-Possible future meanings: Mood, Appreciation, Photo, Fishing, Decor, Interaction, Album.
+### Release / store / marketing images
 
-### Main menu / Album backgrounds
+Status: `P3_HOLD`.
 
-Status: `NO_CURRENT_CONSUMER`.
-
-Current scenes use `ColorRect`. Do not generate background images unless those screens are deliberately changed to a texture consumer.
-
-## Runtime-generated images
-
-Album/voyage photos should be produced from actual runtime capture when implemented. Do not substitute authored concept art for a player's captured voyage image.
-
-Character/pet selection thumbnails should preferably derive from actual production 3D previews/renders so the selection UI matches the model the player receives.
+Wait for platform requirements and branding lock.
 
 ## Current next action
 
 ```text
-1. Keep image generation paused.
-2. Promote one candidate consumer contract to READY_TO_GENERATE.
-3. Define exact path/spec/consumer mapping.
-4. Generate only that asset.
-5. Wire it in Godot through the product-implementation owner.
-6. Verify the exact file is loaded and visible in runtime.
-7. Only then count that image as DONE.
+1. User reviews/approves IMG-01 + IMG-02 Goal Queue.
+2. GPT creates/edits IMG-01 only after that approval.
+3. Review → user asset approval → Notion individual records → IMPLEMENTATION_READY.
+4. Repeat for IMG-02.
+5. Only then unpause CODEX-IMG-01 and CODEX-IMG-02 unless user explicitly narrows the batch.
+6. Runtime proof is required before IMPLEMENTED/RUNTIME_VERIFIED claims.
 ```
 
-Recommended first consumer batch after contract lock:
+## Evidence ceiling
 
 ```text
-PET_CUSHION_TEXTURES
-POSTCARD_TEXTURES
+ACTIVE_IMAGE_GOALS = 2
+APPROVED_REFERENCE_VISUALS = 4
+APPROVED_SOURCE_MOTIFS = 6
+IMPLEMENTATION_READY_IMAGE_ASSETS = 0
+IMPLEMENTED_IMAGE_ASSETS = 0
+RUNTIME_VERIFIED_IMAGE_ASSETS = 0
+NEW_IMAGE_GENERATION_THIS_TASK = NOT_RUN
 ```
-
-No other image batch should be generated by default.
