@@ -35,7 +35,8 @@ Repository support:
 
 - approved style spec: `docs/superpowers/specs/2026-08-25-handpainted-storybook-3d-diorama-design.md`
 - Image A customization decision: `docs/visual/2026-08-26-image-a-customization-decision.md`
-- original A/B/C pre-generation briefs: `docs/visual/2026-08-26-preimplementation-image-briefs.md`
+- **current Image B generation brief:** `docs/visual/2026-08-26-image-b-generation-brief.md`
+- historical umbrella A/B/C brief: `docs/visual/2026-08-26-preimplementation-image-briefs.md` — its Image A one-winner questions are superseded by the approved customization decision; do not use them as current gates
 - visual-closeout benchmark evidence: `docs/research/2026-08-26-planning-visual-closeout-benchmark.md`
 - paused downstream Godot handoff: `docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md`
 
@@ -157,8 +158,10 @@ Do not ask the user to reduce A/B/C or the pet set to one exclusive winner unles
 ### Image B — Boat / Sea / Four-Time Atmosphere Board
 
 ```text
-STATUS = NEXT / NOT_RUN
+STATUS = NEXT / TEXT_BRIEF_READY / IMAGE_NOT_RUN
 ```
+
+**Use `docs/visual/2026-08-26-image-b-generation-brief.md` as the current generation authority.**
 
 Use one exact boat/camera/decor composition across four equal variants:
 
@@ -249,6 +252,7 @@ IMAGE_A_VISUAL_APPROVAL = PASS
 CHARACTER_SELECTION_SET = APPROVED
 PET_SELECTION_SET = APPROVED
 PET_CUSHION_CUSTOMIZATION = APPROVED_AT_FEATURE_MEANING_LEVEL
+IMAGE_B_TEXT_BRIEF = READY
 IMAGE_B = NOT_RUN
 IMAGE_C = NOT_RUN
 APPROVED_REPRESENTATIVE_VISUAL_GDD = NOT_YET_PRODUCED
