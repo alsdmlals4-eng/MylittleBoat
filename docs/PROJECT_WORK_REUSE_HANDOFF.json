@@ -68,7 +68,7 @@
     "reuse_mode": [
       "REUSE_EXISTING_PROJECT_CANON",
       "REUSE_APPROVED_VISUAL_REFERENCES",
-      "REUSE_APPROVED_CUSHION_AND_POSTCARD_MOTIFS_WITH_EDIT",
+      "REUSE_APPROVED_CUSHION_AND_POSTCARD_SOURCE_ART",
       "REUSE_EXISTING_BOAT_DECOR_ITEM_AND_SLOT_SEMANTICS"
     ],
     "reuse_decisions": {
@@ -76,14 +76,16 @@
       "visual_proof_02": "REUSE_AS_IS_REFERENCE",
       "image_a": "REUSE_AS_IS_REFERENCE",
       "image_b": "REUSE_AS_IS_REFERENCE",
-      "cushion_sources": "REUSE_WITH_EDIT",
-      "postcard_sources": "REUSE_WITH_EDIT",
-      "main_menu_static_background": "REJECT_NOW",
+      "cushion_sources": "REUSE_WITH_EDIT_ACTIVE_P1",
+      "bright_postcard_source": "REUSE_WITH_EDIT_ACTIVE_P1_DEFAULT_FACE",
+      "dawn_sunset_postcard_sources": "REUSE_LATER_P2_NO_CURRENT_VARIANT_CONSUMER",
+      "main_menu_static_background": "REJECT_NOW_NO_REQUIRED_AUTHORED_IMAGE",
       "album_authored_images": "REJECT_NOW_USE_RUNTIME_CAPTURE",
       "character_pet_fake_2d_portraits": "REJECT_USE_REAL_3D_PREVIEW",
       "uv_specific_character_pet_boat_textures": "DEFER_BLOCKED_BY_PRODUCTION_GEOMETRY",
       "sea_sky_bitmaps": "CONDITIONAL_ONLY_IF_RUNTIME_CONSUMER_REQUIRES",
-      "ui_icon_pack": "DEFER_NO_BINDING_CONSUMER"
+      "ui_icon_pack": "DEFER_NO_BINDING_CONSUMER",
+      "app_icon_store_marketing": "P3_HOLD_RELEASE_TARGET_AND_BRAND_LOCK"
     },
     "alternatives_reviewed": [
       "A_BROAD_STATIC_IMAGE_PRODUCTION_NOW_REJECT",
@@ -95,19 +97,24 @@
       "docs/handoffs/2026-08-26-image-codex-integration-goals.md",
       "docs/handoffs/CURRENT_PLANNING_VISUAL_WORK.md",
       "docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md",
+      "docs/visual/2026-08-26-game-image-consumer-manifest.md",
       "docs/PROJECT_WORK_REUSE_HANDOFF.json"
     ],
     "verification_evidence": [
       "fresh project main and Base main readback",
       "project AGENTS and current Notion Home/Visual/Blueprint/Asset Library readback",
-      "current scenes and scripts confirm zero production image binaries/runtime image references",
-      "approved source motif hashes recorded in Notion Asset Library as WIP/NEEDS_REVISION",
+      "current scenes/scripts confirm zero production image binaries and zero runtime image consumers",
+      "approved source hashes recorded in Notion Asset Library with runtime status separated from user visual approval",
+      "postcard overproduction finding corrected: P1 default face reduced from three to one; Dawn/Sunset retained as P2 reuse candidates",
       "open PR #19 observed and kept READ_ONLY_NO_ABSORPTION"
     ],
     "evidence_ceiling": {
-      "goal_queue": "PLANNED",
+      "goal_queue": "READY_FOR_USER_REVIEW",
       "approved_reference_visuals": 4,
-      "approved_motif_source_images": 6,
+      "approved_source_images": 6,
+      "active_p1_goals": 2,
+      "active_p1_required_files": 4,
+      "p0_authored_image_goals": 0,
       "implementation_ready_image_assets": 0,
       "implemented_image_assets": 0,
       "runtime_verified_image_assets": 0,
@@ -116,7 +123,7 @@
     "rollback": "Current task changes are planning/Notion records only; no Godot product files or image binaries are mutated. The task PR can be reverted independently; source image approval provenance remains preserved.",
     "project_only_lessons": [
       "Rendered object presentation images are not automatically valid runtime albedo assets; preserve approval while classifying runtime status separately.",
-      "For My Little Boat, the first justified authored runtime images are consumer-stable cushion surface motifs and postcard face art, not static menu backgrounds or fake selection portraits."
+      "Do not add a postcard variant system solely to consume every approved source image; one default face is sufficient for current P1 and the other approved compositions remain reusable P2 evidence."
     ],
     "base_promotion_candidates": [],
     "reuse_learning_handoff": "NO_NEW_REUSE_LEARNING_FOR_BASE"
