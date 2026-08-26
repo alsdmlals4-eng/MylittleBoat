@@ -1,9 +1,9 @@
 # My Little Boat — Game Image Consumer Manifest
 
-Status: `CONSUMER_FIRST_ASSET_POLICY / ACTIVE_GOALS_DEFINED`
+Status: `CONSUMER_FIRST_ASSET_POLICY / USER_APPROVED_GOALS / GPT_WORK_NEXT`
 Date: 2026-08-26
 
-> Goal authority: `docs/visual/2026-08-26-remaining-image-goals.md`.
+> Goal authority: `docs/visual/2026-08-26-remaining-image-goals.md`. Current execution router: `docs/handoffs/CURRENT_GPT_WORK.md`.
 
 ## Policy
 
@@ -23,11 +23,12 @@ validation
 Pipeline:
 
 ```text
-consumer contract → Image Goal → GPT asset production/review → user approval
-→ Notion registration → IMPLEMENTATION_READY → Codex integration → runtime proof
+consumer contract → Image Goal → GPT Work asset production/review → user asset approval
+→ Notion registration + durable binary locator → IMPLEMENTATION_READY
+→ Codex integration → runtime proof
 ```
 
-Codex does not create/edit images.
+Codex does not create/edit images. GPT Work does not implement Godot Scene/Resource/GDScript.
 
 ## Current-main audit
 
@@ -57,7 +58,7 @@ RUNTIME_VERIFIED_GAME_IMAGE_ASSETS = 0
 ## Active consumer contract — IMG-01 Pet Cushion
 
 ```yaml
-status: IMAGE_GOAL_DEFINED_NEEDS_REVISION
+status: USER_APPROVED_GOAL / GPT_WORK_READY_TO_PRODUCE
 asset_paths:
   - res://assets/images/decor/pet_cushion/cushion_stripe.png
   - res://assets/images/decor/pet_cushion/cushion_moon.png
@@ -67,7 +68,7 @@ consumer_target: Boat Decoration PetCorner / pet_cushion visual material
 runtime_role: player-visible cushion appearance customization
 spec: 1024x1024 opaque sRGB flat low-frequency repeat-friendly surface art
 fallback: current neutral color-only pet_cushion
-validation: actual 540x960 runtime screenshot for all three appearances
+validation: actual 540x960 runtime screenshot for all three appearances after Codex integration
 ```
 
 Current user-approved cushion renders are `REUSE_WITH_EDIT`: motif/color identity is approved, but their rendered cushion rim/tuft/depth/light cannot be used as direct albedo.
@@ -75,14 +76,14 @@ Current user-approved cushion renders are `REUSE_WITH_EDIT`: motif/color identit
 ## Active consumer contract — IMG-02 Default Postcard
 
 ```yaml
-status: IMAGE_GOAL_DEFINED_NEEDS_REVISION
+status: USER_APPROVED_GOAL / WAITING_AFTER_IMG_01
 asset_path: res://assets/images/decor/postcard/postcard_boat_bright.png
 consumer_item_id: postcard
 consumer_target: Boat Decoration rail/postcard front face
 runtime_role: one quiet personal/memory image on the existing postcard decor
 spec: 1024x768 4:3 opaque sRGB normalized face art
 fallback: current neutral color-only postcard
-validation: actual 540x960 normal-camera screenshot
+validation: actual 540x960 normal-camera screenshot after Codex integration
 ```
 
 P1 deliberately uses **one default face**. It does not create a postcard variant system only to consume extra art.
@@ -103,17 +104,20 @@ Approved Dawn/Sunset source compositions remain `P2 / REUSE_LATER` until a real 
 ## Current next action
 
 ```text
-1. User reviews/approves current IMG-01 + IMG-02 queue.
-2. GPT produces/reviews IMG-01 3 files; user approves; Notion registers final assets.
-3. GPT produces/reviews IMG-02 1 file; user approves; Notion registers final asset.
-4. Both Goals reach IMPLEMENTATION_READY.
-5. CODEX-IMG-01 then CODEX-IMG-02.
-6. Runtime proof required before IMPLEMENTED/RUNTIME_VERIFIED.
+1. GPT Work fresh-reads current main + Notion using docs/handoffs/CURRENT_GPT_WORK.md.
+2. GPT Work produces/reviews IMG-01 3 files; user approves; Notion registers final assets + durable binary locators.
+3. GPT Work produces/reviews IMG-02 1 file; user approves; Notion registers final asset + durable binary locator.
+4. Both Goals reach IMPLEMENTATION_READY with Notion readback PASS.
+5. GPT Work updates the downstream router to READY_FOR_CODEX_IMAGE_INTEGRATION and stops.
+6. CODEX-IMG-01 then CODEX-IMG-02 perform actual Godot integration.
+7. Runtime proof is required before IMPLEMENTED/RUNTIME_VERIFIED.
 ```
 
 ## Evidence ceiling
 
 ```text
+IMAGE_GOAL_QUEUE = USER_APPROVED
+GPT_WORK_IMAGE_PRODUCTION = NOT_RUN
 ACTIVE_IMAGE_GOALS = 2
 ACTIVE_REQUIRED_FILES = 4
 APPROVED_REFERENCE_VISUALS = 4
@@ -121,5 +125,5 @@ APPROVED_SOURCE_IMAGES = 6
 IMPLEMENTATION_READY_IMAGE_ASSETS = 0
 IMPLEMENTED_IMAGE_ASSETS = 0
 RUNTIME_VERIFIED_IMAGE_ASSETS = 0
-NEW_IMAGE_GENERATION_THIS_TASK = NOT_RUN
+CODEX_IMAGE_INTEGRATION = HOLD
 ```
