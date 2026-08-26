@@ -146,6 +146,12 @@ FIRST_PRODUCTION_VISUAL_SLICE = CODEX_RUNTIME_CAPTURE_USER_APPROVED_MERGED_MAIN
 HANDPAINTED_3D_RUNTIME_SLICE = USER_APPROVED_MERGED_MAIN
 C_DOG_DEFAULT_RUNTIME_CAPTURE = PASS
 C_DOG_HUMAN_VISUAL_APPROVAL = PASS
+COSMETIC_IDENTITY_SELECTION = IMPLEMENTED_LOCAL_FIRST
+DEFAULT_IDENTITY_C_DOG = PRESERVED
+IDENTITY_RUNTIME_ASSET_LOCATORS = PASS
+IDENTITY_AUTOMATED_CONTRACTS = PASS
+IDENTITY_RUNTIME_CAPTURE = PASS
+IDENTITY_REAL_DEVICE_MOBILE_QA = DEFERRED
 REAL_DEVICE_TOUCH_QA = NOT_RUN
 ```
 
@@ -161,3 +167,4 @@ REAL_DEVICE_TOUCH_QA = NOT_RUN
 - The final 2.5D storybook runtime set uses `assets/images/runtime/storybook/boat_c_dog_diorama_storybook.png` with `sea_bright_storybook.png`; Normal/Appreciation captures are at `docs/evidence/2026-08-26-final-2p5d-storybook-art/`. User approval, Notion final registration, SHA-256 provenance, and durable Git binary locators passed on 2026-08-26. Notion records: `MLB_FINAL_2P5D_C_DOG_BOAT_RUNTIME_V1` and `MLB_FINAL_2P5D_BRIGHT_SEA_RUNTIME_V1`.
 - `BoatDecorPersistence` stores only cosmetic `boat_decor` and `boat_decor_appearances` in `user://boat_decor_v1.cfg`. The service handles missing or wrong-typed data as an empty boat; no voyage, reward, affection, memory, camera, or social state is persisted. Automated local restore proof passes, while real-device QA remains deferred by user.
 - `RestingSoundscape` now owns a 16-second stereo authored `OceanBed` runtime candidate at a conservative -18 dB. It preserves the wave-first layer priority and does not alter voyage, reward, camera, or social state. Automated loop wiring passes; human headset/speaker/mobile listening remains `NOT_RUN`.
+- Runtime identity selection is local-first: the main-menu `내 모습과 동반자` panel stores one approved player ID and one pet ID only in `user://identity_profile_v1.cfg`. C knit + dog preserves `FinalDioramaCard` unchanged; all other pairs use the shared boat/sea pass plus exactly one selected player card and one selected pet card. Five new 1024×1024 transparent runtime cards are individually registered in Notion Asset Library with SHA-256/provenance/durable repo locators. Normal and Appreciation GPU runtime captures for C+dog and B+otter are stored at `docs/evidence/2026-08-27-runtime-identity-selection/`. User mobile touch QA remains deferred.

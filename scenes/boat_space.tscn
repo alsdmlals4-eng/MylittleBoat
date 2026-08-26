@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3]
+[gd_scene load_steps=21 format=3]
 
 [ext_resource type="Script" path="res://scripts/voyage/resting_pet_placeholder.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/avatar/player_avatar_placeholder.gd" id="2"]
@@ -9,6 +9,12 @@
 [ext_resource type="Texture2D" path="res://assets/images/runtime/storybook/boat_default_storybook.png" id="7"]
 [ext_resource type="Script" path="res://scripts/visual/storybook_art_card.gd" id="8"]
 [ext_resource type="Texture2D" path="res://assets/images/runtime/storybook/boat_c_dog_diorama_storybook.png" id="9"]
+[ext_resource type="Script" path="res://scripts/identity/identity_visual_router.gd" id="10"]
+[ext_resource type="Texture2D" path="res://assets/images/runtime/storybook/avatar_a_soft_hooded_storybook.png" id="11"]
+[ext_resource type="Texture2D" path="res://assets/images/runtime/storybook/avatar_b_short_cape_storybook.png" id="12"]
+[ext_resource type="Texture2D" path="res://assets/images/runtime/storybook/pet_cat_storybook.png" id="13"]
+[ext_resource type="Texture2D" path="res://assets/images/runtime/storybook/pet_rabbit_storybook.png" id="14"]
+[ext_resource type="Texture2D" path="res://assets/images/runtime/storybook/pet_otter_storybook.png" id="15"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_boat"]
 size = Vector3(2.8, 0.22, 2.4)
@@ -274,6 +280,8 @@ scale = Vector3(0.08, 3.8, 1.0)
 mesh = SubResource("BoxMesh_rail")
 surface_material_override/0 = SubResource("Material_study_wood_dark")
 
+[node name="AvatarCards" type="Node3D" parent="PlayerAvatarPlaceholder/VisualStudy"]
+
 [node name="StorybookCDefault" type="Node3D" parent="PlayerAvatarPlaceholder/VisualStudy"]
 visible = false
 
@@ -328,6 +336,30 @@ texture = ExtResource("5")
 script = ExtResource("8")
 fallback_nodes = [NodePath("../FaceMass"), NodePath("../HairMass"), NodePath("../KnitMass"), NodePath("../SkirtMass"), NodePath("../LeftBoot"), NodePath("../RightBoot"), NodePath("../Pendant")]
 
+[node name="a_soft_hooded" type="Node3D" parent="PlayerAvatarPlaceholder/VisualStudy/AvatarCards"]
+visible = false
+
+[node name="ArtCard" type="Sprite3D" parent="PlayerAvatarPlaceholder/VisualStudy/AvatarCards/a_soft_hooded"]
+position = Vector3(0, 0.02, 0.24)
+pixel_size = 0.00175
+billboard = 1
+no_depth_test = false
+texture = ExtResource("11")
+script = ExtResource("8")
+
+[node name="b_short_cape" type="Node3D" parent="PlayerAvatarPlaceholder/VisualStudy/AvatarCards"]
+visible = false
+
+[node name="ArtCard" type="Sprite3D" parent="PlayerAvatarPlaceholder/VisualStudy/AvatarCards/b_short_cape"]
+position = Vector3(0, 0.02, 0.24)
+pixel_size = 0.00175
+billboard = 1
+no_depth_test = false
+texture = ExtResource("12")
+script = ExtResource("8")
+
+[node name="PetCards" type="Node3D" parent="RestingPetPlaceholder/VisualStudy"]
+
 [node name="StorybookDogDefault" type="Node3D" parent="RestingPetPlaceholder/VisualStudy"]
 visible = false
 
@@ -363,6 +395,39 @@ no_depth_test = false
 texture = ExtResource("6")
 script = ExtResource("8")
 fallback_nodes = [NodePath("../DogBody"), NodePath("../DogHead"), NodePath("../LeftEar"), NodePath("../RightEar")]
+
+[node name="cat" type="Node3D" parent="RestingPetPlaceholder/VisualStudy/PetCards"]
+visible = false
+
+[node name="ArtCard" type="Sprite3D" parent="RestingPetPlaceholder/VisualStudy/PetCards/cat"]
+position = Vector3(0, 0.18, 0.18)
+pixel_size = 0.002
+billboard = 1
+no_depth_test = false
+texture = ExtResource("13")
+script = ExtResource("8")
+
+[node name="rabbit" type="Node3D" parent="RestingPetPlaceholder/VisualStudy/PetCards"]
+visible = false
+
+[node name="ArtCard" type="Sprite3D" parent="RestingPetPlaceholder/VisualStudy/PetCards/rabbit"]
+position = Vector3(0, 0.18, 0.18)
+pixel_size = 0.002
+billboard = 1
+no_depth_test = false
+texture = ExtResource("14")
+script = ExtResource("8")
+
+[node name="otter" type="Node3D" parent="RestingPetPlaceholder/VisualStudy/PetCards"]
+visible = false
+
+[node name="ArtCard" type="Sprite3D" parent="RestingPetPlaceholder/VisualStudy/PetCards/otter"]
+position = Vector3(0, 0.18, 0.18)
+pixel_size = 0.002
+billboard = 1
+no_depth_test = false
+texture = ExtResource("15")
+script = ExtResource("8")
 
 [node name="StorybookHullPass" type="Node3D" parent="BoatBow/VisualStudy"]
 visible = false
@@ -406,3 +471,6 @@ pixel_size = 0.0017
 billboard = 1
 no_depth_test = false
 texture = ExtResource("9")
+
+[node name="IdentityVisualRouter" type="Node" parent="."]
+script = ExtResource("10")

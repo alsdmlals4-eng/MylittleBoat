@@ -47,6 +47,13 @@
 - preserved `AppreciationCamera3D`
 - inactive Appreciation Camera mouse/touch input isolation
 
+### 내 모습과 동반자
+
+- 메인 메뉴의 `내 모습과 동반자`에서 승인된 플레이어 외형 3종과 동반자 4종을 고릅니다.
+- 선택은 순수한 시각 효과이며 항해 시간, 마음, 보상, 친밀도, 앨범, 꾸미기, 소셜 상태를 바꾸지 않습니다.
+- 기본 조합은 승인된 C 니트·긴 머리 + 강아지이며, 기존 최종 디오라마 합성 이미지를 그대로 사용합니다.
+- 선택은 기기 로컬 `user://identity_profile_v1.cfg`에만 저장되며 보트 꾸미기 저장과 분리됩니다.
+
 ### Local Boat Decoration + Low-pressure Interaction
 
 `BoatSpace`가 BoatBow / Avatar / Pet / Rail / DecorSlots를 함께 소유하며 drift bob을 한 번만 받습니다.
@@ -80,7 +87,7 @@ pet_cushion
 - replace/clear는 비용·손실이 없습니다.
 - stats / rarity / price / currency / gacha / fill bonus / daily-shop FOMO가 없습니다.
 - `GameState.boat_decor`는 `slot_id -> item_id`를 유지하고, 펫 쿠션의 순수 외형만 별도 cosmetic appearance로 저장합니다.
-- Scene 전환과 새 항해에는 유지되지만 앱 재시작 저장은 아직 없습니다.
+- Scene 전환·새 항해·앱 재시작 뒤에도 기기 로컬 저장으로 유지됩니다.
 - primitive mesh는 **TECHNICAL_PLACEHOLDER**이며 final art가 아닙니다.
 
 공통 low-pressure interaction 계약:
@@ -149,10 +156,13 @@ scripts/
   audio/resting_soundscape.gd
   avatar/player_avatar_placeholder.gd
   core/game_state.gd
+  core/cosmetic_identity_profile.gd
   decor/boat_decor_catalog.gd
   decor/decor_visual_assets.gd
   decor/boat_decor_slot.gd
   interaction/low_pressure_interactable.gd
+  identity/identity_visual_catalog.gd
+  identity/identity_visual_router.gd
   voyage/boat_rail_interactable.gd
   voyage/boat_camera_controller.gd
   voyage/resting_pet_placeholder.gd
@@ -172,6 +182,9 @@ tests/
   test_boat_life_scene_contract.gd
   test_boat_life_ui_contract.gd
   test_runtime_image_asset_contract.gd
+  test_cosmetic_identity_profile.gd
+  test_identity_visual_contract.gd
+  test_main_menu_identity_contract.gd
 ```
 
 ## 자동 검증
@@ -192,6 +205,8 @@ headless project import
 → boat life scene
 → boat life UI
 → approved runtime image assets
+→ local cosmetic identity profile and visual route
+→ main-menu cosmetic selector
 → main menu / game / album Scene smoke
 ```
 
@@ -201,7 +216,7 @@ headless project import
 
 현재 completed `main`의 다음 mainline은 승인된 그림체를 실제 게임 화면으로 옮기는 **First Production Visual Slice**입니다.
 
-1. **First Production Visual Slice** — C 니트·긴 머리 주인공과 강아지 기본 실루엣의 기술 런타임 증거까지 완료되었습니다. `game.tscn` / `BoatSpace`에 matte 3D character/pet/boat pass와 540×960 Normal/Appreciation capture가 반영되었습니다. 다른 선택 외형, 시간대 동작, final asset bundle은 고정하지 않습니다.
+1. **Local cosmetic identity selection** — 승인된 A/B/C 플레이어 외형과 고양이/토끼/수달/강아지 동반자를 `내 모습과 동반자`에서 로컬 선택할 수 있습니다. C+강아지는 기존 최종 합성을 보존하고, 다른 조합은 공용 보트·바다 위에 선택 카드 한 쌍을 표시합니다. 540×960 Normal/Appreciation runtime capture와 자동 계약 증거가 있습니다. 실제 기기 터치 검증은 보류입니다.
 2. **Human visual validation** — 현재 사용자 결정 게이트. 540×960에서 30초/5분, Normal/Appreciation, bob/idle motion을 보고 `CALM / EMPTY / NOISY`, sea-first hierarchy, visual fatigue를 판단합니다. 실제 기기 터치 검증은 사용자의 요청에 따라 뒤로 미룹니다.
 3. **PR #19 Social Fake Backend** — 별도 독립 workstream으로 OPEN / READ_ONLY / NO ABSORPTION입니다. 현재 visual workstream에서 rebase·merge·수정하지 않으며, social 작업을 명시적으로 재개할 때 latest `main`과 다시 reconcile합니다.
 4. **Supabase/Auth/RLS/Moderation/Real Delayed Bottle** — Social Fake 계약이 current main에 안전하게 정합된 뒤 별도 보안·계정·release gate로 진행합니다.

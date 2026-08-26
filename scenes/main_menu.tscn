@@ -44,6 +44,36 @@ layout_mode = 2
 text = "my little boat"
 horizontal_alignment = 1
 
+[node name="IdentityButton" type="Button" parent="Margin/Panel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "내 모습과 동반자"
+
+[node name="IdentityPanel" type="VBoxContainer" parent="Margin/Panel/VBox"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="IdentitySummaryLabel" type="Label" parent="Margin/Panel/VBox/IdentityPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="PlayerStyleOption" type="OptionButton" parent="Margin/Panel/VBox/IdentityPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="PetTypeOption" type="OptionButton" parent="Margin/Panel/VBox/IdentityPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="IdentityCloseButton" type="Button" parent="Margin/Panel/VBox/IdentityPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "닫기"
+
 [node name="MoodLabel" type="Label" parent="Margin/Panel/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
