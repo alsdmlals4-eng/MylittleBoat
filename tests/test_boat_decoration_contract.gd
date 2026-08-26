@@ -1,6 +1,8 @@
 # 보트 꾸미기 슬롯·호환성·세션 메모리 계약을 검증한다.
 extends SceneTree
 
+const TEST_SAVE_PATH := "user://boat_decoration_contract.cfg"
+
 var _failures := 0
 
 
@@ -24,6 +26,12 @@ func _run() -> void:
 
 	_expect(game_state.has_method("set_boat_decor"), "GameState must expose set_boat_decor")
 	_expect(game_state.has_method("get_boat_decor"), "GameState must expose get_boat_decor")
+	_expect(game_state.has_method("save_boat_decor"), "GameState must save cosmetic decor")
+	_expect(game_state.has_method("load_boat_decor"), "GameState must load cosmetic decor")
+	_expect(game_state.has_method("set_boat_decor_storage_path"), "GameState must isolate decor storage for contract tests")
+	if game_state.has_method("set_boat_decor_storage_path"):
+		DirAccess.remove_absolute(ProjectSettings.globalize_path(TEST_SAVE_PATH))
+		game_state.call("set_boat_decor_storage_path", TEST_SAVE_PATH)
 	if game_state.has_method("set_boat_decor") and game_state.has_method("get_boat_decor"):
 		game_state.call("set_boat_decor", "bow_left", "lantern")
 		_expect(str(game_state.call("get_boat_decor", "bow_left")) == "lantern", "decor placement must be stored")
@@ -40,6 +48,7 @@ func _run() -> void:
 	_expect(game_state.letters.size() == before_letters, "decor placement must not create letter rewards")
 	_expect(game_state.fish.size() == before_fish, "decor placement must not create fish rewards")
 	_expect(game_state.voyage_records.size() == before_records, "decor placement must not create voyage records")
+	DirAccess.remove_absolute(ProjectSettings.globalize_path(TEST_SAVE_PATH))
 
 	const catalog_path := "res://scripts/decor/boat_decor_catalog.gd"
 	_expect(ResourceLoader.exists(catalog_path), "boat decor catalog script must exist")
