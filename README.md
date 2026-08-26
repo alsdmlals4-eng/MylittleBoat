@@ -118,14 +118,20 @@ BOAT_LIFE_TECH_UI = PASS
 증거 ceiling:
 
 ```text
+HANDPAINTED_3D_RUNTIME_SLICE = NOT_RUN
+MOBILE_30S_VISUAL_REVIEW = NOT_RUN
+MOBILE_5M_VISUAL_REVIEW = NOT_RUN
 DECOR_HUMAN_USABILITY = NOT_RUN
 REAL_MOBILE_DECOR_QA = NOT_RUN
+FINAL_AVATAR_ART = NOT_INTEGRATED
+FINAL_PET_ART = NOT_INTEGRATED
 FINAL_DECOR_ART = NOT_INTEGRATED
+FINAL_BOAT_SEA_ART = NOT_INTEGRATED
 APP_RESTART_DECOR_PERSISTENCE = NOT_IMPLEMENTED
 PRODUCTION_OCEAN_AUDIO = NOT_INTEGRATED
-FRIEND_BOTTLE = NOT_IMPLEMENTED
-DRIFT_BOTTLE = NOT_IMPLEMENTED
-SOCIAL_BACKEND = NOT_IMPLEMENTED
+REAL_FRIEND_BOTTLE_NETWORK = NOT_IMPLEMENTED
+REAL_DRIFT_BOTTLE_NETWORK = NOT_IMPLEMENTED
+SOCIAL_BACKEND = NOT_IMPLEMENTED_ON_MAIN
 ```
 
 ## 현재 구조
@@ -186,11 +192,18 @@ headless project import
 
 ## 다음 구현 순서
 
-1. **Social Fake Backend Contract** — 실제 서버 없이 16+ eligibility, invite, delayed bottle, no-recipient draft, 6-letter cap, block/report semantics를 local fake로 TDD.
-2. **Supabase/Auth/RLS/Edge Functions** — fake contract가 안정된 뒤 adapter 구현.
-3. **Moderation/Safety release gate** — DriftBottle public enable 전 실제 검증.
-4. **Real Delayed Bottle integration**.
-5. Production audio/visual/pet/decor art와 Human/mobile validation.
+현재 completed `main`의 다음 mainline은 승인된 그림체를 실제 게임 화면으로 옮기는 **First Production Visual Slice**입니다.
+
+1. **First Production Visual Slice** — `HANDPAINTED_STORYBOOK_3D_DIORAMA`를 실제 `game.tscn` / `BoatSpace`에 bounded proof로 구현. neutral player visual study + non-species pet treatment + boat/decor matte pass + sea/sky/light + Normal/Appreciation 비교. 최종 캐릭터/펫/시간대/asset bundle은 고정하지 않습니다.
+2. **Human visual validation** — 540×960에서 30초/5분, Normal/Appreciation, bob/idle motion을 보고 `CALM / EMPTY / NOISY`, sea-first hierarchy, visual fatigue를 판단합니다.
+3. **PR #19 Social Fake Backend** — 별도 독립 workstream으로 OPEN / READ_ONLY / NO ABSORPTION입니다. 현재 visual workstream에서 rebase·merge·수정하지 않으며, social 작업을 명시적으로 재개할 때 latest `main`과 다시 reconcile합니다.
+4. **Supabase/Auth/RLS/Moderation/Real Delayed Bottle** — Social Fake 계약이 current main에 안전하게 정합된 뒤 별도 보안·계정·release gate로 진행합니다.
+5. **Production audio / four time-of-day layer / final avatar·pet·boat·decor assets** — First Production Visual Slice의 runtime/Human evidence를 보고 제작 순서를 다시 계산합니다.
+
+현재 Implementation Ready/Codex handoff:
+
+- `docs/superpowers/plans/2026-08-26-first-production-visual-slice.md`
+- `docs/handoffs/2026-08-26-first-production-visual-slice-codex.md`
 
 ## Human 검증 — 아직 NOT_RUN
 
