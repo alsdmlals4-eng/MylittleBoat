@@ -74,6 +74,15 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "닫기"
 
+[node name="LightLabel" type="Label" parent="Margin/Panel/VBox"]
+layout_mode = 2
+text = "오늘 머물고 싶은 빛"
+horizontal_alignment = 1
+
+[node name="TimeOfDayOption" type="OptionButton" parent="Margin/Panel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+
 [node name="MoodLabel" type="Label" parent="Margin/Panel/VBox"]
 unique_name_in_owner = true
 layout_mode = 2

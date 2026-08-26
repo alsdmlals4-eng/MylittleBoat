@@ -298,7 +298,7 @@ Social Fake 계약이 future current main에 안전하게 정합된 뒤 실제 b
 ### Visual
 
 - First Production Visual Slice 결과를 기준으로 final asset pipeline 결정
-- four-state `새벽 / 밝음 / 해질녘 / 밤` atmosphere layer는 별도 bounded Slice
+- four-state `새벽 / 밝음 / 해질녘 / 밤` atmosphere layer는 별도 bounded Slice로 구현. 같은 보트/바다/수평선의 출항 전 선택형 톤이며, 자동 day cycle·새 맵·이미지 variant·보상 변화는 없음. 자동 계약과 540×960 Normal/Appreciation capture는 PASS, real-device/Human comfort QA는 DEFERRED/NOT_RUN.
 - 승인된 player identity / pet species의 로컬 선택·보존은 구현됨. 임의 편집·unlock·progression은 보류.
 - representative final decor / boat / sea assets는 runtime proof 뒤 제작
 

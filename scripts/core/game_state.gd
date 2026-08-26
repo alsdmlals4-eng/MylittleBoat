@@ -4,8 +4,10 @@ extends Node
 const VOYAGE_SECONDS := 300.0
 const BOAT_DECOR_PERSISTENCE_SCRIPT = preload("res://scripts/core/boat_decor_persistence.gd")
 const IDENTITY_PROFILE_SCRIPT = preload("res://scripts/core/cosmetic_identity_profile.gd")
+const TIME_OF_DAY_CATALOG_SCRIPT = preload("res://scripts/voyage/time_of_day_catalog.gd")
 
 var selected_mood: String = "평온"
+var selected_time_of_day := "bright"
 var companion_affection: int = 1
 
 # 여러 항해에 걸쳐 유지되는 기억이다.
@@ -34,6 +36,7 @@ var _voyage_letter_start_count := 0
 var _voyage_fish_start_count := 0
 var _boat_decor_persistence = BOAT_DECOR_PERSISTENCE_SCRIPT.new()
 var _identity_profile = IDENTITY_PROFILE_SCRIPT.new()
+var _time_of_day_catalog = TIME_OF_DAY_CATALOG_SCRIPT.new()
 
 
 func _ready() -> void:
@@ -44,6 +47,16 @@ func _ready() -> void:
 ## Selects today's mood before entering the sea scene.
 func select_mood(mood: String) -> void:
 	selected_mood = mood
+
+
+## Selects the visual atmosphere for the next voyage without changing gameplay state.
+func select_time_of_day(value: String) -> void:
+	selected_time_of_day = _time_of_day_catalog.normalize_time_of_day(value)
+
+
+## Returns the current process-lifetime visual atmosphere selection.
+func get_selected_time_of_day() -> String:
+	return _time_of_day_catalog.normalize_time_of_day(selected_time_of_day)
 
 
 ## Starts a fresh five-minute voyage while preserving accumulated memories and boat decoration.
