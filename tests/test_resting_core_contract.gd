@@ -1,4 +1,4 @@
-# Rest-first technical prototype contracts: persistent audio wiring, soft sea composition, and non-demanding pet placeholder.
+# Rest-first authored-ocean contracts: persistent audio wiring, soft sea composition, and non-demanding pet placeholder.
 extends SceneTree
 
 var _failures := 0
@@ -27,16 +27,21 @@ func _run() -> void:
 	if soundscape != null:
 		_expect(soundscape.has_method("is_technical_prototype"), "soundscape must expose its evidence class")
 		if soundscape.has_method("is_technical_prototype"):
-			_expect(bool(soundscape.call("is_technical_prototype")), "current generated soundscape must stay explicitly TECHNICAL_PROTOTYPE")
+			_expect(not bool(soundscape.call("is_technical_prototype")), "authored ocean bed must no longer claim TECHNICAL_PROTOTYPE")
+		_expect(soundscape.has_method("is_authored_ocean_bed"), "soundscape must expose authored ocean-bed evidence")
+		if soundscape.has_method("is_authored_ocean_bed"):
+			_expect(bool(soundscape.call("is_authored_ocean_bed")), "current soundscape must identify as an authored ocean bed")
 	if ocean_bed != null:
-		_expect(ocean_bed.stream != null, "OceanBed must have a technical prototype stream wired")
+		_expect(ocean_bed.stream != null, "OceanBed must have an authored runtime stream wired")
 		_expect(ocean_bed.autoplay, "OceanBed must autoplay so doing nothing still produces the resting space")
-		_expect(ocean_bed.volume_db <= -8.0, "technical OceanBed must start conservatively below -8 dB")
+		_expect(ocean_bed.volume_db <= -12.0, "authored OceanBed must start conservatively below -12 dB")
 		var wave := ocean_bed.stream as AudioStreamWAV
-		_expect(wave != null, "technical OceanBed must use an inspectable AudioStreamWAV loop")
+		_expect(wave != null, "authored OceanBed must use an inspectable AudioStreamWAV loop")
 		if wave != null:
 			_expect(wave.loop_mode == AudioStreamWAV.LOOP_FORWARD, "technical OceanBed must loop continuously")
 			_expect(wave.loop_end > wave.loop_begin, "technical OceanBed loop range must be valid")
+			_expect(wave.mix_rate >= 24000, "authored OceanBed must keep enough sample resolution for a soft surf texture")
+			_expect(float(wave.loop_end - wave.loop_begin) / float(wave.mix_rate) >= 12.0, "authored OceanBed must use a long loop to reduce obvious repetition")
 
 	var pet := scene.get_node_or_null("VoyageWorld/BoatSpace/RestingPetPlaceholder") as Node3D
 	_expect(pet != null, "BoatSpace must include one clearly-placeholder resting pet")
@@ -77,8 +82,8 @@ func _expect(condition: bool, message: String) -> void:
 
 func _finish() -> void:
 	if _failures == 0:
-		print("PASS: resting core technical prototype contract")
+		print("PASS: resting core authored ocean contract")
 		quit(0)
 	else:
-		printerr("FAILED: %d resting core assertions" % _failures)
+		printerr("FAILED: %d resting core authored ocean assertions" % _failures)
 		quit(1)
