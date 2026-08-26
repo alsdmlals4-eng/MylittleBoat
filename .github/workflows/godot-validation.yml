@@ -25,8 +25,8 @@ jobs:
       - name: Verify Godot version
         run: godot --version
 
-      - name: Import project headlessly
-        run: godot --headless --path . --quit
+      - name: Import project through the editor headlessly
+        run: godot --editor --headless --path . --quit
 
       - name: Run focused behavior contracts
         shell: bash
