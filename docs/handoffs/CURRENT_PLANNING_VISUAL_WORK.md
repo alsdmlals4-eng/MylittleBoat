@@ -15,22 +15,23 @@ concurrent_pr_19: READ_ONLY_NO_ABSORPTION
 codex_product_build: HOLD_UNTIL_ACTIVE_IMAGES_IMPLEMENTATION_READY
 ```
 
-Latest user pipeline is binding:
+Latest binding pipeline:
 
 ```text
 current canon/runtime audit
 → existing image inventory + reuse check
 → consumer gap analysis
 → Remaining Image Goals
-→ user review/approval
-→ GPT image production
+→ user goal approval
+→ GPT image production/review
+→ user asset approval
 → Notion registration
 → Codex Integration Goals
 → Codex implementation
 → runtime screenshots/play verification
 ```
 
-Do not ask Codex to create images. Do not require Codex to create an image consumer before GPT image production when the consumer contract can already be defined safely from approved product semantics.
+Codex does not create/edit images and must not start the active image integrations before the required files are `IMPLEMENTATION_READY`.
 
 ## Current authority/support
 
@@ -42,36 +43,37 @@ Human canon:
 - Notion Game Image Blueprint: `3c81b237-eb1c-81dd-bc85-d0eb927671c8`
 
 Repository planning:
-- remaining image goal queue: `docs/visual/2026-08-26-remaining-image-goals.md`
-- consumer audit/manifest: `docs/visual/2026-08-26-game-image-consumer-manifest.md`
-- Codex integration goal queue: `docs/handoffs/2026-08-26-image-codex-integration-goals.md`
-- downstream Godot router: `docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md`
+- current Goal Queue: `docs/visual/2026-08-26-remaining-image-goals.md`
+- consumer manifest: `docs/visual/2026-08-26-game-image-consumer-manifest.md`
+- Codex integration goals: `docs/handoffs/2026-08-26-image-codex-integration-goals.md`
+- downstream router: `docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md`
 
 ## Current image state
 
 ```text
 APPROVED_REFERENCE_VISUALS = 4
-APPROVED_MOTIF_SOURCE_IMAGES = 6
+APPROVED_SOURCE_IMAGES = 6
+ACTIVE_P1_IMAGE_GOALS = 2
+ACTIVE_P1_REQUIRED_FILES = 4
+P0_AUTHORED_IMAGE_GOALS = 0
 IMPLEMENTATION_READY_IMAGE_ASSETS = 0
 IMPLEMENTED_IMAGE_ASSETS = 0
 RUNTIME_VERIFIED_IMAGE_ASSETS = 0
-P0_AUTHORED_IMAGE_GOALS = 0
-ACTIVE_P1_IMAGE_GOALS = 2
 ```
 
-Approved references retained but not runtime assets:
+Reference-only approved visuals:
 - Visual Proof 01
 - Visual Proof 02
 - Image A — Player + Pet Customization Board
 - Image B — Boat / Sea / Four-Time Atmosphere Board
 
-The six approved cushion/postcard generated images preserve approved motif/color/composition decisions, but their current presentation-render form is not a production albedo/face asset. They are `NEEDS_REVISION` for runtime use.
+Six generated source images retain user-approved motif/composition decisions. They are not direct runtime files: 3 cushion sources and the Bright Boat postcard source are `REUSE_WITH_EDIT`; Dawn/Sunset postcard sources are P2 reuse candidates until a real multi-postcard consumer exists.
 
 ## Active Image Goal Queue
 
 ### IMG-01 — Pet Cushion Runtime Surface Set · P1
 
-Produce exactly three flat surface files from the approved motifs:
+Required flat files:
 
 ```text
 cushion_stripe.png
@@ -79,39 +81,38 @@ cushion_moon.png
 cushion_floral.png
 ```
 
-They must not contain rendered cushion geometry, rim, drop shadow, tuft depth or baked directional lighting.
+Must be 1024×1024 opaque sRGB low-frequency/repeat-friendly surface art with no rendered cushion form, rim, drop shadow, tuft depth or directional baked lighting.
 
-### IMG-02 — Postcard Memory Face Set · P1
+### IMG-02 — Default Postcard Memory Face · P1
 
-Produce exactly three normalized 4:3 postcard face files from the approved compositions:
+Required file:
 
 ```text
-postcard_dawn.png
 postcard_boat_bright.png
-postcard_boat_sunset.png
 ```
 
-They must not contain external presentation canvas/drop shadow around the intended card face.
+Must be one normalized 1024×768 4:3 postcard face with no external presentation canvas/drop shadow. No new postcard variant selector/state is part of P1.
 
-## Explicit non-goals / deferred
+Dawn/Sunset postcard compositions remain approved P2 reuse candidates and are not active required files.
 
-Do not create now:
-- Main Menu static background — current ColorRect is sufficient; a static image would invent a new consumer and may diverge from the actual 3D game.
+## Explicit deferred / no-goal categories
+
+- Main Menu static background — no required authored image; current ColorRect is valid and a static image would invent a consumer.
 - Album authored screenshots — eventual photos should be runtime captures.
-- fake 2D character/pet portraits — selection thumbnails should derive from the real 3D assets.
-- exact character/pet/boat UV sheets — blocked until production geometry/consumer exists.
-- sky/sea bitmaps — conditional on actual material/shader technique; prefer simple color/light/procedural route.
-- UI icon pack — current text controls work; only reopen after a binding icon consumer/polish need.
-- release/store art — P3 and platform/branding dependent.
+- fake 2D character/pet portraits — derive selection thumbnails from actual 3D assets.
+- exact character/pet/boat UV sheets — blocked by production geometry/consumer.
+- sky/sea bitmaps — conditional on real material/shader technique; prefer simple color/light/procedural route.
+- UI icon pack — current text controls are functional; reopen only for a binding consumer/readability need.
+- application icon/store/marketing — real eventual P3 requirement, held until release targets/brand package are explicit.
 
 ## After user approves this queue
 
-Proceed in order:
-
 ```text
-IMG-01 text contract → generate/edit → review → user approval → Notion registration
-IMG-02 text contract → generate/edit → review → user approval → Notion registration
-then update downstream handoff to READY_FOR_CODEX_IMAGE_INTEGRATION
+IMG-01 → generate/edit → GPT review → user asset approval → individual Asset Library registration
+IMG-02 → generate/edit → GPT review → user asset approval → individual Asset Library registration
+→ both active Goals IMPLEMENTATION_READY
+→ CODEX-IMG-01 → CODEX-IMG-02
+→ 540×960 runtime proof
 ```
 
 ## Evidence ceiling
