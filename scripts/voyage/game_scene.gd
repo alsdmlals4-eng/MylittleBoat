@@ -135,6 +135,8 @@ func get_active_camera_mode() -> String:
 func _apply_camera_mode() -> void:
 	$VoyageWorld/DioramaCameraRig/DioramaCamera3D.current = not GameState.appreciation_mode
 	$VoyageWorld/AppreciationCameraRig/AppreciationCamera3D.current = GameState.appreciation_mode
+	$VoyageWorld/DioramaCameraRig/DioramaCamera3D/SeaBackdrop.visible = not GameState.appreciation_mode
+	$VoyageWorld/AppreciationCameraRig/AppreciationCamera3D/SeaBackdrop.visible = GameState.appreciation_mode
 
 
 func apply_boat_decor(slot_id: String, item_id: String, appearance_id: String = "") -> bool:

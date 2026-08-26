@@ -7,6 +7,8 @@ These are generated candidate assets for runtime review, not final approved Asse
 | C protagonist | `assets/images/runtime/storybook/c_default_storybook.png` | 1024×1024 RGBA sRGB | PASS, four corners alpha 0 | `847A2520937E0D7581545A1531F96C57A574BC0EE1C10DFB7366954A04FD97AC` |
 | Resting dog | `assets/images/runtime/storybook/dog_default_storybook.png` | 1024×1024 RGBA sRGB | PASS, four corners alpha 0 | `0EE3481BD7FFFB2B7263F4B95EB1D3A14E30C34A7EFF03F0D4B933F9EDCC33E5` |
 | Wooden boat | `assets/images/runtime/storybook/boat_default_storybook.png` | 1536×1024 RGBA sRGB | PASS, four corners alpha 0 | `B678F36490B323E94DCB1D4F6C30885935A2262A27444AB96E8999544E67D512` |
+| Bright sea backdrop | `assets/images/runtime/storybook/sea_bright_storybook.png` | 1536×1024 RGB sRGB | opaque background asset | `2B174E0F66C98672F5527411EA0CA43FDE9DBB93957696614158FCB895A3BDEC` |
+| C + dog boat diorama | `assets/images/runtime/storybook/boat_c_dog_diorama_storybook.png` | 1536×1024 RGBA sRGB | PASS, four corners alpha 0 | `E6A197C68F08BCE6E1EABC37A5390598BA19174124C5B0E4EDA4C2000F5481FD` |
 
 ## Generation provenance
 
@@ -16,6 +18,7 @@ These are generated candidate assets for runtime review, not final approved Asse
 - Dog prompt summary: calm low resting full-body dog with warm beige fur, floppy dark-brown ears, and a subtle brown back patch; matte storybook watercolor-gouache; transparent exterior; no scenery, props, text, frame, glow, or shadow.
 - Boat prompt summary: empty rounded small wooden boat in elevated 3/4 view with dark walnut hull, honey deck, and low rail; matte storybook watercolor-gouache; transparent exterior; no waterline, scenery, text, frame, glow, or shadow.
 - Normalization: C and dog were composited without background onto centered 1024×1024 transparent RGBA canvases, preserving aspect ratio. Boat was retained at its native 1536×1024 RGBA size.
+- Reference-aligned revision: the final runtime candidate is the transparent C + dog boat diorama card plus the opaque Bright sea backdrop. The earlier separate C, dog, and boat cards remain local candidate source material and are not the visible final composition.
 
 ## Approval gate
 

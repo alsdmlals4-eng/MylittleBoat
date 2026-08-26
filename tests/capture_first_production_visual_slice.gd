@@ -1,7 +1,7 @@
 # 첫 production visual slice의 headless runtime 증거 이미지를 저장한다.
 extends SceneTree
 
-const EVIDENCE_DIRECTORY := "res://docs/evidence/2026-08-26-c-storybook-dog-default"
+const EVIDENCE_DIRECTORY := "res://docs/evidence/2026-08-26-final-2p5d-storybook-art"
 
 
 func _init() -> void:

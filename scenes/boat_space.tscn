@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3]
+[gd_scene load_steps=15 format=3]
 
 [ext_resource type="Script" path="res://scripts/voyage/resting_pet_placeholder.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/avatar/player_avatar_placeholder.gd" id="2"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" path="res://assets/images/runtime/storybook/dog_default_storybook.png" id="6"]
 [ext_resource type="Texture2D" path="res://assets/images/runtime/storybook/boat_default_storybook.png" id="7"]
 [ext_resource type="Script" path="res://scripts/visual/storybook_art_card.gd" id="8"]
+[ext_resource type="Texture2D" path="res://assets/images/runtime/storybook/boat_c_dog_diorama_storybook.png" id="9"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_boat"]
 size = Vector3(2.8, 0.22, 2.4)
@@ -104,8 +105,6 @@ roughness = 0.92
 
 [node name="BoatBow" type="MeshInstance3D" parent="."]
 position = Vector3(0, 0.18, 0.55)
-mesh = SubResource("BoxMesh_boat")
-surface_material_override/0 = SubResource("Material_boat")
 
 [node name="PlayerAvatarPlaceholder" type="Node3D" parent="."]
 position = Vector3(-0.62, 0.72, 0.32)
@@ -148,6 +147,7 @@ position = Vector3(0, 0.63, -0.42)
 script = ExtResource("3")
 
 [node name="Visual" type="MeshInstance3D" parent="BoatRail"]
+visible = false
 mesh = SubResource("BoxMesh_rail")
 surface_material_override/0 = SubResource("Material_boat")
 
@@ -275,6 +275,7 @@ mesh = SubResource("BoxMesh_rail")
 surface_material_override/0 = SubResource("Material_study_wood_dark")
 
 [node name="StorybookCDefault" type="Node3D" parent="PlayerAvatarPlaceholder/VisualStudy"]
+visible = false
 
 [node name="FaceMass" type="MeshInstance3D" parent="PlayerAvatarPlaceholder/VisualStudy/StorybookCDefault"]
 position = Vector3(0, 0.62, 0.12)
@@ -328,6 +329,7 @@ script = ExtResource("8")
 fallback_nodes = [NodePath("../FaceMass"), NodePath("../HairMass"), NodePath("../KnitMass"), NodePath("../SkirtMass"), NodePath("../LeftBoot"), NodePath("../RightBoot"), NodePath("../Pendant")]
 
 [node name="StorybookDogDefault" type="Node3D" parent="RestingPetPlaceholder/VisualStudy"]
+visible = false
 
 [node name="DogBody" type="MeshInstance3D" parent="RestingPetPlaceholder/VisualStudy/StorybookDogDefault"]
 position = Vector3(0, 0.02, 0)
@@ -363,6 +365,7 @@ script = ExtResource("8")
 fallback_nodes = [NodePath("../DogBody"), NodePath("../DogHead"), NodePath("../LeftEar"), NodePath("../RightEar")]
 
 [node name="StorybookHullPass" type="Node3D" parent="BoatBow/VisualStudy"]
+visible = false
 
 [node name="HullMass" type="MeshInstance3D" parent="BoatBow/VisualStudy/StorybookHullPass"]
 position = Vector3(0, -0.2, 0)
@@ -396,3 +399,10 @@ no_depth_test = false
 texture = ExtResource("7")
 script = ExtResource("8")
 fallback_nodes = [NodePath("../HullMass"), NodePath("../DeckMass"), NodePath("../LeftRailMass"), NodePath("../RightRailMass")]
+
+[node name="FinalDioramaCard" type="Sprite3D" parent="."]
+position = Vector3(0, 0.8, 0.4)
+pixel_size = 0.0017
+billboard = 1
+no_depth_test = false
+texture = ExtResource("9")

@@ -36,6 +36,13 @@ func _run() -> void:
 		"res://assets/images/runtime/storybook/boat_default_storybook.png",
 		["HullMass", "DeckMass", "LeftRailMass", "RightRailMass"]
 	)
+	var final_card := boat_space.get_node_or_null("FinalDioramaCard") as Sprite3D
+	_expect(final_card != null, "boat space needs the composite final diorama card")
+	if final_card != null:
+		_expect(final_card.texture != null, "composite final diorama card needs a texture")
+		if final_card.texture != null:
+			_expect(final_card.texture.resource_path == "res://assets/images/runtime/storybook/boat_c_dog_diorama_storybook.png", "composite card must use the reference-aligned diorama art")
+		_expect(final_card.billboard != BaseMaterial3D.BILLBOARD_DISABLED, "composite final diorama card must face the active camera")
 
 	boat_space.queue_free()
 	await process_frame
