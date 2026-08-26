@@ -2,6 +2,7 @@
 extends Node
 
 const VOYAGE_SECONDS := 300.0
+const BOAT_DECOR_PERSISTENCE_SCRIPT = preload("res://scripts/core/boat_decor_persistence.gd")
 
 var selected_mood: String = "평온"
 var companion_affection: int = 1
@@ -28,6 +29,11 @@ var _voyage_photo_start_count := 0
 var _voyage_scenery_start_count := 0
 var _voyage_letter_start_count := 0
 var _voyage_fish_start_count := 0
+var _boat_decor_persistence = BOAT_DECOR_PERSISTENCE_SCRIPT.new()
+
+
+func _ready() -> void:
+	load_boat_decor()
 
 
 ## Selects today's mood before entering the sea scene.
@@ -66,6 +72,7 @@ func set_boat_decor(slot_id: String, item_id: String) -> void:
 		boat_decor_appearances.erase(slot_id)
 	else:
 		boat_decor[slot_id] = item_id
+	save_boat_decor()
 
 
 ## Returns the process-lifetime cosmetic item stored in one boat slot.
@@ -81,11 +88,31 @@ func set_boat_decor_appearance(slot_id: String, appearance_id: String) -> void:
 		boat_decor_appearances.erase(slot_id)
 	else:
 		boat_decor_appearances[slot_id] = appearance_id
+	save_boat_decor()
 
 
 ## Returns the stored cosmetic appearance for one boat decor slot.
 func get_boat_decor_appearance(slot_id: String) -> String:
 	return str(boat_decor_appearances.get(slot_id, ""))
+
+
+## Switches the local cosmetic decor storage target without loading gameplay state.
+func set_boat_decor_storage_path(path: String) -> void:
+	if path == "":
+		return
+	_boat_decor_persistence = BOAT_DECOR_PERSISTENCE_SCRIPT.new(path)
+
+
+## Writes only cosmetic boat decor to the local device.
+func save_boat_decor() -> void:
+	_boat_decor_persistence.save(boat_decor, boat_decor_appearances)
+
+
+## Restores cosmetic boat decor or keeps an empty boat when the file is unavailable.
+func load_boat_decor() -> void:
+	var restored := _boat_decor_persistence.load()
+	boat_decor = restored.get("decor", {})
+	boat_decor_appearances = restored.get("appearances", {})
 
 
 ## Advances the active voyage timer and reports when it reaches zero this tick.
