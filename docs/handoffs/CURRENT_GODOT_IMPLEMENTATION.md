@@ -18,13 +18,40 @@ image_generation_by_codex: FORBIDDEN
 
 The user explicitly chose to **finish planning and image work before the First Production Visual Slice**. Do not create a Godot implementation branch, Scene/Resource/GDScript change, product TDD RED, or runtime art translation while this file is paused.
 
+## Approved customization input now waiting downstream
+
+The old assumption of one exclusive representative avatar and one exclusive first pet species is superseded.
+
+When unpaused, implementation planning must preserve these approved feature meanings:
+
+```text
+CHARACTER_SELECTION_SET
+= SOFT_HOODED_LAYER
++ SHORT_CAPE_SAILOR_LAYER_RHYTHM
++ LOOSE_KNIT_LONG_HAIR_MASS
+
+PET_SELECTION_SET
+= CAT
++ RABBIT
++ DOG
++ OTTER_LIKE
+
+PET_CUSHION_CUSTOMIZATION
+= APPROVED_AT_FEATURE_MEANING_LEVEL
+```
+
+These are cosmetic/personalization choices, not class/stat/rarity/monetization choices.
+
+Do not invent a parallel customization inventory by default. When implementation resumes, first evaluate reuse of the existing local-first Boat Decoration/state architecture for cushion customization while keeping character/pet selection semantics appropriately separated.
+
 ## Unpause gate
 
 Codex/Godot work resumes only after the current planning/visual owner records all of the following as approved/synced:
 
 ```text
-PLAYER_REPRESENTATIVE_IDENTITY = APPROVED
-FIRST_PET_SPECIES_AND_RESTING_READ = APPROVED
+CHARACTER_SELECTION_SET = APPROVED
+PET_SELECTION_SET = APPROVED
+PET_CUSHION_CUSTOMIZATION = APPROVED_AT_FEATURE_MEANING_LEVEL
 BOAT_DECOR_REPRESENTATIVE_LANGUAGE = APPROVED
 FOUR_TIME_ATMOSPHERE_DIRECTION = APPROVED
 REPRESENTATIVE_UI_PRESENCE = APPROVED_AT_MEANING_LEVEL
@@ -45,16 +72,23 @@ When eventually resumed, the First Production Visual Slice still must preserve:
 - BoatSpace shared bob ownership;
 - 8 decor slot IDs and six current item IDs/compatibility/state meaning;
 - low-pressure interaction reward isolation;
-- care-obligation-free pet meaning;
+- care-obligation-free pet meaning across every selectable species;
+- cosmetic selection must not alter rewards, timer, progression pressure, social eligibility, or care obligation;
 - local-first core;
 - PR #19 as an independent workstream unless explicitly reopened.
 
-Exact future Node names, scene hierarchy, test implementation, mesh choice, material values, and internal file split remain Codex implementation choices after fresh-read. Historical v1 examples such as `VisualStudy` are non-binding planning sketches.
+Exact future Node names, scene hierarchy, test implementation, mesh choice, material values, customization UI timing, and internal file split remain Codex implementation choices after fresh-read. Historical v1 examples such as `VisualStudy` are non-binding planning sketches.
 
 ## Evidence ceiling while paused
 
 ```text
 PLANNING_VISUAL_CLOSEOUT = IN_PROGRESS
+IMAGE_A_VISUAL_APPROVAL = PASS
+CHARACTER_SELECTION_SET = APPROVED
+PET_SELECTION_SET = APPROVED
+PET_CUSHION_CUSTOMIZATION = APPROVED_AT_FEATURE_MEANING_LEVEL
+IMAGE_B = NOT_RUN
+IMAGE_C = NOT_RUN
 HANDPAINTED_3D_RUNTIME_SLICE = NOT_RUN
 PRODUCT_TDD_RED_GREEN = NOT_RUN
 MOBILE_30S_VISUAL_REVIEW = NOT_RUN
