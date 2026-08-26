@@ -3,6 +3,7 @@ extends Node
 
 const VOYAGE_SECONDS := 300.0
 const BOAT_DECOR_PERSISTENCE_SCRIPT = preload("res://scripts/core/boat_decor_persistence.gd")
+const IDENTITY_PROFILE_SCRIPT = preload("res://scripts/core/cosmetic_identity_profile.gd")
 
 var selected_mood: String = "평온"
 var companion_affection: int = 1
@@ -15,6 +16,8 @@ var fish: Array[String] = []
 var voyage_records: Array[String] = []
 var boat_decor: Dictionary = {}
 var boat_decor_appearances: Dictionary = {}
+var selected_player_style := "c_loose_knit"
+var selected_pet_type := "dog"
 
 # Scene 전환에도 유지되어야 하는 현재 항해 상태다.
 var voyage_active := false
@@ -30,10 +33,12 @@ var _voyage_scenery_start_count := 0
 var _voyage_letter_start_count := 0
 var _voyage_fish_start_count := 0
 var _boat_decor_persistence = BOAT_DECOR_PERSISTENCE_SCRIPT.new()
+var _identity_profile = IDENTITY_PROFILE_SCRIPT.new()
 
 
 func _ready() -> void:
 	load_boat_decor()
+	load_identity()
 
 
 ## Selects today's mood before entering the sea scene.
@@ -113,6 +118,48 @@ func load_boat_decor() -> void:
 	var restored := _boat_decor_persistence.load()
 	boat_decor = restored.get("decor", {})
 	boat_decor_appearances = restored.get("appearances", {})
+
+
+## Returns the selected visual player family without changing gameplay state.
+func get_selected_player_style() -> String:
+	return selected_player_style
+
+
+## Returns the selected visual companion species without changing gameplay state.
+func get_selected_pet_type() -> String:
+	return selected_pet_type
+
+
+## Stores a selected player family as local cosmetic state only.
+func set_selected_player_style(value: String) -> void:
+	selected_player_style = _identity_profile.normalize_player_style(value)
+	save_identity()
+
+
+## Stores a selected companion species as local cosmetic state only.
+func set_selected_pet_type(value: String) -> void:
+	selected_pet_type = _identity_profile.normalize_pet_type(value)
+	save_identity()
+
+
+## Switches the identity storage target for isolated contract tests.
+func set_identity_storage_path(path: String) -> void:
+	if path == "":
+		return
+	_identity_profile = IDENTITY_PROFILE_SCRIPT.new(path)
+	load_identity()
+
+
+## Writes only the selected visual identity to the local device.
+func save_identity() -> void:
+	_identity_profile.save(selected_player_style, selected_pet_type)
+
+
+## Restores selected visual identity or keeps the approved C + dog default.
+func load_identity() -> void:
+	var restored := _identity_profile.load()
+	selected_player_style = str(restored.get("player_style_id", "c_loose_knit"))
+	selected_pet_type = str(restored.get("pet_type_id", "dog"))
 
 
 ## Advances the active voyage timer and reports when it reaches zero this tick.
