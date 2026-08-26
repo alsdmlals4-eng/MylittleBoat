@@ -44,6 +44,7 @@ jobs:
           timeout 20s godot --headless --path . --script res://tests/test_boat_life_scene_contract.gd || status=1
           timeout 20s godot --headless --path . --script res://tests/test_boat_life_ui_contract.gd || status=1
           timeout 20s godot --headless --path . --script res://tests/test_runtime_image_asset_contract.gd || status=1
+          timeout 20s godot --headless --path . --script res://tests/test_handpainted_visual_slice_contract.gd || status=1
           exit "$status"
 
       - name: Smoke main menu scene
