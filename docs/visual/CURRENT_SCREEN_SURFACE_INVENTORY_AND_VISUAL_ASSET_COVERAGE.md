@@ -141,7 +141,7 @@ The implementation uses the exact four approved background files through `Atmosp
 
 ### P1 follow-up completion
 
-- `MLB-SCR-010` is completed by Issue #75 pending its main merge. It reuses actual record text and the approved atmosphere background family; no album art or presentation-only photos were created.
+- `MLB-SCR-010` is complete on `main` through [Issue #75](https://github.com/alsdmlals4-eng/MylittleBoat/issues/75) and [PR #76](https://github.com/alsdmlals4-eng/MylittleBoat/pull/76), merge commit `69a2a7f2fdbfc251cfb6d4a3f446ab39dd080cbc`. It reuses actual record text and the approved atmosphere background family; no album art or presentation-only photos were created.
 
 ### Acceptance
 
