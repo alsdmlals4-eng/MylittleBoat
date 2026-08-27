@@ -32,7 +32,7 @@ RUNTIME_CONSUMER_OR_CLEAR_VISUAL_NEED
 → project-local binary storage
 → Notion final asset registration + durable binary locator
 → IMPLEMENTATION_READY
-→ GPT Work changes this router to READY_FOR_CODEX_IMAGE_INTEGRATION
+→ GPT Work historical pre-integration handoff
 → CODEX-IMG-01 / CODEX-IMG-02
 → Godot import/wiring/runtime proof
 → GPT final implementation review
