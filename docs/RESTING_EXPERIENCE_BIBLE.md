@@ -154,7 +154,7 @@
 ### Normal Play 화면 구조
 
 - 주요 시야: 보이는 플레이어 Avatar + 펫 + 보트의 생활 공간 + 넓은 바다 + 안정적인 수평선 + 하늘.
-- normal play에서 플레이어 캐릭터는 **보입니다.** 현재 `PlayerAvatarPlaceholder`는 최종 아트가 아닌 기술 shell입니다.
+- normal play에서 플레이어 캐릭터는 **보입니다.** 기본 C knit/long-hair + dog 조합은 승인된 최종 2.5D runtime route로 표시하며, 다른 승인 조합은 local cosmetic selection route로 표시합니다. 기존 placeholder node는 이 구조를 지지하는 기술 shell로만 남습니다.
 - 플레이어와 펫은 보트 bob에 함께 움직여 deck과 상대 위치가 깨지지 않아야 합니다.
 - Avatar와 펫은 화면 중앙/수평선을 계속 가리지 않고 보트 안의 안정적인 위치에서 존재감을 만듭니다.
 - 향후 Decor를 추가해도 Avatar/Pet/Sea가 함께 읽히는 여백을 유지합니다.
@@ -193,7 +193,7 @@
 #### Pet
 
 - 펫은 수집 마스코트가 아니라 같이 쉬는 존재입니다.
-- 최종 종은 아직 정하지 않으며 비교 시안 B의 강아지는 reference일 뿐입니다.
+- 기본 동반자는 사용자 승인 C knit/long-hair + 강아지 조합이며, 고양이·토끼·수달은 local cosmetic selection으로도 사용할 수 있습니다. 어떤 종도 stats, rarity, care obligation을 갖지 않습니다.
 - 눕기·바다 보기·졸기·기지개 같은 큰 resting pose와 낮은 빈도의 idle을 우선합니다.
 
 #### Boat / Props
@@ -239,7 +239,7 @@
 - mobile portrait presentation
 - local-first core gameplay
 
-#### First production validation slice
+#### First production validation slice · Complete
 
 전체 자산을 교체하기 전에 아래 최소 slice만 먼저 검증합니다.
 
@@ -252,7 +252,7 @@
 + Normal / Appreciation Camera comparison
 ```
 
-이 slice는 아직 구현하지 않았습니다. 아래 질문을 실제 runtime/mobile에서 증명하기 전 대량 asset conversion으로 넘어가지 않습니다.
+이 slice는 구현·자동 계약·540×960 Normal/Appreciation runtime capture를 마쳤고, 이후 승인된 C+dog 기본 route, local identity selection, cushion/postcard surfaces, four-time atmosphere, final-composite decor correction이 `main`에 통합되었습니다. 아래 질문 중 실제 mobile/human comfort 항목은 아직 보류 상태이며, 그 상태를 PASS로 바꾸지 않습니다.
 
 1. 캐릭터가 generic AI 3D처럼 보이지 않는가?
 2. 실제 540×960 gameplay 거리에서 hand-authored 인상이 남는가?
@@ -263,7 +263,11 @@
 #### Evidence Gate
 
 ```text
-HANDPAINTED_3D_RUNTIME_SLICE = NOT_RUN
+HANDPAINTED_3D_RUNTIME_SLICE = USER_APPROVED_MERGED_MAIN
+C_DOG_DEFAULT_RUNTIME_CAPTURE = PASS
+COSMETIC_IDENTITY_SELECTION = IMPLEMENTED_LOCAL_FIRST
+FOUR_TIME_ATMOSPHERE = MERGED_MAIN
+FINAL_COMPOSITE_DECOR = MERGED_MAIN
 MOBILE_30S_VISUAL_REVIEW = NOT_RUN
 MOBILE_5M_VISUAL_REVIEW = NOT_RUN
 HANDPAINTED_MOTION_REVIEW = NOT_RUN
@@ -404,15 +408,15 @@ Idle은 계속 바쁘게 바뀌지 않습니다. **긴 정지/호흡 구간 사�
 - 기술 Avatar/Pet는 보트 bob과 상대 위치를 유지한다.
 - 펫은 관리 의무 없는 동반자다.
 - 수집/낚시는 휴식을 대체하지 않는 선택형 보조 콘텐츠다.
-- Boat Decoration과 reusable Low-pressure Interactable은 current main에 기술 구현되어 있으며, Human mobile usability/final art quality는 아직 `NOT_RUN / NOT_INTEGRATED`다.
+- Boat Decoration과 reusable Low-pressure Interactable은 current main에 구현되어 있고, 승인된 cushion/postcard surface와 final-composite decor route도 runtime-verified다. Human mobile usability와 주관적 final-art quality는 아직 `NOT_RUN / DEFERRED`다.
 - FriendBottle / DriftBottle 제품·안전 설계는 승인됐지만 **real network/auth/moderation/public social runtime은 current main에 구현되지 않았다.** PR #19의 local fake backend는 이 문서 정본 rollout과 독립된 open workstream이다.
 
 아직 확정할 수 없는 것:
 
-- 현재 technical 3/4 구도가 실제 모바일 portrait에서 편안하고 예쁘다.
-- 현재 placeholder Avatar/Pet가 최종 시각 방향에 적합하다.
-- 현재 placeholder 바다가 실제로 시각적으로 편안하다.
-- 실제 자연 파도소리가 이미 게임에 구현됐다.
+- 현재 3/4 구도가 실제 모바일 portrait에서 편안하고 예쁘다.
+- 승인된 2.5D Avatar/Pet/Boat/Sea route가 실제 모바일에서 장시간 편안하다.
+- 현재 바다가 실제로 시각적으로 편안하다.
+- 코드 생성 OceanBed 후보가 실제 자연 파도처럼 충분히 편안하다.
 - 실제 Decor/상호작용이 `CHORES` 없이 재미있다.
 - 실제 FriendBottle/DriftBottle이 안전하고 편안한 소셜 경험이다.
 - 실제 모바일 기기에서 5분이 편안하다.
