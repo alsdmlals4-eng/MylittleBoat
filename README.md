@@ -12,6 +12,12 @@
 2. `Import`에서 이 폴더의 `project.godot`을 선택합니다.
 3. 실행하거나 `scenes/main_menu.tscn`에서 시작합니다.
 
+## 내부 Windows 빌드 받기
+
+`main`에 연결된 성공한 **Godot 4.7 validation** 실행 또는 수동 실행의 Artifacts에서 `my-little-boat-windows-internal`을 내려받아 압축을 풉니다. `my_little_boat.exe`와 같은 폴더의 `my_little_boat.pck`를 함께 둔 채 실행합니다. `SHA256SUMS.txt`에는 두 파일의 SHA-256이 들어 있습니다.
+
+이 경로는 저장소 사용자용 internal Windows x86_64 debug package입니다. Android APK, public store release, code signing, 실제 스마트폰/사람 comfort 검증을 뜻하지 않습니다.
+
 ## 핵심 방향
 
 - normal play는 **visible avatar + pet + boat + decor + sea가 함께 보이는 3/4 Boat Diorama**입니다.
@@ -215,9 +221,10 @@ headless project import
 → main-menu cosmetic selector
 → four-time atmosphere catalog / menu selector / shared game-scene application
 → main menu / game / album Scene smoke
+→ Windows x86_64 internal package export / ZIP content / SHA-256 manifest
 ```
 
-자동 검증은 기술 동작을 증명하지만 실제로 예쁘고 편안하며 모바일에서 쓰기 좋은지는 증명하지 않습니다.
+자동 검증과 Windows package artifact는 기술 동작·구성·재현 가능한 전달 경로를 증명하지만, 실제로 예쁘고 편안하며 모바일에서 쓰기 좋은지는 증명하지 않습니다.
 
 ## 다음 구현 순서
 

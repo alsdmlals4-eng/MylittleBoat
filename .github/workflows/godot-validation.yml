@@ -3,6 +3,9 @@ name: Godot 4.7 validation
 on:
   pull_request:
     branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -20,7 +23,7 @@ jobs:
         with:
           version: 4.7.0
           use-dotnet: false
-          include-templates: false
+          include-templates: true
 
       - name: Verify Godot version
         run: godot --version
@@ -55,6 +58,7 @@ jobs:
           timeout 20s godot --headless --path . --script res://tests/test_game_scene_time_of_day_contract.gd || status=1
           timeout 20s godot --headless --path . --script res://tests/test_runtime_capture_guard_contract.gd || status=1
           timeout 20s godot --headless --path . --script res://tests/test_final_composite_decor_contract.gd || status=1
+          timeout 20s godot --headless --path . --script res://tests/test_windows_export_contract.gd || status=1
           exit "$status"
 
       - name: Smoke main menu scene
@@ -65,3 +69,24 @@ jobs:
 
       - name: Smoke album scene
         run: godot --headless --path . --scene "res://scenes/album.tscn" --quit-after 1
+
+      - name: Export internal Windows package
+        shell: bash
+        run: |
+          mkdir -p build
+          godot --headless --path . --export-debug "Windows Desktop" build/my_little_boat.exe
+          test -f build/my_little_boat.exe
+          test -f build/my_little_boat.pck
+          sha256sum build/my_little_boat.exe build/my_little_boat.pck > build/SHA256SUMS.txt
+          zip -j build/my-little-boat-windows-internal.zip build/my_little_boat.exe build/my_little_boat.pck build/SHA256SUMS.txt
+          unzip -l build/my-little-boat-windows-internal.zip | grep -q 'my_little_boat.exe'
+          unzip -l build/my-little-boat-windows-internal.zip | grep -q 'my_little_boat.pck'
+          unzip -l build/my-little-boat-windows-internal.zip | grep -q 'SHA256SUMS.txt'
+
+      - name: Upload internal Windows package
+        uses: actions/upload-artifact@v4
+        with:
+          name: my-little-boat-windows-internal
+          path: build/my-little-boat-windows-internal.zip
+          if-no-files-found: error
+          retention-days: 30
