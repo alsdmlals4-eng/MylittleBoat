@@ -35,7 +35,7 @@ Every runtime asset family records the consumer, object, state, variation, imple
 | P0 runtime diorama | `COVERED_EXISTING` | Approved C+dog storybook boat, sea, decor, Normal/Appreciation captures, and actual consumers are present. |
 | P0 main entry composition | `COVERED_EXISTING` | The four approved atmosphere backgrounds now switch with the selected time, and the existing C+dog diorama is visible above the compact menu controls. |
 | P0 result / next-voyage state | `COVERED_EXISTING` | Same gameplay surface exposes completion copy and `NextVoyageButton`; contract evidence proves the state. |
-| P1 album presentation | `GAP_NONBLOCKING` | Functional text record / empty state exists. It needs a later Godot UI composition pass; it does not need fake album images. |
+| P1 album presentation | `COVERED_EXISTING` | The album now uses the selected approved atmosphere background with Godot-native hierarchy for counts, recent textual records, and a calm empty state. |
 | New runtime bitmap requirement | `0` | The actual current consumers have been rechecked. Existing approved boat, sea, identity, cushion, postcard, and now connected main-menu backgrounds cover them; UI controls use Godot theme resources rather than unnecessary bitmap files. |
 
 ## 1. Target screen inventory
@@ -53,7 +53,7 @@ Every runtime asset family records the consumer, object, state, variation, imple
 | `MLB-OVR-007` / Quiet fishing state | `CURRENT_VERTICAL_SLICE` / P1 / `GAME_RUNTIME` | “Do I want to wait for a bite, cancel, or keep the catch as a memory?” | `FishingButton` → wait / bite / catch / cancel | `FishingButton`, `FishingStatusLabel`, `fishing_session.gd`; `test_fishing_session.gd`, `test_game_scene_contract.gd` | Notion Home; this owner + `game_scene.gd` | `COVERED_EXISTING`. Text and dynamic button labels are the correct current feedback layer; no icon/VFX requirement is justified. |
 | `MLB-OVR-008` / Ambient discovery offer | `CURRENT_VERTICAL_SLICE` / P1 / `GAME_RUNTIME` | “Do I want to keep this quiet letter or scenery memory?” | scheduled discovery → record or expiry | `LetterButton`, `SceneryButton`, `GameState`; `test_game_scene_contract.gd` | Notion Home; this owner + `game_scene.gd` | `COVERED_EXISTING`. Text-led offer is deliberate. Bottle/social presentation remains a separate deferred system. |
 | `MLB-OVR-009` / Voyage completion | `CURRENT_VERTICAL_SLICE` / P0 / `GAME_RUNTIME` | “Did this rest become a record, and may I stay or begin again?” | timer reaches zero → `NextVoyageButton` or album | `GameState.complete_voyage`, `NextVoyageButton`, `scripts/voyage/game_scene.gd`; `test_game_scene_contract.gd` | Notion Home + Production Handoff; this owner + `game_scene.gd` | `COVERED_EXISTING`. Current completion is a state of the normal surface, not a separate reward bitmap. |
-| `MLB-SCR-010` / Album archive | `CURRENT_VERTICAL_SLICE` / P1 / `GAME_RUNTIME` | “What has this voyage left with me?” | `AlbumButton` → return to sea | `scenes/album.tscn`, `scripts/ui/album_view.gd`; [empty-state capture](../evidence/2026-08-27-screen-surface-audit/album-empty_540x960.png); `test_album_memory_contract.gd` | Notion Home + Production Handoff; this owner + `album.tscn` | `GAP_NONBLOCKING`. Functional dynamic text and empty state exist, but later `GODOT_UI + TEXT_LAYER` composition should better carry the hand-painted memory feeling. Runtime captures, not authored fake photos, remain the correct future image source. |
+| `MLB-SCR-010` / Album archive | `CURRENT_VERTICAL_SLICE` / P1 / `GAME_RUNTIME` | “What has this voyage left with me?” | `AlbumButton` → return to sea | `scenes/album.tscn`, `scripts/ui/album_view.gd`; [empty and populated 540×960 captures](../evidence/2026-08-28-album-composition/); `test_album_memory_contract.gd`, `test_album_composition_contract.gd` | Notion Home + Production Handoff; this owner + `album.tscn` | `COVERED_EXISTING`. Godot UI/text presents real counts and recent textual records over the selected approved atmosphere background. Runtime captures, not authored fake photos, remain the correct image source. |
 
 ## 2. Non-applicable and deferred screen families
 
@@ -84,7 +84,7 @@ Every common family was checked. `NOT_APPLICABLE` means absent from the current 
 | `MLB-VC-003` | `MLB-OVR-002`, `MLB-SCR-003` | Player/pet identity; selected/default, C+dog final route, other pairs | `EXISTING_APPROVED`, `RASTER_IMAGE`, `PROCEDURAL_DRAW` | `identity_visual_catalog.gd`; five identity cards and existing shared boat pass | `COVERED_EXISTING`, current selectable state family `COMPLETE`. |
 | `MLB-VC-004` | `MLB-OVR-005`, `MLB-SCR-003` | Decor: placed, replaced, cleared; cushion stripe/moon/floral; postcard default | `EXISTING_APPROVED`, `RASTER_IMAGE`, `SHADER`, `GODOT_UI` | four approved files through `decor_visual_assets.gd`, `boat_decor_slot.gd`, `IdentityVisualRouter` | `COVERED_EXISTING`, current required variants `COMPLETE`. |
 | `MLB-VC-005` | `MLB-OVR-006` to `MLB-OVR-009` | Optional action, waiting/bite/cancel, offer/expiry, complete/next | `GODOT_UI`, `TEXT_LAYER`, `NO_NEW_IMAGE_FILE_REQUIRED` | `game_scene.gd`, `fishing_session.gd`, `GameState` | `COVERED_EXISTING`, current state families `COMPLETE`. |
-| `MLB-VC-006` | `MLB-SCR-010` | Empty and populated memory summary, return affordance | `GODOT_UI`, `TEXT_LAYER`, `NO_NEW_IMAGE_FILE_REQUIRED` | `album.tscn`, `album_view.gd`, runtime photo records | `REQUIREMENT_LINKED` to `MLB-UI-P1-ALBUM-COMPOSITION`; state family `PARTIAL` only because visual composition is deferred. |
+| `MLB-VC-006` | `MLB-SCR-010` | Empty and populated memory summary, return affordance | `GODOT_UI`, `TEXT_LAYER`, `REUSE_PROJECT`, `NO_NEW_IMAGE_FILE_REQUIRED` | `album.tscn`, `album_view.gd`, `AtmosphereBackground`, runtime photo records | `COVERED_EXISTING`. Empty and populated evidence prove the screen hierarchy at 540×960. |
 | `MLB-VC-007` | all current surfaces | Buttons, labels, panels, focus/pressed/disabled semantics | `GODOT_UI`, `TEXT_LAYER`, `DO_NOT_GENERATE` | Godot `Control`, `PanelContainer`, `Button`, `OptionButton`, `Label` | `COVERED_EXISTING`. Custom UI icon pack is `DEFERRED_BY_DECISION` until a binding consumer/readability issue exists. |
 | `MLB-VC-008` | all current surfaces | Dynamic Korean text, timer, counts, discoveries, no-data message | `TEXT_LAYER`, `NO_NEW_IMAGE_FILE_REQUIRED` | scene labels and scripts | `COVERED_EXISTING`. Text must remain editable and localization-safe. |
 
@@ -105,7 +105,7 @@ Every common family was checked. `NOT_APPLICABLE` means absent from the current 
 | `MLB-ASSET-DECOR-SURFACES` | `MLB-SCR-003`, `MLB-OVR-005` | `decor_visual_assets.gd`, boat slots and final overlays | stripe/moon/floral cushion, one Bright postcard face | `EXISTING_APPROVED` | exact imported PNG paths; runtime-image and final-composite contracts | `COVERED_EXISTING` |
 | `MLB-ASSET-MAIN-ENTRY-UI` | `MLB-SCR-001`, `MLB-OVR-002` | `main_menu.tscn` | normal / selected / expanded identity and time choice | `GODOT_UI`, `TEXT_LAYER`, `REUSE_PROJECT` | 540×960 runtime capture, semantic button tests, later real-device check | `COVERED_EXISTING` |
 | `MLB-ASSET-MAIN-MENU-ATMOSPHERE-BACKGROUND` | `MLB-SCR-001`, `MLB-OVR-002` | `AtmosphereBackground` in `main_menu.tscn`, selected by the existing four-time catalog | Dawn / Bright / Sunset / Night, opaque portrait 2:3 | `RASTER_IMAGE`, `USER_APPROVED`, `GENERATION_PROVENANCE` | four exact 1024×1536 RGB sRGB PNGs; SHA-256, Notion records, durable Git locators in `docs/evidence/2026-08-28-main-menu-background-assets/asset-provenance.md`, and four current 540×960 captures | `COVERED_EXISTING / IMPLEMENTATION_READY` |
-| `MLB-ASSET-ALBUM-UI` | `MLB-SCR-010` | `album.tscn` | empty / populated / return | `GODOT_UI`, `TEXT_LAYER`, `RUNTIME_CAPTURE` | capture generated from actual records; no fake images | `GAP_NONBLOCKING` |
+| `MLB-ASSET-ALBUM-UI` | `MLB-SCR-010` | `album.tscn` | empty / populated / return | `GODOT_UI`, `TEXT_LAYER`, `REUSE_PROJECT`, `RUNTIME_CAPTURE` | selected approved atmosphere background and captures generated from actual records; no fake images | `COVERED_EXISTING` |
 
 The user explicitly approved the one consumer-bound `RASTER_IMAGE` family above on 2026-08-28. No `SPRITE_SHEET`, UI icon, portrait-only, UV-texture, or album-filler family is queued.
 
@@ -116,7 +116,7 @@ The user explicitly approved the one consumer-bound `RASTER_IMAGE` family above 
 | Runtime/asset documents were complete but historical image-manifest text still described pre-integration zero-assets state. | A reader could confuse historical image workflow with current whole-screen coverage. | This owner separates current screens, their consumers, and actual image state. `CURRENT_GODOT_IMPLEMENTATION.md` links here. | Codex reads this before a future UI slice. | current `main` at `6954b8886fe36a3f2a5da98e70ab22eabe5f429d`; scene/script/test readback. |
 | Base requested subordinate path is absent in latest `main`. | Blindly citing it as current would create Base authority drift. | Record the missing path and use the still-present latest Base coverage checklist; historical file is context only. | Future audit knows why project owns this companion. | Base `main` `986ac321`; historical add commit `d0d337eb`. |
 | Main entry was functional but visually generic. | It did not present the approved hand-painted boat-rest identity before the player committed to a mood. | Wire the four approved backgrounds to time selection, add the existing C+dog diorama anchor, and use compact translucent Godot UI controls. | First-launch mood selection. | `docs/evidence/2026-08-28-main-menu-composition/main_menu_{dawn,bright,sunset,night}_540x960.png`, `test_main_menu_atmosphere_background_contract.gd`. |
-| Album shows real data and a proper empty state but is visually generic. | A future polished memory screen could otherwise provoke fake illustrative-photo generation. | Mark P1 `GODOT_UI + TEXT_LAYER + RUNTIME_CAPTURE`; explicitly prohibit fake photos. | Album entry after any voyage. | `album-empty_540x960.png`, `album_view.gd`, album contract. |
+| Album showed real data and a proper empty state but was visually generic. | A future polish pass could otherwise provoke fake illustrative-photo generation. | Recompose with Godot-native hierarchy, the selected approved atmosphere background, and real record text; keep fake photos prohibited. | Album entry after any voyage. | `docs/evidence/2026-08-28-album-composition/`, `test_album_composition_contract.gd`, album contract. |
 
 ## 6. Completed P0 implementation record
 
@@ -139,9 +139,9 @@ The implementation uses the exact four approved background files through `Atmosp
 - No menu-background variants, UI icon pack, portrait-only asset family, progression, save-slot system, or combat/system screen was added.
 - Four selected-light runtime captures and a focused scene/UI contract were added.
 
-### P1 follow-up, not part of P0
+### P1 follow-up completion
 
-- Recompose `MLB-SCR-010` from actual record text and runtime photo captures. Do not invent album art or presentation-only photos.
+- `MLB-SCR-010` is completed by Issue #75 pending its main merge. It reuses actual record text and the approved atmosphere background family; no album art or presentation-only photos were created.
 
 ### Acceptance
 
@@ -156,18 +156,16 @@ The implementation uses the exact four approved background files through `Atmosp
 | Review lens | Result |
 | --- | --- |
 | Screen completeness | All current target-build surfaces are recorded; every non-applicable family has a reason. |
-| Player judgment | P0 entry, voyage/result, and optional choices have target-resolution evidence. Human mobile comfort remains deferred. |
+| Player judgment | Entry, voyage/result, optional choices, and album have target-resolution evidence. Human mobile comfort remains deferred. |
 | Asset completeness | Current bitmap state families are complete. No new image requirement is valid. |
 | Overproduction prevention | Main entry and album gaps route to Godot UI/text/reuse; album photos route to runtime capture. |
 | Canon / implementation reality | Notion provides human direction, repository provides current consumers, and 540×960 captures provide screen evidence. |
 
 ```text
 blocking_gap: []
-nonblocking_gap:
-  - MLB-UI-P1-ALBUM-COMPOSITION
+nonblocking_gap: []
 user_decision_required: []
-codex_implementation_required:
-  - P1 album composition when a separate product slice is selected
+codex_implementation_required: []
 image_brief_approval_required: []
 runtime_player_validation:
   - real-device mobile touch/comfort and human 5-minute rest remain deferred
