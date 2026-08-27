@@ -78,8 +78,8 @@ VISIBLE_AVATAR_PLACEHOLDER = PASS
 APPRECIATION_CAMERA = PASS
 APPRECIATION_INPUT_ISOLATION = PASS
 HUMAN_DIORAMA_COMFORT = NOT_RUN
-FINAL_AVATAR_ART = NOT_INTEGRATED
-REAL_MOBILE_CAMERA_INPUT = NOT_RUN
+FINAL_AVATAR_ART = USER_APPROVED_NOTION_REGISTERED_LOCATOR_PASS
+REAL_MOBILE_CAMERA_INPUT = DEFERRED_BY_USER
 ```
 
 ## 9단계: Local Boat Decoration + Low-pressure Interactable — 기술 구현 완료 / Human mobile QA 전
@@ -118,8 +118,8 @@ pet_cushion
 - invalid placement는 state mutation을 만들지 않는다.
 - replace/clear는 비용·손실 없음.
 - stats / rarity / price / currency / gacha / fill bonus / daily-shop pressure 없음.
-- `GameState.boat_decor`는 `slot_id -> item_id`만 저장한다.
-- Scene 전환과 새 항해에는 유지되지만 app restart persistence는 아직 없다.
+- `GameState.boat_decor`는 `slot_id -> item_id`를, 순수 외형 선택은 별도 appearance 상태를 저장한다.
+- Scene 전환·새 항해·앱 재시작 뒤에도 로컬 persistence로 유지된다.
 
 ### 9.3 Low-pressure Interactable
 
@@ -159,28 +159,27 @@ FINAL_DECOR_ART = NOT_INTEGRATED
 APP_RESTART_DECOR_PERSISTENCE = AUTOMATED_LOCAL_RESTORE_PASS
 ```
 
-## 10단계 진입 전 Current Priority Overlay · 2026-08-26
+## 10단계 진입 전 Visual Runtime Integration · 완료
 
-8월 25일 hand-painted visual canon/approved proof closeout 이후, completed `main`에서 가장 큰 증거 공백은 **승인된 visual direction과 실제 primitive runtime 사이**입니다. 따라서 현재 mainline next work는 아래 bounded proof입니다.
+승인된 visual direction과 실제 primitive runtime 사이의 증거 공백은 First Production Visual Slice, C+dog final 2.5D route, identity selection, four-time atmosphere, and final-composite decor correction으로 해소했습니다. 현재 mainline은 이 결과를 재구현하지 않고, 별도 승인된 새 product slice만 시작합니다.
 
-### First Production Visual Slice — Runtime capture + technical validation complete / Human review pending
+### Visual Runtime Result — Runtime capture + technical validation complete / Human/mobile review deferred
 
 ```text
 HANDPAINTED_STORYBOOK_3D_DIORAMA approved canon
 → actual game.tscn / BoatSpace bounded visual study
 → 540x960 Normal + Appreciation runtime capture
 → technical regression
-→ 30s / 5m Human visual review (current gate)
+→ user-approved C+dog 2.5D route + identity/decor/time integration
+→ Human/mobile comfort review deferred by user
 ```
 
 범위:
 
-- neutral player visual study. 최종 identity canonization 금지.
-- non-species resting companion treatment. 최종 pet species canonization 금지.
-- existing boat material/shape pass.
-- existing dynamic decor rendering pass + small cluster through current decor system.
-- existing sea/sky/light treatment.
-- custom watercolor shader, broad asset replacement, four-state time behavior는 이번 Slice에서 제외.
+- user-approved C knit/long-hair + dog default route preserved.
+- local cosmetic player/pet selection and approved decor surface/postcard integration complete.
+- existing boat/sea pass and controlled four-time atmosphere preserve the same place/composition.
+- broad texture-sheet, icon-pack, and postcard-variant production remain deferred without a consumer.
 
 현재 실제 Godot 제품 구현의 **첫 진입점**:
 
@@ -286,7 +285,7 @@ Social Fake 계약이 future current main에 안전하게 정합된 뒤 실제 b
 - delivery evidence
 - backend 장애 시 local rest/voyage/decor 정상 유지
 
-## 14단계: Production Resting Assets — First Production Visual Slice 증거 뒤 재계산
+## 14단계: Production Resting Assets — core runtime visual assets complete / subjective QA deferred
 
 ### Audio
 
@@ -297,10 +296,10 @@ Social Fake 계약이 future current main에 안전하게 정합된 뒤 실제 b
 
 ### Visual
 
-- First Production Visual Slice 결과를 기준으로 final asset pipeline 결정
-- four-state `새벽 / 밝음 / 해질녘 / 밤` atmosphere layer는 별도 bounded Slice로 구현. 같은 보트/바다/수평선의 출항 전 선택형 톤이며, 자동 day cycle·새 맵·이미지 variant·보상 변화는 없음. 자동 계약과 540×960 Normal/Appreciation capture는 PASS, real-device/Human comfort QA는 DEFERRED/NOT_RUN.
-- 승인된 player identity / pet species의 로컬 선택·보존은 구현됨. 임의 편집·unlock·progression은 보류.
-- representative final decor / boat / sea assets는 runtime proof 뒤 제작
+- approved final C+dog boat/sea route, player/pet selection cards, cushion surfaces, and Bright Boat postcard are integrated and runtime-verified.
+- four-state `새벽 / 밝음 / 해질녘 / 밤` atmosphere is implemented as a pre-voyage tone choice. It adds no day cycle, map, image variant system, or reward change; automated contracts and 540×960 Normal/Appreciation captures pass.
+- approved player identity / pet species remain local cosmetic selection only. Arbitrary editing, unlocks, and progression remain deferred.
+- Human/mobile comfort, touch, and audio listening remain deferred or `NOT_RUN`; they are evidence gaps, not authorization for speculative asset production.
 
 이미지 제작은 concrete runtime consumer가 있을 때만 진행하며, 사용자가 위임한 범위에서는 Codex가 검수·로컬 저장·Notion 정본 등록을 자동으로 수행합니다.
 

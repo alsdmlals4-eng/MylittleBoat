@@ -7,7 +7,7 @@
 ```yaml
 project: MY_LITTLE_BOAT
 mode: CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF
-status: CODEX_IMAGE_INTEGRATION_COMPLETE_MERGED_MAIN
+status: CURRENT_MAIN_RECONCILED_VISUAL_RUNTIME_COMPLETE
 current_work_router: docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md
 image_goal_source: docs/visual/2026-08-26-remaining-image-goals.md
 codex_image_goal_source: docs/handoffs/2026-08-26-image-codex-integration-goals.md
@@ -40,9 +40,9 @@ The user has authorized automatic image creation and final registration for asse
 
 ## Completed image integration goals
 
-### CODEX-IMG-01 — Pet Cushion Runtime Surface Integration
+### CODEX-IMG-01 — Pet Cushion Runtime Surface Integration · Complete
 
-Waits for exactly:
+Integrated exact paths:
 
 ```text
 res://assets/images/decor/pet_cushion/cushion_stripe.png
@@ -52,9 +52,9 @@ res://assets/images/decor/pet_cushion/cushion_floral.png
 
 Three cosmetic visual variants of the existing `pet_cushion` meaning. No stat/rarity/cost/gacha/care/progression semantics.
 
-### CODEX-IMG-02 — Default Postcard Memory Face Integration
+### CODEX-IMG-02 — Default Postcard Memory Face Integration · Complete
 
-Waits for exactly:
+Integrated exact path:
 
 ```text
 res://assets/images/decor/postcard/postcard_boat_bright.png
@@ -98,7 +98,7 @@ Do not invent consumers to absorb extra art:
 - UI icons are deferred until a binding consumer/readability need exists.
 - app icon/store/marketing is P3 after release targets/branding lock.
 
-## Codex unpause gate
+## Completed integration receipt
 
 ```text
 IMG_01_3_FILES = IMPLEMENTATION_READY
@@ -111,7 +111,7 @@ CODEX_INTEGRATION_GOALS = CURRENT
 PR_19 = READ_ONLY_NO_ABSORPTION
 ```
 
-At Codex start, fresh-read current completed main, Project Notion, actual Godot files/tests, open PRs and toolchain. Use semantic TDD and runtime proof. GPT Work must stop before making Scene/Resource/GDScript product changes.
+At Codex start, fresh-read current completed main, Project Notion, actual Godot files/tests, open PRs and toolchain. Use semantic TDD and runtime proof for a newly approved product slice. GPT Work must stop before making Scene/Resource/GDScript product changes.
 
 ## Protected downstream scope
 
@@ -141,7 +141,7 @@ CODEX_IMG_02 = RUNTIME_VERIFIED_USER_APPROVED_MERGED_MAIN
 CODEX_LOCAL_WIRING_ASSETS = 4
 IMPLEMENTED_IMAGE_ASSETS = 4_MERGED_MAIN
 RUNTIME_VERIFIED_IMAGE_ASSETS = 4
-CI = GODOT_4_7_VALIDATION_PASS_RUN_155
+CI = GITHUB_GODOT_VALIDATION_PASS_PR_48_AND_PR_49
 FIRST_PRODUCTION_VISUAL_SLICE = CODEX_RUNTIME_CAPTURE_USER_APPROVED_MERGED_MAIN
 HANDPAINTED_3D_RUNTIME_SLICE = USER_APPROVED_MERGED_MAIN
 C_DOG_DEFAULT_RUNTIME_CAPTURE = PASS
@@ -168,8 +168,8 @@ FINAL_COMPOSITE_DECOR_RUNTIME_CAPTURE = PASS
 - `pet_cushion` keeps its existing base item ID and has only `stripe`, `moon`, and `floral` cosmetic appearances.
 - `postcard` keeps one default Bright Boat front face and no appearance selector or new collection/progression state.
 - `tests/test_runtime_image_asset_contract.gd` proves exact runtime texture paths, material consumers, fallback behavior, and core-state isolation.
-- Headless import, all 12 contracts, and all three scene smokes passed. Live 540×960 captures exist for Stripe, Moon, Floral, and Bright Boat postcard at `docs/evidence/2026-08-26-runtime-image-integration/`; editor diagnostics report 0 errors and the user approved the runtime review. The scoped integration is merged to `main` through PR #34 at merge commit `647e403bba4b9a537052d16963b469be10236be4`; GitHub Actions Godot 4.7 validation run #155 passed.
-- The First Production Visual Slice adds neutral avatar/non-species companion/boat `VisualStudy` layers, matte decor and ocean treatment, and compact Appreciation controls. Reproducible 540×960 Normal and Appreciation captures are at `docs/evidence/2026-08-26-first-production-visual-slice/`; these are runtime evidence only and await the user's 30-second/5-minute visual review.
+- Headless import, all current contract scripts, and all three scene smokes passed. Live 540×960 captures exist for Stripe, Moon, Floral, and Bright Boat postcard at `docs/evidence/2026-08-26-runtime-image-integration/`; editor diagnostics report 0 errors and the user approved the runtime review. The scoped integration is merged to `main` through PR #34 at merge commit `647e403bba4b9a537052d16963b469be10236be4`; later PRs #48 and #49 also passed GitHub Actions Godot 4.7 validation.
+- The First Production Visual Slice provided the bounded visual baseline. The user-approved C+dog final 2.5D route, cosmetic identity selection, four-time atmosphere, and final-composite decor correction now supersede it as the current runtime visual result. Reproducible 540×960 evidence remains technical proof; human/mobile comfort and touch review remain deferred.
 - The approved default direction is C knit/long-hair player + dog. Its bounded 3D proof keeps the current placeholder/care-free semantics and stores 540×960 Normal/Appreciation capture at `docs/evidence/2026-08-26-c-storybook-dog-default/`; the user approved it and it merged to `main` through PR #36 at merge commit `0e5f6c7c47d5b1415a3954b3fd6aee84ec17ff8f`. It remains below final art and real-device touch QA.
 - The final 2.5D storybook runtime set uses `assets/images/runtime/storybook/boat_c_dog_diorama_storybook.png` with `sea_bright_storybook.png`; Normal/Appreciation captures are at `docs/evidence/2026-08-26-final-2p5d-storybook-art/`. User approval, Notion final registration, SHA-256 provenance, and durable Git binary locators passed on 2026-08-26. Notion records: `MLB_FINAL_2P5D_C_DOG_BOAT_RUNTIME_V1` and `MLB_FINAL_2P5D_BRIGHT_SEA_RUNTIME_V1`.
 - `BoatDecorPersistence` stores only cosmetic `boat_decor` and `boat_decor_appearances` in `user://boat_decor_v1.cfg`. The service handles missing or wrong-typed data as an empty boat; no voyage, reward, affection, memory, camera, or social state is persisted. Automated local restore proof passes, while real-device QA remains deferred by user.
