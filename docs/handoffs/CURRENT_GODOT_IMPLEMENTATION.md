@@ -9,6 +9,7 @@ project: MY_LITTLE_BOAT
 mode: CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF
 status: CURRENT_MAIN_RECONCILED_VISUAL_RUNTIME_COMPLETE
 current_work_router: docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md
+screen_surface_coverage_owner: docs/visual/CURRENT_SCREEN_SURFACE_INVENTORY_AND_VISUAL_ASSET_COVERAGE.md
 five_phase_execution_receipt: docs/handoffs/2026-08-27-work-five-phase-current-slice.md
 internal_windows_package_contract: docs/superpowers/specs/2026-08-27-internal-windows-build-artifact-design.md
 image_goal_source: docs/visual/2026-08-26-remaining-image-goals.md
@@ -22,6 +23,15 @@ image_generation_by_codex: ALLOWED_BY_USER_AUTO_ASSET_POLICY_2026_08_26
 image_registration_policy: AUTO_CREATE_REVIEW_NOTION_AND_PROJECT_LOCAL
 visual_reference_lock: HANDPAINTED_STORYBOOK_3D_DIORAMA
 ```
+
+## Current screen-coverage readback
+
+The current runtime-image and diorama integration remains complete. A fresh whole-screen audit now owns the next visual product decision at `docs/visual/CURRENT_SCREEN_SURFACE_INVENTORY_AND_VISUAL_ASSET_COVERAGE.md`.
+
+- `MLB-SCR-001` main entry is a new **P0 Godot UI / existing-approved-assets composition** requirement. It is not an image-generation request and must preserve the current identity, light, and mood route.
+- `MLB-SCR-010` album composition is **P1**. It must use Godot UI/text and future runtime captures, not authored fake album images.
+- No new bitmap asset family is approved or required by this audit.
+- GitHub Issue `#68` owns the screen-coverage correction. PR #19 remains `READ_ONLY_NO_ABSORPTION`.
 
 ## Binding pipeline
 
