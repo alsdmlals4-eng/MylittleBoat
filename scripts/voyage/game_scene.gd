@@ -174,6 +174,7 @@ func apply_boat_decor(slot_id: String, item_id: String, appearance_id: String = 
 		GameState.set_boat_decor_appearance(slot_id, str(slot.call("get_appearance_id")))
 	else:
 		GameState.set_boat_decor_appearance(slot_id, "")
+	_sync_identity_decor_visuals()
 	return true
 
 
@@ -182,6 +183,7 @@ func clear_boat_decor(slot_id: String) -> void:
 	if slot != null and slot.has_method("apply_item"):
 		slot.call("apply_item", "")
 	GameState.set_boat_decor(slot_id, "")
+	_sync_identity_decor_visuals()
 
 
 func _apply_stored_boat_decor() -> void:
@@ -197,6 +199,12 @@ func _get_decor_slot(slot_id: String) -> Node:
 	if not DECOR_SLOT_NODE_NAMES.has(slot_id):
 		return null
 	return get_node_or_null("VoyageWorld/BoatSpace/BoatDecorSlots/%s" % str(DECOR_SLOT_NODE_NAMES[slot_id]))
+
+
+func _sync_identity_decor_visuals() -> void:
+	var identity_visual_router := $VoyageWorld/BoatSpace/IdentityVisualRouter
+	if identity_visual_router != null and identity_visual_router.has_method("sync_decor_from_state"):
+		identity_visual_router.sync_decor_from_state()
 
 
 func _populate_decor_slot_options() -> void:
