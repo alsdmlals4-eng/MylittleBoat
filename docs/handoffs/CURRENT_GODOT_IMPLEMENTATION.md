@@ -1,13 +1,13 @@
 # Current Godot Product Implementation
 
-> **CODEX IMAGE INTEGRATION COMPLETE.** The four approved runtime images are merged into `main`, have passed GitHub Godot validation, and retain user-approved 540×960 runtime proof. Begin a new product slice only after a fresh read of completed `main`, Project Notion, and this router.
+> **CODEX IMAGE INTEGRATION COMPLETE.** The approved runtime images are merged into `main`, have passed GitHub Godot validation, and retain 540×960 runtime proof. The P0 main-entry composition is now the active implementation slice.
 
 ## Current state
 
 ```yaml
 project: MY_LITTLE_BOAT
 mode: CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF
-status: CURRENT_MAIN_RECONCILED_VISUAL_RUNTIME_COMPLETE
+status: P0_MAIN_ENTRY_COMPOSITION_IMPLEMENTED_PENDING_MAIN_MERGE
 current_work_router: docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md
 screen_surface_coverage_owner: docs/visual/CURRENT_SCREEN_SURFACE_INVENTORY_AND_VISUAL_ASSET_COVERAGE.md
 five_phase_execution_receipt: docs/handoffs/2026-08-27-work-five-phase-current-slice.md
@@ -28,10 +28,10 @@ visual_reference_lock: HANDPAINTED_STORYBOOK_3D_DIORAMA
 
 The current runtime-image and diorama integration remains complete. A fresh whole-screen audit now owns the next visual product decision at `docs/visual/CURRENT_SCREEN_SURFACE_INVENTORY_AND_VISUAL_ASSET_COVERAGE.md`.
 
-- `MLB-SCR-001` main entry is a new **P0 Godot UI / approved atmosphere-background + existing boat/identity composition** requirement. The user approved the four exact 1024×1536 opaque background files on 2026-08-28; Godot wiring is still a separate P0 step and must preserve the current identity, light, and mood route.
+- `MLB-SCR-001` main entry is implemented in the active Issue [#71](https://github.com/alsdmlals4-eng/MylittleBoat/issues/71) branch. `AtmosphereBackground` selects the approved 1024×1536 file for each time choice, `DioramaAnchor` presents the approved C+dog boat anchor, and compact Godot UI controls preserve the identity, light, mood, and route semantics. Four 540×960 runtime captures and the focused contract are in the branch before merge.
 - `MLB-SCR-010` album composition is **P1**. It must use Godot UI/text and future runtime captures, not authored fake album images.
 - Main-menu atmosphere backgrounds are the only post-audit bitmap family approved by the user's explicit 2026-08-28 request. No UI icon, portrait-only, UV texture, album filler, or other image family is implied.
-- GitHub Issue `#68` owns the screen-coverage correction. PR #19 remains `READ_ONLY_NO_ABSORPTION`.
+- The screen inventory now uses the required screen × object × state × variation fields and confirms no other current runtime image family is missing. PR #19 remains `READ_ONLY_NO_ABSORPTION`.
 
 ## Binding pipeline
 

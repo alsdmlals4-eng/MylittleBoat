@@ -3,6 +3,12 @@ extends Control
 
 const IDENTITY_CATALOG_SCRIPT = preload("res://scripts/identity/identity_visual_catalog.gd")
 const TIME_OF_DAY_CATALOG_SCRIPT = preload("res://scripts/voyage/time_of_day_catalog.gd")
+const ATMOSPHERE_BACKGROUNDS := {
+	"dawn": preload("res://assets/images/ui/main_menu/main_menu_dawn_storybook_v1.png"),
+	"bright": preload("res://assets/images/ui/main_menu/main_menu_bright_storybook_v1.png"),
+	"sunset": preload("res://assets/images/ui/main_menu/main_menu_sunset_storybook_v1.png"),
+	"night": preload("res://assets/images/ui/main_menu/main_menu_night_storybook_v1.png"),
+}
 
 var _identity_catalog = IDENTITY_CATALOG_SCRIPT.new()
 var _time_of_day_catalog = TIME_OF_DAY_CATALOG_SCRIPT.new()
@@ -21,6 +27,7 @@ func _ready() -> void:
 	_populate_identity_options()
 	_populate_time_of_day_options()
 	_refresh_identity_summary()
+	refresh_atmosphere_background()
 
 
 func _connect_mood_button(button: Button, mood: String) -> void:
@@ -86,6 +93,13 @@ func _on_time_of_day_selected(index: int) -> void:
 		return
 	%TimeOfDayOption.select(index)
 	GameState.select_time_of_day(str(%TimeOfDayOption.get_item_metadata(index)))
+	refresh_atmosphere_background()
+
+
+## Applies the approved sea-and-horizon atmosphere to the current menu choice.
+func refresh_atmosphere_background() -> void:
+	var selected_time_of_day := _time_of_day_catalog.normalize_time_of_day(GameState.get_selected_time_of_day())
+	%AtmosphereBackground.texture = ATMOSPHERE_BACKGROUNDS[selected_time_of_day] as Texture2D
 
 
 func _refresh_identity_summary() -> void:
