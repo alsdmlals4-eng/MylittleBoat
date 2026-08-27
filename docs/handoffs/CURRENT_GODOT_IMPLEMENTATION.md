@@ -28,9 +28,9 @@ visual_reference_lock: HANDPAINTED_STORYBOOK_3D_DIORAMA
 
 The current runtime-image and diorama integration remains complete. A fresh whole-screen audit now owns the next visual product decision at `docs/visual/CURRENT_SCREEN_SURFACE_INVENTORY_AND_VISUAL_ASSET_COVERAGE.md`.
 
-- `MLB-SCR-001` main entry is a new **P0 Godot UI / existing-approved-assets composition** requirement. It is not an image-generation request and must preserve the current identity, light, and mood route.
+- `MLB-SCR-001` main entry is a new **P0 Godot UI / approved atmosphere-background + existing boat/identity composition** requirement. The user approved the four exact 1024×1536 opaque background files on 2026-08-28; Godot wiring is still a separate P0 step and must preserve the current identity, light, and mood route.
 - `MLB-SCR-010` album composition is **P1**. It must use Godot UI/text and future runtime captures, not authored fake album images.
-- No new bitmap asset family is approved or required by this audit.
+- Main-menu atmosphere backgrounds are the only post-audit bitmap family approved by the user's explicit 2026-08-28 request. No UI icon, portrait-only, UV texture, album filler, or other image family is implied.
 - GitHub Issue `#68` owns the screen-coverage correction. PR #19 remains `READ_ONLY_NO_ABSORPTION`.
 
 ## Binding pipeline
