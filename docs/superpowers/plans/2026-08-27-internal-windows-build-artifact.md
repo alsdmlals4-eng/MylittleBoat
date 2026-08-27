@@ -140,11 +140,11 @@ Use a PR body that lists the Windows-only scope, excluded Android/public-release
 
 Require the ordinary validation job and the export/artifact job to pass. Inspect the artifact listing for the executable and PCK before merging.
 
-- [ ] **Step 3: Squash merge and verify main**
+- [x] **Step 3: Squash merge and verify main**
 
 Squash merge only this current task after a clean merge state and no unresolved review items. Fetch `origin/main`, read the merged commit, and confirm the push-to-main run exposes the same artifact.
 
-- [ ] **Step 4: Record the evidence ceiling**
+- [x] **Step 4: Record the evidence ceiling**
 
 Report the artifact URL and its checksum if available. Keep Windows runtime launch and Human/mobile checks explicitly `NOT_RUN` unless fresh evidence exists.
 
