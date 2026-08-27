@@ -30,7 +30,7 @@
 - Consumes: `project.godot` and the existing Godot 4.7 validation workflow.
 - Produces: a `Windows Desktop` preset with `build/my_little_boat.exe` as its defined output and a focused contract test that rejects missing or non-x86_64 configuration.
 
-- [ ] **Step 1: Write the failing export configuration test**
+- [x] **Step 1: Write the failing export configuration test**
 
 ```gdscript
 var preset_text := FileAccess.get_file_as_string("res://export_presets.cfg")
@@ -40,7 +40,7 @@ assert(preset_text.contains('platform="Windows Desktop"'))
 assert(preset_text.contains('binary_format/architecture="x86_64"'))
 ```
 
-- [ ] **Step 2: Run the focused test to confirm failure**
+- [x] **Step 2: Run the focused test to confirm failure**
 
 Run:
 
@@ -50,7 +50,7 @@ Run:
 
 Expected: failure because `export_presets.cfg` does not yet exist.
 
-- [ ] **Step 3: Add the minimal preset and CI inclusion**
+- [x] **Step 3: Add the minimal preset and CI inclusion**
 
 ```ini
 [preset.0]
@@ -64,11 +64,11 @@ binary_format/architecture="x86_64"
 
 Add the focused contract to the existing run list; keep all existing checks unchanged.
 
-- [ ] **Step 4: Run the focused test to confirm pass**
+- [x] **Step 4: Run the focused test to confirm pass**
 
 Run the same command and require exit code 0.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```powershell
 git add export_presets.cfg tests/test_windows_export_contract.gd .github/workflows/godot-validation.yml
@@ -86,7 +86,7 @@ git commit -m "Add Windows export contract"
 - Consumes: the Task 1 preset named `Windows Desktop`.
 - Produces: `my-little-boat-windows-internal.zip` as a GitHub Actions artifact with executable and PCK contents.
 
-- [ ] **Step 1: Add the failing archive-content check**
+- [x] **Step 1: Add the failing archive-content check**
 
 ```bash
 test -f build/my_little_boat.exe
@@ -95,13 +95,13 @@ unzip -l build/my-little-boat-windows-internal.zip | grep -q 'my_little_boat.exe
 unzip -l build/my-little-boat-windows-internal.zip | grep -q 'my_little_boat.pck'
 ```
 
-- [ ] **Step 2: Confirm failure before export exists**
+- [x] **Step 2: Confirm failure before export exists**
 
 Run the commands above from a clean `build/` directory.
 
 Expected: failure because no artifact has been exported.
 
-- [ ] **Step 3: Add template-enabled export and artifact upload**
+- [x] **Step 3: Add template-enabled export and artifact upload**
 
 ```yaml
 with:
@@ -115,11 +115,11 @@ with:
 
 Trigger it for pull requests, pushes to `main`, and manual dispatch. Run it only after the existing contracts and scene smokes.
 
-- [ ] **Step 4: Document the artifact and evidence ceiling**
+- [x] **Step 4: Document the artifact and evidence ceiling**
 
 Add the GitHub Actions download path to `README.md`. Update the current handoff with exact machine-package wording, retaining `Human/mobile = NOT_RUN`.
 
-- [ ] **Step 5: Verify and commit**
+- [x] **Step 5: Verify and commit**
 
 Run the focused export contract, all existing contracts, all three scene smokes, `git diff --check`, and inspect the archive listing. Commit the workflow and documentation only after each command succeeds.
 
@@ -132,11 +132,11 @@ Run the focused export contract, all existing contracts, all three scene smokes,
 - Consumes: the CI artifact from Task 2.
 - Produces: a current-task PR with passing validation and a post-merge `main` workflow artifact link.
 
-- [ ] **Step 1: Create a current-task PR linked to GitHub Issue #58**
+- [x] **Step 1: Create a current-task PR linked to GitHub Issue #58**
 
 Use a PR body that lists the Windows-only scope, excluded Android/public-release work, exact commands run, and `Closes #58`.
 
-- [ ] **Step 2: Inspect CI evidence**
+- [x] **Step 2: Inspect CI evidence**
 
 Require the ordinary validation job and the export/artifact job to pass. Inspect the artifact listing for the executable and PCK before merging.
 

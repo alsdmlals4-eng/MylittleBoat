@@ -6,7 +6,8 @@
 
 ```yaml
 project: MY_LITTLE_BOAT
-current_completed_main: 2df685aa110670979b3a01dc26a6583650210efc
+current_completed_main_before_phase_2: 66a0ce7480fd6f1c070d24eaf282abc80c9b6850
+phase_2_current_task_pr: 59
 product_identity: REST_FIRST_VISUAL_RUNTIME_AUTOMATION_CLOSEOUT
 notion_home: 3c41b237-eb1c-8194-8b8e-d88362cafafa
 current_router: docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md
@@ -27,8 +28,8 @@ player_experience_evidence: NOT_RUN
 | Lens | Current evidence | Execution implication |
 | --- | --- | --- |
 | Strength | approved C+dog visual route, local identity/decor appearance, four-time atmosphere, and runtime image contracts are merged | preserve current visual consumers rather than recreate art |
-| Weakness | no export preset or durable internal user build; Human/mobile/audio quality remains `NOT_RUN` | do not call the slice user-ready until a package path and exact-build smoke exist |
-| Opportunity | existing 540×960 runtime evidence and Godot contract suite support a bounded internal-build closeout | evaluate a low-risk package path before new gameplay or asset scope |
+| Weakness | Human/mobile/audio quality remains `NOT_RUN`; the current Windows package still needs post-merge main readback | do not call the slice Human-ready from package evidence alone |
+| Opportunity | existing 540×960 runtime evidence and Godot contract suite support a bounded internal-build closeout | preserve the Windows-only artifact route rather than add gameplay or asset scope |
 | Threat | stale canon can route work toward already-completed image production; PR #19 is independent | maintain a single current router and keep PR #19 read-only |
 
 ## Five-phase mapping
@@ -36,9 +37,9 @@ player_experience_evidence: NOT_RUN
 | Work phase | Project-native evidence | Status |
 | --- | --- | --- |
 | Phase 1 · Planning co-design | approved rest-first direction, visual language, local-first rules, C+dog default, cosmetic identity, decor and atmosphere decisions | `RECONFIRMED_AFTER_CANON_CORRECTION` |
-| Phase 2 · Preproduction review | no internal user-build target or export/package contract exists yet | `NEXT_REQUIRED_PHASE` |
+| Phase 2 · Preproduction review | Windows x86_64 internal debug preset, CI export, ZIP artifact, and SHA-256 manifest passed in PR #59 | `IMPLEMENTED_CI_ARTIFACT_PASS_PR_59_PENDING_MAIN_READBACK` |
 | Phase 3 · In-game element production | required P1 cushion/postcard and C+dog/runtime visual inputs are already project-local, registered, and consumed | `COMPLETE_FOR_CURRENT_VISUAL_SCOPE` |
-| Phase 4 · Codex implementation and machine closeout | Godot contracts and scene smokes exist; a current exact-build package, clean extract/launch smoke, and user-validation packet do not | `INCOMPLETE_CLOSEOUT` |
+| Phase 4 · Codex implementation and machine closeout | Godot contracts, scene smokes, local export, and PR #59 artifact inspection pass; post-merge main artifact readback remains | `PENDING_POSTMERGE_PACKAGE_READBACK` |
 | Phase 5 · User vertical-slice validation | user has not played an exact packaged build | `NOT_STARTED` |
 
 ## Approved scope for the next review
@@ -58,4 +59,4 @@ PROTECTED
 
 ## Next safe action
 
-Phase 2 will compare internal package routes against the current Windows host, existing Godot 4.7 project settings, mobile-first presentation, and zero-cost constraint. It must select or defer a route before creating export settings or claiming `AUTOMATED_VERTICAL_SLICE_READY`.
+After PR #59 merges, fetch `main`, verify its push workflow artifact and checksum manifest, then complete the machine-closeout packet. Human Windows launch, mobile comfort, audio listening, and Phase 5 user validation remain `NOT_RUN` until separately evidenced.
