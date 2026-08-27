@@ -31,7 +31,7 @@ The current runtime-image and diorama integration remains complete. A fresh whol
 - `MLB-SCR-001` main entry is complete on `main` through [Issue #71](https://github.com/alsdmlals4-eng/MylittleBoat/issues/71) and [PR #72](https://github.com/alsdmlals4-eng/MylittleBoat/pull/72), merge commit `7a107873c49cb289fe9f4bc02bcda1c065f8d6e3`. `AtmosphereBackground` selects the approved 1024×1536 file for each time choice, `DioramaAnchor` presents the approved C+dog boat anchor, and compact Godot UI controls preserve identity, light, mood, and route semantics. Four 540×960 runtime captures, the focused contract, all existing contracts, three scene smokes, and GitHub validation passed.
 - `MLB-SCR-010` album composition is complete on `main` through [Issue #75](https://github.com/alsdmlals4-eng/MylittleBoat/issues/75) and [PR #76](https://github.com/alsdmlals4-eng/MylittleBoat/pull/76), merge commit `69a2a7f2fdbfc251cfb6d4a3f446ab39dd080cbc`. It uses Godot UI/text, the selected approved atmosphere background, and actual record text; it adds no authored fake album images. Empty and populated 540×960 captures, focused contracts, full test suite, three scene smokes, and GitHub validation passed.
 - Main-menu atmosphere backgrounds are the only post-audit bitmap family approved by the user's explicit 2026-08-28 request. No UI icon, portrait-only, UV texture, album filler, or other image family is implied.
-- The screen inventory now uses the required screen × object × state × variation fields and confirms no other current runtime image family is missing. PR #19 remains `READ_ONLY_NO_ABSORPTION`.
+- The screen inventory now uses the required screen × object × state × variation fields and confirms no other current runtime image family is missing. [PR #80](https://github.com/alsdmlals4-eng/MylittleBoat/pull/80) adds the main-menu atmosphere and album-composition contracts to the current CI suite; its exact head passed GitHub Godot validation. PR #19 remains `READ_ONLY_NO_ABSORPTION`.
 
 ## Binding pipeline
 
@@ -103,7 +103,7 @@ Exact Godot implementation details remain Codex choices after fresh-read. Preser
 
 Do not invent consumers to absorb extra art:
 
-- Main Menu/Album authored backgrounds are not required now.
+- No additional Main Menu/Album authored bitmap family is required now. The approved main-menu atmosphere backgrounds are already integrated, and Album reuses the selected approved background with actual records; fake album filler remains prohibited.
 - character/pet selection thumbnails derive from actual 3D previews.
 - exact UV-specific character/pet/boat texture sheets are blocked by production geometry.
 - sky/sea bitmap assets are conditional; prefer simple color/light/procedural route.
