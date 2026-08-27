@@ -28,7 +28,7 @@ player_experience_evidence: NOT_RUN
 | Lens | Current evidence | Execution implication |
 | --- | --- | --- |
 | Strength | approved C+dog visual route, local identity/decor appearance, four-time atmosphere, and runtime image contracts are merged | preserve current visual consumers rather than recreate art |
-| Weakness | Human/mobile/audio quality remains `NOT_RUN`; the current Windows package still needs post-merge main readback | do not call the slice Human-ready from package evidence alone |
+| Weakness | Human Windows launch, mobile comfort/touch, and audio quality remain `NOT_RUN`; the exact current Windows package has only machine headless smoke evidence | do not call the slice Human-ready from package evidence alone |
 | Opportunity | existing 540×960 runtime evidence and Godot contract suite support a bounded internal-build closeout | preserve the Windows-only artifact route rather than add gameplay or asset scope |
 | Threat | stale canon can route work toward already-completed image production; PR #19 is independent | maintain a single current router and keep PR #19 read-only |
 
@@ -39,7 +39,7 @@ player_experience_evidence: NOT_RUN
 | Phase 1 · Planning co-design | approved rest-first direction, visual language, local-first rules, C+dog default, cosmetic identity, decor and atmosphere decisions | `RECONFIRMED_AFTER_CANON_CORRECTION` |
 | Phase 2 · Preproduction review | Windows x86_64 internal debug preset, CI export, ZIP artifact, and SHA-256 manifest passed in PR #59 and its `main` push run | `COMPLETE_WINDOWS_INTERNAL_ROUTE_MAIN_ARTIFACT_PASS` |
 | Phase 3 · In-game element production | required P1 cushion/postcard and C+dog/runtime visual inputs are already project-local, registered, and consumed | `COMPLETE_FOR_CURRENT_VISUAL_SCOPE` |
-| Phase 4 · Codex implementation and machine closeout | Godot contracts, scene smokes, local export, and the `main` package artifact all pass; executable/PCK SHA-256 values match the shipped manifest | `MACHINE_CLOSEOUT_PASS` |
+| Phase 4 · Codex implementation and machine closeout | Godot contracts, scene smokes, local export, and exact-current-`main` package artifact all pass; run `33072278953` / artifact `9646328971` matches executable/PCK SHA-256 values, and the packaged executable headless smoke exits `0` | `MACHINE_CLOSEOUT_PASS_WITH_PACKAGED_HEADLESS_SMOKE` |
 | Phase 5 · User vertical-slice validation | user has not played an exact packaged build | `NOT_STARTED` |
 
 ## Approved scope for the next review
