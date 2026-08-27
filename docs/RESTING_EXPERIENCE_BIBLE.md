@@ -183,9 +183,12 @@
 
 `SOFT_STORYBOOK_3D_DIORAMA`는 상위 Visual 철학으로 유지하고, 실제 제작의 현재 상세 방향은 `HANDPAINTED_STORYBOOK_3D_DIORAMA`를 사용합니다. **3D geometry와 현재 카메라/보트 구조는 유지하되 최종 프레임이 glossy CG보다 움직이는 그림책처럼 읽히는 것**이 목표입니다.
 
+`SOFT_MANGA_CHIBI_CHARACTER_REFINEMENT`은 이 방향 안에서 플레이어와 펫에만 적용하는 현재 승인 세부 기준입니다. 배경의 넓고 손그림 같은 바다·하늘은 유지하되, 캐릭터는 더 둥글고 애니메이션처럼 읽히는 비율·얼굴·머리 덩어리·따뜻한 윤곽선·절제된 셀 명암을 사용합니다. 이는 새 runtime asset이나 캐릭터 나이/시스템 변경 승인이 아닙니다.
+
 #### Character
 
 - 실루엣·자세·큰 옷/머리 덩어리가 얼굴보다 먼저 읽혀야 합니다.
+- 기본 C knit/long-hair 캐릭터는 약 3.25-head의 부드러운 치비 비율, 큰 wavy hair mass, 작은 따뜻한 눈·코·입, 옅은 볼색, cream knit와 muted teal-blue 계열의 간결한 큰 의상 덩어리로 읽혀야 합니다. 큰 유리눈, fashion-glamour, 실제 유아화는 피합니다.
 - 얼굴은 모바일 거리에서 필요한 만큼만 단순하게 표현하고 큰 유리눈·매끈한 beauty skin·과도한 속눈썹/블러시를 피합니다.
 - 머리카락은 수많은 가닥보다 2~4개의 큰 painted mass를 우선합니다.
 - 최종 성별·나이·머리·복장은 비교 시안 B가 결정하지 않습니다.
@@ -193,6 +196,7 @@
 #### Pet
 
 - 펫은 수집 마스코트가 아니라 같이 쉬는 존재입니다.
+- 기본 강아지는 플레이어와 같은 soft-manga chibi 선·명암 언어를 사용하며, 둥근 귀·짧은 주둥이·낮은 긴장도의 표정으로 동반자임을 먼저 읽혀야 합니다.
 - 기본 동반자는 사용자 승인 C knit/long-hair + 강아지 조합이며, 고양이·토끼·수달은 local cosmetic selection으로도 사용할 수 있습니다. 어떤 종도 stats, rarity, care obligation을 갖지 않습니다.
 - 눕기·바다 보기·졸기·기지개 같은 큰 resting pose와 낮은 빈도의 idle을 우선합니다.
 
