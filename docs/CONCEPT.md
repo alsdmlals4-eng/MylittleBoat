@@ -45,11 +45,13 @@ Evidence boundary:
 ```text
 VISUAL_STYLE_DIRECTION = APPROVED
 DETAILED_VISUAL_STYLE_CANON = HANDPAINTED_STORYBOOK_3D_DIORAMA
-APPROVED_REPRESENTATIVE_VISUAL_GDD = NOT_YET_PRODUCED
-FINAL_AVATAR_ART = NOT_INTEGRATED
-FINAL_PET_ART = NOT_INTEGRATED
-FINAL_BOAT/SEA_ART = NOT_INTEGRATED
-HANDPAINTED_3D_RUNTIME_SLICE = NOT_RUN
+APPROVED_REPRESENTATIVE_VISUAL_GDD = CANCELLED_AS_REQUIRED_DELIVERABLE
+FINAL_AVATAR_ART = USER_APPROVED_NOTION_REGISTERED_LOCATOR_PASS
+FINAL_PET_ART = USER_APPROVED_NOTION_REGISTERED_LOCATOR_PASS
+FINAL_BOAT/SEA_ART = USER_APPROVED_NOTION_REGISTERED_LOCATOR_PASS
+HANDPAINTED_3D_RUNTIME_SLICE = USER_APPROVED_MERGED_MAIN
+FINAL_DECOR_ART = APPROVED_CUSHION_POSTCARD_RUNTIME_COMPOSITE_MERGED_MAIN
+APP_RESTART_DECOR_PERSISTENCE = AUTOMATED_LOCAL_RESTORE_PASS
 HUMAN_VISUAL_COMFORT_VALIDATION = NOT_RUN
 ```
 
@@ -75,7 +77,7 @@ HUMAN_VISUAL_COMFORT_VALIDATION = NOT_RUN
 
 ## 플레이어 경험
 
-플레이어는 오늘의 마음을 고르고 작은 보트 디오라마로 들어옵니다. 정상 화면에서는 자신의 기술용 Avatar, 펫, 보트와 바다가 함께 보입니다. 현재 구현 단계에서는 `PlayerAvatarPlaceholder`가 커스터마이즈 슬롯 계약만 제공하며 최종 아트가 아닙니다.
+플레이어는 오늘의 마음을 고르고 작은 보트 디오라마로 들어옵니다. 정상 화면에서는 자신의 Avatar, 펫, 보트와 바다가 함께 보입니다. `PlayerAvatarPlaceholder`는 계속 기술 layout shell을 제공하지만, 승인된 C+강아지 기본 합성과 로컬 외형 선택은 project-owned storybook runtime images를 실제 화면 소비처로 사용합니다. 이 통합은 Human/mobile comfort PASS가 아닙니다.
 
 `Appreciation Mode`를 켜면 기존 sea-focused 카메라가 활성화되고 대부분의 비필수 UI가 숨겨집니다. 이 전환은 항해 시간·보상·사운드스케이프를 바꾸지 않습니다. Appreciation Camera의 마우스/화면 드래그 입력은 해당 카메라가 실제 활성 상태일 때만 동작해 정상 디오라마 터치를 빼앗지 않습니다.
 
@@ -98,9 +100,9 @@ HUMAN_VISUAL_COMFORT_VALIDATION = NOT_RUN
 - `rail_accent`
 - `pet_corner`
 
-현재 starter decor는 `lantern / mug / cushion / plant / postcard / pet_cushion` 6종의 primitive technical placeholder입니다. 슬롯 호환성은 catalog가 소유하고, 유효하지 않은 배치는 저장 상태를 바꾸지 않습니다. 교체·비우기는 비용과 손실이 없습니다.
+현재 starter decor는 `lantern / mug / cushion / plant / postcard / pet_cushion` 6종입니다. base mesh는 기술 placeholder를 유지하지만 `pet_cushion`의 stripe/moon/floral 표면과 `postcard`의 Bright Boat face는 승인된 runtime visual consumer로 통합됐습니다. 슬롯 호환성은 catalog가 소유하고, 유효하지 않은 배치는 저장 상태를 바꾸지 않습니다. 교체·비우기는 비용과 손실이 없습니다.
 
-꾸미기 상태는 `GameState`에 `slot_id -> item_id`로 보관되어 **Scene 전환과 새 항해 동안 유지**되지만, 앱 종료/재실행을 넘는 save-file persistence는 아직 없습니다. 아이템에는 능력치·가격·희귀도 점수·재화·가챠·슬롯 완성 보너스가 없습니다.
+꾸미기 상태는 `GameState`의 `slot_id -> item_id` 의미를 유지하고, `BoatDecorPersistence`가 cosmetic decor와 appearance만 `user://boat_decor_v1.cfg`에 분리 저장해 앱 재시작 뒤에도 복원합니다. 아이템에는 능력치·가격·희귀도 점수·재화·가챠·슬롯 완성 보너스가 없습니다.
 
 ### Low-pressure Interaction
 
@@ -128,8 +130,8 @@ LOW_PRESSURE_INTERACTABLE = PASS
 BOAT_LIFE_TECH_UI = PASS
 DECOR_HUMAN_USABILITY = NOT_RUN
 REAL_MOBILE_DECOR_QA = NOT_RUN
-FINAL_DECOR_ART = NOT_INTEGRATED
-APP_RESTART_DECOR_PERSISTENCE = NOT_IMPLEMENTED
+FINAL_DECOR_ART = APPROVED_CUSHION_POSTCARD_RUNTIME_COMPOSITE_MERGED_MAIN
+APP_RESTART_DECOR_PERSISTENCE = AUTOMATED_LOCAL_RESTORE_PASS
 ```
 
 ## 승인된 다음 확장
