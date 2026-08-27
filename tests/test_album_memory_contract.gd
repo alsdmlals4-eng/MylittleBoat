@@ -34,12 +34,15 @@ func _run() -> void:
 	root.add_child(scene)
 	await process_frame
 	var summary := scene.get_node_or_null("Margin/Panel/VBox/SummaryLabel") as Label
+	var recent_memory := scene.get_node_or_null("Margin/Panel/VBox/RecentMemoryLabel") as Label
 	_expect(summary != null, "Album must expose SummaryLabel")
+	_expect(recent_memory != null, "Album must expose recent voyage memories")
 	if summary != null:
 		_expect("물고기 앨범: 1마리" in summary.text, "Album must show fish memory count")
 		_expect("항해 기록: 1회" in summary.text, "Album must show voyage record count")
-		_expect("최근 물고기: 정어리" in summary.text, "Album must show the most recent fish memory")
-		_expect("최근 항해: 평온의 항해" in summary.text, "Album must show the most recent voyage memory")
+	if recent_memory != null:
+		_expect("최근 물고기: 정어리" in recent_memory.text, "Album must show the most recent fish memory")
+		_expect("최근 항해: 평온의 항해" in recent_memory.text, "Album must show the most recent voyage memory")
 
 	scene.queue_free()
 	await process_frame

@@ -29,7 +29,7 @@ visual_reference_lock: HANDPAINTED_STORYBOOK_3D_DIORAMA
 The current runtime-image and diorama integration remains complete. A fresh whole-screen audit now owns the next visual product decision at `docs/visual/CURRENT_SCREEN_SURFACE_INVENTORY_AND_VISUAL_ASSET_COVERAGE.md`.
 
 - `MLB-SCR-001` main entry is complete on `main` through [Issue #71](https://github.com/alsdmlals4-eng/MylittleBoat/issues/71) and [PR #72](https://github.com/alsdmlals4-eng/MylittleBoat/pull/72), merge commit `7a107873c49cb289fe9f4bc02bcda1c065f8d6e3`. `AtmosphereBackground` selects the approved 1024×1536 file for each time choice, `DioramaAnchor` presents the approved C+dog boat anchor, and compact Godot UI controls preserve identity, light, mood, and route semantics. Four 540×960 runtime captures, the focused contract, all existing contracts, three scene smokes, and GitHub validation passed.
-- `MLB-SCR-010` album composition is **P1**. It must use Godot UI/text and future runtime captures, not authored fake album images.
+- `MLB-SCR-010` album composition is implemented in active Issue [#75](https://github.com/alsdmlals4-eng/MylittleBoat/issues/75). It uses Godot UI/text, the selected approved atmosphere background, and actual record text; it adds no authored fake album images. Empty and populated 540×960 captures plus focused contracts are in the branch before merge.
 - Main-menu atmosphere backgrounds are the only post-audit bitmap family approved by the user's explicit 2026-08-28 request. No UI icon, portrait-only, UV texture, album filler, or other image family is implied.
 - The screen inventory now uses the required screen × object × state × variation fields and confirms no other current runtime image family is missing. PR #19 remains `READ_ONLY_NO_ABSORPTION`.
 
