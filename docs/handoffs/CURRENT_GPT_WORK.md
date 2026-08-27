@@ -1,17 +1,17 @@
-# Current GPT Work Closeout
+# Historical GPT Work Closeout
 
-> The GPT Work image-production phase is closed. This file preserves its result; continue product work from `docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md`.
+> The GPT Work image-production phase is closed and its Codex integration is complete on `main`. This file preserves the pre-integration production receipt; use `docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md` for current product work.
 
 ```yaml
 project: MY_LITTLE_BOAT
 mode: GPT_WORK_IMAGE_PRODUCTION_CLOSEOUT
-status: COMPLETE_READY_FOR_CODEX_IMAGE_INTEGRATION
+status: HISTORICAL_SUPERSEDED_BY_CODEX_IMAGE_INTEGRATION
 current_owner: CODEX_GODOT_PRODUCT_IMPLEMENTATION_OWNER
 handoff_packet: docs/handoffs/2026-08-26-gpt-work-image-production-handoff.md
 image_goal_queue: docs/visual/2026-08-26-remaining-image-goals.md
 consumer_manifest: docs/visual/2026-08-26-game-image-consumer-manifest.md
 codex_integration_goals: docs/handoffs/2026-08-26-image-codex-integration-goals.md
-codex_product_build: IMAGE_INTEGRATION_READY
+codex_product_build: IMAGE_INTEGRATION_COMPLETE_MERGED_MAIN
 concurrent_pr_19: READ_ONLY_NO_ABSORPTION
 ```
 
@@ -68,8 +68,8 @@ IMG_01 = 3 IMPLEMENTATION_READY files + Notion readback PASS
 IMG_02 = 1 IMPLEMENTATION_READY file + Notion readback PASS
 DURABLE_BINARY_LOCATORS = PASS
 DEFERRED_SCOPE = UNCHANGED
-CURRENT_GODOT_IMPLEMENTATION = READY_FOR_CODEX_IMAGE_INTEGRATION
+CURRENT_GODOT_IMPLEMENTATION = CODEX_IMAGE_INTEGRATION_COMPLETE_MERGED_MAIN
 GODOT_PRODUCT_CHANGES_BY_GPT_WORK = 0
 ```
 
-All conditions above are satisfied. `IMPLEMENTED` and `RUNTIME_VERIFIED` remain Codex-owned and are not claimed by this closeout.
+All conditions above are satisfied. This historical closeout does not itself claim Codex implementation; current `IMPLEMENTED` and `RUNTIME_VERIFIED` evidence is owned by `CURRENT_GODOT_IMPLEMENTATION.md`.

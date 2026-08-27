@@ -70,14 +70,14 @@ Human visual comfort와 실제 모바일 터치/구도는 `NOT_RUN`입니다.
 7. `rail_accent`
 8. `pet_corner`
 
-starter technical decor는 `lantern / mug / cushion / plant / postcard / pet_cushion`이다. 모두 Godot primitive mesh 기반 placeholder이며 final art가 아니다.
+starter technical decor는 `lantern / mug / cushion / plant / postcard / pet_cushion`이다. base mesh는 Godot primitive 기반 technical placeholder를 유지하지만, `pet_cushion`의 stripe/moon/floral 표면과 `postcard`의 Bright Boat face는 승인된 runtime visual consumer로 통합됐다.
 
 - 슬롯 호환성은 `BoatDecorCatalog`가 소유한다.
 - invalid placement는 저장 상태를 바꾸지 않는다.
 - replace/clear는 비용·손실이 없다.
 - 가격, 재화, 능력치, rarity score, gacha, fill bonus, daily-shop FOMO가 없다.
-- `GameState.boat_decor`는 `slot_id -> item_id`만 저장한다.
-- Scene 전환과 새 항해에는 유지되지만 앱 재시작 persistence는 아직 없다.
+- `GameState.boat_decor`는 `slot_id -> item_id` 의미를 유지하고, cosmetic decor와 appearance는 `BoatDecorPersistence`가 별도 로컬 config에 저장한다.
+- Scene 전환·새 항해·앱 재시작 뒤에도 자동 로컬 복원으로 유지된다.
 
 ### Low-pressure Interactable
 
@@ -115,14 +115,14 @@ BOAT_LIFE_TECH_UI = PASS
 ```text
 DECOR_HUMAN_USABILITY = NOT_RUN
 REAL_MOBILE_DECOR_QA = NOT_RUN
-FINAL_DECOR_ART = NOT_INTEGRATED
-APP_RESTART_DECOR_PERSISTENCE = NOT_IMPLEMENTED
+FINAL_DECOR_ART = APPROVED_CUSHION_POSTCARD_RUNTIME_COMPOSITE_MERGED_MAIN
+APP_RESTART_DECOR_PERSISTENCE = AUTOMATED_LOCAL_RESTORE_PASS
 ```
 
 ## Resting Core Technical Prototype
 
 - persistent `RestingSoundscape` AutoLoad
-- generated 4초 `AudioStreamWAV` OceanBed / `-16 dB` / loop
+- generated 16초 stereo `AudioStreamWAV` OceanBed / `-18 dB` / loop
 - `RestingPetPlaceholder` 12~24초 저밀도 idle / care obligation 없음
 - soft ocean/light/mood-sky 기술 ceiling
 
@@ -165,7 +165,7 @@ APP_RESTART_DECOR_PERSISTENCE = NOT_IMPLEMENTED
 - 안정적인 수평선과 낮은 시각 자극
 - Avatar/Pet/Decor가 한 화면에 있지만 바다를 가리지 않는 구도
 
-현재 Avatar/Pet/Decor/Sea는 technical placeholder이며 최종 Visual PASS가 아니다.
+승인된 C+강아지 보트/바다 route, 로컬 플레이어·펫 외형 카드, 펫 방석 3종, Bright Boat 엽서 face는 runtime에 통합됐다. base 3D shell과 일부 starter mesh는 technical placeholder를 유지하며, Human/mobile Visual PASS는 아직 아니다.
 
 ## 우선 플랫폼
 
@@ -176,9 +176,9 @@ APP_RESTART_DECOR_PERSISTENCE = NOT_IMPLEMENTED
 
 ## 현재 의도적으로 미포함
 
-- 앱 재실행을 넘는 save-file persistence
+- 앱 재실행 persistence의 실제 모바일 Human QA
 - 자유배치 3D decor editor / 직접 3D drag placement
-- 제작 아바타/펫/보트/장식/바다 최종 아트
+- 승인된 runtime art를 넘어서는 새 avatar/pet/boat/decor/sea asset 제작
 - production 자연 오디오
 - FriendBottle / DriftBottle runtime
 - Supabase Auth / DB / RLS / Edge Functions

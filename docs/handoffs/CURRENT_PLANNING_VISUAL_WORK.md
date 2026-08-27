@@ -1,6 +1,6 @@
-# Current Planning & Visual Work
+# Historical Planning & Visual Work Closeout
 
-> The approved noncoding image-production phase is complete. Continue with Codex image integration through `docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md`.
+> The approved noncoding image-production phase and its Codex integration are complete on `main`. This file preserves the pre-integration planning receipt; continue current product work through `docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md`.
 
 ## Current state
 
@@ -9,11 +9,11 @@ project: MY_LITTLE_BOAT
 mode: GPT_WORK_IMAGE_PRODUCTION_CLOSEOUT
 current_owner: CODEX_GODOT_PRODUCT_IMPLEMENTATION_OWNER
 policy: CONSUMER_FIRST_ASSET
-status: COMPLETE_READY_FOR_CODEX_IMAGE_INTEGRATION
+status: HISTORICAL_SUPERSEDED_BY_CODEX_IMAGE_INTEGRATION
 current_work_router: docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md
 handoff_packet: docs/handoffs/2026-08-26-gpt-work-image-production-handoff.md
 concurrent_pr_19: READ_ONLY_NO_ABSORPTION
-codex_product_build: IMAGE_INTEGRATION_READY
+codex_product_build: IMAGE_INTEGRATION_COMPLETE_MERGED_MAIN
 ```
 
 The four required runtime files have user approval, Asset Library readback, and durable binary locator PASS. GPT Work made no Godot Scene, Resource, or GDScript product change.
@@ -59,13 +59,13 @@ IMG_01_NOTION_READBACK = PASS
 IMG_02 = 1 IMPLEMENTATION_READY file
 IMG_02_NOTION_READBACK = PASS
 DURABLE_BINARY_LOCATORS = PASS
-CODEX_ROUTER = READY_FOR_CODEX_IMAGE_INTEGRATION
+CODEX_ROUTER = CODEX_IMAGE_INTEGRATION_COMPLETE_MERGED_MAIN
 GODOT_PRODUCT_CHANGES_BY_GPT_WORK = 0
 ```
 
 The gate is satisfied. Codex must still perform import, wiring, and runtime proof; GPT Work must not do those tasks.
 
-Until Codex has performed that downstream work, GPT Work must:
+Historical pre-integration boundary retained for provenance:
 
 - not start Godot product implementation;
 - not claim runtime verification;
@@ -78,9 +78,9 @@ Until Codex has performed that downstream work, GPT Work must:
 GOAL_QUEUE = USER_APPROVED
 ACTIVE_P1_REQUIRED_FILES = 4
 IMPLEMENTATION_READY_IMAGE_ASSETS = 4
-IMPLEMENTED_IMAGE_ASSETS = 0
-RUNTIME_VERIFIED_IMAGE_ASSETS = 0
+IMPLEMENTED_IMAGE_ASSETS = HISTORICAL_PRE_INTEGRATION_VALUE_0
+RUNTIME_VERIFIED_IMAGE_ASSETS = HISTORICAL_PRE_INTEGRATION_VALUE_0
 GPT_WORK_IMAGE_PRODUCTION = COMPLETE
-CODEX_IMAGE_INTEGRATION = READY_TO_START
-GODOT_RUNTIME = NOT_RUN
+CODEX_IMAGE_INTEGRATION = HISTORICAL_READY_TO_START
+GODOT_RUNTIME = HISTORICAL_NOT_RUN
 ```
