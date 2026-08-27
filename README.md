@@ -221,13 +221,13 @@ headless project import
 
 ## 다음 구현 순서
 
-현재 completed `main`의 다음 mainline은 승인된 그림체를 실제 게임 화면으로 옮기는 **First Production Visual Slice**입니다.
+현재 completed `main`은 승인된 그림체를 C+강아지 최종 2.5D 화면, 로컬 외형 선택, 방석·엽서 표면, 네 시간대 분위기로 이미 통합했습니다. 새 mainline은 이 결과를 다시 만드는 일이 아니라 별도 승인된 다음 Product Slice입니다.
 
-1. **Local cosmetic identity selection** — 승인된 A/B/C 플레이어 외형과 고양이/토끼/수달/강아지 동반자를 `내 모습과 동반자`에서 로컬 선택할 수 있습니다. C+강아지는 기존 최종 합성을 보존하고, 다른 조합은 공용 보트·바다 위에 선택 카드 한 쌍을 표시합니다. 540×960 Normal/Appreciation runtime capture와 자동 계약 증거가 있습니다. 실제 기기 터치 검증은 보류입니다.
-2. **Human visual validation** — 현재 사용자 결정 게이트. 540×960에서 30초/5분, Normal/Appreciation, bob/idle motion을 보고 `CALM / EMPTY / NOISY`, sea-first hierarchy, visual fatigue를 판단합니다. 실제 기기 터치 검증은 사용자의 요청에 따라 뒤로 미룹니다.
+1. **현재 런타임 결과 유지** — C+강아지 기본 합성, A/B/C 플레이어·4종 펫의 로컬 외형 선택, 방석 3종, Bright Boat 엽서, 네 시간대 분위기는 자동 계약·540×960 런타임 증거와 함께 `main`에 있습니다. 실제 기기 터치 검증은 보류입니다.
+2. **Human visual validation** — 30초/5분의 실제 편안함, `CALM / EMPTY / NOISY`, sea-first hierarchy, visual fatigue는 아직 사람 검증이 필요하지만 사용자의 지시에 따라 보류합니다.
 3. **PR #19 Social Fake Backend** — 별도 독립 workstream으로 OPEN / READ_ONLY / NO ABSORPTION입니다. 현재 visual workstream에서 rebase·merge·수정하지 않으며, social 작업을 명시적으로 재개할 때 latest `main`과 다시 reconcile합니다.
 4. **Supabase/Auth/RLS/Moderation/Real Delayed Bottle** — Social Fake 계약이 current main에 안전하게 정합된 뒤 별도 보안·계정·release gate로 진행합니다.
-5. **Production audio / final avatar·pet·boat·decor assets** — First Production Visual Slice와 four-time atmosphere의 runtime evidence를 보고 제작 순서를 다시 계산합니다.
+5. **새 Product Slice** — 기능·asset·backend 추가는 concrete consumer와 별도 승인된 범위가 생긴 뒤 시작합니다. 이미 완료된 시각 통합을 이유 없이 다시 만들지 않습니다.
 
 현재 Godot 제품 구현의 **첫 진입점**:
 
