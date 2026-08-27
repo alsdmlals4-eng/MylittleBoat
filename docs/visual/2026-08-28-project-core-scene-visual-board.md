@@ -8,9 +8,12 @@ PURPOSE = AI_UNDERSTANDING_VALIDATION + PLANNING_REVIEW + VISUAL_DIRECTION_CONFI
 NOT_RUNTIME_ASSET = TRUE
 NOT_GODOT_UI_IMPLEMENTATION = TRUE
 NOT_HUMAN_USABILITY_OR_PLAYER_EXPERIENCE_PASS = TRUE
+CHARACTER_STYLE_STATUS = SUPERSEDED_BY_SOFT_MANGA_CHIBI_CHARACTER_REFINEMENT
 ```
 
 This board records the approved free-rest voyage role. It does not create a new image family, change a runtime consumer, or authorize a production-asset batch.
+
+Its large normal-drifting composition and optional-activity hierarchy remain valid. Its player/pet rendering predates the approved soft-manga chibi refinement, so it must not be used as the character-style reference for future visual work.
 
 ## Provenance
 

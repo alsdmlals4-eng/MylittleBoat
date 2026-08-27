@@ -21,7 +21,7 @@ final_review_owner: GPT_FINAL_IMPLEMENTATION_REVIEW
 concurrent_pr_19: READ_ONLY_NO_ABSORPTION
 image_generation_by_codex: ALLOWED_BY_USER_AUTO_ASSET_POLICY_2026_08_26
 image_registration_policy: AUTO_CREATE_REVIEW_NOTION_AND_PROJECT_LOCAL
-visual_reference_lock: HANDPAINTED_STORYBOOK_3D_DIORAMA
+visual_reference_lock: HANDPAINTED_STORYBOOK_3D_DIORAMA + SOFT_MANGA_CHIBI_CHARACTER_REFINEMENT
 ```
 
 ## Current screen-coverage readback
@@ -48,7 +48,7 @@ RUNTIME_CONSUMER_OR_CLEAR_VISUAL_NEED
 → GPT final implementation review
 ```
 
-The user has authorized automatic image creation and final registration for assets Codex judges necessary. Each generated result must still be runtime-reviewed, stored both project-locally and in Notion Asset Library, and preserve the approved `HANDPAINTED_STORYBOOK_3D_DIORAMA` visual language. Use warm dark wood, rounded restrained silhouettes, matte hand-painted surfaces, small-life props, and a calm expansive horizon; do not drift into generic glossy CG or copy a reference board.
+The user has authorized automatic image creation and final registration for assets Codex judges necessary. Each generated result must still be runtime-reviewed, stored both project-locally and in Notion Asset Library, and preserve the approved `HANDPAINTED_STORYBOOK_3D_DIORAMA` visual language plus its `SOFT_MANGA_CHIBI_CHARACTER_REFINEMENT`. Use warm dark wood, rounded restrained silhouettes, matte hand-painted surfaces, a calm expansive horizon, and soft-manga chibi player/pet readability; do not drift into generic glossy CG or copy a reference board.
 
 ## Completed image integration goals
 

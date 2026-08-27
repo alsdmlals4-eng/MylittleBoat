@@ -18,6 +18,9 @@ SOFT_STORYBOOK_3D_DIORAMA
 
 HANDPAINTED_STORYBOOK_3D_DIORAMA
 = current detailed visual-style canon
+
+SOFT_MANGA_CHIBI_CHARACTER_REFINEMENT
+= current approved character/pet refinement inside the detailed canon
 ```
 
 The refinement preserves the existing 3D boat/camera/decor/interaction structure. It does **not** convert the project into a full 2D game.
@@ -27,6 +30,7 @@ Implementation-facing summary:
 - silhouette before face: player recognition comes from posture, large authored hair/clothing masses, and a small number of deliberate shape anchors;
 - minimal face detail at gameplay distance; avoid large glassy eyes, smooth beauty-render skin, and generic AI illustration face templates;
 - hair reads as 2–4 large painted masses rather than many glossy strands;
+- character and pet use the approved `SOFT_MANGA_CHIBI_CHARACTER_REFINEMENT`: rounded but not toddler proportions, a large readable hair mass, gentle warm eyes without glassy highlights, delicate warm contour accents, and restrained two-tone cel shading;
 - 3D geometry remains the foundation while painted albedo, broad value grouping, and controlled surface irregularity carry the style identity;
 - matte-biased materials and reduced specular response take priority over photoreal PBR micro-detail;
 - stable horizon and low-to-medium environmental contrast remain protected;
@@ -39,12 +43,14 @@ Implementation-facing summary:
 - comparison B is a `USER_PREFERRED_REFERENCE`, not final player identity, pet species, UI, boat, palette, or approved project asset;
 - `DIORAMA_PIXEL` and `HD2D_COZY_PIXEL` remain alternatives, not the selected current canon;
 - do not reproduce identifiable Bondee / Animal Crossing / Spirit City / Garden Galaxy proportions, UI, branding, or trade dress.
+- every future visual approval presents at least three materially different candidates under the same consumer, camera, composition, information density, and known constraints, and states a GPT recommendation with player value, cost, risk, reversibility, and evidence status.
 
 Evidence boundary:
 
 ```text
 VISUAL_STYLE_DIRECTION = APPROVED
 DETAILED_VISUAL_STYLE_CANON = HANDPAINTED_STORYBOOK_3D_DIORAMA
+CHARACTER_STYLE_REFINEMENT = SOFT_MANGA_CHIBI_CHARACTER_REFINEMENT / USER_APPROVED_COMPARISON_C_LOWER_LEFT
 APPROVED_REPRESENTATIVE_VISUAL_GDD = CANCELLED_AS_REQUIRED_DELIVERABLE
 FINAL_AVATAR_ART = USER_APPROVED_NOTION_REGISTERED_LOCATOR_PASS
 FINAL_PET_ART = USER_APPROVED_NOTION_REGISTERED_LOCATOR_PASS
