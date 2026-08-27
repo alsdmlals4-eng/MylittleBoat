@@ -10,6 +10,7 @@ mode: CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF
 status: CURRENT_MAIN_RECONCILED_VISUAL_RUNTIME_COMPLETE
 current_work_router: docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md
 five_phase_execution_receipt: docs/handoffs/2026-08-27-work-five-phase-current-slice.md
+internal_windows_package_contract: docs/superpowers/specs/2026-08-27-internal-windows-build-artifact-design.md
 image_goal_source: docs/visual/2026-08-26-remaining-image-goals.md
 codex_image_goal_source: docs/handoffs/2026-08-26-image-codex-integration-goals.md
 image_asset_policy: CONSUMER_FIRST_ASSET
@@ -161,6 +162,8 @@ FOUR_TIME_REAL_DEVICE_MOBILE_QA = DEFERRED
 FOUR_TIME_HUMAN_COMFORT_REVIEW = NOT_RUN
 FINAL_COMPOSITE_DECOR = MERGED_MAIN
 FINAL_COMPOSITE_DECOR_RUNTIME_CAPTURE = PASS
+INTERNAL_WINDOWS_PACKAGE = GITHUB_ACTIONS_ARTIFACT_REQUIRED
+INTERNAL_WINDOWS_PACKAGE_HUMAN_LAUNCH = NOT_RUN
 ```
 
 ## Current implementation packet
@@ -173,6 +176,7 @@ FINAL_COMPOSITE_DECOR_RUNTIME_CAPTURE = PASS
 - The First Production Visual Slice provided the bounded visual baseline. The user-approved C+dog final 2.5D route, cosmetic identity selection, four-time atmosphere, and final-composite decor correction now supersede it as the current runtime visual result. Reproducible 540×960 evidence remains technical proof; human/mobile comfort and touch review remain deferred.
 - The approved default direction is C knit/long-hair player + dog. Its bounded 3D proof keeps the current placeholder/care-free semantics and stores 540×960 Normal/Appreciation capture at `docs/evidence/2026-08-26-c-storybook-dog-default/`; the user approved it and it merged to `main` through PR #36 at merge commit `0e5f6c7c47d5b1415a3954b3fd6aee84ec17ff8f`. It remains below final art and real-device touch QA.
 - The final 2.5D storybook runtime set uses `assets/images/runtime/storybook/boat_c_dog_diorama_storybook.png` with `sea_bright_storybook.png`; Normal/Appreciation captures are at `docs/evidence/2026-08-26-final-2p5d-storybook-art/`. User approval, Notion final registration, SHA-256 provenance, and durable Git binary locators passed on 2026-08-26. Notion records: `MLB_FINAL_2P5D_C_DOG_BOAT_RUNTIME_V1` and `MLB_FINAL_2P5D_BRIGHT_SEA_RUNTIME_V1`.
+- The internal Windows package route is limited to one x86_64 debug export preset and a GitHub Actions ZIP artifact containing the executable, PCK, and SHA-256 manifest. It is machine package evidence only; no Android/public-store/signing work and no Human Windows launch or mobile comfort claim are included.
 - `BoatDecorPersistence` stores only cosmetic `boat_decor` and `boat_decor_appearances` in `user://boat_decor_v1.cfg`. The service handles missing or wrong-typed data as an empty boat; no voyage, reward, affection, memory, camera, or social state is persisted. Automated local restore proof passes, while real-device QA remains deferred by user.
 - `RestingSoundscape` now owns a 16-second stereo authored `OceanBed` runtime candidate at a conservative -18 dB. It preserves the wave-first layer priority and does not alter voyage, reward, camera, or social state. Automated loop wiring passes; human headset/speaker/mobile listening remains `NOT_RUN`.
 - Runtime identity selection is local-first: the main-menu `내 모습과 동반자` panel stores one approved player ID and one pet ID only in `user://identity_profile_v1.cfg`. C knit + dog preserves `FinalDioramaCard` unchanged; all other pairs use the shared boat/sea pass plus exactly one selected player card and one selected pet card. Five new 1024×1024 transparent runtime cards are individually registered in Notion Asset Library with SHA-256/provenance/durable repo locators. Normal and Appreciation GPU runtime captures for C+dog and B+otter are stored at `docs/evidence/2026-08-27-runtime-identity-selection/`. User mobile touch QA remains deferred.
