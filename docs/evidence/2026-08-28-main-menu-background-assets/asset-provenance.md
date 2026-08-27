@@ -19,4 +19,11 @@ The user explicitly authorized production of the concrete P0 `MLB-SCR-001` main-
 
 ## Registration and durable locator
 
-Each file is `USER_APPROVED / IMPLEMENTATION_READY_ASSET` on creation. Individual Notion Asset Library records, Notion-native file attachments, and immutable Git commit/blob locators are appended after the binary-only delivery commit is pushed.
+Each file is `USER_APPROVED / IMPLEMENTATION_READY_ASSET`. Each Notion record contains its native PNG attachment, source/rights, SHA-256, exact runtime path, and the immutable Git locator below.
+
+| Asset ID | Notion Asset Library record | Durable Git locator |
+| --- | --- | --- |
+| `MLB_MAIN_MENU_DAWN_BACKGROUND_V1` | [Dawn](https://app.notion.com/p/3c91b237eb1c81499ffafe1b03c534d9?pvs=204) | commit `e60d93f1337d1026820f7608dc35709dd873c36f`, blob `14342d8646f8534ec8b932ec298fd7b52afdafdd` |
+| `MLB_MAIN_MENU_BRIGHT_BACKGROUND_V1` | [Bright](https://app.notion.com/p/3c91b237eb1c81b7b205c91781db9a73?pvs=204) | commit `e60d93f1337d1026820f7608dc35709dd873c36f`, blob `56d567abe54d80b3a106030cb46b9f12b4b3bdfe` |
+| `MLB_MAIN_MENU_SUNSET_BACKGROUND_V1` | [Sunset](https://app.notion.com/p/3c91b237eb1c813bace7e6c6561b2378?pvs=204) | commit `e60d93f1337d1026820f7608dc35709dd873c36f`, blob `c165921669df2f2ec9a183427d383f1770f0c818` |
+| `MLB_MAIN_MENU_NIGHT_BACKGROUND_V1` | [Night](https://app.notion.com/p/3c91b237eb1c81df8688f0e3854f1378?pvs=204) | commit `e60d93f1337d1026820f7608dc35709dd873c36f`, blob `10fd53fddc54ab879633b7b182de9640d49c3300` |
