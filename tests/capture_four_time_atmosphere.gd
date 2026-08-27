@@ -3,7 +3,9 @@ extends SceneTree
 
 const EVIDENCE_DIRECTORY := "res://docs/evidence/2026-08-27-four-time-atmosphere"
 const IDENTITY_TEST_SAVE_PATH := "user://capture_four_time_identity.cfg"
+const DECOR_TEST_SAVE_PATH := "user://capture_four_time_decor.cfg"
 const TIME_OF_DAY_CATALOG_SCRIPT = preload("res://scripts/voyage/time_of_day_catalog.gd")
+const RUNTIME_CAPTURE_GUARD_SCRIPT = preload("res://scripts/visual/runtime_capture_guard.gd")
 
 
 func _init() -> void:
@@ -19,16 +21,25 @@ func _capture() -> void:
 	if game_state == null:
 		_fail("GameState autoload must exist")
 		return
+	var runtime_capture_guard = RUNTIME_CAPTURE_GUARD_SCRIPT.new()
+	var unavailable_texture_paths := runtime_capture_guard.get_unavailable_texture_paths(runtime_capture_guard.REQUIRED_TEXTURE_PATHS)
+	if not unavailable_texture_paths.is_empty():
+		_fail("required imported runtime textures unavailable: %s" % ", ".join(unavailable_texture_paths))
+		return
 	_remove_identity_test_save()
+	_remove_decor_test_save()
 	game_state.set_identity_storage_path(IDENTITY_TEST_SAVE_PATH)
+	game_state.set_boat_decor_storage_path(DECOR_TEST_SAVE_PATH)
+	game_state.boat_decor.clear()
+	game_state.boat_decor_appearances.clear()
 	game_state.set_selected_player_style("c_loose_knit")
 	game_state.set_selected_pet_type("dog")
 	var time_of_day_catalog = TIME_OF_DAY_CATALOG_SCRIPT.new()
 	for time_of_day_id in time_of_day_catalog.get_time_of_day_ids():
 		if not await _capture_pair(game_state, time_of_day_id):
-			_restore_identity_storage(game_state)
+			_restore_test_state(game_state)
 			return
-	_restore_identity_storage(game_state)
+	_restore_test_state(game_state)
 	print("PASS: four-time atmosphere runtime captures")
 	quit(0)
 
@@ -88,11 +99,21 @@ func _remove_identity_test_save() -> void:
 		DirAccess.remove_absolute(ProjectSettings.globalize_path(IDENTITY_TEST_SAVE_PATH))
 
 
-func _restore_identity_storage(game_state: Node) -> void:
+func _restore_test_state(game_state: Node) -> void:
 	game_state.reset_session()
 	game_state.select_time_of_day("bright")
 	game_state.set_identity_storage_path("user://identity_profile_v1.cfg")
 	_remove_identity_test_save()
+	game_state.boat_decor.clear()
+	game_state.boat_decor_appearances.clear()
+	game_state.set_boat_decor_storage_path("user://boat_decor_v1.cfg")
+	game_state.load_boat_decor()
+	_remove_decor_test_save()
+
+
+func _remove_decor_test_save() -> void:
+	if FileAccess.file_exists(DECOR_TEST_SAVE_PATH):
+		DirAccess.remove_absolute(ProjectSettings.globalize_path(DECOR_TEST_SAVE_PATH))
 
 
 func _fail(message: String) -> void:

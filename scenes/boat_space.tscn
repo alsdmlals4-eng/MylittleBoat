@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3]
+[gd_scene load_steps=23 format=3]
 
 [ext_resource type="Script" path="res://scripts/voyage/resting_pet_placeholder.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/avatar/player_avatar_placeholder.gd" id="2"]
@@ -15,6 +15,7 @@
 [ext_resource type="Texture2D" path="res://assets/images/runtime/storybook/pet_cat_storybook.png" id="13"]
 [ext_resource type="Texture2D" path="res://assets/images/runtime/storybook/pet_rabbit_storybook.png" id="14"]
 [ext_resource type="Texture2D" path="res://assets/images/runtime/storybook/pet_otter_storybook.png" id="15"]
+[ext_resource type="Shader" path="res://shaders/storybook_cushion_surface.gdshader" id="16"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_boat"]
 size = Vector3(2.8, 0.22, 2.4)
@@ -106,6 +107,9 @@ roughness = 0.94
 albedo_color = Color(0.34, 0.22, 0.13, 1)
 metallic = 0.0
 roughness = 0.92
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cushion_surface"]
+shader = ExtResource("16")
 
 [node name="BoatSpace" type="Node3D"]
 
@@ -471,6 +475,21 @@ pixel_size = 0.0017
 billboard = 1
 no_depth_test = false
 texture = ExtResource("9")
+
+[node name="StorybookPetCushionSurface" type="Sprite3D" parent="."]
+visible = false
+position = Vector3(0.55, 0.77, 0.43)
+pixel_size = 0.00032
+billboard = 1
+no_depth_test = false
+material_override = SubResource("ShaderMaterial_cushion_surface")
+
+[node name="StorybookPostcardSurface" type="Sprite3D" parent="."]
+visible = false
+position = Vector3(-0.05, 0.9, 0.43)
+pixel_size = 0.00027
+billboard = 1
+no_depth_test = false
 
 [node name="IdentityVisualRouter" type="Node" parent="."]
 script = ExtResource("10")

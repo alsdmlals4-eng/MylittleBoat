@@ -38,6 +38,7 @@ jobs:
           timeout 20s godot --headless --path . --script res://tests/test_album_memory_contract.gd || status=1
           timeout 20s godot --headless --path . --script res://tests/test_camera_input_contract.gd || status=1
           timeout 20s godot --headless --path . --script res://tests/test_resting_core_contract.gd || status=1
+          timeout 20s godot --headless --path . --script res://tests/test_boat_decor_persistence.gd || status=1
           timeout 20s godot --headless --path . --script res://tests/test_diorama_avatar_camera_contract.gd || status=1
           timeout 20s godot --headless --path . --script res://tests/test_boat_decoration_contract.gd || status=1
           timeout 20s godot --headless --path . --script res://tests/test_low_pressure_interaction_contract.gd || status=1
@@ -45,6 +46,15 @@ jobs:
           timeout 20s godot --headless --path . --script res://tests/test_boat_life_ui_contract.gd || status=1
           timeout 20s godot --headless --path . --script res://tests/test_runtime_image_asset_contract.gd || status=1
           timeout 20s godot --headless --path . --script res://tests/test_handpainted_visual_slice_contract.gd || status=1
+          timeout 20s godot --headless --path . --script res://tests/test_cosmetic_identity_profile.gd || status=1
+          timeout 20s godot --headless --path . --script res://tests/test_identity_visual_contract.gd || status=1
+          timeout 20s godot --headless --path . --script res://tests/test_main_menu_identity_contract.gd || status=1
+          timeout 20s godot --headless --path . --script res://tests/test_storybook_art_card_contract.gd || status=1
+          timeout 20s godot --headless --path . --script res://tests/test_time_of_day_contract.gd || status=1
+          timeout 20s godot --headless --path . --script res://tests/test_main_menu_time_of_day_contract.gd || status=1
+          timeout 20s godot --headless --path . --script res://tests/test_game_scene_time_of_day_contract.gd || status=1
+          timeout 20s godot --headless --path . --script res://tests/test_runtime_capture_guard_contract.gd || status=1
+          timeout 20s godot --headless --path . --script res://tests/test_final_composite_decor_contract.gd || status=1
           exit "$status"
 
       - name: Smoke main menu scene
