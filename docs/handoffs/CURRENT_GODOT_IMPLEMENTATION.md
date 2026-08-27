@@ -1,13 +1,13 @@
 # Current Godot Product Implementation
 
-> **CODEX IMAGE INTEGRATION COMPLETE.** The approved runtime images are merged into `main`, have passed GitHub Godot validation, and retain 540×960 runtime proof. The P0 main-entry composition is now the active implementation slice.
+> **CODEX IMAGE INTEGRATION COMPLETE.** The approved runtime images and P0 main-entry composition are merged into `main`, have passed GitHub Godot validation, and retain 540×960 runtime proof.
 
 ## Current state
 
 ```yaml
 project: MY_LITTLE_BOAT
 mode: CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF
-status: P0_MAIN_ENTRY_COMPOSITION_IMPLEMENTED_PENDING_MAIN_MERGE
+status: CURRENT_MAIN_RECONCILED_P0_MAIN_ENTRY_COMPOSITION_COMPLETE
 current_work_router: docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md
 screen_surface_coverage_owner: docs/visual/CURRENT_SCREEN_SURFACE_INVENTORY_AND_VISUAL_ASSET_COVERAGE.md
 five_phase_execution_receipt: docs/handoffs/2026-08-27-work-five-phase-current-slice.md
@@ -28,7 +28,7 @@ visual_reference_lock: HANDPAINTED_STORYBOOK_3D_DIORAMA
 
 The current runtime-image and diorama integration remains complete. A fresh whole-screen audit now owns the next visual product decision at `docs/visual/CURRENT_SCREEN_SURFACE_INVENTORY_AND_VISUAL_ASSET_COVERAGE.md`.
 
-- `MLB-SCR-001` main entry is implemented in the active Issue [#71](https://github.com/alsdmlals4-eng/MylittleBoat/issues/71) branch. `AtmosphereBackground` selects the approved 1024×1536 file for each time choice, `DioramaAnchor` presents the approved C+dog boat anchor, and compact Godot UI controls preserve the identity, light, mood, and route semantics. Four 540×960 runtime captures and the focused contract are in the branch before merge.
+- `MLB-SCR-001` main entry is complete on `main` through [Issue #71](https://github.com/alsdmlals4-eng/MylittleBoat/issues/71) and [PR #72](https://github.com/alsdmlals4-eng/MylittleBoat/pull/72), merge commit `7a107873c49cb289fe9f4bc02bcda1c065f8d6e3`. `AtmosphereBackground` selects the approved 1024×1536 file for each time choice, `DioramaAnchor` presents the approved C+dog boat anchor, and compact Godot UI controls preserve identity, light, mood, and route semantics. Four 540×960 runtime captures, the focused contract, all existing contracts, three scene smokes, and GitHub validation passed.
 - `MLB-SCR-010` album composition is **P1**. It must use Godot UI/text and future runtime captures, not authored fake album images.
 - Main-menu atmosphere backgrounds are the only post-audit bitmap family approved by the user's explicit 2026-08-28 request. No UI icon, portrait-only, UV texture, album filler, or other image family is implied.
 - The screen inventory now uses the required screen × object × state × variation fields and confirms no other current runtime image family is missing. PR #19 remains `READ_ONLY_NO_ABSORPTION`.
