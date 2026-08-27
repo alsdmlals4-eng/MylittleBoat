@@ -118,13 +118,11 @@ The user explicitly approved the one consumer-bound `RASTER_IMAGE` family above 
 | Main entry was functional but visually generic. | It did not present the approved hand-painted boat-rest identity before the player committed to a mood. | Wire the four approved backgrounds to time selection, add the existing C+dog diorama anchor, and use compact translucent Godot UI controls. | First-launch mood selection. | `docs/evidence/2026-08-28-main-menu-composition/main_menu_{dawn,bright,sunset,night}_540x960.png`, `test_main_menu_atmosphere_background_contract.gd`. |
 | Album shows real data and a proper empty state but is visually generic. | A future polished memory screen could otherwise provoke fake illustrative-photo generation. | Mark P1 `GODOT_UI + TEXT_LAYER + RUNTIME_CAPTURE`; explicitly prohibit fake photos. | Album entry after any voyage. | `album-empty_540x960.png`, `album_view.gd`, album contract. |
 
-## 6. Codex implementation handoff
+## 6. Completed P0 implementation record
 
-Use only this confirmed input for the next product slice.
+`MLB-SCR-001` was completed on `main` by [Issue #71](https://github.com/alsdmlals4-eng/MylittleBoat/issues/71) and [PR #72](https://github.com/alsdmlals4-eng/MylittleBoat/pull/72), merge commit `7a107873c49cb289fe9f4bc02bcda1c065f8d6e3`.
 
-```text
-/goal Implement GitHub Issue #71 exactly as specified.
-```
+The implementation uses the exact four approved background files through `AtmosphereBackground`, the existing C+dog boat through `DioramaAnchor`, and Godot-native UI styling. `test_main_menu_atmosphere_background_contract.gd`, all existing focused contracts, `main_menu/game/album` smokes, four 540×960 runtime captures, and GitHub Actions passed.
 
 ### Read first
 
@@ -135,12 +133,11 @@ Use only this confirmed input for the next product slice.
 - `docs/evidence/2026-08-27-screen-surface-audit/`
 - Project Notion [Home](https://app.notion.com/p/3c41b237eb1c81948b8ed88362cafafa), [Visual Bible](https://app.notion.com/p/3c11b237eb1c81ae97f3dc28a0905304), and [Production Handoff](https://app.notion.com/p/3c11b237eb1c81b0b281ec54d67c9552).
 
-### P0 scope
+### P0 result
 
-- Compose `MLB-SCR-001` with the four approved main-menu atmosphere backgrounds, existing boat/identity visual anchors, and Godot UI/text layers.
-- Keep player/pet/time selection, mood meaning, local-first state, 540×960 layout, and direct `main_menu → game` route unchanged.
-- Do not create more menu-background variants, a UI icon pack, portrait-only asset family, new progression, save-slot system, or a combat/system screen. The four approved backgrounds are fixed P0 inputs.
-- Add focused scene/UI tests and runtime captures for normal, identity-expanded, and selected-light states.
+- The selected time changes only `AtmosphereBackground`; player/pet/time selection, mood meaning, local-first state, 540×960 layout, and direct `main_menu → game` route remain unchanged.
+- No menu-background variants, UI icon pack, portrait-only asset family, progression, save-slot system, or combat/system screen was added.
+- Four selected-light runtime captures and a focused scene/UI contract were added.
 
 ### P1 follow-up, not part of P0
 
@@ -159,20 +156,18 @@ Use only this confirmed input for the next product slice.
 | Review lens | Result |
 | --- | --- |
 | Screen completeness | All current target-build surfaces are recorded; every non-applicable family has a reason. |
-| Player judgment | P0 entry identity is the only blocking visual/composition finding. Current voyage/result and optional choices remain readable. |
+| Player judgment | P0 entry, voyage/result, and optional choices have target-resolution evidence. Human mobile comfort remains deferred. |
 | Asset completeness | Current bitmap state families are complete. No new image requirement is valid. |
 | Overproduction prevention | Main entry and album gaps route to Godot UI/text/reuse; album photos route to runtime capture. |
 | Canon / implementation reality | Notion provides human direction, repository provides current consumers, and 540×960 captures provide screen evidence. |
 
 ```text
-blocking_gap:
-  - MLB-UI-P0-MAIN-ENTRY-COMPOSITION
+blocking_gap: []
 nonblocking_gap:
   - MLB-UI-P1-ALBUM-COMPOSITION
 user_decision_required: []
 codex_implementation_required:
-  - P0 main-entry Godot UI composition
-  - P1 album composition after P0
+  - P1 album composition when a separate product slice is selected
 image_brief_approval_required: []
 runtime_player_validation:
   - real-device mobile touch/comfort and human 5-minute rest remain deferred
