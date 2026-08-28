@@ -21,6 +21,9 @@ HANDPAINTED_STORYBOOK_3D_DIORAMA
 
 SOFT_MANGA_CHIBI_CHARACTER_REFINEMENT
 = current approved character/pet refinement inside the detailed canon
+
+INDIGO_RAIN_REFLECTION
+= current approved `night` atmosphere subdirection inside the detailed canon
 ```
 
 The refinement preserves the existing 3D boat/camera/decor/interaction structure. It does **not** convert the project into a full 2D game.
@@ -41,6 +44,7 @@ Implementation-facing summary:
 - decoration adds lived-in attachment without hiding the sea;
 - Appreciation Camera remains the quieter sea/horizon-focused alternate view;
 - comparison B is a `USER_PREFERRED_REFERENCE`, not final player identity, pet species, UI, boat, palette, or approved project asset;
+- `night` is visually directed toward `INDIGO_RAIN_REFLECTION`: fine calm rain, broad indigo water reflection, deep blue sky, and a secondary warm lantern. It remains the existing night choice, not a fifth time/weather choice or gameplay system;
 - `DIORAMA_PIXEL` and `HD2D_COZY_PIXEL` remain alternatives, not the selected current canon;
 - do not reproduce identifiable Bondee / Animal Crossing / Spirit City / Garden Galaxy proportions, UI, branding, or trade dress.
 - every future visual approval presents at least three materially different candidates under the same consumer, camera, composition, information density, and known constraints, and states a GPT recommendation with player value, cost, risk, reversibility, and evidence status.
@@ -51,6 +55,8 @@ Evidence boundary:
 VISUAL_STYLE_DIRECTION = APPROVED
 DETAILED_VISUAL_STYLE_CANON = HANDPAINTED_STORYBOOK_3D_DIORAMA
 CHARACTER_STYLE_REFINEMENT = SOFT_MANGA_CHIBI_CHARACTER_REFINEMENT / USER_APPROVED_COMPARISON_C_LOWER_LEFT
+NIGHT_ATMOSPHERE_REFINEMENT = INDIGO_RAIN_REFLECTION / USER_APPROVED_PLANNING_DIRECTION
+FOUR_TIME_CONTINUITY_BOARD = USER_APPROVED_VISUAL_DIRECTION / NOT_RUNTIME_ASSET
 APPROVED_REPRESENTATIVE_VISUAL_GDD = CANCELLED_AS_REQUIRED_DELIVERABLE
 FINAL_AVATAR_ART = USER_APPROVED_NOTION_REGISTERED_LOCATOR_PASS
 FINAL_PET_ART = USER_APPROVED_NOTION_REGISTERED_LOCATOR_PASS

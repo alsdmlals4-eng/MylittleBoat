@@ -21,12 +21,14 @@ final_review_owner: GPT_FINAL_IMPLEMENTATION_REVIEW
 concurrent_pr_19: READ_ONLY_NO_ABSORPTION
 image_generation_by_codex: ALLOWED_BY_USER_AUTO_ASSET_POLICY_2026_08_26
 image_registration_policy: AUTO_CREATE_REVIEW_NOTION_AND_PROJECT_LOCAL
-visual_reference_lock: HANDPAINTED_STORYBOOK_3D_DIORAMA + SOFT_MANGA_CHIBI_CHARACTER_REFINEMENT
+visual_reference_lock: HANDPAINTED_STORYBOOK_3D_DIORAMA + SOFT_MANGA_CHIBI_CHARACTER_REFINEMENT + INDIGO_RAIN_REFLECTION_NIGHT
 ```
 
 ## Current screen-coverage readback
 
 The current runtime-image and diorama integration remains complete. A fresh whole-screen audit now owns the next visual product decision at `docs/visual/CURRENT_SCREEN_SURFACE_INVENTORY_AND_VISUAL_ASSET_COVERAGE.md`.
+
+The user-approved `INDIGO_RAIN_REFLECTION` and four-time continuity board are planning-direction locks at `docs/visual/2026-08-28-indigo-rain-four-time-visual-lock.md`. Current `main` still uses the pre-lock Night background/tone. Do not call the new Night presentation runtime-implemented until a separate approved contract updates concrete consumers, tests, and 540×960 runtime evidence.
 
 - `MLB-SCR-001` main entry is complete on `main` through [Issue #71](https://github.com/alsdmlals4-eng/MylittleBoat/issues/71) and [PR #72](https://github.com/alsdmlals4-eng/MylittleBoat/pull/72), merge commit `7a107873c49cb289fe9f4bc02bcda1c065f8d6e3`. `AtmosphereBackground` selects the approved 1024×1536 file for each time choice, `DioramaAnchor` presents the approved C+dog boat anchor, and compact Godot UI controls preserve identity, light, mood, and route semantics. Four 540×960 runtime captures, the focused contract, all existing contracts, three scene smokes, and GitHub validation passed.
 - `MLB-SCR-010` album composition is complete on `main` through [Issue #75](https://github.com/alsdmlals4-eng/MylittleBoat/issues/75) and [PR #76](https://github.com/alsdmlals4-eng/MylittleBoat/pull/76), merge commit `69a2a7f2fdbfc251cfb6d4a3f446ab39dd080cbc`. It uses Godot UI/text, the selected approved atmosphere background, and actual record text; it adds no authored fake album images. Empty and populated 540×960 captures, focused contracts, full test suite, three scene smokes, and GitHub validation passed.

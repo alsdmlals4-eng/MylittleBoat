@@ -3,25 +3,27 @@
 ## Status and boundary
 
 ```text
-PROJECT_CORE_SCENE_VISUAL_BOARD = GENERATED_EXPLORATION
+PROJECT_CORE_SCENE_VISUAL_BOARD = USER_APPROVED_VISUAL_DIRECTION
 PURPOSE = AI_UNDERSTANDING_VALIDATION + PLANNING_REVIEW + VISUAL_DIRECTION_CONFIRMATION
 NOT_RUNTIME_ASSET = TRUE
 NOT_GODOT_UI_IMPLEMENTATION = TRUE
 NOT_HUMAN_USABILITY_OR_PLAYER_EXPERIENCE_PASS = TRUE
-CHARACTER_STYLE_STATUS = SUPERSEDED_BY_SOFT_MANGA_CHIBI_CHARACTER_REFINEMENT
+CHARACTER_STYLE_STATUS = SOFT_MANGA_CHIBI_CHARACTER_REFINEMENT
+ATMOSPHERE_STATUS = FOUR_TIME_CONTINUITY_WITH_INDIGO_RAIN_REFLECTION_NIGHT
 ```
 
-This board records the approved free-rest voyage role. It does not create a new image family, change a runtime consumer, or authorize a production-asset batch.
+This board records the approved free-rest voyage role and its selected soft-manga chibi visual direction. It does not create a new runtime consumer or authorize a production-asset batch.
 
-Its large normal-drifting composition and optional-activity hierarchy remain valid. Its player/pet rendering predates the approved soft-manga chibi refinement, so it must not be used as the character-style reference for future visual work.
+Its large normal-drifting composition and optional-activity hierarchy remain valid. The v3 board is the character/atmosphere reference for future visual planning; concrete Godot assets and actual UI remain separately owned by implementation work.
 
 ## Provenance
 
 - Generator: built-in image generation.
 - Reference role: `docs/evidence/2026-08-28-main-menu-composition/main_menu_bright_540x960.png` supplied the approved C knit/long-hair player, dog companion, wooden boat, and `HANDPAINTED_STORYBOOK_3D_DIORAMA` language.
-- Selected board binary: `docs/visual/generated/project-core-scene-visual-board-2026-08-28-v2.png`.
-- Selected SHA-256: `9B5D25A9B0AB871996036C6522EBFF75446EA42B0A33A6EEB8EDA6C224EA25B0`.
-- Superseded exploration: `docs/visual/generated/project-core-scene-visual-board-2026-08-28.png` was retained only as provenance. It duplicated the scenery-photo framing and did not make the Appreciation view independently legible.
+- User-approved selected board binary: `docs/visual/generated/project-core-scene-visual-board-2026-08-28-v3-soft-manga-chibi.png`.
+- Selected SHA-256: `F2161D11BD31C5158651DBEC66D2D788C706CD927D37C1C76A52FB525867540A`.
+- Companion continuity board: `docs/visual/generated/four-time-atmosphere-continuity-2026-08-28.png`, SHA-256 `D586794EA7DB4A989F8B46097B0F7A40F885727C6F85D41BB0477D9B705333F4`.
+- Superseded exploration: `docs/visual/generated/project-core-scene-visual-board-2026-08-28-v2.png` and `docs/visual/generated/project-core-scene-visual-board-2026-08-28.png` remain only as provenance. The former predates the approved soft-manga chibi character and Indigo Rain atmosphere lock.
 - Rights and scope: project-local generated planning visualization. It is not an approved independent runtime asset and must not be wired into a Godot scene without a separately approved concrete consumer.
 
 ## Confirmed player contract
