@@ -79,7 +79,33 @@ surface_material_override/0 = SubResource("StandardMaterial3D_ocean")
 
 [node name="BoatSpace" parent="VoyageWorld" instance=ExtResource("3")]
 
+[node name="DistantSceneryLayer" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="MemoryNotificationLabel" type="Label" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 48.0
+offset_top = 176.0
+offset_right = -48.0
+offset_bottom = 220.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.95, 0.9, 0.72, 1)
+theme_override_font_sizes/font_size = 16
+text = ""
+horizontal_alignment = 1
+
 [node name="TopPanel" type="PanelContainer" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
@@ -92,10 +118,10 @@ grow_horizontal = 2
 [node name="TopVBox" type="VBoxContainer" parent="TopPanel"]
 layout_mode = 2
 
-[node name="MoodStatusLabel" type="Label" parent="TopPanel/TopVBox"]
+[node name="VoyageStatusLabel" type="Label" parent="TopPanel/TopVBox"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "마음: 평온"
+text = "동반자와 바다를 보고 있어요."
 horizontal_alignment = 1
 
 [node name="TimerLabel" type="Label" parent="TopPanel/TopVBox"]
@@ -119,6 +145,10 @@ text = ""
 horizontal_alignment = 1
 autowrap_mode = 2
 
+[node name="AtmosphereRefreshTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 30.0
+
 [node name="DecorPanel" type="PanelContainer" parent="."]
 visible = false
 layout_mode = 1
@@ -128,9 +158,9 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -170.0
-offset_top = -520.0
+offset_top = -660.0
 offset_right = 170.0
-offset_bottom = -292.0
+offset_bottom = -210.0
 grow_horizontal = 2
 grow_vertical = 0
 
@@ -139,8 +169,20 @@ layout_mode = 2
 
 [node name="DecorTitle" type="Label" parent="DecorPanel/DecorVBox"]
 layout_mode = 2
-text = "보트 꾸미기 · 기술 미리보기"
+text = "꾸미기"
 horizontal_alignment = 1
+
+[node name="IdentityLabel" type="Label" parent="DecorPanel/DecorVBox"]
+layout_mode = 2
+text = "내 모습과 동반자"
+
+[node name="PlayerStyleOption" type="OptionButton" parent="DecorPanel/DecorVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="PetTypeOption" type="OptionButton" parent="DecorPanel/DecorVBox"]
+unique_name_in_owner = true
+layout_mode = 2
 
 [node name="DecorSlotOption" type="OptionButton" parent="DecorPanel/DecorVBox"]
 unique_name_in_owner = true
@@ -212,6 +254,7 @@ layout_mode = 2
 text = "닫기"
 
 [node name="BottomPanel" type="PanelContainer" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
@@ -227,6 +270,21 @@ grow_vertical = 0
 [node name="ButtonGrid" type="GridContainer" parent="BottomPanel"]
 layout_mode = 2
 columns = 2
+
+[node name="RestMenuButton" type="Button" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -78.0
+offset_right = -20.0
+offset_bottom = -24.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "메뉴"
 
 [node name="TakePhotoButton" type="Button" parent="BottomPanel/ButtonGrid"]
 unique_name_in_owner = true
@@ -257,18 +315,6 @@ text = "꾸미기"
 unique_name_in_owner = true
 layout_mode = 2
 text = "상호작용"
-
-[node name="LetterButton" type="Button" parent="BottomPanel/ButtonGrid"]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-text = "편지 읽고 기록하기"
-
-[node name="SceneryButton" type="Button" parent="BottomPanel/ButtonGrid"]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-text = "풍경 기록하기"
 
 [node name="AlbumButton" type="Button" parent="BottomPanel/ButtonGrid"]
 unique_name_in_owner = true

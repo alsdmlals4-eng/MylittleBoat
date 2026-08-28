@@ -8,7 +8,7 @@
 - 사람이 읽는 최신 PDF 출력은 [GDD PDF](exports/my-little-boat_MASTER_PRODUCTION_GDD_20260829.pdf)입니다.
 - 실제 코드·Scene·테스트·캡처의 사실은 [현재 Godot handoff](docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md)가 소유합니다.
 - 이전 Notion은 이관이 끝난 historical archive이며 새 작업의 정본이나 동기화 대상이 아닙니다.
-- 현재 코드에는 이전 선택형 메인 메뉴가 남아 있습니다. 이는 승인된 제품 흐름이 아니라 다음 Phase 2 구현 계약에서 교체할 `PRODUCT_SUPERSEDED_IMPLEMENTATION`입니다.
+- 현재 기본 실행은 `scenes/game.tscn`의 direct boat entry입니다. `scenes/main_menu.tscn`은 오래된 링크를 보트 화면으로 넘기는 호환 경로이며, 선택 UI를 제품 화면으로 노출하지 않습니다.
 
 ## 플레이 경험
 
@@ -20,7 +20,7 @@
 → 개인적인 기억을 남기거나 계속 머무르기
 ```
 
-시작하면 기기의 **현지 현실 시간**에 맞춰 새벽·밝음·해질녘·밤 분위기가 자동으로 보입니다. 시작 화면이나 수동 분위기 선택은 없고, 기기 시계는 보상·진행·저장에 영향을 주지 않습니다. 게임을 켜 둔 active foreground 시간에 따라 먼 구조물과 주변 풍경이 낮은 빈도로 흘러가며 바뀝니다.
+시작하면 기기의 **현지 현실 시간**에 맞춰 새벽·밝음·해질녘·밤 분위기가 자동으로 보입니다. 시작 화면이나 수동 분위기 선택은 없고, 기기 시계는 보상·진행·저장에 영향을 주지 않습니다. 게임을 켜 두고 실제로 보고 있는 active foreground 시간에만 항해 timer·낚시 대기·먼 구조물·주변 풍경이 낮은 빈도로 진행되며, background 시간은 항해 기록을 만들지 않습니다.
 
 ## 핵심 보호선
 
@@ -33,12 +33,12 @@
 
 기본 방향은 `HANDPAINTED_STORYBOOK_3D_DIORAMA`이며, 캐릭터와 펫에는 `SOFT_MANGA_CHIBI_CHARACTER_REFINEMENT`을 적용합니다. 기본 identity anchor는 C 니트·긴 머리와 강아지입니다. 밤은 `INDIGO_RAIN_REFLECTION` 분위기를 사용합니다.
 
-메인 진입에서 보트가 물 위에 합성된 것처럼 보이는 기존 구성은 사용하지 않습니다. 다음 direct-entry 장면은 보트와 물의 접점, 잔물결·wake, 반사 또는 가림, 540 x 960에서의 수평선 구도를 함께 검증해야 합니다. 이 판단은 보트·바다의 개별 source binary 전체 폐기를 뜻하지 않습니다.
+메인 진입은 보트 hull과 물의 접점에 잔물결·wake를 겹치고 넓은 수평선을 유지합니다. 실제 GPU capture는 [direct boat entry evidence](docs/evidence/2026-08-29-direct-boat-entry/README.md)에 남깁니다. 이는 실제 기기에서의 5분 휴식·터치·오디오 편안함까지 통과했다는 뜻은 아닙니다.
 
 ## 프로젝트 열기
 
 1. Godot 4.7 stable 계열로 `project.godot`을 Import합니다.
-2. 현재 구현 상태를 보려면 기본 main scene을 실행합니다.
-3. 이 화면은 현재 제품 정본과 다를 수 있습니다. direct-entry 제품 변경은 별도 승인된 Phase 2 구현 계약 전에는 적용되지 않습니다.
+2. 기본 main scene을 실행하면 바로 보트 위 장면이 열립니다.
+3. `메뉴`를 눌렀을 때만 사진·감상·속도·낚시·꾸미기 같은 선택 행동이 열립니다.
 
 문서만 변경한 PR은 runtime 성공, 실제 기기 사용성, 5분 휴식 감정, 오디오 편안함을 증명하지 않습니다. 각 상태와 근거 ceiling은 프로젝트 GDD와 handoff에서 확인합니다.

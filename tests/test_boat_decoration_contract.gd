@@ -37,7 +37,7 @@ func _run() -> void:
 		_expect(str(game_state.call("get_boat_decor", "bow_left")) == "lantern", "decor placement must be stored")
 		game_state.reset_session()
 		_expect(str(game_state.call("get_boat_decor", "bow_left")) == "lantern", "reset_session must preserve boat decor")
-		game_state.begin_voyage("평온")
+		game_state.begin_voyage()
 		_expect(str(game_state.call("get_boat_decor", "bow_left")) == "lantern", "begin_voyage must preserve boat decor")
 		game_state.call("set_boat_decor", "bow_left", "")
 		_expect(str(game_state.call("get_boat_decor", "bow_left")) == "", "empty item id must clear a decor slot without loss")

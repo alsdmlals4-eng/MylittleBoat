@@ -13,8 +13,8 @@ BOTTLE_LETTER_AUTOSAVE = FORBIDDEN
 COMPANION_AFFECTION_EFFECT = FORBIDDEN
 APPROVED_DENSITY_TARGET = APPROXIMATELY_1_TO_2_PER_NOMINAL_5_MINUTE_VOYAGE
 FIRST_DISCOVERY_GUARANTEE = FORBIDDEN
-CURRENT_MAIN_IMPLEMENTATION = ACTION_GATED_PENDING_DISCOVERY_AND_PRODUCT_SUPERSEDED
-RUNTIME_IMPLEMENTATION = NOT_STARTED
+CURRENT_MAIN_IMPLEMENTATION = FOREGROUND_ONLY_DRIFTING_SCENERY_WITH_LOCAL_AUTOSAVE
+RUNTIME_IMPLEMENTATION = IMPLEMENTED_AND_TESTED
 HUMAN_PLAYER_EXPERIENCE_VALIDATION = NOT_RUN
 ```
 
@@ -35,16 +35,14 @@ Ambient Discovery는 플레이어가 버튼을 눌러 기록할지 결정하는 
 7. event가 겹치거나 짧은 시간에 연속으로 주의를 빼앗지 않도록 one-at-a-time / low-density를 보호합니다. 0회인 항해도 정상이며, 메인 메뉴, 앨범, 백그라운드 또는 일시정지된 항해에는 나타나지 않습니다.
 8. 저장은 `local-first`입니다. 일일 숙제, 놓침 패널티, completion rate, streak, 희귀도, 확률 구매, FOMO를 만들지 않습니다.
 
-## Current implementation conflict
+## Current implementation receipt
 
-Current `main` has an action-gated, product-superseded discovery implementation:
+- `scripts/voyage/drift_scenery_director.gd` accumulates only active foreground delta, waits roughly 90–150 seconds before each opportunity, and produces a buoy, islet, or lighthouse event with an independent memory-save chance.
+- `scripts/voyage/game_scene.gd` consumes the event without a button, task, reward, countdown, or response requirement. It moves one input-free horizon prop across the screen and, only for a save event, shows a 2.5-second auto-fading notification.
+- `scripts/core/ambient_memory_persistence.gd` writes the shared `GameState.sceneries` album list when an automatic sighting occurs to `user://ambient_memories_v1.cfg`. Saved order and duplicate sightings are preserved; the path is distinct from letter/Bottle data and does not alter affinity.
+- `tests/test_drift_scenery_director.gd`, `tests/test_ambient_memory_persistence.gd`, `tests/test_ambient_memory_game_state_roundtrip.gd`, and `tests/test_distant_scenery_runtime_contract.gd` cover foreground-only advancement, local persistence, duplicate round-trip, and the actual runtime consumer.
 
-- `scripts/voyage/game_scene.gd` schedules a discovery, creates `letter` or `scenery`, shows `LetterButton` / `SceneryButton`, waits up to 18 seconds, and then clears it if the player does nothing.
-- `GameState.set_pending_discovery` stores a pending choice rather than immediately storing a neutral local ambient memory.
-- `_record_pending_letter` and `_record_pending_scenery` mutate the old memory paths only after a button press.
-- `GameState.add_scenery` and `add_letter` currently reach the old action-based `_increase_affection` placeholder. That conflicts with the separately approved time-based affection direction as well as this decision.
-
-The current code is evidence of an earlier technical slice, not evidence that the approved passive behavior is implemented.
+The 540 x 960 capture verifies the islet consumer can render. Human judgement of the nominal five-minute frequency and notification quietness remains `NOT_RUN`.
 
 ## Future implementation contract boundary
 
@@ -58,7 +56,7 @@ A later single Phase 2 implementation contract must define and verify:
 6. automated proof for no input requirement, no missed-event penalty, auto-save, no affinity mutation, no Bottle semantics, camera parity, no background accrual, and no duplicate event overlap;
 7. 540×960 runtime evidence and separate Human 5-minute calm/noticeability judgment.
 
-No Godot scene, script, resource, production visual asset, probability value, event catalogue, audio cue, or Human UX PASS is created by this decision packet.
+The decision packet itself did not create runtime proof. Issue #101 subsequently created the bounded Godot consumer described above. It still does not prove Human UX PASS, audio comfort, mobile performance, or a broader production asset batch.
 
 ## Provenance and disposition
 

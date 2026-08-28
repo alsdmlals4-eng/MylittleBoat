@@ -47,7 +47,7 @@
 - 큰 선택 panel이 first view를 덮지 않는다.
 - 540 x 960 실제 gameplay 크기에서 위 관계가 읽힌다.
 
-현재 제공된 구형 main-entry 구성은 이 기준을 충족하지 않습니다. 보트가 바다 위에 합성된 것처럼 보이고 시작 panel이 휴식보다 먼저 보이므로 `REJECTED_FOR_MAIN_ENTRY_RUNTIME_USE`입니다. 현재 선택형 main menu code도 이 제품 흐름에서는 `PRODUCT_SUPERSEDED_IMPLEMENTATION`입니다. 이 결정은 보트·바다 source binary를 일괄 폐기한다는 뜻이 아닙니다.
+현재 제공된 구형 main-entry 구성은 이 기준을 충족하지 않아 `REJECTED_FOR_MAIN_ENTRY_RUNTIME_USE`입니다. 현재 기본 route는 `game.tscn`의 direct boat entry이며, `main_menu.tscn`은 오래된 링크를 이 화면으로 넘기는 호환 경로만 유지합니다. 이 결정은 보트·바다 source binary를 일괄 폐기한다는 뜻이 아닙니다.
 
 ## 3. 플레이는 어떻게 이어지는가
 
@@ -95,7 +95,7 @@
 
 **피해야 할 압박.** 방치 벌, timer 실패, idle 보상, 매분 확인 요구.
 
-**상태.** 제품 방향은 `CONFIRMED`, 직접 시작 화면의 runtime 전환은 `NOT_IMPLEMENTED`입니다.
+**상태.** `IMPLEMENTED_AND_GPU_CAPTURED`입니다. 실제 기기에서의 첫 30초와 5분 휴식 판단은 `NOT_RUN`입니다.
 
 ### 감상 카메라
 
@@ -119,7 +119,7 @@
 
 **피해야 할 압박.** stats, rarity, gacha, price, daily shop, 모든 slot 채우기, 최적 배치.
 
-**상태.** local cosmetic earlier slice는 존재하지만 시작 화면에서 꾸미기 접근으로 옮기는 일은 `NOT_IMPLEMENTED`입니다.
+**상태.** `IMPLEMENTED`입니다. 첫 화면에는 보이지 않고 `메뉴 → 꾸미기`에서만 접근합니다. 실제 기기 터치 편안함은 `NOT_RUN`입니다.
 
 ### 사진·조용한 낚시·작은 상호작용
 
@@ -143,7 +143,7 @@
 
 **피해야 할 압박.** live level, progress bar, growth popup, species bonus, action multiplier.
 
-**상태.** 제품 방향은 `CONFIRMED_NOT_IMPLEMENTED`입니다. 현재 action-based relation code는 이를 대신하지 못합니다.
+**상태.** 제품 방향은 `CONFIRMED_NOT_IMPLEMENTED`입니다. 행동 보상형 호감도는 ambient memory에서 분리됐지만, 함께 켜 둔 foreground 시간 기반의 조용한 관계 표현은 아직 구현하지 않았습니다.
 
 ### 흘러가는 풍경과 배경 발견 연출
 
@@ -155,7 +155,7 @@
 
 **피해야 할 압박.** 발견을 보기 위한 기다림, button 요구, reward claim, task, social message, missed-event penalty, 구조물을 탭해야 하는 상호작용.
 
-**상태.** active foreground 시간만 사용하고, 명목 5분에 약 1-2회가 지나가되 zero도 정상이라는 방향은 `CONFIRMED_NOT_IMPLEMENTED`입니다. 구체 motif와 production asset은 실제 consumer를 정한 구현 범위에서만 추가합니다.
+**상태.** `IMPLEMENTED_AND_GPU_CAPTURED`입니다. active foreground 시간만 쓰는 director와 부표·작은 섬·등대 consumer가 있으며, memory 저장은 확률형 local auto-save이고 zero도 정상입니다. 실제 5분의 빈도·noticeability는 `NOT_RUN`입니다.
 
 ### Album
 
@@ -173,13 +173,13 @@
 
 | 화면 또는 상태 | 플레이어 목표 | 주요 행동 | 다음 연결 | 제품 상태 |
 | --- | --- | --- | --- | --- |
-| Direct boat entry | “여기는 어떤 장소인가”를 즉시 느낌 | 보기, 머무르기 | normal voyage | `CONFIRMED_NOT_IMPLEMENTED` |
-| Normal voyage diorama | 캐릭터·동반자·보트·바다와 시간에 따라 바뀌는 풍경을 함께 보기 | 쉬기, 사진, 낚시, 감상, 꾸미기 | album 또는 계속 머무르기 | earlier slice `PARTIAL_IMPLEMENTED`, automatic environment `NOT_IMPLEMENTED` |
+| Direct boat entry | “여기는 어떤 장소인가”를 즉시 느낌 | 보기, 머무르기 | normal voyage | `IMPLEMENTED_AND_GPU_CAPTURED`; Human `NOT_RUN` |
+| Normal voyage diorama | 캐릭터·동반자·보트·바다와 시간에 따라 바뀌는 풍경을 함께 보기 | 쉬기, 사진, 낚시, 감상, 꾸미기 | album 또는 계속 머무르기 | `IMPLEMENTED_AND_GPU_CAPTURED`; Human `NOT_RUN` |
 | Appreciation Camera | 수평선과 바다에 집중 | 감상 시작·종료 | 같은 normal voyage | earlier slice `IMPLEMENTED` |
 | 꾸미기 | 공간을 내 취향으로 두기 | 외형·동반자·장식 변경 | 같은 normal voyage | cosmetic slice `PARTIAL_IMPLEMENTED` |
 | Album | 남은 개인 기록 보기 | 기록 읽기, 바다로 돌아가기 | normal voyage | `PARTIAL_IMPLEMENTED` |
 
-첫 화면은 메뉴가 아니라 direct boat entry입니다. 따라서 현재 `main_menu.tscn`의 identity/time/mood UI와 그 capture는 code evidence일 뿐, 이 화면 흐름의 디자인 정본이나 visual approval이 아닙니다.
+첫 화면은 메뉴가 아니라 direct boat entry입니다. `main_menu.tscn`은 오래된 링크를 넘기는 compatibility route이며, 그 identity/time/mood capture runner는 `HISTORICAL_RETIRED`입니다. 현재 디자인 정본이나 visual approval, current runtime evidence로 사용하지 않습니다.
 
 ## 6. 확정된 시각 방향
 
@@ -217,13 +217,14 @@
 | 항목 | 상태 | 의미 |
 | --- | --- | --- |
 | Rest-first direction | `CONFIRMED` | 머무르기가 complete play라는 제품 방향 |
-| Direct boat entry | `CONFIRMED_NOT_IMPLEMENTED` | 다음 Phase 2에서 Scene route와 UI를 바꿔야 함 |
-| 오늘의 마음 제거 | `CONFIRMED_NOT_IMPLEMENTED` | 현재 code/test에 남아 있는 mood data를 migration과 함께 retire해야 함 |
-| 현실 시간 분위기 | `CONFIRMED_NOT_IMPLEMENTED` | 현지 시간은 시각만 바꾸고, startup selector·saved preference는 없음 |
-| 흘러가는 풍경 | `CONFIRMED_NOT_IMPLEMENTED` | active foreground 시간에만 낮은 밀도의 distant scenery와 ambient memory가 진행 |
-| cosmetic 꾸미기 | `PARTIAL_IMPLEMENTED` | local slice는 있으나 entry point를 in-voyage로 옮겨야 함 |
-| 함께 보낸 시간 | `CONFIRMED_NOT_IMPLEMENTED` | active foreground time 기반으로 재설계 필요 |
-| Ambient Discovery | `CONFIRMED_NOT_IMPLEMENTED` | passive auto-save presentation으로 재설계 필요 |
+| Direct boat entry | `IMPLEMENTED_AND_GPU_CAPTURED` | `project.godot`이 `game.tscn`을 열고 첫 화면은 메뉴를 닫은 보트 장면 |
+| 오늘의 마음 제거 | `IMPLEMENTED_AND_TESTED` | mood state, 시작 선택, 색 규칙, 항해 문구 의존을 retire함 |
+| 현실 시간 분위기 | `IMPLEMENTED_AND_TESTED` | 현지 시간은 시각만 바꾸고, startup selector·saved preference는 없음 |
+| foreground session | `IMPLEMENTED_AND_TESTED` | 앱이 foreground일 때만 항해 timer·낚시 대기·풍경 drift·자동 알림이 진행되며 background 경과는 기록을 만들지 않음 |
+| 흘러가는 풍경 | `IMPLEMENTED_AND_GPU_CAPTURED` | active foreground 시간만 쓰는 low-density director와 duplicate-safe local ambient memory |
+| cosmetic 꾸미기 | `PARTIAL_IMPLEMENTED` | local slice는 optional `메뉴 → 꾸미기`에서 현재 항해 화면에 live 적용됨 |
+| 함께 보낸 시간 | `CONFIRMED_NOT_IMPLEMENTED` | active foreground time 기반의 관계 문구·album 표현은 별도 구현 필요 |
+| Ambient Discovery | `IMPLEMENTED_AND_TESTED` | passive scenery event, 작은 auto-fade 알림, local auto-save이며 Human 빈도 평가는 미실시 |
 | Visual direction | `APPROVED_DIRECTION` | production asset batch와 runtime alignment는 별도 |
 | Human usability / Player Experience | `NOT_RUN` | 실제 30초·5분 기기 경험 검증 전 |
 
@@ -237,19 +238,18 @@ Godot `Time`은 현지 시스템 시간을 읽을 수 있으므로 현실 시간
 
 main scene을 direct boat route로 바꾸고 optional customization을 같은 게임 내 surface로 연결하는 것은 Godot 표준 SceneTree 전환의 범위입니다. 이 가능성은 아직 전환 구현이나 mobile performance 검증을 뜻하지 않습니다. [Godot Scene 전환 공식 문서](https://docs.godotengine.org/en/stable/tutorials/scripting/change_scenes_manually.html)
 
-### 다음 Phase 2 구현 계약
+### 구현 receipt와 남은 검증
 
-다음 구현은 아래를 하나의 작고 검증 가능한 contract로 다룹니다.
+아래 기능은 current runtime에 반영됐습니다.
 
-1. main scene이 현지 현실 시간에 맞는 normal boat diorama로 바로 시작한다.
-2. 새벽 `05:00–08:59`, 밝음 `09:00–16:59`, 해질녘 `17:00–20:59`, 밤 `21:00–04:59`를 첫 구현의 local-time mapping으로 사용한다. 수동 selector와 saved atmosphere는 retire한다.
-3. mood data, mood wording, mood color rule, mood-dependent test를 migration과 함께 retire한다.
-4. active foreground 시간만 사용하는 low-density drifting scenery director를 추가한다. 명목 5분에 약 1-2개의 먼 풍경 장면이 지나가며, zero도 정상이다. 실제 scene asset은 named consumer가 없는 한 만들지 않는다.
-5. 외형·동반자·장식 선택을 optional `꾸미기`로 이동한다.
-6. direct-entry diorama가 540 x 960에서 float-contact 기준을 충족하는 runtime capture를 만든다.
-7. 자동 route/time-mapping/foreground-progress tests, targeted scene smoke, runtime capture, Human 30초·5분 검증을 서로 구분해 기록한다.
+1. `project.godot`은 `game.tscn`을 시작 route로 사용하며, 첫 화면은 메뉴를 닫은 normal boat diorama입니다.
+2. 새벽 `05:00–08:59`, 밝음 `09:00–16:59`, 해질녘 `17:00–20:59`, 밤 `21:00–04:59`가 기기의 현지 시각으로 자동 적용됩니다. selector와 saved atmosphere는 없습니다.
+3. mood data와 시작 선택 UI를 retire하고 항해 기록을 중립 문구로 바꿨습니다.
+4. foreground 전용 session clock이 항해 timer·낚시 대기·풍경 drift·자동 알림을 함께 멈추며, drifting scenery director는 부표·작은 섬·등대를 낮은 밀도로 흘리고 일부를 local ambient memory로 자동 저장합니다.
+5. 외형·동반자·장식은 optional `메뉴 → 꾸미기`에만 있습니다.
+6. 540 x 960 GPU capture에서 boat-water contact, 시간대, 원거리 작은 섬을 확인했습니다.
 
-이 GDD는 위 구현을 시작하거나 완료했다고 주장하지 않습니다.
+남은 것은 사람 검증입니다. 실제 기기 첫 30초, 5분 휴식, 터치, 알림 noticeability, 오디오 편안함은 `NOT_RUN`이며, 함께 보낸 foreground 시간의 조용한 호감도 표현도 아직 구현하지 않았습니다.
 
 ## 8. 금지 범위와 열린 결정
 

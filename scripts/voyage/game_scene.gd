@@ -4,16 +4,28 @@ extends Control
 const FISHING_SESSION_SCRIPT = preload("res://scripts/voyage/fishing_session.gd")
 const DECOR_CATALOG_SCRIPT = preload("res://scripts/decor/boat_decor_catalog.gd")
 const DECOR_VISUAL_ASSETS_SCRIPT = preload("res://scripts/decor/decor_visual_assets.gd")
+const IDENTITY_VISUAL_CATALOG_SCRIPT = preload("res://scripts/identity/identity_visual_catalog.gd")
 const TIME_OF_DAY_CATALOG_SCRIPT = preload("res://scripts/voyage/time_of_day_catalog.gd")
+const REAL_TIME_ATMOSPHERE_RESOLVER_SCRIPT = preload("res://scripts/voyage/real_time_atmosphere_resolver.gd")
+const DRIFT_SCENERY_DIRECTOR_SCRIPT = preload("res://scripts/voyage/drift_scenery_director.gd")
+const DISTANT_SCENERY_SCENE = preload("res://scenes/distant_scenery.tscn")
+const DISTANT_SCENERY_TEXTURES := {
+	"buoy": preload("res://assets/images/runtime/scenery/distant_buoy_storybook.png"),
+	"islet": preload("res://assets/images/runtime/scenery/distant_islet_storybook.png"),
+	"lighthouse": preload("res://assets/images/runtime/scenery/distant_lighthouse_storybook.png"),
+}
+const SEA_BACKDROP_TEXTURES := {
+	"default": preload("res://assets/images/runtime/storybook/sea_bright_storybook.png"),
+	"night": preload("res://assets/images/runtime/storybook/sea_night_indigo_rain_storybook.png"),
+}
+const DISTANT_SCENERY_LABELS := {
+	"buoy": "작은 부표",
+	"islet": "작은 섬",
+	"lighthouse": "먼 등대",
+}
 
 const SPEED_NAMES: Array[String] = ["느림", "보통", "빠름"]
 const SPEED_MULTIPLIERS: Array[float] = [0.65, 1.0, 1.45]
-const LETTER_TEXTS: Array[String] = [
-	"오늘은 아무것도 증명하지 않아도 괜찮아요.",
-	"조용한 바다는 당신의 속도를 기다려줍니다.",
-	"작은 항해도 충분히 멀리 갈 수 있어요."
-]
-const SCENERY_NAMES: Array[String] = ["일출", "비", "고래", "밤바다"]
 const FISH_NAMES: Array[String] = ["정어리", "전갱이", "고등어", "도미"]
 const DECOR_SLOT_NODE_NAMES := {
 	"bow_left": "BowLeft",
@@ -25,42 +37,49 @@ const DECOR_SLOT_NODE_NAMES := {
 	"rail_accent": "RailAccent",
 	"pet_corner": "PetCorner",
 }
-const MOOD_SKY_COLORS := {
-	"지침": Color(0.60, 0.72, 0.80, 1.0),
-	"외로움": Color(0.55, 0.69, 0.82, 1.0),
-	"설렘": Color(0.66, 0.80, 0.88, 1.0),
-}
-const FIRST_DISCOVERY_MIN_SECONDS := 18.0
-const FIRST_DISCOVERY_MAX_SECONDS := 30.0
-const DISCOVERY_MIN_SECONDS := 35.0
-const DISCOVERY_MAX_SECONDS := 60.0
-const DISCOVERY_OFFER_SECONDS := 18.0
 const FISHING_WAIT_MIN_SECONDS := 6.0
 const FISHING_WAIT_MAX_SECONDS := 12.0
+const ATMOSPHERE_REFRESH_SECONDS := 30.0
+const DISTANT_SCENERY_DRIFT_PER_SECOND := 8.0
+const MEMORY_NOTIFICATION_SECONDS := 2.5
+const DISTANT_SCENERY_SIZES := {
+	"buoy": Vector2(48, 96),
+	"islet": Vector2(156, 88),
+	"lighthouse": Vector2(72, 128),
+}
 
 var _fishing_session = FISHING_SESSION_SCRIPT.new()
 var _decor_catalog = DECOR_CATALOG_SCRIPT.new()
 var _decor_visual_assets = DECOR_VISUAL_ASSETS_SCRIPT.new()
+var _identity_visual_catalog = IDENTITY_VISUAL_CATALOG_SCRIPT.new()
 var _time_of_day_catalog = TIME_OF_DAY_CATALOG_SCRIPT.new()
-var _discovery_wait_remaining := 0.0
-var _discovery_offer_remaining := 0.0
+var _real_time_atmosphere_resolver = REAL_TIME_ATMOSPHERE_RESOLVER_SCRIPT.new()
+var _drift_scenery_director = DRIFT_SCENERY_DIRECTOR_SCRIPT.new()
+var _active_distant_scenery: Array[Control] = []
+var _memory_notification_remaining := 0.0
 var _drift_phase := 0.0
 var _diorama_camera_base_position := Vector3.ZERO
 var _appreciation_camera_base_position := Vector3.ZERO
 var _boat_space_base_position := Vector3.ZERO
 var _time_of_day_background_color := Color(0.58, 0.76, 0.86, 1.0)
+var _rest_menu_open := false
+var _current_atmosphere_id := ""
+var _application_foreground := true
+var _atmosphere_tween: Tween
 
 
 func _ready() -> void:
 	randomize()
 	if not GameState.voyage_active:
-		GameState.begin_voyage(GameState.selected_mood)
+		GameState.begin_voyage()
 	_diorama_camera_base_position = $VoyageWorld/DioramaCameraRig.position
 	_appreciation_camera_base_position = $VoyageWorld/AppreciationCameraRig.position
 	_boat_space_base_position = $VoyageWorld/BoatSpace.position
-	_apply_time_of_day_tone()
-	_apply_mood_tone()
+	%AtmosphereRefreshTimer.timeout.connect(_refresh_real_time_atmosphere)
+	%AtmosphereRefreshTimer.start(ATMOSPHERE_REFRESH_SECONDS)
+	_refresh_real_time_atmosphere(false)
 	_apply_stored_boat_decor()
+	%RestMenuButton.pressed.connect(_toggle_rest_menu)
 	%TakePhotoButton.pressed.connect(_take_photo)
 	%AppreciationButton.pressed.connect(_toggle_appreciation_mode)
 	%SpeedButton.pressed.connect(_cycle_speed)
@@ -69,22 +88,18 @@ func _ready() -> void:
 	%InteractButton.pressed.connect(_open_interaction_panel)
 	%DecorSlotOption.item_selected.connect(_on_decor_slot_selected)
 	%DecorItemOption.item_selected.connect(_on_decor_item_selected)
+	%PlayerStyleOption.item_selected.connect(_on_player_style_selected)
+	%PetTypeOption.item_selected.connect(_on_pet_type_selected)
 	%DecorApplyButton.pressed.connect(_apply_selected_decor)
 	%DecorClearButton.pressed.connect(_clear_selected_decor)
 	%DecorCloseButton.pressed.connect(_close_decor_panel)
 	%InteractionTargetOption.item_selected.connect(_on_interaction_target_selected)
 	%InteractionPerformButton.pressed.connect(_perform_selected_interaction)
 	%InteractionCloseButton.pressed.connect(_close_interaction_panel)
-	%LetterButton.pressed.connect(_record_pending_letter)
-	%SceneryButton.pressed.connect(_record_pending_scenery)
 	%AlbumButton.pressed.connect(_open_album)
 	%NextVoyageButton.pressed.connect(_start_next_voyage)
+	_populate_identity_options()
 	_populate_decor_slot_options()
-	if GameState.pending_discovery_type != "":
-		_discovery_offer_remaining = DISCOVERY_OFFER_SECONDS
-	else:
-		_schedule_next_discovery(GameState.remaining_seconds >= 299.9)
-	_sync_discovery_buttons()
 	_apply_appreciation_mode()
 	var message := "동반자가 곁에서 조용히 바다를 바라봅니다."
 	if GameState.remaining_seconds < 299.9 and not GameState.voyage_record_created:
@@ -94,10 +109,41 @@ func _ready() -> void:
 	_update_ui(message)
 
 
+func _notification(what: int) -> void:
+	match what:
+		NOTIFICATION_APPLICATION_FOCUS_IN, NOTIFICATION_APPLICATION_RESUMED:
+			set_application_foreground(true)
+		NOTIFICATION_APPLICATION_FOCUS_OUT, NOTIFICATION_APPLICATION_PAUSED:
+			set_application_foreground(false)
+
+
+func set_application_foreground(is_foreground: bool) -> void:
+	_application_foreground = is_foreground
+	if _application_foreground:
+		_refresh_real_time_atmosphere(true)
+
+
+func is_application_foreground() -> bool:
+	return _application_foreground
+
+
+func _refresh_real_time_atmosphere(allow_transition: bool = true) -> void:
+	_apply_time_of_day_tone(_real_time_atmosphere_resolver.resolve_system_time(), allow_transition)
+
+
+func apply_real_time_atmosphere_for_hour(hour: int) -> String:
+	var atmosphere_id := _real_time_atmosphere_resolver.resolve_hour(hour)
+	_apply_time_of_day_tone(atmosphere_id, false)
+	return atmosphere_id
+
+
 func _process(delta: float) -> void:
+	if not _application_foreground:
+		return
 	_apply_drift_motion(delta)
 	_advance_fishing(delta)
-	_advance_ambient_discovery(delta)
+	_advance_distant_scenery(delta)
+	_advance_memory_notification(delta)
 	var completed_now := GameState.tick_voyage(delta)
 	if completed_now:
 		GameState.complete_voyage()
@@ -107,35 +153,53 @@ func _process(delta: float) -> void:
 		_update_ui()
 
 
-func _apply_mood_tone() -> void:
-	var world_environment := $VoyageWorld/WorldEnvironment as WorldEnvironment
-	if world_environment.environment == null:
-		return
-	if GameState.selected_mood == "평온":
-		world_environment.environment.background_color = _time_of_day_background_color
-		return
-	var mood_color: Color = MOOD_SKY_COLORS.get(GameState.selected_mood, _time_of_day_background_color)
-	world_environment.environment.background_color = _time_of_day_background_color.lerp(mood_color, 0.18)
-
-
-func _apply_time_of_day_tone() -> void:
-	var tone := _time_of_day_catalog.get_visual_tone(GameState.get_selected_time_of_day())
+func _apply_time_of_day_tone(atmosphere_id: String, allow_transition: bool = false) -> void:
+	var tone := _time_of_day_catalog.get_visual_tone(atmosphere_id)
 	_time_of_day_background_color = tone["background_color"] as Color
 	var world_environment := $VoyageWorld/WorldEnvironment as WorldEnvironment
+	var sun_light := $VoyageWorld/SunLight as DirectionalLight3D
+	var backdrop_modulate := tone["backdrop_modulate"] as Color
+	_apply_sea_backdrop_art(atmosphere_id)
+	var should_transition := allow_transition and _current_atmosphere_id != "" and _current_atmosphere_id != atmosphere_id
+	_current_atmosphere_id = atmosphere_id
+	if not should_transition:
+		_apply_atmosphere_values(world_environment, sun_light, tone, backdrop_modulate)
+		return
+	if _atmosphere_tween != null and _atmosphere_tween.is_valid():
+		_atmosphere_tween.kill()
+	_atmosphere_tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	if world_environment.environment != null:
+		_atmosphere_tween.tween_property(world_environment.environment, "background_color", _time_of_day_background_color, 1.5)
+		_atmosphere_tween.parallel().tween_property(world_environment.environment, "ambient_light_color", tone["ambient_color"] as Color, 1.5)
+		_atmosphere_tween.parallel().tween_property(world_environment.environment, "ambient_light_energy", float(tone["ambient_energy"]), 1.5)
+	_atmosphere_tween.parallel().tween_property(sun_light, "light_color", tone["light_color"] as Color, 1.5)
+	_atmosphere_tween.parallel().tween_property(sun_light, "light_energy", float(tone["light_energy"]), 1.5)
+	_atmosphere_tween.parallel().tween_property($VoyageWorld/DioramaCameraRig/DioramaCamera3D/SeaBackdrop, "modulate", backdrop_modulate, 1.5)
+	_atmosphere_tween.parallel().tween_property($VoyageWorld/AppreciationCameraRig/AppreciationCamera3D/SeaBackdrop, "modulate", backdrop_modulate, 1.5)
+	_atmosphere_tween.parallel().tween_property($VoyageWorld/BoatSpace/BoatWaterlineOverlay, "modulate", backdrop_modulate, 1.5)
+
+
+func _apply_atmosphere_values(world_environment: WorldEnvironment, sun_light: DirectionalLight3D, tone: Dictionary, backdrop_modulate: Color) -> void:
 	if world_environment.environment != null:
 		world_environment.environment.background_color = _time_of_day_background_color
 		world_environment.environment.ambient_light_color = tone["ambient_color"] as Color
 		world_environment.environment.ambient_light_energy = float(tone["ambient_energy"])
-	var sun_light := $VoyageWorld/SunLight as DirectionalLight3D
 	sun_light.light_color = tone["light_color"] as Color
 	sun_light.light_energy = float(tone["light_energy"])
-	var backdrop_modulate := tone["backdrop_modulate"] as Color
 	$VoyageWorld/DioramaCameraRig/DioramaCamera3D/SeaBackdrop.modulate = backdrop_modulate
 	$VoyageWorld/AppreciationCameraRig/AppreciationCamera3D/SeaBackdrop.modulate = backdrop_modulate
+	$VoyageWorld/BoatSpace/BoatWaterlineOverlay.modulate = backdrop_modulate
+
+
+func _apply_sea_backdrop_art(atmosphere_id: String) -> void:
+	var texture_key := "night" if atmosphere_id == "night" else "default"
+	var backdrop_texture := SEA_BACKDROP_TEXTURES[texture_key] as Texture2D
+	$VoyageWorld/DioramaCameraRig/DioramaCamera3D/SeaBackdrop.texture = backdrop_texture
+	$VoyageWorld/AppreciationCameraRig/AppreciationCamera3D/SeaBackdrop.texture = backdrop_texture
 
 
 func _take_photo() -> void:
-	GameState.add_photo("사진 %d - %s의 바다" % [GameState.photos.size() + 1, GameState.selected_mood])
+	GameState.add_photo("사진 %d - 오늘의 바다" % [GameState.photos.size() + 1])
 	_update_ui("사진을 한 장 남겼습니다. 동반자가 가까이 다가옵니다.")
 
 
@@ -203,8 +267,48 @@ func _get_decor_slot(slot_id: String) -> Node:
 
 func _sync_identity_decor_visuals() -> void:
 	var identity_visual_router := $VoyageWorld/BoatSpace/IdentityVisualRouter
+	if identity_visual_router != null and identity_visual_router.has_method("apply_selection"):
+		identity_visual_router.apply_selection(GameState.get_selected_player_style(), GameState.get_selected_pet_type())
 	if identity_visual_router != null and identity_visual_router.has_method("sync_decor_from_state"):
 		identity_visual_router.sync_decor_from_state()
+
+
+func _populate_identity_options() -> void:
+	%PlayerStyleOption.clear()
+	for player_style_id in _identity_visual_catalog.get_player_style_ids():
+		%PlayerStyleOption.add_item(_identity_visual_catalog.get_player_label(player_style_id))
+		%PlayerStyleOption.set_item_metadata(%PlayerStyleOption.item_count - 1, player_style_id)
+	%PetTypeOption.clear()
+	for pet_type_id in _identity_visual_catalog.get_pet_type_ids():
+		%PetTypeOption.add_item(_identity_visual_catalog.get_pet_label(pet_type_id))
+		%PetTypeOption.set_item_metadata(%PetTypeOption.item_count - 1, pet_type_id)
+	_select_option_by_metadata(%PlayerStyleOption, GameState.get_selected_player_style())
+	_select_option_by_metadata(%PetTypeOption, GameState.get_selected_pet_type())
+
+
+func _on_player_style_selected(index: int) -> void:
+	if index < 0 or index >= %PlayerStyleOption.item_count:
+		return
+	%PlayerStyleOption.select(index)
+	GameState.set_selected_player_style(str(%PlayerStyleOption.get_item_metadata(index)))
+	_sync_identity_decor_visuals()
+
+
+func _on_pet_type_selected(index: int) -> void:
+	if index < 0 or index >= %PetTypeOption.item_count:
+		return
+	%PetTypeOption.select(index)
+	GameState.set_selected_pet_type(str(%PetTypeOption.get_item_metadata(index)))
+	_sync_identity_decor_visuals()
+
+
+func _select_option_by_metadata(option: OptionButton, value: String) -> void:
+	for index in option.item_count:
+		if str(option.get_item_metadata(index)) == value:
+			option.select(index)
+			return
+	if option.item_count > 0:
+		option.select(0)
 
 
 func _populate_decor_slot_options() -> void:
@@ -421,69 +525,53 @@ func _apply_drift_motion(delta: float) -> void:
 	$VoyageWorld/BoatSpace.position.y = _boat_space_base_position.y + boat_bob
 
 
-func _schedule_next_discovery(first_discovery: bool = false) -> void:
-	if GameState.pending_discovery_type != "":
+func _advance_distant_scenery(delta: float) -> void:
+	var event := _drift_scenery_director.advance(delta, _application_foreground)
+	if bool(event.get("show_scenery", false)):
+		_spawn_distant_scenery(str(event.get("scenery_id", "")), bool(event.get("save_memory", false)))
+	if not _application_foreground:
 		return
-	_discovery_wait_remaining = randf_range(FIRST_DISCOVERY_MIN_SECONDS, FIRST_DISCOVERY_MAX_SECONDS) if first_discovery else randf_range(DISCOVERY_MIN_SECONDS, DISCOVERY_MAX_SECONDS)
+	for scenery in _active_distant_scenery.duplicate():
+		if not is_instance_valid(scenery):
+			_active_distant_scenery.erase(scenery)
+			continue
+		scenery.position.x += DISTANT_SCENERY_DRIFT_PER_SECOND * maxf(delta, 0.0)
+		if scenery.position.x > size.x + 24.0:
+			scenery.queue_free()
+			_active_distant_scenery.erase(scenery)
 
 
-func _advance_ambient_discovery(delta: float) -> void:
-	if GameState.appreciation_mode:
+func _spawn_distant_scenery(scenery_id: String, save_memory: bool) -> void:
+	var texture = DISTANT_SCENERY_TEXTURES.get(scenery_id, null)
+	if texture == null:
 		return
-	if GameState.pending_discovery_type != "":
-		_discovery_offer_remaining = maxf(0.0, _discovery_offer_remaining - maxf(delta, 0.0))
-		if _discovery_offer_remaining <= 0.0:
-			GameState.clear_pending_discovery()
-			_sync_discovery_buttons()
-			_schedule_next_discovery()
-			_update_ui("작은 발견은 파도 너머로 조용히 지나갔습니다.")
+	var instance := DISTANT_SCENERY_SCENE.instantiate() as TextureRect
+	if instance == null:
 		return
-	_discovery_wait_remaining = maxf(0.0, _discovery_wait_remaining - maxf(delta, 0.0))
-	if _discovery_wait_remaining <= 0.0:
-		_spawn_ambient_discovery()
+	instance.texture = texture
+	var scenery_size := DISTANT_SCENERY_SIZES.get(scenery_id, Vector2(80, 80)) as Vector2
+	instance.size = scenery_size
+	instance.position = Vector2(-scenery_size.x, 386.0 - scenery_size.y)
+	$DistantSceneryLayer.add_child(instance)
+	_active_distant_scenery.append(instance)
+	if save_memory:
+		var scenery_label := str(DISTANT_SCENERY_LABELS.get(scenery_id, "먼 풍경"))
+		GameState.add_ambient_scenery("지나간 %s" % scenery_label)
+		_show_memory_notification("%s을 조용히 남겼습니다." % scenery_label)
 
 
-func _spawn_ambient_discovery() -> void:
-	if GameState.pending_discovery_type != "":
+func _show_memory_notification(message: String) -> void:
+	%MemoryNotificationLabel.text = message
+	%MemoryNotificationLabel.visible = true
+	_memory_notification_remaining = MEMORY_NOTIFICATION_SECONDS
+
+
+func _advance_memory_notification(delta: float) -> void:
+	if _memory_notification_remaining <= 0.0:
 		return
-	if randi() % 2 == 0:
-		var letter: String = str(LETTER_TEXTS.pick_random())
-		GameState.set_pending_discovery("letter", letter)
-		_update_ui("물결 사이로 작은 병 하나가 천천히 떠올랐습니다.")
-	else:
-		var scenery: String = str(SCENERY_NAMES.pick_random())
-		GameState.set_pending_discovery("scenery", scenery)
-		_update_ui("멀리서 %s 풍경이 눈에 들어옵니다." % scenery)
-	_discovery_offer_remaining = DISCOVERY_OFFER_SECONDS
-	_sync_discovery_buttons()
-
-
-func _record_pending_letter() -> void:
-	if GameState.pending_discovery_type != "letter":
-		return
-	var letter := GameState.pending_discovery_value
-	GameState.add_letter(letter)
-	GameState.clear_pending_discovery()
-	_sync_discovery_buttons()
-	_schedule_next_discovery()
-	_update_ui("병 속 편지를 읽고 기억에 남겼습니다: %s" % letter)
-
-
-func _record_pending_scenery() -> void:
-	if GameState.pending_discovery_type != "scenery":
-		return
-	var scenery := GameState.pending_discovery_value
-	GameState.add_scenery(scenery)
-	GameState.clear_pending_discovery()
-	_sync_discovery_buttons()
-	_schedule_next_discovery()
-	_update_ui("%s 풍경을 오늘의 기억으로 남겼습니다." % scenery)
-
-
-func _sync_discovery_buttons() -> void:
-	var controls_visible := not GameState.appreciation_mode
-	%LetterButton.visible = controls_visible and GameState.pending_discovery_type == "letter"
-	%SceneryButton.visible = controls_visible and GameState.pending_discovery_type == "scenery"
+	_memory_notification_remaining = maxf(0.0, _memory_notification_remaining - maxf(delta, 0.0))
+	if _memory_notification_remaining <= 0.0:
+		%MemoryNotificationLabel.visible = false
 
 
 func _handle_fishing_action() -> void:
@@ -518,25 +606,34 @@ func _set_fishing_status(message: String) -> void:
 
 
 func _apply_appreciation_mode() -> void:
-	var controls_visible := not GameState.appreciation_mode
-	$TopPanel.visible = controls_visible
+	var action_controls_visible := not GameState.appreciation_mode
+	$TopPanel.visible = _rest_menu_open and action_controls_visible
+	$BottomPanel.visible = _rest_menu_open
 	$BottomPanel.offset_top = -56.0 if GameState.appreciation_mode else -176.0
 	$BottomPanel/ButtonGrid.columns = 1 if GameState.appreciation_mode else 2
-	%TakePhotoButton.visible = controls_visible
-	%SpeedButton.visible = controls_visible
-	%FishingButton.visible = controls_visible
-	%DecorButton.visible = controls_visible
-	%InteractButton.visible = controls_visible
-	%AlbumButton.visible = controls_visible
-	%AppreciationButton.visible = true
+	%RestMenuButton.visible = action_controls_visible
+	%RestMenuButton.text = "닫기" if _rest_menu_open else "메뉴"
+	%TakePhotoButton.visible = action_controls_visible
+	%SpeedButton.visible = action_controls_visible
+	%FishingButton.visible = action_controls_visible
+	%DecorButton.visible = action_controls_visible
+	%InteractButton.visible = action_controls_visible
+	%AlbumButton.visible = action_controls_visible
+	%AppreciationButton.visible = _rest_menu_open
 	%AppreciationButton.text = "감상 끝내기" if GameState.appreciation_mode else "감상모드"
 	if GameState.appreciation_mode:
 		$DecorPanel.visible = false
 		$InteractionPanel.visible = false
 	_apply_camera_mode()
-	_sync_discovery_buttons()
 	_sync_next_voyage_button()
-	%FishingStatusLabel.visible = controls_visible and %FishingStatusLabel.text != ""
+	%FishingStatusLabel.visible = _rest_menu_open and action_controls_visible and %FishingStatusLabel.text != ""
+
+
+func _toggle_rest_menu() -> void:
+	if GameState.appreciation_mode:
+		return
+	_rest_menu_open = not _rest_menu_open
+	_apply_appreciation_mode()
 
 
 func _sync_next_voyage_button() -> void:
@@ -554,11 +651,12 @@ func _start_next_voyage() -> void:
 		return
 	if _fishing_session.is_waiting() or _fishing_session.is_bite_ready():
 		_fishing_session.cancel()
-	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+	GameState.begin_voyage()
+	get_tree().reload_current_scene()
 
 
 func _update_ui(message: String = "") -> void:
-	%MoodStatusLabel.text = "마음: %s / 동반자 Lv %d" % [GameState.selected_mood, GameState.companion_affection]
+	%VoyageStatusLabel.text = "동반자와 바다를 보고 있어요."
 	%TimerLabel.text = _format_time(GameState.remaining_seconds)
 	%SpeedButton.text = "속도: %s" % SPEED_NAMES[clampi(GameState.speed_index, 0, SPEED_NAMES.size() - 1)]
 	if message != "":

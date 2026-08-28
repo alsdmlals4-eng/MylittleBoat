@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3]
+[gd_scene load_steps=24 format=3]
 
 [ext_resource type="Script" path="res://scripts/voyage/resting_pet_placeholder.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/avatar/player_avatar_placeholder.gd" id="2"]
@@ -16,6 +16,7 @@
 [ext_resource type="Texture2D" path="res://assets/images/runtime/storybook/pet_rabbit_storybook.png" id="14"]
 [ext_resource type="Texture2D" path="res://assets/images/runtime/storybook/pet_otter_storybook.png" id="15"]
 [ext_resource type="Shader" path="res://shaders/storybook_cushion_surface.gdshader" id="16"]
+[ext_resource type="Texture2D" path="res://assets/images/runtime/storybook/boat_waterline_storybook.png" id="17"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_boat"]
 size = Vector3(2.8, 0.22, 2.4)
@@ -475,6 +476,13 @@ pixel_size = 0.0017
 billboard = 1
 no_depth_test = false
 texture = ExtResource("9")
+
+[node name="BoatWaterlineOverlay" type="Sprite3D" parent="."]
+position = Vector3(0, 0.25, 0.6)
+pixel_size = 0.0011
+billboard = 1
+no_depth_test = true
+texture = ExtResource("17")
 
 [node name="StorybookPetCushionSurface" type="Sprite3D" parent="."]
 visible = false
