@@ -21,17 +21,23 @@ final_review_owner: GPT_FINAL_IMPLEMENTATION_REVIEW
 concurrent_pr_19: READ_ONLY_NO_ABSORPTION
 image_generation_by_codex: ALLOWED_BY_USER_AUTO_ASSET_POLICY_2026_08_26
 image_registration_policy: AUTO_CREATE_REVIEW_NOTION_AND_PROJECT_LOCAL
-visual_reference_lock: HANDPAINTED_STORYBOOK_3D_DIORAMA
+visual_reference_lock: HANDPAINTED_STORYBOOK_3D_DIORAMA + SOFT_MANGA_CHIBI_CHARACTER_REFINEMENT + INDIGO_RAIN_REFLECTION_NIGHT
 ```
 
 ## Current screen-coverage readback
 
 The current runtime-image and diorama integration remains complete. A fresh whole-screen audit now owns the next visual product decision at `docs/visual/CURRENT_SCREEN_SURFACE_INVENTORY_AND_VISUAL_ASSET_COVERAGE.md`.
 
+The user-approved `INDIGO_RAIN_REFLECTION` and four-time continuity board are planning-direction locks at `docs/visual/2026-08-28-indigo-rain-four-time-visual-lock.md`. Current `main` still uses the pre-lock Night background/tone. Do not call the new Night presentation runtime-implemented until a separate approved contract updates concrete consumers, tests, and 540×960 runtime evidence.
+
+The user-approved companion-affection source is at `docs/2026-08-28-time-based-companion-affection-decision.md`; its quiet presentation is at `docs/2026-08-28-quiet-companion-affection-presentation-decision.md`. Current `GameState.add_photo`, `add_scenery`, and `add_letter` still raise action-based affection, and GameScene/AlbumView display `동반자 Lv`; this implementation is product-superseded and must not be extended. A future single contract owns active-foreground-voyage time accumulation, local persistence/migration, AlbumView `함께한 시간` plus quiet relation copy, removal of voyage-facing level feedback, focused tests, and runtime/Human evidence. It must not create a separate companion Scene, progress bar, growth popup, or rewards.
+
+The user-approved passive Ambient Discovery direction is at `docs/2026-08-28-passive-ambient-discovery-decision.md`; its density envelope is at `docs/2026-08-28-passive-ambient-discovery-density-decision.md`. Current `game_scene.gd` creates a pending `letter`/`scenery`, forces its first prompt in 18–30 seconds, repeats at 35–60-second waits, hides the scheduler in Appreciation Camera, shows `LetterButton`/`SceneryButton`, and drops the offer after a timer; that action-gated, earlier/higher-density behavior is product-superseded. Do not extend it or treat it as Bottle behavior. A later single contract owns neutral local ambient-memory data, approximately 1–2 passive events per nominal five-minute voyage without a first-event guarantee, random low-density scheduling, small auto-fading notification, immediate local persistence, migration, UI retirement, tests, and runtime/Human evidence.
+
 - `MLB-SCR-001` main entry is complete on `main` through [Issue #71](https://github.com/alsdmlals4-eng/MylittleBoat/issues/71) and [PR #72](https://github.com/alsdmlals4-eng/MylittleBoat/pull/72), merge commit `7a107873c49cb289fe9f4bc02bcda1c065f8d6e3`. `AtmosphereBackground` selects the approved 1024×1536 file for each time choice, `DioramaAnchor` presents the approved C+dog boat anchor, and compact Godot UI controls preserve identity, light, mood, and route semantics. Four 540×960 runtime captures, the focused contract, all existing contracts, three scene smokes, and GitHub validation passed.
 - `MLB-SCR-010` album composition is complete on `main` through [Issue #75](https://github.com/alsdmlals4-eng/MylittleBoat/issues/75) and [PR #76](https://github.com/alsdmlals4-eng/MylittleBoat/pull/76), merge commit `69a2a7f2fdbfc251cfb6d4a3f446ab39dd080cbc`. It uses Godot UI/text, the selected approved atmosphere background, and actual record text; it adds no authored fake album images. Empty and populated 540×960 captures, focused contracts, full test suite, three scene smokes, and GitHub validation passed.
 - Main-menu atmosphere backgrounds are the only post-audit bitmap family approved by the user's explicit 2026-08-28 request. No UI icon, portrait-only, UV texture, album filler, or other image family is implied.
-- The screen inventory now uses the required screen × object × state × variation fields and confirms no other current runtime image family is missing. PR #19 remains `READ_ONLY_NO_ABSORPTION`.
+- The screen inventory now uses the required screen × object × state × variation fields and confirms no other current runtime image family is missing. [PR #80](https://github.com/alsdmlals4-eng/MylittleBoat/pull/80) adds the main-menu atmosphere and album-composition contracts to the current CI suite; its exact head passed GitHub Godot validation. PR #19 remains `READ_ONLY_NO_ABSORPTION`.
 
 ## Binding pipeline
 
@@ -48,7 +54,7 @@ RUNTIME_CONSUMER_OR_CLEAR_VISUAL_NEED
 → GPT final implementation review
 ```
 
-The user has authorized automatic image creation and final registration for assets Codex judges necessary. Each generated result must still be runtime-reviewed, stored both project-locally and in Notion Asset Library, and preserve the approved `HANDPAINTED_STORYBOOK_3D_DIORAMA` visual language. Use warm dark wood, rounded restrained silhouettes, matte hand-painted surfaces, small-life props, and a calm expansive horizon; do not drift into generic glossy CG or copy a reference board.
+The user has authorized automatic image creation and final registration for assets Codex judges necessary. Each generated result must still be runtime-reviewed, stored both project-locally and in Notion Asset Library, and preserve the approved `HANDPAINTED_STORYBOOK_3D_DIORAMA` visual language plus its `SOFT_MANGA_CHIBI_CHARACTER_REFINEMENT`. Use warm dark wood, rounded restrained silhouettes, matte hand-painted surfaces, a calm expansive horizon, and soft-manga chibi player/pet readability; do not drift into generic glossy CG or copy a reference board.
 
 ## Completed image integration goals
 
@@ -103,7 +109,7 @@ Exact Godot implementation details remain Codex choices after fresh-read. Preser
 
 Do not invent consumers to absorb extra art:
 
-- Main Menu/Album authored backgrounds are not required now.
+- No additional Main Menu/Album authored bitmap family is required now. The approved main-menu atmosphere backgrounds are already integrated, and Album reuses the selected approved background with actual records; fake album filler remains prohibited.
 - character/pet selection thumbnails derive from actual 3D previews.
 - exact UV-specific character/pet/boat texture sheets are blocked by production geometry.
 - sky/sea bitmap assets are conditional; prefer simple color/light/procedural route.

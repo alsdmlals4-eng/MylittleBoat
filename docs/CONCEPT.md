@@ -18,6 +18,12 @@ SOFT_STORYBOOK_3D_DIORAMA
 
 HANDPAINTED_STORYBOOK_3D_DIORAMA
 = current detailed visual-style canon
+
+SOFT_MANGA_CHIBI_CHARACTER_REFINEMENT
+= current approved character/pet refinement inside the detailed canon
+
+INDIGO_RAIN_REFLECTION
+= current approved `night` atmosphere subdirection inside the detailed canon
 ```
 
 The refinement preserves the existing 3D boat/camera/decor/interaction structure. It does **not** convert the project into a full 2D game.
@@ -27,6 +33,7 @@ Implementation-facing summary:
 - silhouette before face: player recognition comes from posture, large authored hair/clothing masses, and a small number of deliberate shape anchors;
 - minimal face detail at gameplay distance; avoid large glassy eyes, smooth beauty-render skin, and generic AI illustration face templates;
 - hair reads as 2–4 large painted masses rather than many glossy strands;
+- character and pet use the approved `SOFT_MANGA_CHIBI_CHARACTER_REFINEMENT`: rounded but not toddler proportions, a large readable hair mass, gentle warm eyes without glassy highlights, delicate warm contour accents, and restrained two-tone cel shading;
 - 3D geometry remains the foundation while painted albedo, broad value grouping, and controlled surface irregularity carry the style identity;
 - matte-biased materials and reduced specular response take priority over photoreal PBR micro-detail;
 - stable horizon and low-to-medium environmental contrast remain protected;
@@ -37,14 +44,19 @@ Implementation-facing summary:
 - decoration adds lived-in attachment without hiding the sea;
 - Appreciation Camera remains the quieter sea/horizon-focused alternate view;
 - comparison B is a `USER_PREFERRED_REFERENCE`, not final player identity, pet species, UI, boat, palette, or approved project asset;
+- `night` is visually directed toward `INDIGO_RAIN_REFLECTION`: fine calm rain, broad indigo water reflection, deep blue sky, and a secondary warm lantern. It remains the existing night choice, not a fifth time/weather choice or gameplay system;
 - `DIORAMA_PIXEL` and `HD2D_COZY_PIXEL` remain alternatives, not the selected current canon;
 - do not reproduce identifiable Bondee / Animal Crossing / Spirit City / Garden Galaxy proportions, UI, branding, or trade dress.
+- every future visual approval presents at least three materially different candidates under the same consumer, camera, composition, information density, and known constraints, and states a GPT recommendation with player value, cost, risk, reversibility, and evidence status.
 
 Evidence boundary:
 
 ```text
 VISUAL_STYLE_DIRECTION = APPROVED
 DETAILED_VISUAL_STYLE_CANON = HANDPAINTED_STORYBOOK_3D_DIORAMA
+CHARACTER_STYLE_REFINEMENT = SOFT_MANGA_CHIBI_CHARACTER_REFINEMENT / USER_APPROVED_COMPARISON_C_LOWER_LEFT
+NIGHT_ATMOSPHERE_REFINEMENT = INDIGO_RAIN_REFLECTION / USER_APPROVED_PLANNING_DIRECTION
+FOUR_TIME_CONTINUITY_BOARD = USER_APPROVED_VISUAL_DIRECTION / NOT_RUNTIME_ASSET
 APPROVED_REPRESENTATIVE_VISUAL_GDD = CANCELLED_AS_REQUIRED_DELIVERABLE
 FINAL_AVATAR_ART = USER_APPROVED_NOTION_REGISTERED_LOCATOR_PASS
 FINAL_PET_ART = USER_APPROVED_NOTION_REGISTERED_LOCATOR_PASS
@@ -81,9 +93,27 @@ HUMAN_VISUAL_COMFORT_VALIDATION = NOT_RUN
 
 `Appreciation Mode`를 켜면 기존 sea-focused 카메라가 활성화되고 대부분의 비필수 UI가 숨겨집니다. 이 전환은 항해 시간·보상·사운드스케이프를 바꾸지 않습니다. Appreciation Camera의 마우스/화면 드래그 입력은 해당 카메라가 실제 활성 상태일 때만 동작해 정상 디오라마 터치를 빼앗지 않습니다.
 
-항해 중 사진·속도조절·Ambient Discovery·조용한 낚시·보트 꾸미기·작은 상호작용은 모두 선택입니다. 시스템은 플레이어를 계속 호출하지 않고, 무시해도 손해가 없어야 합니다.
+항해 중 사진·속도조절·조용한 낚시·보트 꾸미기·작은 상호작용은 모두 선택입니다. 시스템은 플레이어를 계속 호출하지 않고, 무시해도 손해가 없어야 합니다. Ambient Discovery는 선택을 요구하는 활동이 아니라 낮은 빈도로 스스로 지나가는 확률형 배경 연출입니다.
+
+### 확정된 항해 역할 · 자유로운 조용한 놀이터
+
+정상 항해의 기본 행동은 **평화롭게 떠다니며 바다를 보고, 플레이어와 펫이 쉬는 모습을 함께 바라보는 것**입니다. 아무 행동도 하지 않는 시간은 비어 있는 대기나 실패가 아니라 완전한 플레이입니다.
+
+낚시, 풍경사진, 꾸미기, 작은 상호작용은 원할 때 자유롭게 오가는 곁가지입니다. 이들은 항해마다 하나를 고르게 하거나, 바로 실행하라고 재촉하거나, 순서·보상·성장 효율을 만들지 않습니다. Ambient Discovery는 이에 붙는 미션이나 버튼이 아니라, 작은 알림만 남기고 즉시 로컬 항해 기억에 자동 저장되는 확률형 순수 배경 연출입니다. 명목상 5분 항해에는 대체로 1~2회를 목표로 하되 첫 등장은 보장하지 않으며, 발견이 없는 항해도 완전한 휴식입니다. 보드와 후속 UI는 정상 디오라마의 휴식을 중심에 두고, 선택 활동과 이 낮은 빈도의 변화를 조용한 주변 경로로 보여줍니다.
 
 펫은 관리 대상이 아닙니다. 배고픔·청소·피로·방치 패널티 없이 바다를 바라보고, 눕고, 졸고, 가끔 플레이어를 보는 **정서적 동반자**입니다.
+
+### 확정된 동반자 호감도 · 함께 보낸 항해 시간
+
+동반자 호감도는 선택 활동을 많이 수행한 효율이 아니라, 활성 항해 화면에서 해당 동반자와 함께 보낸 실제 시간으로만 천천히 증가합니다. Normal Diorama와 Appreciation Camera는 같은 항해 시간이므로 동일하게 인정하며, 아무 입력 없이 바다를 바라보는 시간도 완전하게 포함됩니다.
+
+사진·풍경·편지·물고기·Ambient Discovery·꾸미기·저압력 상호작용·마음·시간대·속도 조절은 호감도의 원천이나 배율이 아닙니다. 백그라운드/일시정지, 메인 메뉴, 앨범 시간은 항해 시간에 포함하지 않습니다. 호감도는 손실·방치 패널티·streak·능력치·경제·경쟁·소셜 자격을 만들지 않으며, 현재 action-based 구현은 이 승인 방향보다 오래된 기술 상태입니다. 정확한 시간 비율·표시·저장은 별도 Phase 2 구현계약에서 정합니다.
+
+현재 고양이·토끼·강아지·수달 선택은 순수 외형이므로 호감도는 종마다 따로 갈라지지 않는 전역 `함께 보낸 시간`입니다. 외형을 바꿔도 수치가 줄거나 초기화되지 않고 종별 보정도 없습니다.
+
+### 확정된 호감도 표시 · 앨범의 함께한 시간
+
+동반자와의 시간은 항해 중 계속 확인하는 level이나 진행률이 아니라, 앨범에서 돌아보는 조용한 기록입니다. 첫 소비처는 기존 AlbumView이며 `함께한 시간`과 정서적 관계 문구 한 줄만 보여 줍니다. 정상 항해와 Appreciation Camera에는 `Lv`, 수치, progress bar, milestone popup을 두지 않습니다. 이 표시는 전역 cosmetic-neutral 시간이며 reward·unlock·숙제·완료율을 만들지 않습니다.
 
 ## 구현된 Local Boat Life 기술 Slice
 

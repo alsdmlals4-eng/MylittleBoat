@@ -178,14 +178,18 @@
 - 카메라/보트 bob은 멀미를 유발하지 않을 만큼 작게 유지한다.
 - Human QA에서 불편이 확인되면 bob/환경 motion을 더 낮추거나 끌 수 있는 경로를 우선 고려한다.
 - 날씨 변화는 위협보다 분위기 변화로 읽혀야 한다.
+- 현재 승인된 `night` 시각 세부 기준은 `INDIGO_RAIN_REFLECTION`이다. 가는 비와 억제된 인디고 반사는 바다를 조금 더 살아 있게 보이게 하는 분위기 표현일 뿐, 우천 위험·미션·보상·사운드 이벤트·별도 날씨 선택을 뜻하지 않는다. `dawn / bright / sunset`도 넓은 하늘 여백·안정된 수평선·저대비 수면이라는 같은 문법을 유지한다.
 
 ### 상세 그림체 정본 · `HANDPAINTED_STORYBOOK_3D_DIORAMA`
 
 `SOFT_STORYBOOK_3D_DIORAMA`는 상위 Visual 철학으로 유지하고, 실제 제작의 현재 상세 방향은 `HANDPAINTED_STORYBOOK_3D_DIORAMA`를 사용합니다. **3D geometry와 현재 카메라/보트 구조는 유지하되 최종 프레임이 glossy CG보다 움직이는 그림책처럼 읽히는 것**이 목표입니다.
 
+`SOFT_MANGA_CHIBI_CHARACTER_REFINEMENT`은 이 방향 안에서 플레이어와 펫에만 적용하는 현재 승인 세부 기준입니다. 배경의 넓고 손그림 같은 바다·하늘은 유지하되, 캐릭터는 더 둥글고 애니메이션처럼 읽히는 비율·얼굴·머리 덩어리·따뜻한 윤곽선·절제된 셀 명암을 사용합니다. 이는 새 runtime asset이나 캐릭터 나이/시스템 변경 승인이 아닙니다.
+
 #### Character
 
 - 실루엣·자세·큰 옷/머리 덩어리가 얼굴보다 먼저 읽혀야 합니다.
+- 기본 C knit/long-hair 캐릭터는 약 3.25-head의 부드러운 치비 비율, 큰 wavy hair mass, 작은 따뜻한 눈·코·입, 옅은 볼색, cream knit와 muted teal-blue 계열의 간결한 큰 의상 덩어리로 읽혀야 합니다. 큰 유리눈, fashion-glamour, 실제 유아화는 피합니다.
 - 얼굴은 모바일 거리에서 필요한 만큼만 단순하게 표현하고 큰 유리눈·매끈한 beauty skin·과도한 속눈썹/블러시를 피합니다.
 - 머리카락은 수많은 가닥보다 2~4개의 큰 painted mass를 우선합니다.
 - 최종 성별·나이·머리·복장은 비교 시안 B가 결정하지 않습니다.
@@ -193,6 +197,7 @@
 #### Pet
 
 - 펫은 수집 마스코트가 아니라 같이 쉬는 존재입니다.
+- 기본 강아지는 플레이어와 같은 soft-manga chibi 선·명암 언어를 사용하며, 둥근 귀·짧은 주둥이·낮은 긴장도의 표정으로 동반자임을 먼저 읽혀야 합니다.
 - 기본 동반자는 사용자 승인 C knit/long-hair + 강아지 조합이며, 고양이·토끼·수달은 local cosmetic selection으로도 사용할 수 있습니다. 어떤 종도 stats, rarity, care obligation을 갖지 않습니다.
 - 눕기·바다 보기·졸기·기지개 같은 큰 resting pose와 낮은 빈도의 idle을 우선합니다.
 
@@ -291,11 +296,29 @@ HUMAN_STYLE_APPROVAL = NOT_RUN
 
 이 중 여러 요소가 동시에 플레이어의 주의를 요구해서는 안 됩니다.
 
+### Ambient Discovery · 배경이 남기는 작은 기억
+
+Ambient Discovery는 플레이어가 보상을 얻기 위해 고르는 이벤트가 아니라, 낮은 빈도로 바다·하늘·먼 거리에서 스스로 지나가는 확률형 배경 연출입니다. 발견 순간에는 작은 비차단 알림만 잠시 보이고 자동으로 사라지며, 그 장면은 버튼이나 확인 없이 local ambient memory로 즉시 저장됩니다.
+
+Normal Diorama와 Appreciation Camera 모두에서 같은 의미로 나타나되, 감상 화면의 바다·수평선을 가리지 않아야 합니다. 명목상 5분 항해에는 대체로 1~2회를 목표로 하지만 첫 발견은 보장하지 않고, 0회인 항해도 정상입니다. 병편지·외부 메시지·소셜 알림과 구분하며, 호감도·보상·점수·희귀도·timer·camera·FOMO를 만들지 않습니다. 정확한 발생률, motif, persistence와 runtime UI는 별도 Phase 2 계약 전까지 미확정입니다.
+
 ## 6. 펫/동반자 정본
 
 ### 역할
 
 펫은 플레이어를 계속 즐겁게 해주는 entertainer보다 **같은 공간을 편안하게 공유하는 companion**입니다.
+
+### 함께 보낸 시간과 호감도
+
+동반자 호감도는 활성 foreground 항해의 경과 시간만으로 쌓입니다. Normal Diorama와 Appreciation Camera, 그리고 항해 기록 뒤에 더 머무는 시간은 같은 동행 시간으로 인정합니다. 입력·사진·풍경·편지·물고기·낚시·발견·꾸미기·상호작용·시간대·속도는 수치의 원천이나 배율이 아닙니다.
+
+메인 메뉴·앨범·백그라운드/일시정지는 누적하지 않습니다. 호감도는 관리, 방치 벌, streak, 능력치, 경제, 경쟁, 소셜 자격을 만들지 않으며, 현행 action-based `companion_affection`은 product-superseded implementation입니다. 정확한 rate, threshold, 저장 migration, UI 표현은 별도 Phase 2 계약과 실제 5분 Human validation 전까지 확정하지 않습니다.
+
+고양이·토끼·강아지·수달은 순수 local cosmetic 선택이므로, 호감도는 pet type별 ledger가 아닌 전역 `함께 보낸 시간`입니다. 외형을 바꿔도 호감도는 잃거나 초기화되지 않고 종별 보정도 없습니다.
+
+### 조용한 표시 원칙
+
+호감도는 항해 화면을 점유하는 level loop가 아니라 앨범에서 돌아보는 동행 기록입니다. 첫 구현은 새 companion Scene 없이 기존 AlbumView에 `함께한 시간`과 비경쟁적 관계 문구 한 줄을 두는 방식입니다. TopPanel·Appreciation Camera에는 숫자·레벨·진행 바·성장 알림을 두지 않으며, 문구는 reward·unlock·다음 행동을 암시하지 않습니다.
 
 ### 기본 Idle Pool
 
