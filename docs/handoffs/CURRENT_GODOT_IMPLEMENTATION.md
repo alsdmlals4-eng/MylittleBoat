@@ -1,93 +1,75 @@
 # 현재 Godot 구현 handoff
 
 **프로젝트:** `MY_LITTLE_BOAT`
-**역할:** 실제 코드·Scene·test·runtime evidence와 현재 제품 정본의 차이를 기록하는 기술 router
-**현재 사람용 정본:** [프로젝트 GDD](../design/PROJECT_GDD.md)
-**현재 작업:** Issue #99 / Draft PR #100의 direct boat entry 정본화. 이 문서는 runtime 변경을 포함하지 않습니다.
 
-## 1. 먼저 읽을 것
+**갱신일:** 2026-08-29
+
+**현재 작업:** GitHub Issue #101의 direct boat entry, 현실 시간 분위기, foreground drifting scenery 구현
+
+**사람용 정본:** [프로젝트 GDD](../design/PROJECT_GDD.md)
+**시각 consumer/provenance:** [visual inventory](../visual/CURRENT_SCREEN_SURFACE_INVENTORY_AND_VISUAL_ASSET_COVERAGE.md)
+
+## 1. authority와 읽는 순서
 
 1. `AGENTS.md`
 2. `docs/design/PROJECT_GDD.md`
 3. 이 handoff
-4. `docs/visual/CURRENT_SCREEN_SURFACE_INVENTORY_AND_VISUAL_ASSET_COVERAGE.md`
-5. 실제 Scene, GDScript, 테스트, capture
+4. `scenes/game.tscn`, `scenes/boat_space.tscn`, `scripts/core/game_state.gd`, `scripts/voyage/game_scene.gd`
+5. `tests/test_*`와 [2026-08-29 runtime evidence](../evidence/2026-08-29-direct-boat-entry/README.md)
 
-이 repository는 Notion을 현재 정본으로 사용하지 않습니다. 이전 Notion은 historical discovery archive이며, active implementation 판단은 repository source와 runtime evidence를 우선합니다.
+Notion은 historical discovery archive다. current write/readback target이 아니며, 실제 runtime 사실은 repository source와 실행 evidence가 소유한다.
 
-## 2. 현재 제품 방향과 runtime gap
+## 2. 현재 실제 상태
 
-| 주제 | 현재 제품 정본 | 현재 main code | disposition |
+| 주제 | 현재 code/runtime | evidence ceiling |
+| --- | --- | --- |
+| 시작 | `project.godot`의 main scene은 `scenes/game.tscn`이다. 첫 화면에는 보트·캐릭터·동반자·바다와 `메뉴`만 보인다. | automated contract와 540 x 960 GPU capture `PASS`; Human `NOT_RUN` |
+| 구형 menu 경로 | `scenes/main_menu.tscn`은 오래된 링크용 호환 route로 즉시 `game.tscn`으로 넘긴다. mood/time/identity 선택을 제품 UI로 노출하지 않는다. | headless smoke `PASS` |
+| 오늘의 마음 | `GameState`의 mood와 시작 choice를 retire했다. 항해 기록은 중립 문구다. | state contract `PASS` |
+| 현실 시간 분위기 | `RealTimeAtmosphereResolver`가 현지 시간 05–08 dawn, 09–16 bright, 17–20 sunset, 21–04 night를 매핑한다. 시작·focus/resume·30초 refresh에서 visual만 바꾼다. | resolver/game contract `PASS`; GPU capture `PASS` |
+| 밤 바다 | night는 전용 `sea_night_indigo_rain_storybook.png`를 두 카메라에 적용한다. 낮/새벽/해질녘은 같은 bright sea art의 tone을 쓴다. | resource-path contract와 GPU capture `PASS` |
+| 보트-물 접점 | `BoatWaterlineOverlay`가 hull 하단의 wake를 가려 보트가 바다와 분리되어 보이는 문제를 줄인다. | 540 x 960 GPU capture `PASS`; Human visual judgment `NOT_RUN` |
+| 흘러가는 풍경 | `DriftSceneryDirector`는 foreground delta만 누적한다. 약 90–150초 뒤 부표·작은 섬·등대가 horizon layer를 천천히 가로지른다. | director/runtime contracts `PASS`; 5분 빈도 Human judgment `NOT_RUN` |
+| Ambient memory | 풍경 event의 일부만 local `ConfigFile`에 즉시 저장하며 작은 자동 소멸 알림을 보인다. reward, task, tap, missed penalty, affection 변화가 없다. | persistence contract `PASS`; UX noticeability `NOT_RUN` |
+| 꾸미기 | 외형·동반자·보트 장식은 `메뉴 → 꾸미기`에만 있고 live boat visual에 적용된다. | identity contract `PASS`; mobile touch `NOT_RUN` |
+| 함께 보낸 시간 | foreground time 기반 호감도/album 표현은 아직 없다. | `CONFIRMED_NOT_IMPLEMENTED` |
+
+## 3. 핵심 runtime owner
+
+| owner | 책임 |
+| --- | --- |
+| `scripts/voyage/real_time_atmosphere_resolver.gd` | 시스템 현지 시각을 승인 atmosphere ID로 변환하는 순수 함수 |
+| `scripts/voyage/game_scene.gd` | direct entry, 30초 refresh, focus lifecycle, 두 camera 적용, UI, scenery consumer |
+| `scripts/voyage/drift_scenery_director.gd` | foreground-only scenery timing 및 memory 기회 생성 |
+| `scripts/core/ambient_memory_persistence.gd` | `user://ambient_memories_v1.cfg`의 local memory 저장·복원 |
+| `scenes/distant_scenery.tscn` | runtime horizon overlay prop의 공통 surface |
+| `scenes/boat_space.tscn` | boat, avatar/pet visual, hull-water wake overlay |
+
+## 4. 실행 검증과 한계
+
+- Headless behavior contracts와 `game.tscn`, `main_menu.tscn`, `album.tscn` smoke를 실행했다.
+- Windows OpenGL Compatibility renderer에서 540 x 960 GPU capture를 생성하고 낮·새벽·해질녘·밤·원거리 섬 화면을 직접 확인했다.
+- capture는 코드가 해당 화면을 만들었다는 evidence다. 실제 기기 성능, 터치, 30초 첫인상, 5분 동안의 평온함, 알림의 과하지 않음, 오디오 편안함은 아직 증명하지 않는다.
+- Headless run의 `ObjectDB instances were leaked` 경고는 기존 plugin 종료 경고로 exit code 0의 behavior contract 결과와 분리해 기록한다. task-related runtime error는 관찰하지 않았다.
+
+## 5. 적대적 검토와 교정 receipt
+
+| 공격 질문 | finding | 교정 | 결과 |
 | --- | --- | --- | --- |
-| 시작 | 실행 즉시 normal 3/4 boat diorama | `scenes/main_menu.tscn`의 선택형 panel 뒤 `game.tscn` 진입 | `PRODUCT_SUPERSEDED_IMPLEMENTATION` |
-| 오늘의 마음 | 제품에서 제거 | `selected_mood`, mood button, mood tone, record wording, 관련 test가 존재 | `PRODUCT_SUPERSEDED_IMPLEMENTATION` |
-| 꾸미기 entry | 바다를 본 뒤 optional `꾸미기` | identity/pet/time 선택이 menu에 있고 decor는 game panel에 존재 | `PRODUCT_SUPERSEDED_IMPLEMENTATION` |
-| 시간 기반 분위기 | 기기의 현지 현실 시간이 자동 적용, selector·saved preference 없음 | process-lifetime selection만 존재하고 menu OptionButton이 소비 | `PRODUCT_SUPERSEDED_IMPLEMENTATION` |
-| 흘러가는 풍경 | active foreground 시간에만 low-density distant scenery와 ambient memory | action-gated offer, early forced prompt, button/expiry path | `PRODUCT_SUPERSEDED_IMPLEMENTATION` |
-| 함께 보낸 시간 | active foreground voyage time만 album에 조용히 표시 | 행동으로 `companion_affection`을 올리고 voyage/album `Lv`를 표시 | `PRODUCT_SUPERSEDED_IMPLEMENTATION` |
-| Ambient Discovery | low-density passive presentation + 작은 알림 + local auto-save | action-gated offer, early forced prompt, button/expiry path | `PRODUCT_SUPERSEDED_IMPLEMENTATION` |
+| 밤 원화가 낮과 같은 수평선 구도를 지키는가 | 첫 night candidate는 sea horizon이 너무 낮아 보트가 sky 위에 뜬 것처럼 읽혔다. | bright sea와 같은 lower-half ocean/horizon 구도의 night art로 교체하고 GPU capture를 다시 생성했다. | `CORRECTED_AND_CAPTURED` |
+| 보트가 바다와 물리적으로 분리돼 보이는가 | hull 하단과 sea 사이의 빈 공간이 첫 capture에서 읽혔다. | `BoatWaterlineOverlay`를 boat consumer로 추가해 wake/occlusion을 맞췄다. | `CORRECTED_AND_CAPTURED` |
+| 3D distant prop이 실제 camera에서 보이는가 | 첫 Sprite3D prop은 camera background에 가려졌다. | input 없는 horizon `CanvasLayer`-equivalent Control overlay로 좁은 2.5D consumer를 사용했다. | `CORRECTED_AND_TESTED` |
+| 자동 저장이 행동 보상으로 바뀌는가 | 기존 scenery/letter path는 affection을 바꾸는 오래된 slice였다. | local ambient memory owner를 분리하고 scenery event는 affinity를 바꾸지 않게 했다. | `CORRECTED_AND_TESTED` |
+| 구현/정적 이미지/Human PASS를 혼동하는가 | capture만으로 휴식 경험을 과장할 위험이 있다. | 모든 current docs에 GPU capture와 Human `NOT_RUN`을 분리했다. | `CLEAN` |
 
-현재 code가 존재한다는 사실은 해당 제품 방향이 여전히 승인되었다는 뜻이 아닙니다. 반대로 GDD 결정은 code/test/capture가 바뀌기 전까지 runtime PASS를 뜻하지 않습니다.
+## 6. 다음 작업
 
-## 3. Issue #99의 구현 금지선
+1. 사용자가 실제 기기에서 첫 30초와 5분 항해를 해 보고 보트-물 접점, 메뉴 발견성, 시간대 전환, 풍경 빈도, 알림의 존재감을 평가한다.
+2. 사용자가 승인한 별도 계약으로 foreground 함께 보낸 시간에 따른 조용한 동반자 관계 표현을 구현한다.
+3. audio soundscape와 실제 mobile performance는 별도 scope로 검증한다.
 
-이 문서 정본화 PR에서는 아래 runtime owner를 수정하지 않습니다.
+## 7. 다른 workstream 경계
 
-```text
-scenes/main_menu.tscn
-scripts/ui/main_menu.gd
-scripts/core/game_state.gd
-scripts/voyage/game_scene.gd
-tests/test_calm_voyage_state.gd
-tests/test_game_scene_contract.gd
-tests/test_game_scene_time_of_day_contract.gd
-tests/test_main_menu_identity_contract.gd
-tests/test_main_menu_time_of_day_contract.gd
-tests/test_main_menu_atmosphere_background_contract.gd
-tests/capture_main_menu_atmospheres.gd
-assets/
-```
-
-PR #19 `feat/social-fake-backend-20260824`도 `READ_ONLY_NO_ABSORPTION`입니다.
-
-## 4. 다음 Phase 2 implementation contract
-
-다음 구현은 위 gap을 따로 쪼개서 부분적으로 고치지 않습니다. 아래를 한 contract로 묶어 설계·테스트·runtime capture·Human validation까지 검증합니다.
-
-1. `project.godot`의 startup route가 새 local state에서 곧바로 normal boat diorama를 연다.
-2. `GameState`가 mood를 retire하고, 현지 현실 시간을 순수 visual atmosphere로 resolve한다. selector·saved atmosphere를 만들지 않는다.
-3. active foreground 시간만 쓰는 drifting scenery director가 distant scenery와 low-density ambient memory를 관리한다.
-4. player appearance, pet species, boat decor가 in-voyage optional `꾸미기`에서만 접근 가능하다.
-5. mood-facing UI, wording, color rule, test/capture dependency가 제거되거나 direct-entry contract로 대체된다.
-6. 540 x 960 capture에서 boat-water contact, bob/wave/wake/reflection, avatar/pet/boat/sea/horizon hierarchy가 검증된다.
-7. direct entry, local-time mapping, foreground-only scenery progress, no-mood migration, customization entry, camera parity를 test한다.
-8. 사람의 첫 30초와 5분 휴식, mobile touch, sound comfort를 별도 Human evidence로 기록한다.
-
-Godot 구현 가능성의 근거는 다음 공식 안정판 문서에 있다. Autoload는 Scene 사이 state를, `ConfigFile`과 `user://`는 local persistence를, SceneTree route는 main scene transition을 지원한다. 구현 세부와 error handling은 해당 Phase 2 contract에서 source/test를 읽고 결정한다.
-
-- https://docs.godotengine.org/en/stable/tutorials/scripting/singletons_autoload.html
-- https://docs.godotengine.org/en/stable/classes/class_configfile.html
-- https://docs.godotengine.org/en/stable/tutorials/scripting/filesystem.html
-- https://docs.godotengine.org/en/stable/tutorials/scripting/change_scenes_manually.html
-
-## 5. 시각 consumer와 evidence ceiling
-
-- `VIS-ENTRY-001`은 구형 main-entry full composition입니다. 보트가 물에 뜬다는 물리적 관계가 약하고 large selection panel이 sea-first first impression을 가리므로 `REJECTED_FOR_MAIN_ENTRY_RUNTIME_USE`입니다.
-- 현재 `main_menu` atmosphere background와 C+dog diorama binary는 runtime에서 소비되지만, new direct-entry composition 승인 또는 final art가 아닙니다. consumer audit 전 삭제·교체·재생성을 하지 않습니다.
-- `HANDPAINTED_STORYBOOK_3D_DIORAMA`, `SOFT_MANGA_CHIBI_CHARACTER_REFINEMENT`, `INDIGO_RAIN_REFLECTION`은 `APPROVED_DIRECTION`입니다. generated exploration, source binary, runtime capture, Human approval은 서로 다른 evidence입니다.
-- real-device touch, five-minute calm, visual fatigue, audio comfort, new direct-entry runtime capture는 모두 `NOT_RUN` 또는 `NOT_IMPLEMENTED`입니다.
-
-## 6. Issue #99 적대적 검토 receipt
-
-| Loop | 공격 질문 | finding | correction owner | 상태 |
-| --- | --- | --- | --- | --- |
-| 1 | 사용자 승인, human GDD, current code가 mood/start flow에서 충돌하는가 | 기존 docs가 mood selector를 current product로 설명 | GDD, README, Concept, Experience Bible, handoff, visual inventory | `CORRECTED` |
-| 2 | 사람이 시스템의 행동·이유·피드백·압박 회피를 이해하는가 | 이전 master GDD가 AI/evidence 구조를 앞세움 | `PROJECT_GDD.md` | `CORRECTED` |
-| 3 | 직접 시작·local persistence가 Godot 4.7 구조에서 가능한가 | 구현 가능성 근거가 사람용 문서에 없음 | GDD와 이 handoff의 official stable links | `CORRECTED` |
-| 4 | 구형 composition rejection이 source binary 전체 폐기로 과장되는가 | old visual inventory가 menu asset을 current product approval으로 표현 | visual inventory | `CORRECTED` |
-| 5 | 문서가 runtime/Human PASS, social 확대, asset batch를 암시하는가 | source/status 문구의 overclaim 위험 | GDD/handoff evidence ceiling | `CORRECTED` |
-| clean recheck | 문서 owner·stale allowlist·GDD 구조·PDF text/visual·staged diff를 correction 뒤 다시 실행 | material conflict 없음 | 이 handoff | `CLEAN` |
-
-이 clean recheck는 8-section GDD, 7-page PDF text/visual readback, active-current stale allowlist, staged diff scope까지 확인한 상태입니다. PR exact-head readback은 push 뒤 다시 기록합니다.
-
-발견한 정본 충돌의 Incident / Solution / Lesson과 Base 승격 판정은 [2026-08-28 direct boat entry 정본 충돌 기록](../learning/2026-08-28-direct-boat-entry-canon-reconciliation.md)에 남깁니다.
+- PR #19 `feat/social-fake-backend-20260824`는 `READ_ONLY_NO_ABSORPTION`이다.
+- direct main, force push, reset/clean/rebase, Bottle social 확장은 이 작업의 범위가 아니다.
+- generated source, project asset, capture, Human evidence의 provenance는 visual inventory에서 분리 관리한다.

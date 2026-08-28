@@ -2,7 +2,7 @@
 extends SceneTree
 
 const ALBUM_PATH := "res://scenes/album.tscn"
-const SUNSET_BACKGROUND_PATH := "res://assets/images/ui/main_menu/main_menu_sunset_storybook_v1.png"
+const NIGHT_BACKGROUND_PATH := "res://assets/images/runtime/storybook/sea_night_indigo_rain_storybook.png"
 
 var _failures := 0
 
@@ -24,7 +24,6 @@ func _run() -> void:
 	game_state.fish.clear()
 	game_state.voyage_records.clear()
 	game_state.companion_affection = 1
-	game_state.select_time_of_day("sunset")
 	var scene := (load(ALBUM_PATH) as PackedScene).instantiate()
 	root.add_child(scene)
 	await process_frame
@@ -32,19 +31,21 @@ func _run() -> void:
 	var summary := scene.get_node_or_null("Margin/Panel/VBox/SummaryLabel") as Label
 	var recent_memory := scene.get_node_or_null("Margin/Panel/VBox/RecentMemoryLabel") as Label
 	_expect(background != null, "album must expose the approved atmosphere background surface")
-	_expect(background != null and background.texture != null and background.texture.resource_path == SUNSET_BACKGROUND_PATH, "album background must follow the current time selection")
+	_expect(scene.has_method("apply_real_time_background_for_hour"), "album must resolve atmosphere from real time without a selector")
+	if scene.has_method("apply_real_time_background_for_hour"):
+		scene.call("apply_real_time_background_for_hour", 21)
+		_expect(background != null and background.texture != null and background.texture.resource_path == NIGHT_BACKGROUND_PATH, "album Night background must follow the current real-time band")
 	_expect(summary != null, "album must expose a total-memory summary")
 	_expect(recent_memory != null, "album must expose a recent-memory summary")
 	_expect(recent_memory != null and "아직 모아 둔 기억이 없어요" in recent_memory.text, "empty album must use the calm empty-state copy")
 	game_state.add_fish("정어리")
-	game_state.voyage_records.append("평온의 항해 · 사진 0 · 풍경 0 · 편지 0 · 물고기 1")
+	game_state.voyage_records.append("오늘의 항해 · 사진 0 · 풍경 0 · 편지 0 · 물고기 1")
 	if scene.has_method("refresh_album"):
 		scene.refresh_album()
 	_expect(recent_memory != null and "최근 물고기: 정어리" in recent_memory.text, "recent-memory area must show the most recent fish")
-	_expect(recent_memory != null and "최근 항해: 평온의 항해" in recent_memory.text, "recent-memory area must show the most recent voyage")
+	_expect(recent_memory != null and "최근 항해: 오늘의 항해" in recent_memory.text, "recent-memory area must show the most recent voyage")
 	scene.queue_free()
 	await process_frame
-	game_state.select_time_of_day("bright")
 	_finish()
 
 

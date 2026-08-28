@@ -10,6 +10,20 @@
 
 **Spec:** docs/superpowers/specs/2026-08-29-real-time-atmosphere-and-drifting-scenery-design.md
 
+## Execution receipt · 2026-08-29
+
+This implementation plan has been executed on `codex/issue-101-direct-boat-entry`.
+
+| task | outcome |
+| --- | --- |
+| 1 | `e6e9bd6` added the resolver and the time mapping contract. |
+| 2 | `e8595ed` retired mood and stored atmosphere state. |
+| 3–4 | direct `game.tscn` entry, compact menu, optional cosmetics, focus-aware 30-second real-time atmosphere refresh, dedicated night sea art, and legacy route compatibility are implemented. |
+| 5 | foreground-only scenery director, local ambient memory persistence, named far-scenery consumers, and tests are implemented. |
+| 6 | target-resolution GPU captures, evidence receipt, current handoff, visual consumer/provenance records, and adversarial correction receipt are included in the final Issue #101 implementation commit. |
+
+Unchecked historical TDD steps below are retained as the approved execution record. The actual completion source is this receipt plus the commit/test/capture evidence, not the unchecked template markers.
+
 ## Global Constraints
 
 - 첫 frame은 scenes/game.tscn의 normal 3/4 boat diorama이며 startup mood/identity/pet/time panel이 없다.

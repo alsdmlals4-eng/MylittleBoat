@@ -4,6 +4,7 @@ extends Node
 const VOYAGE_SECONDS := 300.0
 const BOAT_DECOR_PERSISTENCE_SCRIPT = preload("res://scripts/core/boat_decor_persistence.gd")
 const IDENTITY_PROFILE_SCRIPT = preload("res://scripts/core/cosmetic_identity_profile.gd")
+const AMBIENT_MEMORY_PERSISTENCE_SCRIPT = preload("res://scripts/core/ambient_memory_persistence.gd")
 
 var companion_affection: int = 1
 
@@ -24,8 +25,6 @@ var remaining_seconds := VOYAGE_SECONDS
 var speed_index := 1
 var appreciation_mode := false
 var voyage_record_created := false
-var pending_discovery_type := ""
-var pending_discovery_value := ""
 
 var _voyage_photo_start_count := 0
 var _voyage_scenery_start_count := 0
@@ -33,11 +32,13 @@ var _voyage_letter_start_count := 0
 var _voyage_fish_start_count := 0
 var _boat_decor_persistence = BOAT_DECOR_PERSISTENCE_SCRIPT.new()
 var _identity_profile = IDENTITY_PROFILE_SCRIPT.new()
+var _ambient_memory_persistence = AMBIENT_MEMORY_PERSISTENCE_SCRIPT.new()
 
 
 func _ready() -> void:
 	load_boat_decor()
 	load_identity()
+	load_ambient_memories()
 
 
 ## Starts a fresh five-minute voyage while preserving accumulated memories and boat decoration.
@@ -57,8 +58,6 @@ func reset_session() -> void:
 	speed_index = 1
 	appreciation_mode = false
 	voyage_record_created = false
-	pending_discovery_type = ""
-	pending_discovery_value = ""
 
 
 ## Stores or clears one cosmetic boat-decor choice without creating rewards.
@@ -182,18 +181,6 @@ func complete_voyage() -> void:
 	)
 
 
-## Stores one ambient discovery until the player records or ignores it.
-func set_pending_discovery(discovery_type: String, value: String) -> void:
-	pending_discovery_type = discovery_type
-	pending_discovery_value = value
-
-
-## Clears the current ambient discovery without applying a penalty.
-func clear_pending_discovery() -> void:
-	pending_discovery_type = ""
-	pending_discovery_value = ""
-
-
 ## Adds a photo album entry.
 func add_photo(entry: String) -> void:
 	photos.append(entry)
@@ -202,6 +189,21 @@ func add_photo(entry: String) -> void:
 ## Adds a scenery album entry.
 func add_scenery(entry: String) -> void:
 	sceneries.append(entry)
+
+
+## Adds one passive surrounding-scenery memory and writes it to the local device.
+func add_ambient_scenery(entry: String) -> void:
+	if entry.strip_edges().is_empty():
+		return
+	sceneries.append(entry)
+	_ambient_memory_persistence.save(sceneries)
+
+
+## Restores automatic surrounding-scenery memories without touching other voyage state.
+func load_ambient_memories() -> void:
+	for entry in _ambient_memory_persistence.load():
+		if not sceneries.has(entry):
+			sceneries.append(entry)
 
 
 ## Adds a bottle letter entry.

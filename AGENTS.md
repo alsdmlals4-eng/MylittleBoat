@@ -136,7 +136,7 @@ godot --headless --path . --scene "res://scenes/main_menu.tscn" --quit-after 1
 Known Windows local fallback in this workspace:
 
 ```powershell
-& "C:\Users\user\Downloads\Godot_v4.7-stable_win64.exe\Godot_v4.7-stable_win64_console.exe" --headless --path . --quit
+& "C:\Users\user\Downloads\Godot_v4.7.2-stable_win64.exe\Godot_v4.7.2-stable_win64_console.exe" --headless --path . --quit
 ```
 
 For UI-only or documentation-only changes, explain what was inspected instead of claiming gameplay was tested.
