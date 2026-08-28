@@ -302,6 +302,14 @@ HUMAN_STYLE_APPROVAL = NOT_RUN
 
 펫은 플레이어를 계속 즐겁게 해주는 entertainer보다 **같은 공간을 편안하게 공유하는 companion**입니다.
 
+### 함께 보낸 시간과 호감도
+
+동반자 호감도는 활성 foreground 항해의 경과 시간만으로 쌓입니다. Normal Diorama와 Appreciation Camera, 그리고 항해 기록 뒤에 더 머무는 시간은 같은 동행 시간으로 인정합니다. 입력·사진·풍경·편지·물고기·낚시·발견·꾸미기·상호작용·시간대·속도는 수치의 원천이나 배율이 아닙니다.
+
+메인 메뉴·앨범·백그라운드/일시정지는 누적하지 않습니다. 호감도는 관리, 방치 벌, streak, 능력치, 경제, 경쟁, 소셜 자격을 만들지 않으며, 현행 action-based `companion_affection`은 product-superseded implementation입니다. 정확한 rate, threshold, 저장 migration, UI 표현은 별도 Phase 2 계약과 실제 5분 Human validation 전까지 확정하지 않습니다.
+
+고양이·토끼·강아지·수달은 순수 local cosmetic 선택이므로, 호감도는 pet type별 ledger가 아닌 전역 `함께 보낸 시간`입니다. 외형을 바꿔도 호감도는 잃거나 초기화되지 않고 종별 보정도 없습니다.
+
 ### 기본 Idle Pool
 
 초기 제작 우선순위:
