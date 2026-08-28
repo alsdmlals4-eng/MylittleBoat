@@ -47,7 +47,7 @@ Implementation-facing summary:
 - `night` is visually directed toward `INDIGO_RAIN_REFLECTION`: fine calm rain, broad indigo water reflection, deep blue sky, and a secondary warm lantern. It remains the existing night choice, not a fifth time/weather choice or gameplay system;
 - `DIORAMA_PIXEL` and `HD2D_COZY_PIXEL` remain alternatives, not the selected current canon;
 - do not reproduce identifiable Bondee / Animal Crossing / Spirit City / Garden Galaxy proportions, UI, branding, or trade dress.
-- every future visual approval presents at least three materially different candidates under the same consumer, camera, composition, information density, and known constraints, and states a GPT recommendation with player value, cost, risk, reversibility, and evidence status.
+- for a future unapproved visual question, GPT first generates and internally QA-checks at least three materially different candidates under the same consumer, camera, composition, information density, and known constraints. The user is asked only to lock a final direction, with a GPT recommendation and player value, cost, risk, reversibility, provenance, and evidence status. Generated exploration is never a runtime asset or implementation evidence by itself.
 
 Evidence boundary:
 
