@@ -42,12 +42,13 @@
 | SRC-003 | `origin/main` `a419d2a...` | 2026-08-28 | Completed project GitHub baseline | `CURRENT` |
 | SRC-004 | GitHub PR #19 | 2026-08-28 | Independent open candidate only | `OPEN_READ_ONLY` |
 | SRC-005 | `docs/design/PROJECT_AI_PRODUCTION_SPEC.md`, `docs/CONCEPT.md`, `docs/RESTING_EXPERIENCE_BIBLE.md` and approved repository decision/visual locks | 2026-08-28 | Current human-facing project canon | `CURRENT_REPOSITORY_HUMAN_CANON` |
-| SRC-006 | Previous Notion Home / Flow / Visual Bible locators recorded before this authority migration | 2026-08-28 | Historical discovery only; not reread or written after user retirement decision | `LEGACY_DISCOVERY_ONLY` |
+| SRC-006 | Previous Notion Home / Flow / Visual Bible / asset-library locators | 2026-08-28 | One final user-authorized read-only migration completed; repository receipt owns the transfer readback | `MIGRATED_THEN_LEGACY_DISCOVERY_ONLY` |
 | SRC-007 | Repository asset binaries, provenance, consumer manifests and runtime evidence | 2026-08-28 | Current asset/consumer truth | `CURRENT_REPOSITORY_CANON` |
 | SRC-008 | `docs/CONCEPT.md`, `docs/RESTING_EXPERIENCE_BIBLE.md`, current handoffs | 2026-08-28 | Repository structured design mirror | `CURRENT` |
 | SRC-009 | Scenes/scripts/tests/assets/evidence at SRC-003 | 2026-08-28 | Runtime and automated implementation truth | `CURRENT` |
 | SRC-010 | Base `docs/PROJECT_MASTER_GDD_TWO_ARTIFACT_POLICY.md` at `af870522...` | 2026-08-28 | Two-artifact publication profile | `ADAPTED` |
 | SRC-011 | Official product/store pages listed in §27 | 2026-08-28 | Bounded market/reference research | `CURRENT_EXTERNAL_EVIDENCE` |
+| SRC-012 | §29 in this Master GDD | 2026-08-28 | Final source-structure and approved-asset migration receipt | `CURRENT_REPOSITORY_MIGRATION_RECEIPT` |
 
 **Attachment disposition.** The supplied work instruction is a formatting/reference input. Its `NO_AUTOMATIC_IMAGE_GENERATION` rule is superseded by the latest user direction. Its no-Notion-output rule now matches the repository-only authority migration: Notion is retained only as an untouched historical discovery archive.
 
@@ -401,4 +402,72 @@ Research date: 2026-08-28. Sources: official Nintendo Animal Crossing Pocket Cam
 | --- | --- |
 | 2026-08-28 | Initial two-artifact Master GDD publication from `a419d2a...`; records DEC-002/003 implementation conflicts and DEC-007 generate-first/final-lock-only visual workflow. |
 | 2026-08-28 | User retired Notion from active project use. Repository human-facing canon now owns current direction, approvals and asset provenance; Notion is `LEGACY_DISCOVERY_ONLY` with no new read/write/sync. |
+| 2026-08-28 | One final user-authorized read-only migration transferred the useful current Notion structure, decisions and asset provenance to §29 of this GDD; historical/duplicate/WIP records were deliberately excluded. |
 | 2026-08-28 | `NO_BASE_PROMOTION`: this repository-only authority migration is a user/project-specific operating choice and does not retire Notion as a Base-wide workflow option. |
+
+## 29. FINAL NOTION ARCHIVE MIGRATION RECEIPT
+
+> **Status:** `FINAL_MIGRATION_COMPLETE`<br>
+> **Executed:** 2026-08-28<br>
+> **Policy after this receipt:** Repository documents, assets, provenance and runtime evidence are the only current project owners. Previous Notion pages are retained without deletion as historical archives; no further Notion read, write or sync is normal project work.
+
+This is the one-time user-authorized migration check completed when retiring Notion. It does not promote a past page to current truth. The repository destinations below own the useful transferred content; old page identities are retained only to prove what was checked.
+
+### Scope and exclusions
+
+- Included: current project navigation responsibilities, current rest-first/companion-time/Ambient/visual-lock decisions, approved runtime-asset records and current production/evidence boundaries.
+- Excluded by user direction: superseded 2026-08-24 system implementations, old `main` SHA receipts, retired PR duplicates, `WIP` source duplicates for approved cushion/postcard outputs, preview-only attachments already represented by a repository board/binary/provenance record, and unapproved audio candidates.
+- `EXCLUDED` never means a current approved asset or decision was discarded; it means a historical or duplicate record was not made an active repository owner.
+
+### Previous structure → current repository ownership
+
+| Previous page/database checked | Source identity | Responsibility transferred | Current repository owner | Result |
+| --- | --- | --- | --- | --- |
+| Home | `3c41b237-eb1c-8194-8b8e-d88362cafafa` | North Star, current decisions, five-minute flow and evidence ceiling | this GDD, `docs/CONCEPT.md`, `docs/RESTING_EXPERIENCE_BIBLE.md` | `MIGRATED` |
+| 01 · Direction · Planning | `3c51b237-eb1c-81f2-a2e0-f4258b15aae3` | Direction/intent and planning responsibility | this GDD | `MIGRATED` |
+| 02 · Voyage · Experience · Systems and Flow Map | `3c51b237-eb1c-8136-99e0-fd12478954a2`, `3c11b237-eb1c-81c3-8e12-d3f598113c7e` | Mood → rest → optional activity → memory, companion-time and passive Ambient rules | `docs/RESTING_EXPERIENCE_BIBLE.md` and four 2026-08-28 decision packets | `MIGRATED` |
+| 03 · Visual · UX · Assets and Visual Bible | `3c51b237-eb1c-810d-ba71-f358c8a91b0c`, `3c11b237-eb1c-81ae-97f3-dc28a0905304` | Visual grammar, screens and consumer-first asset rule | visual locks, current screen inventory and this GDD | `MIGRATED` |
+| Asset Library · Master | `3c11b237-eb1c-8120-b7db-d48e11756146`, `collection://4c49f406-67a2-4524-97b9-f8f1aa730f16` | Approved asset ID, paths, rights/provenance, hash and runtime use | local binaries plus repository evidence/provenance records | `MIGRATED` |
+| 04 · Production · Validation / Handoff | `3c51b237-eb1c-8178-a475-e647a4bb5a30`, `3c11b237-eb1c-81b0-b281-ec54d67c9552` | Godot boundary, validation evidence and independent-work isolation | `docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md`, Work-5 receipt | `MIGRATED` |
+| 05 · Reference · Benchmark | `3c51b237-eb1c-813b-bf72-ea727541132e`, `3c11b237-eb1c-8116-9c53-e3662be2e347` | Adapt/reject reasoning and validation questions | §27 | `MIGRATED` |
+| Old Core System detail / AI evidence | `3c11b237-eb1c-8119-8378-c25d3ebbf658`, `3c61b237-eb1c-812f-a9f5-f5a116a98370` | Old implementation and PR receipts | Git history and `docs/evidence/`; later product decisions supersede stale behavior | `EXCLUDED_AS_HISTORICAL` |
+
+### Approved asset transfer readback
+
+Every local binary below was re-read and SHA-256 checked on 2026-08-28. The local path plus matching hash is the current asset identity; an earlier Notion record is not needed to consume, review or validate it.
+
+| Asset ID | Repository binary | SHA-256 | Current role / repository provenance |
+| --- | --- | --- | --- |
+| `MLB_MAIN_MENU_DAWN_BACKGROUND_V1` | `assets/images/ui/main_menu/main_menu_dawn_storybook_v1.png` | `68B537C9815C95BF04DC0BA13ECBCA5909E2BD196C9A3AA7A89E27981B89C39E` | Dawn menu atmosphere · `docs/evidence/2026-08-28-main-menu-background-assets/asset-provenance.md` |
+| `MLB_MAIN_MENU_BRIGHT_BACKGROUND_V1` | `assets/images/ui/main_menu/main_menu_bright_storybook_v1.png` | `7ED8CA5101C803344A78BB8A39D2E7545899BC8F7A8D59FF66BE346DA787D0D5` | Bright menu atmosphere · same |
+| `MLB_MAIN_MENU_SUNSET_BACKGROUND_V1` | `assets/images/ui/main_menu/main_menu_sunset_storybook_v1.png` | `3E4901FDCEFB771AD5200C75A26B2B74E5FCED95AD01E345E00E677423D86A3A` | Sunset menu atmosphere · same |
+| `MLB_MAIN_MENU_NIGHT_BACKGROUND_V1` | `assets/images/ui/main_menu/main_menu_night_storybook_v1.png` | `5669220C5E0F39CBB365748A2BC9883C67AA1D14C51B7C8068F51BC72E196C30` | Night menu atmosphere · same |
+| `MLB_FINAL_2P5D_C_DOG_BOAT_RUNTIME_V1` | `assets/images/runtime/storybook/boat_c_dog_diorama_storybook.png` | `E6A197C68F08BCE6E1EABC37A5390598BA19174124C5B0E4EDA4C2000F5481FD` | C + dog diorama · `docs/evidence/2026-08-26-final-2p5d-storybook-art/asset-provenance.md` |
+| `MLB_FINAL_2P5D_BRIGHT_SEA_RUNTIME_V1` | `assets/images/runtime/storybook/sea_bright_storybook.png` | `2B174E0F66C98672F5527411EA0CA43FDE9DBB93957696614158FCB895A3BDEC` | Bright sea backdrop · same |
+| `MLB_IMG_PET_CUSHION_STRIPE_RUNTIME` | `assets/images/decor/pet_cushion/cushion_stripe.png` | `452CC8BF848BBD6836D5B250C36827F62A0EE9578BF3370A4604C1ADA5007DB5` | Cosmetic cushion · runtime image contract |
+| `MLB_IMG_PET_CUSHION_MOON_RUNTIME` | `assets/images/decor/pet_cushion/cushion_moon.png` | `267D4C73BD48299F1DADC3BD1424FC4B6360B7E4F7CF055EEE0AFBB19217E2A1` | Cosmetic cushion · runtime image contract |
+| `MLB_IMG_PET_CUSHION_FLORAL_RUNTIME` | `assets/images/decor/pet_cushion/cushion_floral.png` | `6920E5BFAC8BCC44B63B3DAE318888C305CDD7E622347F28C7791DD50A694C80` | Cosmetic cushion · runtime image contract |
+| `MLB_IMG_POSTCARD_BOAT_BRIGHT_RUNTIME` | `assets/images/decor/postcard/postcard_boat_bright.png` | `87A80C439E12DD97D262C1C74FB7108905E27E5F42950F658F75DA9427AC291F` | Default postcard face · runtime image contract |
+| `MLB_RUNTIME_IDENTITY_A_SOFT_HOODED_V1` | `assets/images/runtime/storybook/avatar_a_soft_hooded_storybook.png` | `30D67B1DD74A01109698727CADDC14B450461580E2D2457A7B108362FFF54F3A` | Optional avatar A · identity provenance |
+| `MLB_RUNTIME_IDENTITY_B_SHORT_CAPE_V1` | `assets/images/runtime/storybook/avatar_b_short_cape_storybook.png` | `74FCF3D7FB9522558706F8FAD864A64A357A84A624D7E3BE013DA768032C6B54` | Optional avatar B · identity provenance |
+| `MLB_RUNTIME_IDENTITY_CAT_V1` | `assets/images/runtime/storybook/pet_cat_storybook.png` | `92570863C8D76BE76886C21D5FA83E0615EBA964D26951DC674A0AC7FFBF452C` | Optional cat · identity provenance |
+| `MLB_RUNTIME_IDENTITY_RABBIT_V1` | `assets/images/runtime/storybook/pet_rabbit_storybook.png` | `9837A7B4CE5AFB19E265522953A944F6BA6E8ED9B351DAD5EFB4FCDFBB07EA78` | Optional rabbit · identity provenance |
+| `MLB_RUNTIME_IDENTITY_OTTER_V1` | `assets/images/runtime/storybook/pet_otter_storybook.png` | `84A3FE7A647634C23336F448D0DE52E28397AE37BEF62EB1B2846145B0D3B3E0` | Optional otter · identity provenance |
+
+The old asset-library `*_SOURCE` records, P2 postcard candidates and audio references were `WIP` or reference-only. Their useful facts are represented by the approved output rows above; they were not copied as active work.
+
+### Current decision transfer readback
+
+| Decision | Repository owner | Result |
+| --- | --- | --- |
+| Doing nothing on the boat is complete play; fishing/photo/decor/interaction are optional | `docs/CONCEPT.md`, `docs/RESTING_EXPERIENCE_BIBLE.md`, §§02–04 | `PASS` |
+| Companion relation is active foreground voyage time only; Album shows quiet together-time | the two companion 2026-08-28 decision packets | `PASS` |
+| Ambient Discovery is low-density passive atmosphere with a small notification and immediate local save | the two Ambient 2026-08-28 decision packets | `PASS` |
+| C knit/long-hair + dog and soft-manga chibi refinement | `docs/visual/2026-08-28-soft-manga-chibi-character-style-lock.md` | `PASS` |
+| Four-time grammar; Night is `INDIGO_RAIN_REFLECTION`, not a fifth weather mode | `docs/visual/2026-08-28-indigo-rain-four-time-visual-lock.md` | `PASS` |
+| Generated boards are planning direction proof, not runtime asset or Human validation | §§00–02 and visual-lock documents | `PASS` |
+| Runtime, automated and Human evidence have distinct ceilings | §00 and `docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md` | `PASS` |
+
+### Closing rule
+
+The old structure now resolves through this Master GDD, Concept, Experience Bible, visual locks, evidence/provenance folders and current handoffs. No deletion or rewriting was performed in Notion. A future Notion read requires a new explicit user request and a new repository migration receipt; it can never silently regain current-owner status.

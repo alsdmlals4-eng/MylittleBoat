@@ -1,6 +1,6 @@
 # Concept
 
-> **Authority:** 사람용 프로젝트 개요·경험/시각 방향의 최신 승인 정본은 repository의 `docs/design/PROJECT_AI_PRODUCTION_SPEC.md`, 이 파일, `docs/RESTING_EXPERIENCE_BIBLE.md`, approved decision/visual lock/asset provenance 문서입니다. 실제 런타임 사실은 코드·Scene·Resource·Test와 실행 증거가 우선합니다. 이전 Notion은 historical discovery-only archive로 보존하며 새 read/write/sync 또는 approval owner로 사용하지 않습니다.
+> **Authority:** 사람용 프로젝트 개요·경험/시각 방향의 최신 승인 정본은 repository의 `docs/design/PROJECT_AI_PRODUCTION_SPEC.md`, 이 파일, `docs/RESTING_EXPERIENCE_BIBLE.md`, approved decision/visual lock/asset provenance 문서입니다. 실제 런타임 사실은 코드·Scene·Resource·Test와 실행 증거가 우선합니다. 이전 Notion은 2026-08-28 final migration receipt 뒤 historical discovery-only archive로 보존하며 새 read/write/sync 또는 approval owner로 사용하지 않습니다.
 
 `my little boat`는 **본디에서 참고한 작고 둥근 3D 디오라마 감성**을 바탕으로, 작은 보트 위에서 보이는 플레이어 캐릭터와 펫이 함께 쉬고 생활하며 잔잔한 바다·파도소리·작은 기억을 쌓는 rest-first 힐링 항해 게임입니다.
 

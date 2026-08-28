@@ -4,7 +4,7 @@
 
 이 저장소는 **Godot 4.7 stable + GDScript** 기준입니다. 전투·실패·경쟁·광고·결제·실시간/공개 소셜 압박은 핵심 방향에서 제외합니다. 온라인 기능은 승인된 delayed FriendBottle / DriftBottle 범위와 그 안전 운영에만 한정하며, 기본 휴식 게임은 local-first로 유지합니다.
 
-> **Authority:** 사람용 프로젝트 개요·경험·시각·에셋 방향의 최신 승인 정본은 이 저장소의 Master GDD, Concept, Experience Bible, 승인 Decision/Visual Lock 문서입니다. 실제 런타임 사실은 repository 구현과 실행 증거가 우선합니다. 이전 Notion 자료는 historical discovery-only archive이며 새 작업의 read/write/sync 대상이 아닙니다.
+> **Authority:** 사람용 프로젝트 개요·경험·시각·에셋 방향의 최신 승인 정본은 이 저장소의 Master GDD, Concept, Experience Bible, 승인 Decision/Visual Lock 문서입니다. 실제 런타임 사실은 repository 구현과 실행 증거가 우선합니다. 이전 Notion 자료는 Master GDD §29의 2026-08-28 final migration receipt 뒤 historical discovery-only archive이며 새 작업의 read/write/sync 대상이 아닙니다.
 
 ## 프로젝트 열기
 
