@@ -11,6 +11,8 @@ TRANSIENT_NOTIFICATION = SMALL_NON_BLOCKING_AUTO_FADE
 AUTOSAVE = LOCAL_AMBIENT_MEMORY
 BOTTLE_LETTER_AUTOSAVE = FORBIDDEN
 COMPANION_AFFECTION_EFFECT = FORBIDDEN
+APPROVED_DENSITY_TARGET = APPROXIMATELY_1_TO_2_PER_NOMINAL_5_MINUTE_VOYAGE
+FIRST_DISCOVERY_GUARANTEE = FORBIDDEN
 CURRENT_MAIN_IMPLEMENTATION = ACTION_GATED_PENDING_DISCOVERY_AND_PRODUCT_SUPERSEDED
 RUNTIME_IMPLEMENTATION = NOT_STARTED
 HUMAN_PLAYER_EXPERIENCE_VALIDATION = NOT_RUN
@@ -24,13 +26,13 @@ Ambient Discovery는 플레이어가 버튼을 눌러 기록할지 결정하는 
 
 ## Binding product rules
 
-1. 활성 항해 화면에서만 확률적으로 한 번의 background-only ambient event가 나타날 수 있습니다. 정확한 발생률, 최소 간격, catalogue와 visual asset은 후속 구현계약에서 정합니다.
+1. 활성 항해 화면에서만 확률적으로 한 번의 background-only ambient event가 나타날 수 있습니다. 승인된 밀도 target은 명목상 5분 항해에 대체로 1~2회이며, 첫 event는 보장하지 않습니다. exact probability, minimum/maximum cooldown, catalogue와 visual asset은 후속 구현계약에서 정합니다.
 2. event는 Normal Diorama와 Appreciation Camera 모두에서 같은 휴식 경험의 일부로 동작합니다. Appreciation Camera에서는 감상을 가리지 않는 더 작은 비차단 알림만 남깁니다.
 3. 알림은 button, dismiss action, countdown, modal, choice, badge stack, sound cue 또는 재촉 문구 없이 자동으로 사라집니다.
 4. 등장 즉시 해당 event는 로컬 `ambient memory`로 저장됩니다. 플레이어의 입력, 사진 촬영, 별도 수집 확인은 필요하지 않습니다.
 5. `ambient memory`는 FriendBottle / DriftBottle, 병편지, 외부 메시지, UGC, 소셜 알림이 아닙니다. 임의의 배경 발견을 `letter`로 autosave하는 것은 금지합니다.
 6. Ambient Discovery는 동반자 호감도, 보상, 경제, 물고기, 꾸미기, 점수, unlock, 세션 timer, mood, time-of-day, camera 또는 소셜 자격을 바꾸지 않습니다.
-7. event가 겹치거나 짧은 시간에 연속으로 주의를 빼앗지 않도록 one-at-a-time / low-density를 보호합니다. 메인 메뉴, 앨범, 백그라운드 또는 일시정지된 항해에는 나타나지 않습니다.
+7. event가 겹치거나 짧은 시간에 연속으로 주의를 빼앗지 않도록 one-at-a-time / low-density를 보호합니다. 0회인 항해도 정상이며, 메인 메뉴, 앨범, 백그라운드 또는 일시정지된 항해에는 나타나지 않습니다.
 8. 저장은 `local-first`입니다. 일일 숙제, 놓침 패널티, completion rate, streak, 희귀도, 확률 구매, FOMO를 만들지 않습니다.
 
 ## Current implementation conflict
