@@ -28,6 +28,7 @@ HUMAN_USABILITY_OR_PLAYER_EXPERIENCE_PASS = NOT_PROVEN
 - C knit/long-hair + dog remains the default identity anchor. The chosen panel shows the intended charm and proportion language, not a new character age, outfit system, or pet breed rule.
 - Environment remains a broad hand-painted sea and sky: soft time-of-day color, stable horizon, low visual pressure, gentle broken reflection, cool sea ambient light, and a boat physically integrated at the waterline.
 - Normal play remains a distant 3/4 diorama where Avatar + Pet + Boat + Sea read together. Close character art is a style anchor, not a replacement camera.
+- The approved `INDIGO_RAIN_REFLECTION` is the current `night` atmosphere subdirection. It preserves the C/dog/boat composition and adds only sparse calm rain with subdued blue reflection as visual language, not a weather system.
 
 ### Rejected
 
@@ -53,6 +54,6 @@ Every future visual approval must include all of the following before an asset o
 
 ## Next validation
 
-1. Use this lock for the next planning-only main-screen/character comparison board.
+1. Use this lock with the approved core-scene v3 and four-time continuity boards when drafting a separately approved Phase 2 implementation contract.
 2. Check character readability and the boat/sea/character balance together at 540×960 before approving any runtime asset production.
 3. Do not start production asset batch or Godot implementation until a separate Phase 2 implementation review approves a concrete consumer.
