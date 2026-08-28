@@ -4,10 +4,7 @@ extends Node
 const VOYAGE_SECONDS := 300.0
 const BOAT_DECOR_PERSISTENCE_SCRIPT = preload("res://scripts/core/boat_decor_persistence.gd")
 const IDENTITY_PROFILE_SCRIPT = preload("res://scripts/core/cosmetic_identity_profile.gd")
-const TIME_OF_DAY_CATALOG_SCRIPT = preload("res://scripts/voyage/time_of_day_catalog.gd")
 
-var selected_mood: String = "평온"
-var selected_time_of_day := "bright"
 var companion_affection: int = 1
 
 # 여러 항해에 걸쳐 유지되는 기억이다.
@@ -36,7 +33,6 @@ var _voyage_letter_start_count := 0
 var _voyage_fish_start_count := 0
 var _boat_decor_persistence = BOAT_DECOR_PERSISTENCE_SCRIPT.new()
 var _identity_profile = IDENTITY_PROFILE_SCRIPT.new()
-var _time_of_day_catalog = TIME_OF_DAY_CATALOG_SCRIPT.new()
 
 
 func _ready() -> void:
@@ -44,24 +40,8 @@ func _ready() -> void:
 	load_identity()
 
 
-## Selects today's mood before entering the sea scene.
-func select_mood(mood: String) -> void:
-	selected_mood = mood
-
-
-## Selects the visual atmosphere for the next voyage without changing gameplay state.
-func select_time_of_day(value: String) -> void:
-	selected_time_of_day = _time_of_day_catalog.normalize_time_of_day(value)
-
-
-## Returns the current process-lifetime visual atmosphere selection.
-func get_selected_time_of_day() -> String:
-	return _time_of_day_catalog.normalize_time_of_day(selected_time_of_day)
-
-
 ## Starts a fresh five-minute voyage while preserving accumulated memories and boat decoration.
-func begin_voyage(mood: String) -> void:
-	select_mood(mood)
+func begin_voyage() -> void:
 	reset_session()
 	voyage_active = true
 	_voyage_photo_start_count = photos.size()
@@ -193,8 +173,7 @@ func complete_voyage() -> void:
 	var letters_this_voyage := maxi(0, letters.size() - _voyage_letter_start_count)
 	var fish_this_voyage := maxi(0, fish.size() - _voyage_fish_start_count)
 	voyage_records.append(
-		"%s의 항해 · 사진 %d · 풍경 %d · 편지 %d · 물고기 %d" % [
-			selected_mood,
+		"오늘의 항해 · 사진 %d · 풍경 %d · 편지 %d · 물고기 %d" % [
 			photos_this_voyage,
 			scenery_this_voyage,
 			letters_this_voyage,
@@ -218,26 +197,19 @@ func clear_pending_discovery() -> void:
 ## Adds a photo album entry.
 func add_photo(entry: String) -> void:
 	photos.append(entry)
-	_increase_affection()
 
 
 ## Adds a scenery album entry.
 func add_scenery(entry: String) -> void:
 	sceneries.append(entry)
-	_increase_affection()
 
 
 ## Adds a bottle letter entry.
 func add_letter(entry: String) -> void:
 	letters.append(entry)
-	_increase_affection()
 
 
 ## Adds a caught fish as a quiet memory without turning fishing repetition into affection farming.
 func add_fish(entry: String) -> void:
 	fish.append(entry)
 
-
-func _increase_affection() -> void:
-	var relationship_memory_count := photos.size() + sceneries.size() + letters.size()
-	companion_affection = clampi(1 + int(relationship_memory_count / 2), 1, 3)
