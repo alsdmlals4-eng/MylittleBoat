@@ -43,6 +43,7 @@ jobs:
           timeout 20s godot --headless --path . --script res://tests/test_drift_scenery_director.gd || status=1
           timeout 20s godot --headless --path . --script res://tests/test_distant_scenery_runtime_contract.gd || status=1
           timeout 20s godot --headless --path . --script res://tests/test_ambient_memory_persistence.gd || status=1
+          timeout 20s godot --headless --path . --script res://tests/test_ambient_memory_game_state_roundtrip.gd || status=1
           timeout 20s godot --headless --path . --script res://tests/test_album_memory_contract.gd || status=1
           timeout 20s godot --headless --path . --script res://tests/test_camera_input_contract.gd || status=1
           timeout 20s godot --headless --path . --script res://tests/test_resting_core_contract.gd || status=1

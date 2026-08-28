@@ -199,11 +199,17 @@ func add_ambient_scenery(entry: String) -> void:
 	_ambient_memory_persistence.save(sceneries)
 
 
+## Switches the ambient-memory storage target without changing other voyage state.
+func set_ambient_memory_storage_path(path: String) -> void:
+	if path == "":
+		return
+	_ambient_memory_persistence = AMBIENT_MEMORY_PERSISTENCE_SCRIPT.new(path)
+
+
 ## Restores automatic surrounding-scenery memories without touching other voyage state.
 func load_ambient_memories() -> void:
 	for entry in _ambient_memory_persistence.load():
-		if not sceneries.has(entry):
-			sceneries.append(entry)
+		sceneries.append(entry)
 
 
 ## Adds a bottle letter entry.

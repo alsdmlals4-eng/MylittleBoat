@@ -61,10 +61,17 @@ func _run() -> void:
 	_expect(game_state.photos.size() == before_photos and game_state.sceneries.size() == before_scenery and game_state.letters.size() == before_letters and game_state.fish.size() == before_fish, "hour changes must not create memories")
 	_expect(game_state.companion_affection == before_affection and game_state.voyage_records.size() == before_records and is_equal_approx(game_state.remaining_seconds, 180.0), "hour changes must not alter progression")
 	if scene.has_method("set_application_foreground") and scene.has_method("is_application_foreground"):
+		var seconds_before_background: float = float(game_state.remaining_seconds)
+		var records_before_background: int = game_state.voyage_records.size()
 		scene.call("set_application_foreground", false)
 		_expect(not bool(scene.call("is_application_foreground")), "focus-out must pause foreground-only systems")
+		scene.call("_process", 60.0)
+		_expect(is_equal_approx(game_state.remaining_seconds, seconds_before_background), "background time must not advance the voyage timer")
+		_expect(game_state.voyage_records.size() == records_before_background, "background time must not create a voyage record")
 		scene.call("set_application_foreground", true)
 		_expect(bool(scene.call("is_application_foreground")), "focus-in must resume foreground-only systems")
+		scene.call("_process", 1.0)
+		_expect(game_state.remaining_seconds < seconds_before_background, "foreground time must resume the voyage timer")
 
 	scene.queue_free()
 	await process_frame

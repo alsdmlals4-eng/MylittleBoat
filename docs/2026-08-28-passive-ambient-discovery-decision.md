@@ -39,8 +39,8 @@ Ambient Discovery는 플레이어가 버튼을 눌러 기록할지 결정하는 
 
 - `scripts/voyage/drift_scenery_director.gd` accumulates only active foreground delta, waits roughly 90–150 seconds before each opportunity, and produces a buoy, islet, or lighthouse event with an independent memory-save chance.
 - `scripts/voyage/game_scene.gd` consumes the event without a button, task, reward, countdown, or response requirement. It moves one input-free horizon prop across the screen and, only for a save event, shows a 2.5-second auto-fading notification.
-- `scripts/core/ambient_memory_persistence.gd` writes `GameState.ambient_memories` to `user://ambient_memories_v1.cfg` immediately. This path is distinct from letter/Bottle data and does not alter affinity.
-- `tests/test_drift_scenery_director.gd`, `tests/test_ambient_memory_persistence.gd`, and `tests/test_distant_scenery_runtime_contract.gd` cover foreground-only advancement, local persistence, and the actual runtime consumer.
+- `scripts/core/ambient_memory_persistence.gd` writes the shared `GameState.sceneries` album list when an automatic sighting occurs to `user://ambient_memories_v1.cfg`. Saved order and duplicate sightings are preserved; the path is distinct from letter/Bottle data and does not alter affinity.
+- `tests/test_drift_scenery_director.gd`, `tests/test_ambient_memory_persistence.gd`, `tests/test_ambient_memory_game_state_roundtrip.gd`, and `tests/test_distant_scenery_runtime_contract.gd` cover foreground-only advancement, local persistence, duplicate round-trip, and the actual runtime consumer.
 
 The 540 x 960 capture verifies the islet consumer can render. Human judgement of the nominal five-minute frequency and notification quietness remains `NOT_RUN`.
 

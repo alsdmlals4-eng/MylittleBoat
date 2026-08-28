@@ -179,7 +179,7 @@
 | 꾸미기 | 공간을 내 취향으로 두기 | 외형·동반자·장식 변경 | 같은 normal voyage | cosmetic slice `PARTIAL_IMPLEMENTED` |
 | Album | 남은 개인 기록 보기 | 기록 읽기, 바다로 돌아가기 | normal voyage | `PARTIAL_IMPLEMENTED` |
 
-첫 화면은 메뉴가 아니라 direct boat entry입니다. 따라서 현재 `main_menu.tscn`의 identity/time/mood UI와 그 capture는 code evidence일 뿐, 이 화면 흐름의 디자인 정본이나 visual approval이 아닙니다.
+첫 화면은 메뉴가 아니라 direct boat entry입니다. `main_menu.tscn`은 오래된 링크를 넘기는 compatibility route이며, 그 identity/time/mood capture runner는 `HISTORICAL_RETIRED`입니다. 현재 디자인 정본이나 visual approval, current runtime evidence로 사용하지 않습니다.
 
 ## 6. 확정된 시각 방향
 
@@ -220,8 +220,9 @@
 | Direct boat entry | `IMPLEMENTED_AND_GPU_CAPTURED` | `project.godot`이 `game.tscn`을 열고 첫 화면은 메뉴를 닫은 보트 장면 |
 | 오늘의 마음 제거 | `IMPLEMENTED_AND_TESTED` | mood state, 시작 선택, 색 규칙, 항해 문구 의존을 retire함 |
 | 현실 시간 분위기 | `IMPLEMENTED_AND_TESTED` | 현지 시간은 시각만 바꾸고, startup selector·saved preference는 없음 |
-| 흘러가는 풍경 | `IMPLEMENTED_AND_GPU_CAPTURED` | active foreground 시간만 쓰는 low-density director와 local ambient memory |
-| cosmetic 꾸미기 | `PARTIAL_IMPLEMENTED` | local slice는 있으나 entry point를 in-voyage로 옮겨야 함 |
+| foreground session | `IMPLEMENTED_AND_TESTED` | 앱이 foreground일 때만 항해 timer·낚시 대기·풍경 drift·자동 알림이 진행되며 background 경과는 기록을 만들지 않음 |
+| 흘러가는 풍경 | `IMPLEMENTED_AND_GPU_CAPTURED` | active foreground 시간만 쓰는 low-density director와 duplicate-safe local ambient memory |
+| cosmetic 꾸미기 | `PARTIAL_IMPLEMENTED` | local slice는 optional `메뉴 → 꾸미기`에서 현재 항해 화면에 live 적용됨 |
 | 함께 보낸 시간 | `CONFIRMED_NOT_IMPLEMENTED` | active foreground time 기반의 관계 문구·album 표현은 별도 구현 필요 |
 | Ambient Discovery | `IMPLEMENTED_AND_TESTED` | passive scenery event, 작은 auto-fade 알림, local auto-save이며 Human 빈도 평가는 미실시 |
 | Visual direction | `APPROVED_DIRECTION` | production asset batch와 runtime alignment는 별도 |
@@ -244,7 +245,7 @@ main scene을 direct boat route로 바꾸고 optional customization을 같은 �
 1. `project.godot`은 `game.tscn`을 시작 route로 사용하며, 첫 화면은 메뉴를 닫은 normal boat diorama입니다.
 2. 새벽 `05:00–08:59`, 밝음 `09:00–16:59`, 해질녘 `17:00–20:59`, 밤 `21:00–04:59`가 기기의 현지 시각으로 자동 적용됩니다. selector와 saved atmosphere는 없습니다.
 3. mood data와 시작 선택 UI를 retire하고 항해 기록을 중립 문구로 바꿨습니다.
-4. foreground 전용 drifting scenery director가 부표·작은 섬·등대를 낮은 밀도로 흘리고, 일부는 local ambient memory로 자동 저장합니다.
+4. foreground 전용 session clock이 항해 timer·낚시 대기·풍경 drift·자동 알림을 함께 멈추며, drifting scenery director는 부표·작은 섬·등대를 낮은 밀도로 흘리고 일부를 local ambient memory로 자동 저장합니다.
 5. 외형·동반자·장식은 optional `메뉴 → 꾸미기`에만 있습니다.
 6. 540 x 960 GPU capture에서 boat-water contact, 시간대, 원거리 작은 섬을 확인했습니다.
 

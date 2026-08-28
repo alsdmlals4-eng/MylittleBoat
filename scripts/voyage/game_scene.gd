@@ -138,6 +138,8 @@ func apply_real_time_atmosphere_for_hour(hour: int) -> String:
 
 
 func _process(delta: float) -> void:
+	if not _application_foreground:
+		return
 	_apply_drift_motion(delta)
 	_advance_fishing(delta)
 	_advance_distant_scenery(delta)
