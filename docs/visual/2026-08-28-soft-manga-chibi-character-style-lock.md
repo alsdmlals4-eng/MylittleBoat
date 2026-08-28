@@ -44,6 +44,8 @@ HUMAN_USABILITY_OR_PLAYER_EXPERIENCE_PASS = NOT_PROVEN
 
 ## Comparison-first approval protocol
 
+For any future unapproved visual question, `VISUAL_EXPLORATION_EXECUTION = GPT_GENERATE_AND_INTERNAL_QA_THEN_FINAL_LOCK_CONFIRMATION`. GPT does not ask for a pre-generation approval: it produces the candidate comparison and checks the selected actual consumer, camera, composition, information density, visual lock, readability, provenance, and rights first. The user confirmation is requested only for the final direction lock. This policy does not turn a generated exploration into a runtime asset or bypass the existing concrete-consumer, local-binary, provenance, implementation, test, and runtime-evidence gates.
+
 Every future visual approval must include all of the following before an asset or lock is called approved:
 
 1. At least three materially different candidates, not color-only variants.

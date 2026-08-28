@@ -4,14 +4,14 @@
 
 ## Authority
 
-이 파일은 **GitHub 구현용 structured mirror / acceptance contract**입니다.
+이 파일은 **repository human-facing canon / implementation acceptance contract**입니다.
 
-- 사람용 프로젝트 개요·경험 방향·시각 방향·에셋 판단의 정본은 Notion Human Home, Core Emotion, Visual Bible, Asset Library입니다.
-- 이 파일은 승인된 Notion 방향을 Godot/코드/테스트/자산 제작이 소비할 수 있는 구조로 옮깁니다.
-- 더 최신의 승인된 Notion 방향과 이 파일이 충돌하면 GitHub 문서를 임의로 우선하지 않습니다. 먼저 승인된 방향을 확인해 동기화한 뒤 구현합니다.
+- 사람용 프로젝트 개요·경험 방향·시각 방향·에셋 판단은 repository의 Master GDD, Concept, approved Decision/Visual Lock, asset/provenance 문서가 소유합니다.
+- 이 파일은 그 승인 방향을 Godot/코드/테스트/자산 제작이 소비할 수 있는 구조로 유지합니다.
+- repository human-facing direction과 이 파일이 충돌하면 구현 전에 최신 승인 Decision/Visual Lock과 Master GDD를 대조해 repository 안에서 교정합니다.
 - 실제 런타임 사실은 코드·Scene·Resource·Test와 실행 증거가 우선합니다.
 
-따라서 이 문서는 사운드·바다 시각·보이는 플레이어·펫/동반자·개인 보트 공간·UI·상호작용을 구현할 때 사용하는 보호선이며, 사람용 디자인 정본을 대체하지 않습니다.
+따라서 이 문서는 사운드·바다 시각·보이는 플레이어·펫/동반자·개인 보트 공간·UI·상호작용을 구현할 때 사용하는 보호선이며, repository의 Master GDD와 approved decision을 보완합니다.
 
 ## 1. North Star
 
