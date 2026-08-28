@@ -3,6 +3,7 @@ extends SceneTree
 
 const CATALOG_PATH := "res://scripts/voyage/time_of_day_catalog.gd"
 const CAPTURE_PATH := "res://tests/capture_four_time_atmosphere.gd"
+const RESOLVER_PATH := "res://scripts/voyage/real_time_atmosphere_resolver.gd"
 
 var _failures := 0
 
@@ -13,8 +14,17 @@ func _init() -> void:
 
 func _run() -> void:
 	_expect(ResourceLoader.exists(CATALOG_PATH), "time-of-day catalog must exist")
+	_expect(ResourceLoader.exists(RESOLVER_PATH), "real-time atmosphere resolver must exist")
 	var game_state := root.get_node_or_null("GameState")
 	_expect(game_state != null, "GameState autoload must exist")
+	if ResourceLoader.exists(RESOLVER_PATH):
+		var resolver = load(RESOLVER_PATH).new()
+		_expect(resolver.resolve_hour(5) == "dawn", "05:00 must be Dawn")
+		_expect(resolver.resolve_hour(9) == "bright", "09:00 must be Bright")
+		_expect(resolver.resolve_hour(17) == "sunset", "17:00 must be Sunset")
+		_expect(resolver.resolve_hour(21) == "night", "21:00 must be Night")
+		_expect(resolver.resolve_hour(0) == "night", "00:00 must be Night")
+		_expect(resolver.resolve_hour(-1) == "bright", "invalid hour must safely fall back to Bright")
 	if ResourceLoader.exists(CATALOG_PATH):
 		var catalog = load(CATALOG_PATH).new()
 		_expect(catalog.get_time_of_day_ids() == ["dawn", "bright", "sunset", "night"], "time IDs must remain approved and ordered")
