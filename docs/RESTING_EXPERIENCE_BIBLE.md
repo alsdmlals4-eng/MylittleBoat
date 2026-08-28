@@ -300,7 +300,7 @@ HUMAN_STYLE_APPROVAL = NOT_RUN
 
 Ambient Discovery는 플레이어가 보상을 얻기 위해 고르는 이벤트가 아니라, 낮은 빈도로 바다·하늘·먼 거리에서 스스로 지나가는 확률형 배경 연출입니다. 발견 순간에는 작은 비차단 알림만 잠시 보이고 자동으로 사라지며, 그 장면은 버튼이나 확인 없이 local ambient memory로 즉시 저장됩니다.
 
-Normal Diorama와 Appreciation Camera 모두에서 같은 의미로 나타나되, 감상 화면의 바다·수평선을 가리지 않아야 합니다. 병편지·외부 메시지·소셜 알림과 구분하며, 호감도·보상·점수·희귀도·timer·camera·FOMO를 만들지 않습니다. 정확한 발생률, motif, persistence와 runtime UI는 별도 Phase 2 계약 전까지 미확정입니다.
+Normal Diorama와 Appreciation Camera 모두에서 같은 의미로 나타나되, 감상 화면의 바다·수평선을 가리지 않아야 합니다. 명목상 5분 항해에는 대체로 1~2회를 목표로 하지만 첫 발견은 보장하지 않고, 0회인 항해도 정상입니다. 병편지·외부 메시지·소셜 알림과 구분하며, 호감도·보상·점수·희귀도·timer·camera·FOMO를 만들지 않습니다. 정확한 발생률, motif, persistence와 runtime UI는 별도 Phase 2 계약 전까지 미확정입니다.
 
 ## 6. 펫/동반자 정본
 
