@@ -1,8 +1,8 @@
-# Godot MVP Roadmap
+# Historical Godot MVP Roadmap
 
-`my little boat` Godot MVP를 **핵심 감정이 실제 플레이에서 작동하는지 검증하는 순서**로 진행합니다.
+> 이 문서는 2026-08-28 direct boat entry 결정 전의 Godot 구현 이력을 보존하는 historical record입니다. 아래 완료 표시는 현재 제품 목표의 완료 표시가 아닙니다. 현재 제품 방향과 다음 구현 계약은 [프로젝트 GDD](design/PROJECT_GDD.md)와 [현재 Godot handoff](handoffs/CURRENT_GODOT_IMPLEMENTATION.md)를 따릅니다.
 
-> **Authority:** 사람용 기획·경험·시각 방향은 Notion 정본에서 승인합니다. 이 로드맵은 승인된 방향을 repository 구현·검증 단계로 옮기는 execution mirror입니다. 기술 GREEN은 Human/player experience PASS가 아닙니다.
+`my little boat` Godot MVP를 **핵심 감정이 실제 플레이에서 작동하는지 검증하는 순서**로 정리했던 이력입니다. Notion은 migration-complete historical archive이며 현재 owner가 아닙니다. 기술 GREEN은 당시의 automated/runtime 증거일 뿐 Human/player experience PASS가 아닙니다.
 
 ## 1단계: 프로젝트 골격 — 완료
 
@@ -11,7 +11,7 @@
 - Godot 4.7 stable / GDScript
 - mobile portrait 우선 구조
 
-## 2단계: 마음 선택 — 완료
+## 2단계: 마음 선택 — historical 구현, 현재 제품에서 superseded
 
 - 평온 / 지침 / 외로움 / 설렘
 - `GameState` 저장

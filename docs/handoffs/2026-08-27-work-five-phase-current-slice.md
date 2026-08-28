@@ -1,63 +1,58 @@
 # Work 5단계 현재 Slice 정합성 Receipt
 
-> 이 문서는 사람용 프로젝트 정본이나 새 제품 요구사항이 아니다. Base 5단계 실행 계약을 현재 `main`의 승인된 rest-first runtime에 매핑한 실행 receipt다.
+> 이 문서는 2026-08-28 direct boat entry 결정으로 다시 계산한 Work 5단계 receipt입니다. 사람용 제품 정본은 [프로젝트 GDD](../design/PROJECT_GDD.md), 실제 구현과 test evidence는 [현재 Godot handoff](CURRENT_GODOT_IMPLEMENTATION.md)가 소유합니다.
 
-## Identity
+## 현재 위치
 
 ```yaml
 project: MY_LITTLE_BOAT
-current_completed_main_before_phase_2: 66a0ce7480fd6f1c070d24eaf282abc80c9b6850
-phase_2_current_task_pr: 59
-product_identity: REST_FIRST_VISUAL_RUNTIME_AUTOMATION_CLOSEOUT
-repository_human_canon: docs/design/PROJECT_AI_PRODUCTION_SPEC.md + docs/CONCEPT.md + docs/RESTING_EXPERIENCE_BIBLE.md + approved repository decisions/visual locks
-legacy_notion_archive: DISCOVERY_ONLY_NO_NEW_READ_WRITE_SYNC
-current_router: docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md
-protected_open_workstream: PR_19_READ_ONLY_NO_ABSORPTION
+current_product_goal: DIRECT_BOAT_ENTRY_REST_FIRST_DIARAMA
+current_accepted_frontier: HUMAN_GDD_AND_IMPLEMENTATION_CONTRACT_READY
+legacy_runtime: PRODUCT_SUPERSEDED_IMPLEMENTATION
+current_work_phase: PHASE_1_PLANNING_RECONCILED
+next_work_phase: PHASE_2_DIRECT_ENTRY_PREPRODUCTION_AND_IMPLEMENTATION_CONTRACT
 human_usability_evidence: NOT_RUN
 player_experience_evidence: NOT_RUN
+protected_open_workstream: PR_19_READ_ONLY_NO_ABSORPTION
+notion: HISTORICAL_DISCOVERY_ARCHIVE_NO_NEW_READ_WRITE_SYNC
 ```
 
-## Reconfirmed player contract
+## 현재 플레이어 계약
 
-- Player promise: visible avatar, pet, personal boat, decor, and sea provide a rest-first 3/4 diorama where doing nothing remains valid.
-- Core loop: choose today’s mood → rest or optionally interact/decorate/fish/discover → make a voyage memory → remain or begin another voyage.
-- Meaningful choice: mood, cosmetic identity, four-time atmosphere, decor appearance, and optional low-pressure activities alter presentation or expression, never rewards, pressure, or failure.
-- Reward and failure learning: personal memory, scenery, companion affection, and boat traces; no combat, loss, streak, farming, or care-obligation failure.
+- 실행하면 이미 바다 위에 떠 있는 보트, 캐릭터, 동반자, 수평선을 본다.
+- 아무 행동 없이 머무르는 것이 complete play다. 사진·낚시·감상·작은 상호작용은 원할 때만 쓴다.
+- 외형·동반자·장식은 항해 안의 `꾸미기`에서만 바꾸며 능력치·희귀도·최적화가 없다.
+- `오늘의 마음`은 제거됐다. 새 상태는 `bright`로 시작하고 이후 last saved atmosphere를 selector 없이 쓴다.
+- 함께 보낸 시간과 Ambient Discovery는 승인된 제품 방향이지만 아직 구현되지 않았다.
 
-## Evidence-based SWOT
+## 이전 Slice와 현재 목표를 구분할 것
 
-| Lens | Current evidence | Execution implication |
+| 구분 | 실제 상태 | 해석 |
 | --- | --- | --- |
-| Strength | approved C+dog visual route, local identity/decor appearance, four-time atmosphere, and runtime image contracts are merged | preserve current visual consumers rather than recreate art |
-| Weakness | Human Windows launch, mobile comfort/touch, and audio quality remain `NOT_RUN`; the exact current Windows package has only machine headless smoke evidence | do not call the slice Human-ready from package evidence alone |
-| Opportunity | existing 540×960 runtime evidence and Godot contract suite support a bounded internal-build closeout | preserve the Windows-only artifact route rather than add gameplay or asset scope |
-| Threat | stale canon can route work toward already-completed image production; PR #19 is independent | maintain a single current router and keep PR #19 read-only |
+| 구형 main menu | Scene·script·test·540 x 960 capture가 존재 | `PRODUCT_SUPERSEDED_IMPLEMENTATION`. current direct entry의 UX·visual approval이 아님 |
+| normal/appreciation voyage | partial runtime slice 존재 | reusable evidence를 audit한 뒤에만 direct-entry consumer로 사용 |
+| C+dog와 visual direction | direction은 승인됨 | production asset batch와 runtime alignment는 별도 |
+| package/headless proof | historical automated proof 존재 | direct boat entry 또는 Human comfort proof가 아님 |
 
-## Five-phase mapping
+## Work 5단계 재계산
 
-| Work phase | Project-native evidence | Status |
+| 단계 | 현재 상태 | 필요한 다음 증거 |
 | --- | --- | --- |
-| Phase 1 · Planning co-design | approved rest-first direction, visual language, local-first rules, C+dog default, cosmetic identity, decor and atmosphere decisions | `RECONFIRMED_AFTER_CANON_CORRECTION` |
-| Phase 2 · Preproduction review | Windows x86_64 internal debug preset, CI export, ZIP artifact, and SHA-256 manifest passed in PR #59 and its `main` push run | `COMPLETE_WINDOWS_INTERNAL_ROUTE_MAIN_ARTIFACT_PASS` |
-| Phase 3 · In-game element production | required P1 cushion/postcard and C+dog/runtime visual inputs are already project-local, registered, and consumed | `COMPLETE_FOR_CURRENT_VISUAL_SCOPE` |
-| Phase 4 · Codex implementation and machine closeout | Godot contracts, scene smokes, local export, and exact-current-`main` package artifact all pass; run `33072278953` / artifact `9646328971` matches executable/PCK SHA-256 values, and the packaged executable headless smoke exits `0` | `MACHINE_CLOSEOUT_PASS_WITH_PACKAGED_HEADLESS_SMOKE` |
-| Phase 5 · User vertical-slice validation | user has not played an exact packaged build | `NOT_STARTED` |
+| 1. 기획 공동점검 | `COMPLETE_FOR_DIRECT_ENTRY_DECISION` | 최신 GDD·visual lock·scope·feasibility 반영 완료 |
+| 2. 구현 전 검토 | `NOT_STARTED_FOR_DIRECT_ENTRY` | Scene route, local migration, optional 꾸미기 consumer, 540 x 960 acceptance를 Issue와 plan으로 고정 |
+| 3. 인게임 요소 제작 | `NOT_STARTED_FOR_DIRECT_ENTRY` | 새 asset은 concrete consumer와 visual check를 통과할 때만 생성 |
+| 4. Codex/Godot 구현 | `NOT_STARTED_FOR_DIRECT_ENTRY` | code/test/smoke/runtime capture. historical green은 이 행을 통과시키지 못함 |
+| 5. 사용자 vertical-slice 검증 | `NOT_STARTED` | 실제 기기의 30초 첫인상·5분 휴식·가독성·손감각 확인 |
 
-## Approved scope for the next review
+## evidence-based SWOT
 
-```text
-IN_SCOPE
-- Reconcile stale repository status with actual merged runtime evidence.
-- Review a zero-cost internal package route for the existing runtime without changing gameplay or art direction.
-- Preserve deterministic and runtime validation evidence.
+| class | statement | evidence | confidence | disposition |
+| --- | --- | --- | --- | --- |
+| STRENGTH | 캐릭터·동반자·보트·바다를 함께 보는 rest-first 구조가 이미 code와 visual direction에 있다. | current scenes, existing captures, approved direction | `PARTIAL` | `PROTECT` |
+| WEAKNESS | current entry가 선택 panel과 mood flow를 먼저 보여 주고, 보트가 바다에 뜬다는 공간 관계를 설득하지 못한다. | actual `main_menu.tscn`, user rejection, GDD acceptance | `VERIFIED` | `IMPROVE` |
+| OPPORTUNITY | 시작 30초를 “이미 쉬고 있는 장면”으로 만들면 기능 설명 없이 player promise가 전달된다. | approved direct-entry decision, GDD | `PARTIAL` | `TEST` |
+| THREAT | 구형 capture·image asset·historical green을 새 제품 UX pass로 오인하면 scope와 proof가 어긋난다. | stale owner audit and historical evidence | `VERIFIED` | `MITIGATE` |
 
-OUT_OF_SCOPE
-- New gameplay, economy, progression, social integration, asset families, paid tools, public release, store publication, or PR #19 changes.
+## 다음 안전한 행동
 
-PROTECTED
-- rest-first loop, local-first core, visual reference lock, camera semantics, decor IDs, cosmetic-only meaning, and delayed-bottle safety boundary.
-```
-
-## Next safe action
-
-Machine-executable required work for this approved slice is `0`. Do not start a new feature, art, social, or platform slice automatically. Human Windows launch, mobile comfort, audio listening, and Phase 5 user validation remain `NOT_RUN` until separately evidenced.
+Issue #99는 정본·GDD·handoff 교정만 다룹니다. 다음 code task는 사용자가 Phase 2 구현 계약을 승인한 뒤 별도 Issue와 `/plan`으로 시작합니다. 그 전까지는 새 asset batch, code, Scene, Resource, test, social, PR #19 변경을 시작하지 않습니다.
