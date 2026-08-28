@@ -52,12 +52,13 @@ Core controls:
 - Speed Control
 
 Core loop:
-- Launch directly into the normal 3/4 boat diorama. A newly created local state begins in Bright; later entries use the locally stored atmosphere without a startup selector.
+- Launch directly into the normal 3/4 boat diorama. The device's local clock automatically chooses dawn, bright, sunset, or night; there is no startup selector and no saved atmosphere preference.
 - Rest with the visible avatar and pet. Simply staying is complete play.
+- Let low-density scenery pass naturally as active foreground time progresses. It is visual context, not a reward track or a task.
 - Optionally use low-pressure interactions, photography, decoration, fishing, ambient discoveries, and delayed bottle letters as each slice is implemented.
 - Open `꾸미기` only when desired to change cosmetic player appearance, companion species, or boat decoration.
 - Drift for about 5 minutes, leave a personal voyage record if one is created, or continue resting.
-- Do not present today’s mood, identity, pet, decor, light, or atmosphere as a requirement before the first boat view.
+- Do not present today’s mood, identity, pet, decor, light, or atmosphere as a requirement before the first boat view. Device-clock time affects visuals only and must not change rewards, progress, or saves.
 
 Supporting direction:
 - Boat decoration is self-expression/memory, not stats or optimization.

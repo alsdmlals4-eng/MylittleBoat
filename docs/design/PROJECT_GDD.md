@@ -1,7 +1,7 @@
 # 마이 리틀 보트 기획서
 
 **현재 상태:** `CURRENT_HUMAN_FACING_GDD`
-**갱신일:** 2026-08-28
+**갱신일:** 2026-08-29
 **읽는 법:** 이 문서는 사람이 게임의 경험과 결정 상태를 이해하기 위한 정본입니다. 실제 코드·Scene·테스트·캡처는 [현재 Godot handoff](../handoffs/CURRENT_GODOT_IMPLEMENTATION.md)가, visual consumer와 provenance는 [visual inventory](../visual/CURRENT_SCREEN_SURFACE_INVENTORY_AND_VISUAL_ASSET_COVERAGE.md)가 소유합니다.
 
 ## 1. 이 게임은 무엇인가
@@ -35,7 +35,7 @@
 → 계속 쉬거나 나만의 기억을 남김
 ```
 
-시작할 때 `오늘의 마음`, 시간대, 외형, 동반자, 장식 중 무엇도 고르게 하지 않습니다. 새 로컬 상태는 `bright` 분위기로 시작하고, 이후에는 마지막으로 저장된 분위기를 사용합니다. 분위기를 바꾸는 별도 control이 어디에 있어야 하는지는 아직 결정하지 않았습니다.
+시작할 때 `오늘의 마음`, 시간대, 외형, 동반자, 장식 중 무엇도 고르게 하지 않습니다. 기기의 **현지 현실 시간**이 새벽·밝음·해질녘·밤 분위기를 자동으로 정합니다. 수동 분위기 control과 마지막 분위기 저장은 없습니다. 기기 시계는 시각 표현에만 쓰며 보상, 항해 진행, 기억 저장, 호감도에는 영향을 주지 않습니다.
 
 외형·동반자·보트 장식은 바다를 본 뒤에만, 원할 때 `꾸미기`에서 바꿉니다. 모든 꾸미기 선택은 cosmetic이며 능력치, 희귀도, 보상, 최적 조합을 만들지 않습니다.
 
@@ -91,6 +91,8 @@
 
 **피드백.** 보트의 느린 움직임, 바다·하늘의 변화, 동반자의 낮은 빈도 idle, 파도 중심 soundscape가 “여기에 있다”는 감각을 줍니다.
 
+현지 시간이 바뀌면 하늘·빛·바다의 색과 반사가 천천히 이어집니다. active foreground로 머문 시간이 쌓이면 수평선의 구조물과 주변 풍경도 낮은 밀도로 흘러갑니다. 둘 다 해야 할 일이나 보상이 아니라, 같은 장소가 살아 있다는 배경 감각입니다.
+
 **피해야 할 압박.** 방치 벌, timer 실패, idle 보상, 매분 확인 요구.
 
 **상태.** 제품 방향은 `CONFIRMED`, 직접 시작 화면의 runtime 전환은 `NOT_IMPLEMENTED`입니다.
@@ -143,17 +145,17 @@
 
 **상태.** 제품 방향은 `CONFIRMED_NOT_IMPLEMENTED`입니다. 현재 action-based relation code는 이를 대신하지 못합니다.
 
-### 배경 발견 연출
+### 흘러가는 풍경과 배경 발견 연출
 
-**플레이어가 보고 하는 일.** 아주 드물게 바다의 배경 연출을 보고, 작은 알림과 함께 개인 memory가 자동 저장되는 것을 봅니다.
+**플레이어가 보고 하는 일.** active foreground로 머무는 동안 먼 부표·섬·등대처럼 바다의 구조물과 주변 풍경이 천천히 지나가는 것을 봅니다. 일부 낮은 빈도의 장면은 짧은 알림과 함께 개인 memory로 자동 저장됩니다.
 
-**필요한 이유.** 바다가 살아 있는 장소처럼 느껴지되, 휴식을 끊지 않게 합니다.
+**필요한 이유.** 바다가 정지한 배경이 아니라 천천히 흘러가는 장소처럼 느껴지되, 휴식을 끊지 않게 합니다.
 
-**피드백.** 짧고 사라지는 notification과 local ambient memory.
+**피드백.** 수평선에서 자연스럽게 이동하는 작은 실루엣, 짧고 사라지는 notification, local ambient memory.
 
-**피해야 할 압박.** 첫 발견 보장, button 요구, reward claim, task, social message, missed-event penalty.
+**피해야 할 압박.** 발견을 보기 위한 기다림, button 요구, reward claim, task, social message, missed-event penalty, 구조물을 탭해야 하는 상호작용.
 
-**상태.** 명목 5분에 약 1-2회, zero도 정상이라는 방향은 `CONFIRMED_NOT_IMPLEMENTED`입니다.
+**상태.** active foreground 시간만 사용하고, 명목 5분에 약 1-2회가 지나가되 zero도 정상이라는 방향은 `CONFIRMED_NOT_IMPLEMENTED`입니다. 구체 motif와 production asset은 실제 consumer를 정한 구현 범위에서만 추가합니다.
 
 ### Album
 
@@ -172,7 +174,7 @@
 | 화면 또는 상태 | 플레이어 목표 | 주요 행동 | 다음 연결 | 제품 상태 |
 | --- | --- | --- | --- | --- |
 | Direct boat entry | “여기는 어떤 장소인가”를 즉시 느낌 | 보기, 머무르기 | normal voyage | `CONFIRMED_NOT_IMPLEMENTED` |
-| Normal voyage diorama | 캐릭터·동반자·보트·바다를 함께 보기 | 쉬기, 사진, 낚시, 감상, 꾸미기 | album 또는 계속 머무르기 | earlier slice `PARTIAL_IMPLEMENTED` |
+| Normal voyage diorama | 캐릭터·동반자·보트·바다와 시간에 따라 바뀌는 풍경을 함께 보기 | 쉬기, 사진, 낚시, 감상, 꾸미기 | album 또는 계속 머무르기 | earlier slice `PARTIAL_IMPLEMENTED`, automatic environment `NOT_IMPLEMENTED` |
 | Appreciation Camera | 수평선과 바다에 집중 | 감상 시작·종료 | 같은 normal voyage | earlier slice `IMPLEMENTED` |
 | 꾸미기 | 공간을 내 취향으로 두기 | 외형·동반자·장식 변경 | 같은 normal voyage | cosmetic slice `PARTIAL_IMPLEMENTED` |
 | Album | 남은 개인 기록 보기 | 기록 읽기, 바다로 돌아가기 | normal voyage | `PARTIAL_IMPLEMENTED` |
@@ -217,6 +219,8 @@
 | Rest-first direction | `CONFIRMED` | 머무르기가 complete play라는 제품 방향 |
 | Direct boat entry | `CONFIRMED_NOT_IMPLEMENTED` | 다음 Phase 2에서 Scene route와 UI를 바꿔야 함 |
 | 오늘의 마음 제거 | `CONFIRMED_NOT_IMPLEMENTED` | 현재 code/test에 남아 있는 mood data를 migration과 함께 retire해야 함 |
+| 현실 시간 분위기 | `CONFIRMED_NOT_IMPLEMENTED` | 현지 시간은 시각만 바꾸고, startup selector·saved preference는 없음 |
+| 흘러가는 풍경 | `CONFIRMED_NOT_IMPLEMENTED` | active foreground 시간에만 낮은 밀도의 distant scenery와 ambient memory가 진행 |
 | cosmetic 꾸미기 | `PARTIAL_IMPLEMENTED` | local slice는 있으나 entry point를 in-voyage로 옮겨야 함 |
 | 함께 보낸 시간 | `CONFIRMED_NOT_IMPLEMENTED` | active foreground time 기반으로 재설계 필요 |
 | Ambient Discovery | `CONFIRMED_NOT_IMPLEMENTED` | passive auto-save presentation으로 재설계 필요 |
@@ -225,9 +229,11 @@
 
 ### 구현 가능성 확인
 
-현재 Godot 구조에서 direct boat entry는 구현 가능한 범위입니다. `GameState`처럼 Autoload된 Node는 Scene 전환을 넘어 state를 유지할 수 있고, 이는 mood를 retire한 뒤 local cosmetic/atmosphere state를 owner로 유지하는 데 맞습니다. [Godot Autoload 공식 문서](https://docs.godotengine.org/en/stable/tutorials/scripting/singletons_autoload.html)
+현재 Godot 구조에서 direct boat entry는 구현 가능한 범위입니다. `GameState`처럼 Autoload된 Node는 Scene 전환을 넘어 state를 유지할 수 있고, 이는 mood를 retire한 뒤 local cosmetic state와 active foreground session state를 owner로 유지하는 데 맞습니다. [Godot Autoload 공식 문서](https://docs.godotengine.org/en/stable/tutorials/scripting/singletons_autoload.html)
 
-마지막 분위기 같은 작은 local preference는 `user://`와 `ConfigFile`로 저장·복원할 수 있습니다. 다만 저장 key, 기존 mood 데이터 migration, save 실패 처리, future atmosphere control은 구현 계약에서 정해야 합니다. [Godot ConfigFile 공식 문서](https://docs.godotengine.org/en/stable/classes/class_configfile.html), [Godot user data filesystem 공식 문서](https://docs.godotengine.org/en/stable/tutorials/scripting/filesystem.html)
+Godot `Time`은 현지 시스템 시간을 읽을 수 있으므로 현실 시간 기반의 순수 시각 분위기에 맞습니다. 다만 시스템 시계는 사용자가 바꿀 수 있으므로 precise progress에는 쓰지 말아야 합니다. active foreground scenery는 monotonic tick 또는 scene delta로 계산합니다. [Godot Time 공식 문서](https://docs.godotengine.org/en/stable/classes/class_time.html)
+
+작은 local cosmetic과 ambient memory는 `user://`와 `ConfigFile`로 저장·복원할 수 있습니다. 이 저장은 시간대 자체를 저장하지 않으며, 기존 mood data migration과 save 실패 처리는 구현 계약에서 정합니다. [Godot ConfigFile 공식 문서](https://docs.godotengine.org/en/stable/classes/class_configfile.html), [Godot user data filesystem 공식 문서](https://docs.godotengine.org/en/stable/tutorials/scripting/filesystem.html)
 
 main scene을 direct boat route로 바꾸고 optional customization을 같은 게임 내 surface로 연결하는 것은 Godot 표준 SceneTree 전환의 범위입니다. 이 가능성은 아직 전환 구현이나 mobile performance 검증을 뜻하지 않습니다. [Godot Scene 전환 공식 문서](https://docs.godotengine.org/en/stable/tutorials/scripting/change_scenes_manually.html)
 
@@ -235,12 +241,13 @@ main scene을 direct boat route로 바꾸고 optional customization을 같은 �
 
 다음 구현은 아래를 하나의 작고 검증 가능한 contract로 다룹니다.
 
-1. 새 local state가 `bright` normal boat diorama로 바로 시작한다.
-2. saved atmosphere를 startup selector 없이 복원한다.
+1. main scene이 현지 현실 시간에 맞는 normal boat diorama로 바로 시작한다.
+2. 새벽 `05:00–08:59`, 밝음 `09:00–16:59`, 해질녘 `17:00–20:59`, 밤 `21:00–04:59`를 첫 구현의 local-time mapping으로 사용한다. 수동 selector와 saved atmosphere는 retire한다.
 3. mood data, mood wording, mood color rule, mood-dependent test를 migration과 함께 retire한다.
-4. 외형·동반자·장식 선택을 optional `꾸미기`로 이동한다.
-5. direct-entry diorama가 540 x 960에서 float-contact 기준을 충족하는 runtime capture를 만든다.
-6. 자동 route/persistence tests, targeted scene smoke, runtime capture, Human 30초·5분 검증을 서로 구분해 기록한다.
+4. active foreground 시간만 사용하는 low-density drifting scenery director를 추가한다. 명목 5분에 약 1-2개의 먼 풍경 장면이 지나가며, zero도 정상이다. 실제 scene asset은 named consumer가 없는 한 만들지 않는다.
+5. 외형·동반자·장식 선택을 optional `꾸미기`로 이동한다.
+6. direct-entry diorama가 540 x 960에서 float-contact 기준을 충족하는 runtime capture를 만든다.
+7. 자동 route/time-mapping/foreground-progress tests, targeted scene smoke, runtime capture, Human 30초·5분 검증을 서로 구분해 기록한다.
 
 이 GDD는 위 구현을 시작하거나 완료했다고 주장하지 않습니다.
 
@@ -258,10 +265,10 @@ main scene을 direct boat route로 바꾸고 optional customization을 같은 �
 
 | 항목 | 현재 결정 | 나중에 정할 것 |
 | --- | --- | --- |
-| 분위기 변경 control | 시작 선택 없음 | 자동 변화, 작은 ambient control, 고정 중 무엇이 실제 휴식에 맞는지 |
+| 현실 시간 분위기 | 현지 현실 시간이 자동 적용 | 계절·지역 일몰까지 반영할지 여부. 첫 구현에는 포함하지 않음 |
 | direct-entry visual production | 구형 composition reject | source asset reuse/replacement와 정확한 runtime consumer |
 | 함께 보낸 시간 | active foreground 시간만 누적 | rate, threshold, persistence migration, album copy |
-| Ambient Discovery | passive, auto-save, low-density | 확률·cooldown·motif와 notification detail |
+| 흘러가는 풍경 / Ambient Discovery | active foreground, passive, auto-save, low-density | motif의 구체 asset, cooldown과 notification copy |
 | Human validation | 아직 `NOT_RUN` | 실제 기기에서 first 30 seconds와 5 minutes가 calm인지 |
 
 새 결정은 current owner와 공식 근거를 대조한 뒤에만 정본으로 올립니다. 충돌은 해당 owner만 교정한 뒤 적대적 검토를 다시 통과합니다.

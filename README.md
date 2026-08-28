@@ -5,6 +5,7 @@
 ## 먼저 알아둘 것
 
 - 현재 사람용 정본은 [프로젝트 GDD](docs/design/PROJECT_GDD.md)입니다.
+- 사람이 읽는 최신 PDF 출력은 [GDD PDF](exports/my-little-boat_MASTER_PRODUCTION_GDD_20260829.pdf)입니다.
 - 실제 코드·Scene·테스트·캡처의 사실은 [현재 Godot handoff](docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md)가 소유합니다.
 - 이전 Notion은 이관이 끝난 historical archive이며 새 작업의 정본이나 동기화 대상이 아닙니다.
 - 현재 코드에는 이전 선택형 메인 메뉴가 남아 있습니다. 이는 승인된 제품 흐름이 아니라 다음 Phase 2 구현 계약에서 교체할 `PRODUCT_SUPERSEDED_IMPLEMENTATION`입니다.
@@ -19,7 +20,7 @@
 → 개인적인 기억을 남기거나 계속 머무르기
 ```
 
-새 로컬 상태는 `bright` 분위기로 시작합니다. 이후에는 마지막으로 저장된 분위기를 사용하되, 시작할 때 선택 화면을 보여주지 않습니다. 분위기를 바꾸는 미래 UI는 아직 결정하지 않았습니다.
+시작하면 기기의 **현지 현실 시간**에 맞춰 새벽·밝음·해질녘·밤 분위기가 자동으로 보입니다. 시작 화면이나 수동 분위기 선택은 없고, 기기 시계는 보상·진행·저장에 영향을 주지 않습니다. 게임을 켜 둔 active foreground 시간에 따라 먼 구조물과 주변 풍경이 낮은 빈도로 흘러가며 바뀝니다.
 
 ## 핵심 보호선
 

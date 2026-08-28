@@ -12,12 +12,13 @@
 → 개인적인 기억을 남기거나 계속 머무르기
 ```
 
-새 로컬 상태는 `bright`로 시작하고, 그 뒤에는 마지막 local atmosphere를 selector 없이 복원합니다. `오늘의 마음`은 시작 선택도, 다른 질문으로 바꿀 항목도 아닙니다.
+기기의 현지 현실 시간이 새벽·밝음·해질녘·밤을 자동으로 정합니다. 별도 selector나 saved atmosphere는 없고, `오늘의 마음`은 시작 선택도 다른 질문으로 바꿀 항목도 아닙니다. active foreground 시간은 낮은 밀도의 주변 풍경 흐름에만 씁니다.
 
 ## 이번 direct-entry 계약에 포함될 것
 
 - direct boat entry Scene route.
 - mood data와 mood 문구·색 규칙·관련 test의 안전한 migration/retire.
+- 현실 시간 기반 atmosphere 적용과 active foreground time 기반 drifting scenery 연출.
 - 선택형 `꾸미기` entry로 cosmetic 외형·동반자·장식 선택 이동.
 - 540 x 960에서 보트와 물의 접점이 읽히는 diorama runtime capture.
 - route/persistence test, scene smoke, runtime capture, Human 30초·5분 검증의 분리 기록.
