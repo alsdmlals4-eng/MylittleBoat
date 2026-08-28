@@ -1,6 +1,6 @@
 # Concept
 
-> **Authority:** 사람용 프로젝트 개요·경험/시각 방향의 최신 승인 정본은 Notion Human Home과 관련 Core/Visual 페이지입니다. 이 파일은 그 방향을 repository 구현 작업이 소비할 수 있게 옮긴 **structured implementation mirror**이며, 더 최신의 승인된 Notion 방향을 임의로 덮어쓰지 않습니다. 실제 런타임 사실은 코드·Scene·Resource·Test와 실행 증거가 우선합니다.
+> **Authority:** 사람용 프로젝트 개요·경험/시각 방향의 최신 승인 정본은 repository의 `docs/design/PROJECT_AI_PRODUCTION_SPEC.md`, 이 파일, `docs/RESTING_EXPERIENCE_BIBLE.md`, approved decision/visual lock/asset provenance 문서입니다. 실제 런타임 사실은 코드·Scene·Resource·Test와 실행 증거가 우선합니다. 이전 Notion은 historical discovery-only archive로 보존하며 새 read/write/sync 또는 approval owner로 사용하지 않습니다.
 
 `my little boat`는 **본디에서 참고한 작고 둥근 3D 디오라마 감성**을 바탕으로, 작은 보트 위에서 보이는 플레이어 캐릭터와 펫이 함께 쉬고 생활하며 잔잔한 바다·파도소리·작은 기억을 쌓는 rest-first 힐링 항해 게임입니다.
 
@@ -8,7 +8,7 @@
 
 ## Visual Style Mirror
 
-The people-readable visual canon is owned by the Notion Visual Bible.
+The people-readable visual canon is owned by repository visual locks, this Concept mirror, and the Master GDD.
 
 Visual hierarchy:
 
@@ -58,9 +58,9 @@ CHARACTER_STYLE_REFINEMENT = SOFT_MANGA_CHIBI_CHARACTER_REFINEMENT / USER_APPROV
 NIGHT_ATMOSPHERE_REFINEMENT = INDIGO_RAIN_REFLECTION / USER_APPROVED_PLANNING_DIRECTION
 FOUR_TIME_CONTINUITY_BOARD = USER_APPROVED_VISUAL_DIRECTION / NOT_RUNTIME_ASSET
 APPROVED_REPRESENTATIVE_VISUAL_GDD = CANCELLED_AS_REQUIRED_DELIVERABLE
-FINAL_AVATAR_ART = USER_APPROVED_NOTION_REGISTERED_LOCATOR_PASS
-FINAL_PET_ART = USER_APPROVED_NOTION_REGISTERED_LOCATOR_PASS
-FINAL_BOAT/SEA_ART = USER_APPROVED_NOTION_REGISTERED_LOCATOR_PASS
+FINAL_AVATAR_ART = USER_APPROVED_REPOSITORY_LOCATOR_PASS
+FINAL_PET_ART = USER_APPROVED_REPOSITORY_LOCATOR_PASS
+FINAL_BOAT/SEA_ART = USER_APPROVED_REPOSITORY_LOCATOR_PASS
 HANDPAINTED_3D_RUNTIME_SLICE = USER_APPROVED_MERGED_MAIN
 FINAL_DECOR_ART = APPROVED_CUSHION_POSTCARD_RUNTIME_COMPOSITE_MERGED_MAIN
 APP_RESTART_DECOR_PERSISTENCE = AUTOMATED_LOCAL_RESTORE_PASS
@@ -193,7 +193,7 @@ APP_RESTART_DECOR_PERSISTENCE = AUTOMATED_LOCAL_RESTORE_PASS
 - 백엔드 장애가 기본 휴식 플레이를 막지 않는다.
 - 1인 개발 유지비가 핵심 휴식 품질보다 커지지 않는다.
 
-구현 세부 보호선은 `docs/RESTING_EXPERIENCE_BIBLE.md`와 승인된 Diorama/Bottle spec에 구조화해 mirror하며, 사람용 방향 변경은 Notion 정본에서 승인된 뒤 동기화합니다.
+구현 세부 보호선은 `docs/RESTING_EXPERIENCE_BIBLE.md`와 승인된 Diorama/Bottle spec에 구조화해 유지하며, 사람용 방향 변경은 repository의 Master GDD와 approved Decision/Visual Lock에 기록한 뒤 구현 문서에 동기화합니다.
 
 ## 금지 방향
 

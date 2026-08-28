@@ -20,7 +20,7 @@ implementation_owner: CODEX_GODOT_PRODUCT_IMPLEMENTATION_OWNER
 final_review_owner: GPT_FINAL_IMPLEMENTATION_REVIEW
 concurrent_pr_19: READ_ONLY_NO_ABSORPTION
 image_generation_by_codex: ALLOWED_BY_USER_AUTO_ASSET_POLICY_2026_08_26
-image_registration_policy: AUTO_CREATE_REVIEW_NOTION_AND_PROJECT_LOCAL
+image_registration_policy: AUTO_CREATE_PROJECT_LOCAL_PROVENANCE_AND_REPOSITORY_READBACK
 visual_reference_lock: HANDPAINTED_STORYBOOK_3D_DIORAMA + SOFT_MANGA_CHIBI_CHARACTER_REFINEMENT + INDIGO_RAIN_REFLECTION_NIGHT
 ```
 
@@ -46,7 +46,7 @@ RUNTIME_CONSUMER_OR_CLEAR_VISUAL_NEED
 → Codex image generation/editing when required
 → reference-lock runtime-asset review
 → project-local binary storage
-→ Notion final asset registration + durable binary locator
+→ repository asset provenance + durable binary locator
 → IMPLEMENTATION_READY
 → GPT Work historical pre-integration handoff
 → CODEX-IMG-01 / CODEX-IMG-02
@@ -54,7 +54,7 @@ RUNTIME_CONSUMER_OR_CLEAR_VISUAL_NEED
 → GPT final implementation review
 ```
 
-The user has authorized automatic image creation and final registration for assets Codex judges necessary. Each generated result must still be runtime-reviewed, stored both project-locally and in Notion Asset Library, and preserve the approved `HANDPAINTED_STORYBOOK_3D_DIORAMA` visual language plus its `SOFT_MANGA_CHIBI_CHARACTER_REFINEMENT`. Use warm dark wood, rounded restrained silhouettes, matte hand-painted surfaces, a calm expansive horizon, and soft-manga chibi player/pet readability; do not drift into generic glossy CG or copy a reference board.
+The user has authorized automatic image creation and internal QA for assets Codex judges necessary. A generated result must still be stored project-locally, recorded in repository asset provenance, runtime-reviewed, and receive a user final-direction lock when it materially changes the visual canon. Preserve `HANDPAINTED_STORYBOOK_3D_DIORAMA` plus `SOFT_MANGA_CHIBI_CHARACTER_REFINEMENT`: warm dark wood, rounded restrained silhouettes, matte hand-painted surfaces, a calm expansive horizon, and soft-manga chibi player/pet readability. Do not drift into generic glossy CG or copy a reference board.
 
 ## Completed image integration goals
 
@@ -120,16 +120,16 @@ Do not invent consumers to absorb extra art:
 
 ```text
 IMG_01_3_FILES = IMPLEMENTATION_READY
-IMG_01_NOTION_READBACK = PASS
+IMG_01_LEGACY_NOTION_READBACK_HISTORICAL = PASS
 IMG_02_1_FILE = IMPLEMENTATION_READY
-IMG_02_NOTION_READBACK = PASS
+IMG_02_LEGACY_NOTION_READBACK_HISTORICAL = PASS
 DURABLE_BINARY_LOCATORS = PASS
 EXACT_ASSET_PATHS = FIXED
 CODEX_INTEGRATION_GOALS = CURRENT
 PR_19 = READ_ONLY_NO_ABSORPTION
 ```
 
-At Codex start, fresh-read current completed main, Project Notion, actual Godot files/tests, open PRs and toolchain. Use semantic TDD and runtime proof for a newly approved product slice. GPT Work must stop before making Scene/Resource/GDScript product changes.
+At Codex start, fresh-read current completed main, repository Master GDD/approved decisions/handoffs, actual Godot files/tests, open PRs and toolchain. Use semantic TDD and runtime proof for a newly approved product slice. GPT Work must stop before making Scene/Resource/GDScript product changes.
 
 ## Protected downstream scope
 
@@ -142,7 +142,7 @@ At Codex start, fresh-read current completed main, Project Notion, actual Godot 
 - cosmetic visuals must not alter rewards, timer, progression pressure, social eligibility or care obligation;
 - local-first core;
 - PR #19 remains independent.
-- New image work may proceed automatically only when it has a concrete runtime consumer or prevents a clear visual gap in the approved diorama. Do not generate speculative menu backgrounds, icon packs, UV texture sheets, or presentation-only art.
+- Planning/approval visual generation may proceed automatically when it answers a current design question; it remains `GENERATED_EXPLORATION` until the user locks the final direction. A runtime/production image still requires a concrete consumer or a clear approved-diorama gap. Do not create speculative runtime menu backgrounds, icon packs, UV texture sheets, or presentation-only production art.
 
 ## Current Codex evidence
 
@@ -151,8 +151,8 @@ IMAGE_GOAL_QUEUE = USER_APPROVED
 GPT_WORK_IMAGE_PRODUCTION = COMPLETE
 IMG_01_FINAL_FILES = 3 / 3 IMPLEMENTATION_READY
 IMG_02_FINAL_FILES = 1 / 1 IMPLEMENTATION_READY
-IMG_01_NOTION_READBACK = PASS
-IMG_02_NOTION_READBACK = PASS
+IMG_01_LEGACY_NOTION_READBACK_HISTORICAL = PASS
+IMG_02_LEGACY_NOTION_READBACK_HISTORICAL = PASS
 DURABLE_BINARY_LOCATORS = PASS
 CODEX_IMG_01 = RUNTIME_VERIFIED_USER_APPROVED_MERGED_MAIN
 CODEX_IMG_02 = RUNTIME_VERIFIED_USER_APPROVED_MERGED_MAIN
@@ -192,10 +192,10 @@ INTERNAL_WINDOWS_PACKAGE_HUMAN_LAUNCH = NOT_RUN
 - Headless import, all current contract scripts, and all three scene smokes passed. Live 540×960 captures exist for Stripe, Moon, Floral, and Bright Boat postcard at `docs/evidence/2026-08-26-runtime-image-integration/`; editor diagnostics report 0 errors and the user approved the runtime review. The scoped integration is merged to `main` through PR #34 at merge commit `647e403bba4b9a537052d16963b469be10236be4`; later PRs #48 and #49 also passed GitHub Actions Godot 4.7 validation.
 - The First Production Visual Slice provided the bounded visual baseline. The user-approved C+dog final 2.5D route, cosmetic identity selection, four-time atmosphere, and final-composite decor correction now supersede it as the current runtime visual result. Reproducible 540×960 evidence remains technical proof; human/mobile comfort and touch review remain deferred.
 - The approved default direction is C knit/long-hair player + dog. Its bounded 3D proof keeps the current placeholder/care-free semantics and stores 540×960 Normal/Appreciation capture at `docs/evidence/2026-08-26-c-storybook-dog-default/`; the user approved it and it merged to `main` through PR #36 at merge commit `0e5f6c7c47d5b1415a3954b3fd6aee84ec17ff8f`. It remains below final art and real-device touch QA.
-- The final 2.5D storybook runtime set uses `assets/images/runtime/storybook/boat_c_dog_diorama_storybook.png` with `sea_bright_storybook.png`; Normal/Appreciation captures are at `docs/evidence/2026-08-26-final-2p5d-storybook-art/`. User approval, Notion final registration, SHA-256 provenance, and durable Git binary locators passed on 2026-08-26. Notion records: `MLB_FINAL_2P5D_C_DOG_BOAT_RUNTIME_V1` and `MLB_FINAL_2P5D_BRIGHT_SEA_RUNTIME_V1`.
+- The final 2.5D storybook runtime set uses `assets/images/runtime/storybook/boat_c_dog_diorama_storybook.png` with `sea_bright_storybook.png`; Normal/Appreciation captures are at `docs/evidence/2026-08-26-final-2p5d-storybook-art/`. User approval, SHA-256 provenance, and durable Git binary locators passed on 2026-08-26. Its prior external registration is historical-only and no longer an active proof or owner.
 - The internal Windows package route is limited to one x86_64 debug export preset and a GitHub Actions ZIP artifact containing the executable, PCK, and SHA-256 manifest. The exact current `main` commit `b6752495d121a2523f871475d4720c9fb1b2e573` passed in GitHub Actions run `33072278953`; downloaded artifact `9646328971` contained matching executable/PCK SHA-256 values from `SHA256SUMS.txt`, and `my_little_boat.exe --headless --quit-after 1` exited with code `0`. This is machine package evidence only; no Android/public-store/signing work and no Human Windows launch or mobile comfort claim are included.
 - `BoatDecorPersistence` stores only cosmetic `boat_decor` and `boat_decor_appearances` in `user://boat_decor_v1.cfg`. The service handles missing or wrong-typed data as an empty boat; no voyage, reward, affection, memory, camera, or social state is persisted. Automated local restore proof passes, while real-device QA remains deferred by user.
 - `RestingSoundscape` now owns a 16-second stereo authored `OceanBed` runtime candidate at a conservative -18 dB. It preserves the wave-first layer priority and does not alter voyage, reward, camera, or social state. Automated loop wiring passes; human headset/speaker/mobile listening remains `NOT_RUN`.
-- Runtime identity selection is local-first: the main-menu `내 모습과 동반자` panel stores one approved player ID and one pet ID only in `user://identity_profile_v1.cfg`. C knit + dog preserves `FinalDioramaCard` unchanged; all other pairs use the shared boat/sea pass plus exactly one selected player card and one selected pet card. Five new 1024×1024 transparent runtime cards are individually registered in Notion Asset Library with SHA-256/provenance/durable repo locators. Normal and Appreciation GPU runtime captures for C+dog and B+otter are stored at `docs/evidence/2026-08-27-runtime-identity-selection/`. User mobile touch QA remains deferred.
+- Runtime identity selection is local-first: the main-menu `내 모습과 동반자` panel stores one approved player ID and one pet ID only in `user://identity_profile_v1.cfg`. C knit + dog preserves `FinalDioramaCard` unchanged; all other pairs use the shared boat/sea pass plus exactly one selected player card and one selected pet card. Five 1024×1024 transparent runtime cards have SHA-256/provenance/durable repository locators. Normal and Appreciation GPU runtime captures for C+dog and B+otter are stored at `docs/evidence/2026-08-27-runtime-identity-selection/`. User mobile touch QA remains deferred.
 - The four-time atmosphere layer is a process-lifetime pre-voyage choice only: Dawn / Bright / Sunset / Night apply the approved restrained environment, key-light, and shared backdrop modulation to the same scene. Bright preserves the approved Bright sea art; no image binary, map, shader, audio, timer, reward, identity, decor, social, or postcard-variant behavior was added. Eight OpenGL 540×960 Normal/Appreciation captures and hashes are at `docs/evidence/2026-08-27-four-time-atmosphere/`. Human comfort and real-device mobile QA remain deferred.
 - Final-composite correction: the C+dog final composite hides only its detached `pet_corner` and `rail_accent` technical meshes, then renders the selected approved cushion surface and default postcard as flat storybook overlays. Four-time captures isolate test decor/identity state and fail before capture if required imported textures are unavailable. The focused contracts and a 540×960 floral-cushion/postcard capture are at `docs/evidence/2026-08-27-final-composite-decor/`. This correction merged to `main` through PR #48 at merge commit `eb84a86c219cdff696a2209446e282a6634302d3`; human/mobile QA remains deferred.

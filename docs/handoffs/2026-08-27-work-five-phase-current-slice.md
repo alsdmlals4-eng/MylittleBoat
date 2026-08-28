@@ -9,7 +9,8 @@ project: MY_LITTLE_BOAT
 current_completed_main_before_phase_2: 66a0ce7480fd6f1c070d24eaf282abc80c9b6850
 phase_2_current_task_pr: 59
 product_identity: REST_FIRST_VISUAL_RUNTIME_AUTOMATION_CLOSEOUT
-notion_home: 3c41b237-eb1c-8194-8b8e-d88362cafafa
+repository_human_canon: docs/design/PROJECT_AI_PRODUCTION_SPEC.md + docs/CONCEPT.md + docs/RESTING_EXPERIENCE_BIBLE.md + approved repository decisions/visual locks
+legacy_notion_archive: DISCOVERY_ONLY_NO_NEW_READ_WRITE_SYNC
 current_router: docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md
 protected_open_workstream: PR_19_READ_ONLY_NO_ABSORPTION
 human_usability_evidence: NOT_RUN
@@ -46,7 +47,7 @@ player_experience_evidence: NOT_RUN
 
 ```text
 IN_SCOPE
-- Reconcile stale repository/Notion status with actual merged runtime evidence.
+- Reconcile stale repository status with actual merged runtime evidence.
 - Review a zero-cost internal package route for the existing runtime without changing gameplay or art direction.
 - Preserve deterministic and runtime validation evidence.
 

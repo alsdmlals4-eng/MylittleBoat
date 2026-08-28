@@ -41,15 +41,15 @@
 | SRC-002 | `AGENTS.md` | 2026-08-28 | Engine, local-first and safety constraints | `CURRENT` |
 | SRC-003 | `origin/main` `a419d2a...` | 2026-08-28 | Completed project GitHub baseline | `CURRENT` |
 | SRC-004 | GitHub PR #19 | 2026-08-28 | Independent open candidate only | `OPEN_READ_ONLY` |
-| SRC-005 | Notion Home `3c41b237-eb1c-8194-8b8e-d88362cafafa` | 2026-08-28 | Human-facing recent decisions and evidence boundary | `CURRENT_HUMAN_CANON` |
-| SRC-006 | Notion Flow `3c11b237-eb1c-81c3-8e12-d3f598113c7e` | 2026-08-28 | Human Flow projection | `CURRENT_HUMAN_CANON` |
-| SRC-007 | Notion Visual Bible `3c11b237-eb1c-81ae-97f3-dc28a0905304` | 2026-08-28 | Human visual direction | `CURRENT_HUMAN_CANON` |
+| SRC-005 | `docs/design/PROJECT_AI_PRODUCTION_SPEC.md`, `docs/CONCEPT.md`, `docs/RESTING_EXPERIENCE_BIBLE.md` and approved repository decision/visual locks | 2026-08-28 | Current human-facing project canon | `CURRENT_REPOSITORY_HUMAN_CANON` |
+| SRC-006 | Previous Notion Home / Flow / Visual Bible locators recorded before this authority migration | 2026-08-28 | Historical discovery only; not reread or written after user retirement decision | `LEGACY_DISCOVERY_ONLY` |
+| SRC-007 | Repository asset binaries, provenance, consumer manifests and runtime evidence | 2026-08-28 | Current asset/consumer truth | `CURRENT_REPOSITORY_CANON` |
 | SRC-008 | `docs/CONCEPT.md`, `docs/RESTING_EXPERIENCE_BIBLE.md`, current handoffs | 2026-08-28 | Repository structured design mirror | `CURRENT` |
 | SRC-009 | Scenes/scripts/tests/assets/evidence at SRC-003 | 2026-08-28 | Runtime and automated implementation truth | `CURRENT` |
 | SRC-010 | Base `docs/PROJECT_MASTER_GDD_TWO_ARTIFACT_POLICY.md` at `af870522...` | 2026-08-28 | Two-artifact publication profile | `ADAPTED` |
 | SRC-011 | Official product/store pages listed in §27 | 2026-08-28 | Bounded market/reference research | `CURRENT_EXTERNAL_EVIDENCE` |
 
-**Attachment disposition.** The supplied work instruction is a formatting/reference input. Its `NO_AUTOMATIC_IMAGE_GENERATION` rule is superseded by the latest user direction; its no-Notion-output rule is adapted to the project's `DOMAIN_SPLIT_CANON` rather than deleting existing human-facing ownership.
+**Attachment disposition.** The supplied work instruction is a formatting/reference input. Its `NO_AUTOMATIC_IMAGE_GENERATION` rule is superseded by the latest user direction. Its no-Notion-output rule now matches the repository-only authority migration: Notion is retained only as an untouched historical discovery archive.
 
 ## 02. CURRENT PROJECT STATE
 
@@ -400,3 +400,5 @@ Research date: 2026-08-28. Sources: official Nintendo Animal Crossing Pocket Cam
 | Date | Change |
 | --- | --- |
 | 2026-08-28 | Initial two-artifact Master GDD publication from `a419d2a...`; records DEC-002/003 implementation conflicts and DEC-007 generate-first/final-lock-only visual workflow. |
+| 2026-08-28 | User retired Notion from active project use. Repository human-facing canon now owns current direction, approvals and asset provenance; Notion is `LEGACY_DISCOVERY_ONLY` with no new read/write/sync. |
+| 2026-08-28 | `NO_BASE_PROMOTION`: this repository-only authority migration is a user/project-specific operating choice and does not retire Notion as a Base-wide workflow option. |

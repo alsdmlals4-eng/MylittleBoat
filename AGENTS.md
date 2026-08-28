@@ -23,19 +23,19 @@ Do not infer current project status from memory or past chats. Resolve current a
 
 1. Latest user instruction.
 2. This `AGENTS.md` and project engine/data/safety constraints.
-3. Current Notion Project Home and approved human-facing project decisions.
-4. Current repository planning/data/code/scenes/resources/tests and actual runtime evidence.
-5. Current adopted Base contract and routing needed for the task.
-6. External references, past conversations, and inference.
+3. Current repository human-facing GDD, approved decisions, handoffs, planning/data/code/scenes/resources/tests, and actual runtime evidence.
+4. Current adopted Base contract and routing needed for the task.
+5. External references, past conversations, and inference.
 
 ### DOMAIN_SPLIT_CANON
 
-- `NOTION_HUMAN_FACING_CANON`: 사람이 읽고 비교·수정하는 Project Home, 핵심 경험·루프·시각 방향, 에셋/Reference, 사람용 표·Flow/Storyboard를 책임진다.
+- `REPOSITORY_HUMAN_FACING_CANON`: 사람이 읽고 비교·수정하는 Master GDD, Concept, Experience Bible, approved decision, visual lock, asset/provenance, Flow/Storyboard를 책임진다.
 - `REPOSITORY_STRUCTURED_CANON`: Markdown·JSON·게임 데이터·GDScript·Scene·Resource·config·tests를 책임진다.
 - `REPOSITORY_RUNTIME_TRUTH`: 실제 Godot 실행·test·log·screenshot/video evidence를 책임진다.
+- `NOTION_LEGACY_DISCOVERY_ONLY`: 이전 Notion page/database/attachment는 이미 이관되지 않은 고유 자료 확인용 historical archive일 뿐, current truth, approval owner, read/write target, or completion gate가 아니다. 새 Notion read/write/sync를 시작하지 않는다.
 - Google Sheets가 과거 자료로 남아 있더라도 unique 미이관 자료용 `MIGRATION_ONLY_UNTIL_REMOVAL` compatibility source일 뿐 신규 기본 작업공간이나 runtime 증거가 아니다.
 
-Notion 승인이나 정적 이미지가 runtime 구현 성공을 의미하지 않는다. Notion의 사람용 결정이 구조화 데이터나 구현 의미를 바꾸면 repository owner에 동기화한 뒤 구현·완료를 주장한다.
+Repository 문서 승인이나 정적 이미지가 runtime 구현 성공을 의미하지 않는다. 사람용 결정이 구조화 데이터나 구현 의미를 바꾸면 repository owner에 동기화한 뒤 구현·완료를 주장한다.
 
 현재 `open/draft/ready` PR은 작업 시작 시 실제 GitHub 상태를 조회한다. 다른 workstream의 PR을 명시적 권한 없이 수정·흡수·종료·병합하지 않는다.
 
