@@ -3,7 +3,7 @@
 ; since the parameters that go here are not all obvious.
 ;
 ; Format:
-;   [section] ; section between []
+;   [section] ; section goes between []
 ;   param=value ; assign values to parameters
 
 config_version=5
@@ -18,6 +18,8 @@ config/features=PackedStringArray("4.7")
 
 GameState="*res://scripts/core/game_state.gd"
 RestingSoundscape="*res://scripts/audio/resting_soundscape.gd"
+_mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
+HeraGameInspector="*uid://c4ug7a211oav8"
 
 [display]
 
@@ -25,6 +27,10 @@ window/size/viewport_width=540
 window/size/viewport_height=960
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/godot_ai/plugin.cfg", "res://addons/gut/plugin.cfg", "res://addons/hera_agent_godot/plugin.cfg")
 
 [rendering]
 
