@@ -1,81 +1,32 @@
-# Codex Goals
+# Godot 구현 작업 기준
 
-Codex에게 작업을 맡길 때는 **현재 Notion/AGENTS 정본과 실제 런타임 증거를 먼저 확인하고, 한 번에 작은 검증 가능한 Slice**를 구현하도록 요청합니다.
+이 문서는 사람용 기획서가 아닙니다. 다음 Godot 작업을 작고 검증 가능하게 만들기 위한 구현 기준입니다. 제품의 현재 정본은 [프로젝트 GDD](design/PROJECT_GDD.md)이며, 실제 코드·Scene·테스트의 사실은 [현재 Godot handoff](handoffs/CURRENT_GODOT_IMPLEMENTATION.md)에서 확인합니다.
 
-## 현재 상태 · Codex 구현 일시중지
+## 다음 구현의 출발점
 
-현재 프로젝트 작업은 Godot 구현이 아니라 **기획·이미지 Closeout**입니다.
+다음 product 변경은 **direct boat entry**입니다.
 
-현재 전체 작업 진입점:
+- 새 로컬 상태는 `bright` 보트 디오라마로 바로 시작합니다.
+- 시작 전에 `오늘의 마음`, 외형, 동반자, 시간대, 장식을 묻지 않습니다.
+- 외형·동반자·장식은 항해 안의 선택형 `꾸미기`에서만 바꿉니다.
+- 구형 `main_menu.tscn` 선택 UI와 mood data는 `PRODUCT_SUPERSEDED_IMPLEMENTATION`입니다. migration 없이 부분적으로 지우지 않습니다.
+- 보트가 바다에 붙여진 이미지처럼 보이지 않게, 물과의 접점·느린 bob·잔물결 또는 wake·반사/가림을 runtime capture로 확인합니다.
 
-`docs/handoffs/CURRENT_PLANNING_VISUAL_WORK.md`
+이 작업은 아직 **구현 시작 전**입니다. 새 asset batch, social, economy, unrelated refactor는 포함하지 않습니다.
 
-Godot 구현 진입점:
+## 작업 요청에 꼭 들어갈 것
 
-`docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md`
-
-단, 현재 Godot handoff는 `PAUSED_PENDING_PLANNING_VISUAL_CLOSEOUT`입니다. 플레이어 대표 정체성, 첫 펫 종/휴식 인상, 보트·소품 대표 언어, 4시간대 분위기, 대표 UI 존재감, 최종 Representative Visual GDD가 승인·정본화되기 전에는 Codex 제품 구현을 시작하지 않습니다.
-
-이미지 생성/생성형 편집은 Codex가 수행하지 않습니다. Visual이 필요하면 GPT/user visual workflow에서 승인한 뒤 Notion Asset Library를 통해 전달합니다.
-
-## 구현 재개 후 원칙
-
-기획·Visual Closeout이 끝난 뒤 `CURRENT_GODOT_IMPLEMENTATION.md`가 다시 implementation-ready로 전환되면 Codex는 current GitHub + Notion + 실제 Godot 구조를 fresh-read한 뒤 승인된 결과를 만족하는 최소 안전 구현법을 선택합니다.
-
-과거 `FIRST_PRODUCTION_VISUAL_SLICE` v1 plan/handoff의 `VisualStudy` 같은 정확한 Node 이름·테스트 형태는 **illustrative planning sketch**이며 구현 강제가 아닙니다. binding 항목은 player outcome, 승인/보호 의미, TDD-before-implementation, acceptance/evidence ceiling, PR #19 격리, 이미지 생성 금지입니다.
-
-## 예시 1: 마음 선택 개선
-
-```text
-Godot 프로젝트에서 main_menu.tscn의 마음 선택 UI를 개선해줘.
-모바일 세로 화면 기준으로 버튼 간격이 안정적이어야 하고,
-선택 후 game.tscn의 3/4 Boat Diorama로 이동해야 해.
-기존 항해 상태/앨범 기억을 회귀시키지 말고 관련 계약 테스트도 갱신해줘.
-```
-
-## 예시 2: 디오라마/감상 카메라 개선
-
-```text
-game.tscn의 Bondee-inspired 3/4 Boat Diorama 구도를 개선해줘.
-보이는 Avatar + Pet + Boat + Sea가 함께 읽혀야 하고,
-환경은 둥글고 matte한 storybook 3D 방향을 따른다.
-Appreciation Camera는 바다 중심 low-UI 감상 모드로 유지하고,
-normal diorama touch 입력을 가로채지 않게 해.
-최종 아트가 아닌 기술 placeholder라면 evidence boundary를 명시해.
-```
-
-## 예시 3: 앨범 구조 개선
-
-```text
-album.tscn을 사진, 풍경, authored 편지, 물고기, 항해 기록이 이해되게 정리해줘.
-현재 실제 PNG 저장과 app-restart persistence는 미구현이므로 구현한 범위만 표시해.
-Godot 4.7 stable에서 관련 계약과 Scene smoke를 유지해.
-```
-
-## 예시 4: 보트 꾸미기 Slice
-
-```text
-승인된 8개 Boat Decoration slot-zone 중 대표 몇 개만 local-first로 구현해줘.
-능력치, 희귀도 점수, 가챠, 슬롯 완성 보너스는 넣지 마.
-Bondee처럼 내 공간을 꾸미는 애착은 살리되 rest-first 경험을 방해하지 않게 해.
-먼저 RED 계약을 만들고 exact-head CI로 검증해.
-```
-
-## 예시 5: 병편지 작업
-
-```text
-병편지 기능은 docs/superpowers/specs/2026-08-24-bondee-diorama-delayed-bottle-design.md를 먼저 읽어.
-FriendBottle/DriftBottle은 realtime chat이 아니고, social runtime은 16+ / delayed / report-block-moderation gate를 따라야 해.
-이번 요청 범위를 넘어서 Supabase나 public DriftBottle을 임의 활성화하지 마.
-DriftBottle 공개 플래그는 safety release gate가 실제 PASS하기 전 항상 OFF로 유지해.
-```
+1. 현재 `main`, `AGENTS.md`, GDD, handoff, 관련 Scene·script·test를 다시 읽습니다.
+2. 변경하려는 player experience와 제외 범위를 한 문단으로 적습니다.
+3. Godot 4.7·GDScript에서 필요한 Scene route, Autoload/local save migration, UI consumer를 구체적으로 적습니다.
+4. 자동 test, headless scene smoke, 540 x 960 runtime capture, 사람이 하는 30초·5분 검증을 구분합니다.
+5. 새로운 인간용 문서는 한국어로 작성합니다. 상태 code·path·API 이름은 혼동을 막기 위해 원문을 유지합니다.
+6. material decision마다 관련 current owner와 공식 primary source를 다시 확인하고, authority drift·scope creep·실현성·증거 과장·visual drift를 공격적으로 재검토합니다.
 
 ## 공통 금지
 
-- 전투 / 실패 / 경쟁 / 랭킹
-- 펫 관리 의무
-- 반복 파밍 압박
-- realtime/global/public chat
-- 공개 feed / follower 경쟁
-- 결제 / 광고
-- 검증하지 않은 Human/production 품질 PASS 주장
+- 전투, 실패, 경쟁, 등급, 숙제, 반복 파밍, 펫 관리 의무.
+- realtime/global/public chat, public feed, follower/ranking, 안전 gate 전 DriftBottle 공개.
+- ads, payments, gacha, rarity power, economy farming.
+- Human 테스트나 runtime capture가 없는 품질 PASS 주장.
+- 현재 open PR #19의 변경을 흡수·수정·병합하는 일.

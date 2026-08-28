@@ -52,13 +52,12 @@ Core controls:
 - Speed Control
 
 Core loop:
-- Select today's mood.
-- Enter the 3/4 boat diorama.
-- Rest with the visible avatar and pet.
-- Optionally use low-pressure interactions, decoration, fishing, ambient discoveries, and delayed bottle letters as each slice is implemented.
-- Drift for about 5 minutes.
-- Create today's voyage record.
-- Continue resting or begin another voyage.
+- Launch directly into the normal 3/4 boat diorama. A newly created local state begins in Bright; later entries use the locally stored atmosphere without a startup selector.
+- Rest with the visible avatar and pet. Simply staying is complete play.
+- Optionally use low-pressure interactions, photography, decoration, fishing, ambient discoveries, and delayed bottle letters as each slice is implemented.
+- Open `꾸미기` only when desired to change cosmetic player appearance, companion species, or boat decoration.
+- Drift for about 5 minutes, leave a personal voyage record if one is created, or continue resting.
+- Do not present today’s mood, identity, pet, decor, light, or atmosphere as a requirement before the first boat view.
 
 Supporting direction:
 - Boat decoration is self-expression/memory, not stats or optimization.
@@ -68,7 +67,6 @@ Supporting direction:
 
 Rewards:
 - Companion affection.
-- Mood record.
 - Scenery collection.
 - Album-style collection.
 - Personal boat memories/decor as implemented.
@@ -83,13 +81,15 @@ Rewards:
 - Do not revert, overwrite, or reformat unrelated user changes.
 - If the worktree is dirty, understand whether the dirty files are related before editing them.
 - Read real error messages and logs before applying a fix.
+- For every material design, visual, or implementation decision, re-read the relevant current repository owner and fresh official primary-source documentation when it can affect feasibility, platform behavior, safety, or cost.
+- Run an adversarial review after a material candidate: attack authority drift, player value, scope creep, implementation feasibility, evidence overclaim, visual/rights drift, and consumer ownership. Correct only the affected owner, then re-run the whole review until one clean pass remains.
 
 ## Godot Rules
 
 - Use Godot 4.7 stable.
 - Use GDScript unless explicitly requested otherwise.
 - Keep scene and node structures simple.
-- Use clear node names such as `MoodStatusLabel`, `TakePhotoButton`, and `AlbumView`.
+- Use clear node names such as `TakePhotoButton`, `AppreciationButton`, and `AlbumView`.
 - Keep UI mobile-friendly first, with PC mouse input where it makes sense.
 - Keep core rest/voyage/decor/pet systems local-first; isolate approved bottle-social networking behind dedicated interfaces.
 - Do not add combat, stamina, HP, enemies, damage, death, failure conditions, or ranking systems.
@@ -159,6 +159,8 @@ Do not mix unrelated gameplay, UI, documentation, and cleanup changes in one com
 ## Korean Output
 
 When replying to a Korean user, answer in Korean.
+
+Write new human-facing project documentation in Korean. Keep Godot paths, APIs, status codes, and source identifiers in their exact original spelling where that prevents ambiguity.
 
 Avoid ending Korean prose lines with a colon. Prefer a period, question mark, or exclamation mark. Colons are fine in code, paths, key-value examples, timestamps, and Markdown labels.
 

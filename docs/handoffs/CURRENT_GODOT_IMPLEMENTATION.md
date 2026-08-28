@@ -1,201 +1,91 @@
-# Current Godot Product Implementation
+# 현재 Godot 구현 handoff
 
-> **CODEX IMAGE INTEGRATION COMPLETE.** The approved runtime images, P0 main-entry composition, and P1 album composition are merged into `main`, have passed GitHub Godot validation, and retain 540×960 runtime proof.
+**프로젝트:** `MY_LITTLE_BOAT`
+**역할:** 실제 코드·Scene·test·runtime evidence와 현재 제품 정본의 차이를 기록하는 기술 router
+**현재 사람용 정본:** [프로젝트 GDD](../design/PROJECT_GDD.md)
+**현재 작업:** Issue #99 / Draft PR #100의 direct boat entry 정본화. 이 문서는 runtime 변경을 포함하지 않습니다.
 
-## Current state
+## 1. 먼저 읽을 것
 
-```yaml
-project: MY_LITTLE_BOAT
-mode: CODEX_GODOT_PRODUCT_IMPLEMENTATION_HANDOFF
-status: CURRENT_MAIN_RECONCILED_P0_MAIN_ENTRY_AND_P1_ALBUM_COMPOSITION_COMPLETE
-current_work_router: docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md
-screen_surface_coverage_owner: docs/visual/CURRENT_SCREEN_SURFACE_INVENTORY_AND_VISUAL_ASSET_COVERAGE.md
-five_phase_execution_receipt: docs/handoffs/2026-08-27-work-five-phase-current-slice.md
-internal_windows_package_contract: docs/superpowers/specs/2026-08-27-internal-windows-build-artifact-design.md
-image_goal_source: docs/visual/2026-08-26-remaining-image-goals.md
-codex_image_goal_source: docs/handoffs/2026-08-26-image-codex-integration-goals.md
-image_asset_policy: CONSUMER_FIRST_ASSET
-implementation_baseline: RESOLVE_CURRENT_COMPLETED_MAIN_AT_CODEX_START
-implementation_owner: CODEX_GODOT_PRODUCT_IMPLEMENTATION_OWNER
-final_review_owner: GPT_FINAL_IMPLEMENTATION_REVIEW
-concurrent_pr_19: READ_ONLY_NO_ABSORPTION
-image_generation_by_codex: ALLOWED_BY_USER_AUTO_ASSET_POLICY_2026_08_26
-image_registration_policy: AUTO_CREATE_PROJECT_LOCAL_PROVENANCE_AND_REPOSITORY_READBACK
-visual_reference_lock: HANDPAINTED_STORYBOOK_3D_DIORAMA + SOFT_MANGA_CHIBI_CHARACTER_REFINEMENT + INDIGO_RAIN_REFLECTION_NIGHT
-```
+1. `AGENTS.md`
+2. `docs/design/PROJECT_GDD.md`
+3. 이 handoff
+4. `docs/visual/CURRENT_SCREEN_SURFACE_INVENTORY_AND_VISUAL_ASSET_COVERAGE.md`
+5. 실제 Scene, GDScript, 테스트, capture
 
-## Current screen-coverage readback
+이 repository는 Notion을 현재 정본으로 사용하지 않습니다. 이전 Notion은 historical discovery archive이며, active implementation 판단은 repository source와 runtime evidence를 우선합니다.
 
-The current runtime-image and diorama integration remains complete. A fresh whole-screen audit now owns the next visual product decision at `docs/visual/CURRENT_SCREEN_SURFACE_INVENTORY_AND_VISUAL_ASSET_COVERAGE.md`.
+## 2. 현재 제품 방향과 runtime gap
 
-The user-approved `INDIGO_RAIN_REFLECTION` and four-time continuity board are planning-direction locks at `docs/visual/2026-08-28-indigo-rain-four-time-visual-lock.md`. Current `main` still uses the pre-lock Night background/tone. Do not call the new Night presentation runtime-implemented until a separate approved contract updates concrete consumers, tests, and 540×960 runtime evidence.
+| 주제 | 현재 제품 정본 | 현재 main code | disposition |
+| --- | --- | --- | --- |
+| 시작 | 실행 즉시 normal 3/4 boat diorama | `scenes/main_menu.tscn`의 선택형 panel 뒤 `game.tscn` 진입 | `PRODUCT_SUPERSEDED_IMPLEMENTATION` |
+| 오늘의 마음 | 제품에서 제거 | `selected_mood`, mood button, mood tone, record wording, 관련 test가 존재 | `PRODUCT_SUPERSEDED_IMPLEMENTATION` |
+| 꾸미기 entry | 바다를 본 뒤 optional `꾸미기` | identity/pet/time 선택이 menu에 있고 decor는 game panel에 존재 | `PRODUCT_SUPERSEDED_IMPLEMENTATION` |
+| 시작 분위기 | 새 local state `bright`, 이후 saved atmosphere restore, startup selector 없음 | process-lifetime time selection만 존재하고 menu OptionButton이 소비 | `PRODUCT_SUPERSEDED_IMPLEMENTATION` |
+| 함께 보낸 시간 | active foreground voyage time만 album에 조용히 표시 | 행동으로 `companion_affection`을 올리고 voyage/album `Lv`를 표시 | `PRODUCT_SUPERSEDED_IMPLEMENTATION` |
+| Ambient Discovery | low-density passive presentation + 작은 알림 + local auto-save | action-gated offer, early forced prompt, button/expiry path | `PRODUCT_SUPERSEDED_IMPLEMENTATION` |
 
-The user-approved companion-affection source is at `docs/2026-08-28-time-based-companion-affection-decision.md`; its quiet presentation is at `docs/2026-08-28-quiet-companion-affection-presentation-decision.md`. Current `GameState.add_photo`, `add_scenery`, and `add_letter` still raise action-based affection, and GameScene/AlbumView display `동반자 Lv`; this implementation is product-superseded and must not be extended. A future single contract owns active-foreground-voyage time accumulation, local persistence/migration, AlbumView `함께한 시간` plus quiet relation copy, removal of voyage-facing level feedback, focused tests, and runtime/Human evidence. It must not create a separate companion Scene, progress bar, growth popup, or rewards.
+현재 code가 존재한다는 사실은 해당 제품 방향이 여전히 승인되었다는 뜻이 아닙니다. 반대로 GDD 결정은 code/test/capture가 바뀌기 전까지 runtime PASS를 뜻하지 않습니다.
 
-The user-approved passive Ambient Discovery direction is at `docs/2026-08-28-passive-ambient-discovery-decision.md`; its density envelope is at `docs/2026-08-28-passive-ambient-discovery-density-decision.md`. Current `game_scene.gd` creates a pending `letter`/`scenery`, forces its first prompt in 18–30 seconds, repeats at 35–60-second waits, hides the scheduler in Appreciation Camera, shows `LetterButton`/`SceneryButton`, and drops the offer after a timer; that action-gated, earlier/higher-density behavior is product-superseded. Do not extend it or treat it as Bottle behavior. A later single contract owns neutral local ambient-memory data, approximately 1–2 passive events per nominal five-minute voyage without a first-event guarantee, random low-density scheduling, small auto-fading notification, immediate local persistence, migration, UI retirement, tests, and runtime/Human evidence.
+## 3. Issue #99의 구현 금지선
 
-- `MLB-SCR-001` main entry is complete on `main` through [Issue #71](https://github.com/alsdmlals4-eng/MylittleBoat/issues/71) and [PR #72](https://github.com/alsdmlals4-eng/MylittleBoat/pull/72), merge commit `7a107873c49cb289fe9f4bc02bcda1c065f8d6e3`. `AtmosphereBackground` selects the approved 1024×1536 file for each time choice, `DioramaAnchor` presents the approved C+dog boat anchor, and compact Godot UI controls preserve identity, light, mood, and route semantics. Four 540×960 runtime captures, the focused contract, all existing contracts, three scene smokes, and GitHub validation passed.
-- `MLB-SCR-010` album composition is complete on `main` through [Issue #75](https://github.com/alsdmlals4-eng/MylittleBoat/issues/75) and [PR #76](https://github.com/alsdmlals4-eng/MylittleBoat/pull/76), merge commit `69a2a7f2fdbfc251cfb6d4a3f446ab39dd080cbc`. It uses Godot UI/text, the selected approved atmosphere background, and actual record text; it adds no authored fake album images. Empty and populated 540×960 captures, focused contracts, full test suite, three scene smokes, and GitHub validation passed.
-- Main-menu atmosphere backgrounds are the only post-audit bitmap family approved by the user's explicit 2026-08-28 request. No UI icon, portrait-only, UV texture, album filler, or other image family is implied.
-- The screen inventory now uses the required screen × object × state × variation fields and confirms no other current runtime image family is missing. [PR #80](https://github.com/alsdmlals4-eng/MylittleBoat/pull/80) adds the main-menu atmosphere and album-composition contracts to the current CI suite; its exact head passed GitHub Godot validation. PR #19 remains `READ_ONLY_NO_ABSORPTION`.
-
-## Binding pipeline
+이 문서 정본화 PR에서는 아래 runtime owner를 수정하지 않습니다.
 
 ```text
-RUNTIME_CONSUMER_OR_CLEAR_VISUAL_NEED
-→ Codex image generation/editing when required
-→ reference-lock runtime-asset review
-→ project-local binary storage
-→ repository asset provenance + durable binary locator
-→ IMPLEMENTATION_READY
-→ GPT Work historical pre-integration handoff
-→ CODEX-IMG-01 / CODEX-IMG-02
-→ Godot import/wiring/runtime proof
-→ GPT final implementation review
+scenes/main_menu.tscn
+scripts/ui/main_menu.gd
+scripts/core/game_state.gd
+scripts/voyage/game_scene.gd
+tests/test_calm_voyage_state.gd
+tests/test_game_scene_contract.gd
+tests/test_game_scene_time_of_day_contract.gd
+tests/test_main_menu_identity_contract.gd
+tests/test_main_menu_time_of_day_contract.gd
+tests/test_main_menu_atmosphere_background_contract.gd
+tests/capture_main_menu_atmospheres.gd
+assets/
 ```
 
-The user has authorized automatic image creation and internal QA for assets Codex judges necessary. A generated result must still be stored project-locally, recorded in repository asset provenance, runtime-reviewed, and receive a user final-direction lock when it materially changes the visual canon. Preserve `HANDPAINTED_STORYBOOK_3D_DIORAMA` plus `SOFT_MANGA_CHIBI_CHARACTER_REFINEMENT`: warm dark wood, rounded restrained silhouettes, matte hand-painted surfaces, a calm expansive horizon, and soft-manga chibi player/pet readability. Do not drift into generic glossy CG or copy a reference board.
+PR #19 `feat/social-fake-backend-20260824`도 `READ_ONLY_NO_ABSORPTION`입니다.
 
-## Completed image integration goals
+## 4. 다음 Phase 2 implementation contract
 
-### CODEX-IMG-01 — Pet Cushion Runtime Surface Integration · Complete
+다음 구현은 위 gap을 따로 쪼개서 부분적으로 고치지 않습니다. 아래를 한 contract로 묶어 설계·테스트·runtime capture·Human validation까지 검증합니다.
 
-Integrated exact paths:
+1. `project.godot`의 startup route가 새 local state에서 곧바로 normal boat diorama를 연다.
+2. `GameState`와 persistence owner가 mood를 retire하고 local atmosphere를 `bright` default와 restore 규칙으로 migration한다.
+3. player appearance, pet species, boat decor가 in-voyage optional `꾸미기`에서만 접근 가능하다.
+4. mood-facing UI, wording, color rule, test/capture dependency가 제거되거나 direct-entry contract로 대체된다.
+5. 540 x 960 capture에서 boat-water contact, bob/wave/wake/reflection, avatar/pet/boat/sea/horizon hierarchy가 검증된다.
+6. direct entry, persistence, no-mood migration, customization entry, camera parity를 test한다.
+7. 사람의 첫 30초와 5분 휴식, mobile touch, sound comfort를 별도 Human evidence로 기록한다.
 
-```text
-res://assets/images/decor/pet_cushion/cushion_stripe.png
-res://assets/images/decor/pet_cushion/cushion_moon.png
-res://assets/images/decor/pet_cushion/cushion_floral.png
-```
+Godot 구현 가능성의 근거는 다음 공식 안정판 문서에 있다. Autoload는 Scene 사이 state를, `ConfigFile`과 `user://`는 local persistence를, SceneTree route는 main scene transition을 지원한다. 구현 세부와 error handling은 해당 Phase 2 contract에서 source/test를 읽고 결정한다.
 
-Three cosmetic visual variants of the existing `pet_cushion` meaning. No stat/rarity/cost/gacha/care/progression semantics.
+- https://docs.godotengine.org/en/stable/tutorials/scripting/singletons_autoload.html
+- https://docs.godotengine.org/en/stable/classes/class_configfile.html
+- https://docs.godotengine.org/en/stable/tutorials/scripting/filesystem.html
+- https://docs.godotengine.org/en/stable/tutorials/scripting/change_scenes_manually.html
 
-### CODEX-IMG-02 — Default Postcard Memory Face Integration · Complete
+## 5. 시각 consumer와 evidence ceiling
 
-Integrated exact path:
+- `VIS-ENTRY-001`은 구형 main-entry full composition입니다. 보트가 물에 뜬다는 물리적 관계가 약하고 large selection panel이 sea-first first impression을 가리므로 `REJECTED_FOR_MAIN_ENTRY_RUNTIME_USE`입니다.
+- 현재 `main_menu` atmosphere background와 C+dog diorama binary는 runtime에서 소비되지만, new direct-entry composition 승인 또는 final art가 아닙니다. consumer audit 전 삭제·교체·재생성을 하지 않습니다.
+- `HANDPAINTED_STORYBOOK_3D_DIORAMA`, `SOFT_MANGA_CHIBI_CHARACTER_REFINEMENT`, `INDIGO_RAIN_REFLECTION`은 `APPROVED_DIRECTION`입니다. generated exploration, source binary, runtime capture, Human approval은 서로 다른 evidence입니다.
+- real-device touch, five-minute calm, visual fatigue, audio comfort, new direct-entry runtime capture는 모두 `NOT_RUN` 또는 `NOT_IMPLEMENTED`입니다.
 
-```text
-res://assets/images/decor/postcard/postcard_boat_bright.png
-```
+## 6. Issue #99 적대적 검토 receipt
 
-P1 integrates one default visual face only. Dawn/Sunset source compositions are P2 reuse candidates. Do not create a postcard variant selector/state merely to use them.
+| Loop | 공격 질문 | finding | correction owner | 상태 |
+| --- | --- | --- | --- | --- |
+| 1 | 사용자 승인, human GDD, current code가 mood/start flow에서 충돌하는가 | 기존 docs가 mood selector를 current product로 설명 | GDD, README, Concept, Experience Bible, handoff, visual inventory | `CORRECTED` |
+| 2 | 사람이 시스템의 행동·이유·피드백·압박 회피를 이해하는가 | 이전 master GDD가 AI/evidence 구조를 앞세움 | `PROJECT_GDD.md` | `CORRECTED` |
+| 3 | 직접 시작·local persistence가 Godot 4.7 구조에서 가능한가 | 구현 가능성 근거가 사람용 문서에 없음 | GDD와 이 handoff의 official stable links | `CORRECTED` |
+| 4 | 구형 composition rejection이 source binary 전체 폐기로 과장되는가 | old visual inventory가 menu asset을 current product approval으로 표현 | visual inventory | `CORRECTED` |
+| 5 | 문서가 runtime/Human PASS, social 확대, asset batch를 암시하는가 | source/status 문구의 overclaim 위험 | GDD/handoff evidence ceiling | `CORRECTED` |
+| clean recheck | 문서 owner·stale allowlist·GDD 구조·PDF text/visual·staged diff를 correction 뒤 다시 실행 | material conflict 없음 | 이 handoff | `CLEAN` |
 
-Full tasks/acceptance: `docs/handoffs/2026-08-26-image-codex-integration-goals.md`.
+이 clean recheck는 8-section GDD, 7-page PDF text/visual readback, active-current stale allowlist, staged diff scope까지 확인한 상태입니다. PR exact-head readback은 push 뒤 다시 기록합니다.
 
-## Approved customization semantics waiting downstream
-
-```text
-CHARACTER_SELECTION_SET
-= SOFT_HOODED_LAYER
-+ SHORT_CAPE_SAILOR_LAYER_RHYTHM
-+ LOOSE_KNIT_LONG_HAIR_MASS
-
-PET_SELECTION_SET
-= CAT
-+ RABBIT
-+ DOG
-+ OTTER_LIKE
-
-PET_CUSHION_CUSTOMIZATION
-= THREE_APPROVED_VISUAL_VARIANTS / COSMETIC_ONLY
-
-POSTCARD_P1
-= ONE_APPROVED_DEFAULT_FACE / NO_VARIANT_SYSTEM
-```
-
-Exact Godot implementation details remain Codex choices after fresh-read. Preserve existing `pet_cushion` and `postcard` base meanings and compatibility.
-
-## Deferred consumers
-
-Do not invent consumers to absorb extra art:
-
-- No additional Main Menu/Album authored bitmap family is required now. The approved main-menu atmosphere backgrounds are already integrated, and Album reuses the selected approved background with actual records; fake album filler remains prohibited.
-- character/pet selection thumbnails derive from actual 3D previews.
-- exact UV-specific character/pet/boat texture sheets are blocked by production geometry.
-- sky/sea bitmap assets are conditional; prefer simple color/light/procedural route.
-- UI icons are deferred until a binding consumer/readability need exists.
-- app icon/store/marketing is P3 after release targets/branding lock.
-
-## Completed integration receipt
-
-```text
-IMG_01_3_FILES = IMPLEMENTATION_READY
-IMG_01_LEGACY_NOTION_READBACK_HISTORICAL = PASS
-IMG_02_1_FILE = IMPLEMENTATION_READY
-IMG_02_LEGACY_NOTION_READBACK_HISTORICAL = PASS
-DURABLE_BINARY_LOCATORS = PASS
-EXACT_ASSET_PATHS = FIXED
-CODEX_INTEGRATION_GOALS = CURRENT
-PR_19 = READ_ONLY_NO_ABSORPTION
-```
-
-At Codex start, fresh-read current completed main, repository Master GDD/approved decisions/handoffs, actual Godot files/tests, open PRs and toolchain. Use semantic TDD and runtime proof for a newly approved product slice. GPT Work must stop before making Scene/Resource/GDScript product changes.
-
-## Protected downstream scope
-
-- rest-first Core Loop, voyage duration/rewards and mood meaning;
-- Normal/Appreciation Camera semantics and input isolation;
-- BoatSpace shared bob ownership;
-- 8 decor slot IDs and existing six base item meanings/compatibility;
-- low-pressure interaction reward isolation;
-- care-obligation-free pet semantics;
-- cosmetic visuals must not alter rewards, timer, progression pressure, social eligibility or care obligation;
-- local-first core;
-- PR #19 remains independent.
-- Planning/approval visual generation may proceed automatically when it answers a current design question; it remains `GENERATED_EXPLORATION` until the user locks the final direction. A runtime/production image still requires a concrete consumer or a clear approved-diorama gap. Do not create speculative runtime menu backgrounds, icon packs, UV texture sheets, or presentation-only production art.
-
-## Current Codex evidence
-
-```text
-IMAGE_GOAL_QUEUE = USER_APPROVED
-GPT_WORK_IMAGE_PRODUCTION = COMPLETE
-IMG_01_FINAL_FILES = 3 / 3 IMPLEMENTATION_READY
-IMG_02_FINAL_FILES = 1 / 1 IMPLEMENTATION_READY
-IMG_01_LEGACY_NOTION_READBACK_HISTORICAL = PASS
-IMG_02_LEGACY_NOTION_READBACK_HISTORICAL = PASS
-DURABLE_BINARY_LOCATORS = PASS
-CODEX_IMG_01 = RUNTIME_VERIFIED_USER_APPROVED_MERGED_MAIN
-CODEX_IMG_02 = RUNTIME_VERIFIED_USER_APPROVED_MERGED_MAIN
-CODEX_LOCAL_WIRING_ASSETS = 4
-IMPLEMENTED_IMAGE_ASSETS = 4_MERGED_MAIN
-RUNTIME_VERIFIED_IMAGE_ASSETS = 4
-CI = GITHUB_GODOT_VALIDATION_PASS_PR_48_AND_PR_49
-FIRST_PRODUCTION_VISUAL_SLICE = CODEX_RUNTIME_CAPTURE_USER_APPROVED_MERGED_MAIN
-HANDPAINTED_3D_RUNTIME_SLICE = USER_APPROVED_MERGED_MAIN
-C_DOG_DEFAULT_RUNTIME_CAPTURE = PASS
-C_DOG_HUMAN_VISUAL_APPROVAL = PASS
-COSMETIC_IDENTITY_SELECTION = IMPLEMENTED_LOCAL_FIRST
-DEFAULT_IDENTITY_C_DOG = PRESERVED
-IDENTITY_RUNTIME_ASSET_LOCATORS = PASS
-IDENTITY_AUTOMATED_CONTRACTS = PASS
-IDENTITY_RUNTIME_CAPTURE = PASS
-IDENTITY_REAL_DEVICE_MOBILE_QA = DEFERRED
-REAL_DEVICE_TOUCH_QA = NOT_RUN
-FOUR_TIME_ATMOSPHERE = MERGED_MAIN
-FOUR_TIME_ATMOSPHERE_AUTOMATED = PASS
-FOUR_TIME_RUNTIME_CAPTURE = PASS
-FOUR_TIME_REAL_DEVICE_MOBILE_QA = DEFERRED
-FOUR_TIME_HUMAN_COMFORT_REVIEW = NOT_RUN
-FINAL_COMPOSITE_DECOR = MERGED_MAIN
-FINAL_COMPOSITE_DECOR_RUNTIME_CAPTURE = PASS
-INTERNAL_WINDOWS_PACKAGE = GITHUB_ACTIONS_ARTIFACT_PASS_MAIN
-INTERNAL_WINDOWS_PACKAGE_HEADLESS_SMOKE = PASS_MAIN_B675249_RUN_33072278953_ARTIFACT_9646328971
-INTERNAL_WINDOWS_PACKAGE_HUMAN_LAUNCH = NOT_RUN
-```
-
-## Current implementation packet
-
-- `scripts/decor/decor_visual_assets.gd` maps the three exact cushion textures and one exact Bright Boat postcard texture, with a missing-path neutral fallback.
-- `pet_cushion` keeps its existing base item ID and has only `stripe`, `moon`, and `floral` cosmetic appearances.
-- `postcard` keeps one default Bright Boat front face and no appearance selector or new collection/progression state.
-- `tests/test_runtime_image_asset_contract.gd` proves exact runtime texture paths, material consumers, fallback behavior, and core-state isolation.
-- Headless import, all current contract scripts, and all three scene smokes passed. Live 540×960 captures exist for Stripe, Moon, Floral, and Bright Boat postcard at `docs/evidence/2026-08-26-runtime-image-integration/`; editor diagnostics report 0 errors and the user approved the runtime review. The scoped integration is merged to `main` through PR #34 at merge commit `647e403bba4b9a537052d16963b469be10236be4`; later PRs #48 and #49 also passed GitHub Actions Godot 4.7 validation.
-- The First Production Visual Slice provided the bounded visual baseline. The user-approved C+dog final 2.5D route, cosmetic identity selection, four-time atmosphere, and final-composite decor correction now supersede it as the current runtime visual result. Reproducible 540×960 evidence remains technical proof; human/mobile comfort and touch review remain deferred.
-- The approved default direction is C knit/long-hair player + dog. Its bounded 3D proof keeps the current placeholder/care-free semantics and stores 540×960 Normal/Appreciation capture at `docs/evidence/2026-08-26-c-storybook-dog-default/`; the user approved it and it merged to `main` through PR #36 at merge commit `0e5f6c7c47d5b1415a3954b3fd6aee84ec17ff8f`. It remains below final art and real-device touch QA.
-- The final 2.5D storybook runtime set uses `assets/images/runtime/storybook/boat_c_dog_diorama_storybook.png` with `sea_bright_storybook.png`; Normal/Appreciation captures are at `docs/evidence/2026-08-26-final-2p5d-storybook-art/`. User approval, SHA-256 provenance, and durable Git binary locators passed on 2026-08-26. Its prior external registration is historical-only and no longer an active proof or owner.
-- The internal Windows package route is limited to one x86_64 debug export preset and a GitHub Actions ZIP artifact containing the executable, PCK, and SHA-256 manifest. The exact current `main` commit `b6752495d121a2523f871475d4720c9fb1b2e573` passed in GitHub Actions run `33072278953`; downloaded artifact `9646328971` contained matching executable/PCK SHA-256 values from `SHA256SUMS.txt`, and `my_little_boat.exe --headless --quit-after 1` exited with code `0`. This is machine package evidence only; no Android/public-store/signing work and no Human Windows launch or mobile comfort claim are included.
-- `BoatDecorPersistence` stores only cosmetic `boat_decor` and `boat_decor_appearances` in `user://boat_decor_v1.cfg`. The service handles missing or wrong-typed data as an empty boat; no voyage, reward, affection, memory, camera, or social state is persisted. Automated local restore proof passes, while real-device QA remains deferred by user.
-- `RestingSoundscape` now owns a 16-second stereo authored `OceanBed` runtime candidate at a conservative -18 dB. It preserves the wave-first layer priority and does not alter voyage, reward, camera, or social state. Automated loop wiring passes; human headset/speaker/mobile listening remains `NOT_RUN`.
-- Runtime identity selection is local-first: the main-menu `내 모습과 동반자` panel stores one approved player ID and one pet ID only in `user://identity_profile_v1.cfg`. C knit + dog preserves `FinalDioramaCard` unchanged; all other pairs use the shared boat/sea pass plus exactly one selected player card and one selected pet card. Five 1024×1024 transparent runtime cards have SHA-256/provenance/durable repository locators. Normal and Appreciation GPU runtime captures for C+dog and B+otter are stored at `docs/evidence/2026-08-27-runtime-identity-selection/`. User mobile touch QA remains deferred.
-- The four-time atmosphere layer is a process-lifetime pre-voyage choice only: Dawn / Bright / Sunset / Night apply the approved restrained environment, key-light, and shared backdrop modulation to the same scene. Bright preserves the approved Bright sea art; no image binary, map, shader, audio, timer, reward, identity, decor, social, or postcard-variant behavior was added. Eight OpenGL 540×960 Normal/Appreciation captures and hashes are at `docs/evidence/2026-08-27-four-time-atmosphere/`. Human comfort and real-device mobile QA remain deferred.
-- Final-composite correction: the C+dog final composite hides only its detached `pet_corner` and `rail_accent` technical meshes, then renders the selected approved cushion surface and default postcard as flat storybook overlays. Four-time captures isolate test decor/identity state and fail before capture if required imported textures are unavailable. The focused contracts and a 540×960 floral-cushion/postcard capture are at `docs/evidence/2026-08-27-final-composite-decor/`. This correction merged to `main` through PR #48 at merge commit `eb84a86c219cdff696a2209446e282a6634302d3`; human/mobile QA remains deferred.
+발견한 정본 충돌의 Incident / Solution / Lesson과 Base 승격 판정은 [2026-08-28 direct boat entry 정본 충돌 기록](../learning/2026-08-28-direct-boat-entry-canon-reconciliation.md)에 남깁니다.
