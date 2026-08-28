@@ -24,7 +24,7 @@
 - `Appreciation Camera`는 바다와 수평선 중심의 low-UI 감상 경험을 보존합니다.
 - 파도/자연음은 BGM보다 우선하는 핵심 콘텐츠입니다.
 - 펫은 care obligation이 없는 resting companion입니다.
-- 사진·낚시·발견·꾸미기·상호작용은 전부 선택형이며 무시해도 손해가 없어야 합니다.
+- 사진·낚시·꾸미기·상호작용은 전부 선택형이며 무시해도 손해가 없어야 합니다. Ambient Discovery의 승인 방향은 버튼을 요구하지 않는 확률형 배경 연출이며, 등장 시 작은 알림 뒤 local ambient memory로 자동 저장합니다. 이 방향의 runtime 전환은 아직 별도 계약 전입니다.
 - 승인된 다음 동반자 방향은 행동 횟수가 아니라 활성 항해에서 함께 보낸 시간으로만 호감도가 천천히 쌓이는 것입니다. 이 방향의 구현·저장·UI 전환은 아직 별도 계약 전입니다.
 - 꾸미기는 능력치나 rarity가 아니라 기억과 자기표현입니다.
 - 미래 병편지는 실시간 채팅이 아니라 delayed correspondence입니다.
@@ -36,7 +36,7 @@
 - 오늘의 마음 4종
 - Scene 전환에도 이어지는 5분 항해
 - 사진 / 감상모드 / 속도조절
-- authored Ambient Discovery
+- action-gated Ambient Discovery 기술 slice. 승인된 passive background / auto-save 방향으로의 전환은 아직 구현되지 않음
 - 실패 없는 선택형 낚시
 - 항해 기록 / 앨범 / 동반자
 
