@@ -20,7 +20,7 @@ Notion은 historical archive이며 이 문서의 current owner나 destination이
 | `MLB-SCR-001` Direct boat entry | 실행 즉시 떠 있는 보트와 바다를 보여 주는 첫 화면 | 없음. current product target | `CONFIRMED_NOT_IMPLEMENTED` |
 | `MLB-SCR-001-LEGACY` 선택형 main menu | identity/time/mood를 고른 뒤 출발하던 이전 slice | `scenes/main_menu.tscn`, `scripts/ui/main_menu.gd`, four menu captures | `SUPERSEDED_RUNTIME_SLICE` |
 | `MLB-OVR-002-LEGACY` 시작 identity/light/mood selection | 시작 전에 외형·동반자·빛·마음을 묻던 이전 overlay | `IdentityPanel`, `TimeOfDayOption`, mood buttons | `SUPERSEDED_RUNTIME_SLICE` |
-| `MLB-SCR-003` Normal voyage diorama | 캐릭터·동반자·보트·바다를 함께 보는 core surface | `scenes/game.tscn`, `scenes/boat_space.tscn`, `scripts/voyage/game_scene.gd` | `PARTIAL_IMPLEMENTED` |
+| `MLB-SCR-003` Normal voyage diorama | 캐릭터·동반자·보트·바다와 시간에 따라 흐르는 주변 풍경을 함께 보는 core surface | `scenes/game.tscn`, `scenes/boat_space.tscn`, `scripts/voyage/game_scene.gd` | base surface `PARTIAL_IMPLEMENTED`; automatic atmosphere/scenery `NOT_IMPLEMENTED` |
 | `MLB-OVR-004` Appreciation Camera | UI를 줄이고 수평선을 보는 선택형 감상 | current camera rig/controller | earlier slice `IMPLEMENTED`; Human comfort `NOT_RUN` |
 | `MLB-OVR-005` 꾸미기 | arrival 뒤 원할 때 cosmetic change | current decor panel과 local cosmetic storage | `PARTIAL_IMPLEMENTED`; entry relocation 필요 |
 | `MLB-OVR-006/007` 상호작용·낚시 | 원할 때만 쓰는 작은 행동 | current game UI/session | `PARTIAL_IMPLEMENTED` |
@@ -70,7 +70,8 @@ Notion은 historical archive이며 이 문서의 current owner나 destination이
 3. 보트가 바다에 뜬다는 관계가 540 x 960에서 실제로 읽히는지.
 4. character, companion, boat, sea, horizon, optional UI의 정보 위계가 approved grammar와 맞는지.
 5. `꾸미기` entry가 optional이고 cosmetic only인지.
-6. generated source, approved direction, Godot consumer, runtime capture, Human comfort evidence가 각각 올바른 owner에 기록됐는지.
+6. 현지 현실 시간의 변화가 같은 visual grammar 안에서 light·sea·sky만 부드럽게 바꾸는지, active foreground scenery가 button·reward·과제를 만들지 않는지.
+7. generated source, approved direction, Godot consumer, runtime capture, Human comfort evidence가 각각 올바른 owner에 기록됐는지.
 
 이 contract는 새 consumer가 정해지고 Phase 2 구현 계획이 승인된 뒤에만 시작합니다.
 

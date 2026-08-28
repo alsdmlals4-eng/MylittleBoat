@@ -7,7 +7,7 @@
 ```yaml
 project: MY_LITTLE_BOAT
 current_product_goal: DIRECT_BOAT_ENTRY_REST_FIRST_DIARAMA
-current_accepted_frontier: HUMAN_GDD_AND_IMPLEMENTATION_CONTRACT_READY
+current_accepted_frontier: REAL_TIME_ATMOSPHERE_AND_DRIFTING_SCENERY_CONTRACT_READY
 legacy_runtime: PRODUCT_SUPERSEDED_IMPLEMENTATION
 current_work_phase: PHASE_1_PLANNING_RECONCILED
 next_work_phase: PHASE_2_DIRECT_ENTRY_PREPRODUCTION_AND_IMPLEMENTATION_CONTRACT
@@ -22,7 +22,8 @@ notion: HISTORICAL_DISCOVERY_ARCHIVE_NO_NEW_READ_WRITE_SYNC
 - 실행하면 이미 바다 위에 떠 있는 보트, 캐릭터, 동반자, 수평선을 본다.
 - 아무 행동 없이 머무르는 것이 complete play다. 사진·낚시·감상·작은 상호작용은 원할 때만 쓴다.
 - 외형·동반자·장식은 항해 안의 `꾸미기`에서만 바꾸며 능력치·희귀도·최적화가 없다.
-- `오늘의 마음`은 제거됐다. 새 상태는 `bright`로 시작하고 이후 last saved atmosphere를 selector 없이 쓴다.
+- `오늘의 마음`은 제거됐다. 기기의 현지 현실 시간이 새벽·밝음·해질녘·밤을 자동으로 정하며 selector나 saved atmosphere는 없다.
+- active foreground 시간에 따라 먼 구조물과 풍경이 낮은 밀도로 흘러간다. 이는 보상·과제·놓친 이벤트가 아니다.
 - 함께 보낸 시간과 Ambient Discovery는 승인된 제품 방향이지만 아직 구현되지 않았다.
 
 ## 이전 Slice와 현재 목표를 구분할 것
@@ -39,7 +40,7 @@ notion: HISTORICAL_DISCOVERY_ARCHIVE_NO_NEW_READ_WRITE_SYNC
 | 단계 | 현재 상태 | 필요한 다음 증거 |
 | --- | --- | --- |
 | 1. 기획 공동점검 | `COMPLETE_FOR_DIRECT_ENTRY_DECISION` | 최신 GDD·visual lock·scope·feasibility 반영 완료 |
-| 2. 구현 전 검토 | `NOT_STARTED_FOR_DIRECT_ENTRY` | Scene route, local migration, optional 꾸미기 consumer, 540 x 960 acceptance를 Issue와 plan으로 고정 |
+| 2. 구현 전 검토 | `IN_PROGRESS_FOR_DIRECT_ENTRY` | Scene route, 현실 시간 mapping, foreground scenery, optional 꾸미기 consumer, 540 x 960 acceptance를 Issue와 plan으로 고정 |
 | 3. 인게임 요소 제작 | `NOT_STARTED_FOR_DIRECT_ENTRY` | 새 asset은 concrete consumer와 visual check를 통과할 때만 생성 |
 | 4. Codex/Godot 구현 | `NOT_STARTED_FOR_DIRECT_ENTRY` | code/test/smoke/runtime capture. historical green은 이 행을 통과시키지 못함 |
 | 5. 사용자 vertical-slice 검증 | `NOT_STARTED` | 실제 기기의 30초 첫인상·5분 휴식·가독성·손감각 확인 |

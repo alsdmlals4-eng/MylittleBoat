@@ -22,7 +22,8 @@
 | 시작 | 실행 즉시 normal 3/4 boat diorama | `scenes/main_menu.tscn`의 선택형 panel 뒤 `game.tscn` 진입 | `PRODUCT_SUPERSEDED_IMPLEMENTATION` |
 | 오늘의 마음 | 제품에서 제거 | `selected_mood`, mood button, mood tone, record wording, 관련 test가 존재 | `PRODUCT_SUPERSEDED_IMPLEMENTATION` |
 | 꾸미기 entry | 바다를 본 뒤 optional `꾸미기` | identity/pet/time 선택이 menu에 있고 decor는 game panel에 존재 | `PRODUCT_SUPERSEDED_IMPLEMENTATION` |
-| 시작 분위기 | 새 local state `bright`, 이후 saved atmosphere restore, startup selector 없음 | process-lifetime time selection만 존재하고 menu OptionButton이 소비 | `PRODUCT_SUPERSEDED_IMPLEMENTATION` |
+| 시간 기반 분위기 | 기기의 현지 현실 시간이 자동 적용, selector·saved preference 없음 | process-lifetime selection만 존재하고 menu OptionButton이 소비 | `PRODUCT_SUPERSEDED_IMPLEMENTATION` |
+| 흘러가는 풍경 | active foreground 시간에만 low-density distant scenery와 ambient memory | action-gated offer, early forced prompt, button/expiry path | `PRODUCT_SUPERSEDED_IMPLEMENTATION` |
 | 함께 보낸 시간 | active foreground voyage time만 album에 조용히 표시 | 행동으로 `companion_affection`을 올리고 voyage/album `Lv`를 표시 | `PRODUCT_SUPERSEDED_IMPLEMENTATION` |
 | Ambient Discovery | low-density passive presentation + 작은 알림 + local auto-save | action-gated offer, early forced prompt, button/expiry path | `PRODUCT_SUPERSEDED_IMPLEMENTATION` |
 
@@ -54,12 +55,13 @@ PR #19 `feat/social-fake-backend-20260824`도 `READ_ONLY_NO_ABSORPTION`입니다
 다음 구현은 위 gap을 따로 쪼개서 부분적으로 고치지 않습니다. 아래를 한 contract로 묶어 설계·테스트·runtime capture·Human validation까지 검증합니다.
 
 1. `project.godot`의 startup route가 새 local state에서 곧바로 normal boat diorama를 연다.
-2. `GameState`와 persistence owner가 mood를 retire하고 local atmosphere를 `bright` default와 restore 규칙으로 migration한다.
-3. player appearance, pet species, boat decor가 in-voyage optional `꾸미기`에서만 접근 가능하다.
-4. mood-facing UI, wording, color rule, test/capture dependency가 제거되거나 direct-entry contract로 대체된다.
-5. 540 x 960 capture에서 boat-water contact, bob/wave/wake/reflection, avatar/pet/boat/sea/horizon hierarchy가 검증된다.
-6. direct entry, persistence, no-mood migration, customization entry, camera parity를 test한다.
-7. 사람의 첫 30초와 5분 휴식, mobile touch, sound comfort를 별도 Human evidence로 기록한다.
+2. `GameState`가 mood를 retire하고, 현지 현실 시간을 순수 visual atmosphere로 resolve한다. selector·saved atmosphere를 만들지 않는다.
+3. active foreground 시간만 쓰는 drifting scenery director가 distant scenery와 low-density ambient memory를 관리한다.
+4. player appearance, pet species, boat decor가 in-voyage optional `꾸미기`에서만 접근 가능하다.
+5. mood-facing UI, wording, color rule, test/capture dependency가 제거되거나 direct-entry contract로 대체된다.
+6. 540 x 960 capture에서 boat-water contact, bob/wave/wake/reflection, avatar/pet/boat/sea/horizon hierarchy가 검증된다.
+7. direct entry, local-time mapping, foreground-only scenery progress, no-mood migration, customization entry, camera parity를 test한다.
+8. 사람의 첫 30초와 5분 휴식, mobile touch, sound comfort를 별도 Human evidence로 기록한다.
 
 Godot 구현 가능성의 근거는 다음 공식 안정판 문서에 있다. Autoload는 Scene 사이 state를, `ConfigFile`과 `user://`는 local persistence를, SceneTree route는 main scene transition을 지원한다. 구현 세부와 error handling은 해당 Phase 2 contract에서 source/test를 읽고 결정한다.
 

@@ -6,9 +6,10 @@
 
 다음 product 변경은 **direct boat entry**입니다.
 
-- 새 로컬 상태는 `bright` 보트 디오라마로 바로 시작합니다.
+- 현실 시간에 맞는 새벽·밝음·해질녘·밤 보트 디오라마로 바로 시작합니다. 수동 또는 saved atmosphere는 없습니다.
 - 시작 전에 `오늘의 마음`, 외형, 동반자, 시간대, 장식을 묻지 않습니다.
 - 외형·동반자·장식은 항해 안의 선택형 `꾸미기`에서만 바꿉니다.
+- active foreground 시간에만 낮은 밀도의 drifting scenery가 진행하며, 이는 보상·경제·호감도·놓친 이벤트 패널을 만들지 않습니다.
 - 구형 `main_menu.tscn` 선택 UI와 mood data는 `PRODUCT_SUPERSEDED_IMPLEMENTATION`입니다. migration 없이 부분적으로 지우지 않습니다.
 - 보트가 바다에 붙여진 이미지처럼 보이지 않게, 물과의 접점·느린 bob·잔물결 또는 wake·반사/가림을 runtime capture로 확인합니다.
 
