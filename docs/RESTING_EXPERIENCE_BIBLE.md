@@ -316,6 +316,10 @@ Normal Diorama와 Appreciation Camera 모두에서 같은 의미로 나타나되
 
 고양이·토끼·강아지·수달은 순수 local cosmetic 선택이므로, 호감도는 pet type별 ledger가 아닌 전역 `함께 보낸 시간`입니다. 외형을 바꿔도 호감도는 잃거나 초기화되지 않고 종별 보정도 없습니다.
 
+### 조용한 표시 원칙
+
+호감도는 항해 화면을 점유하는 level loop가 아니라 앨범에서 돌아보는 동행 기록입니다. 첫 구현은 새 companion Scene 없이 기존 AlbumView에 `함께한 시간`과 비경쟁적 관계 문구 한 줄을 두는 방식입니다. TopPanel·Appreciation Camera에는 숫자·레벨·진행 바·성장 알림을 두지 않으며, 문구는 reward·unlock·다음 행동을 암시하지 않습니다.
+
 ### 기본 Idle Pool
 
 초기 제작 우선순위:

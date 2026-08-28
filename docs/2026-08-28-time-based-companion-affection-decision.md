@@ -7,6 +7,7 @@ DECISION = USER_APPROVED_PRODUCT_DIRECTION
 TRACKING_ISSUE = #89
 COMPANION_AFFECTION_SOURCE = ACTIVE_FOREGROUND_VOYAGE_TIME
 OPTIONAL_ACTION_AFFECTION_SOURCE = FORBIDDEN
+PRESENTATION_DIRECTION = ALBUM_TOGETHER_TIME_PLUS_QUIET_RELATION_SENTENCE
 CURRENT_MAIN_IMPLEMENTATION = ACTION_BASED_AND_PRODUCT_SUPERSEDED
 RUNTIME_IMPLEMENTATION = NOT_STARTED
 HUMAN_PLAYER_EXPERIENCE_VALIDATION = NOT_RUN
@@ -31,13 +32,13 @@ HUMAN_PLAYER_EXPERIENCE_VALIDATION = NOT_RUN
 
 ## Rate and presentation boundary
 
-- `companion_affection`의 정확한 분당 증가량, 레벨 임계값, 표시 문구와 저장 migration은 아직 `PHASE_2_IMPLEMENTATION_CONTRACT_REQUIRED`입니다.
-- 현행 `Lv 1..3`은 action-based placeholder의 구현 수치일 뿐, 시간 기반 호감도의 균형 정본이 아닙니다.
-- 구현 시 시간은 플레이어의 휴식 자체를 보이는 작은 동행 기록으로 읽혀야 하며, 진행 바·알림·팝업으로 휴식을 방해하지 않습니다.
+- 사용자 승인 표시 방향은 `docs/2026-08-28-quiet-companion-affection-presentation-decision.md`가 소유합니다. 첫 소비처는 새 화면이 아닌 AlbumView이며, `함께한 시간`과 조용한 관계 문구만 보여 줍니다.
+- voyage TopPanel과 Appreciation Camera에는 실시간 `Lv`, 수치, 진행 바, milestone 알림이나 popup을 두지 않습니다. 현행 `Lv 1..3`은 action-based placeholder의 구현 수치일 뿐, 시간 기반 호감도의 균형·표시 정본이 아닙니다.
+- 정확한 분당 증가량, duration format, 관계 문구 catalogue, 저장 migration은 아직 `PHASE_2_IMPLEMENTATION_CONTRACT_REQUIRED`입니다.
 
 ## Current conflict and required future verification
 
-Current `main` has `GameState.add_photo`, `add_scenery`, and `add_letter` call `_increase_affection`; `game_scene.gd` and `album_view.gd` show `동반자 Lv`. These are technically implemented but product-superseded by this decision.
+Current `main` has `GameState.add_photo`, `add_scenery`, and `add_letter` call `_increase_affection`; `game_scene.gd` and `scripts/ui/album_view.gd` show `동반자 Lv`. These are technically implemented but product-superseded by this decision.
 
 A later, separately approved single implementation contract must:
 
