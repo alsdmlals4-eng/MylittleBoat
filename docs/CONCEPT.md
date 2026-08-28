@@ -111,6 +111,10 @@ HUMAN_VISUAL_COMFORT_VALIDATION = NOT_RUN
 
 현재 고양이·토끼·강아지·수달 선택은 순수 외형이므로 호감도는 종마다 따로 갈라지지 않는 전역 `함께 보낸 시간`입니다. 외형을 바꿔도 수치가 줄거나 초기화되지 않고 종별 보정도 없습니다.
 
+### 확정된 호감도 표시 · 앨범의 함께한 시간
+
+동반자와의 시간은 항해 중 계속 확인하는 level이나 진행률이 아니라, 앨범에서 돌아보는 조용한 기록입니다. 첫 소비처는 기존 AlbumView이며 `함께한 시간`과 정서적 관계 문구 한 줄만 보여 줍니다. 정상 항해와 Appreciation Camera에는 `Lv`, 수치, progress bar, milestone popup을 두지 않습니다. 이 표시는 전역 cosmetic-neutral 시간이며 reward·unlock·숙제·완료율을 만들지 않습니다.
+
 ## 구현된 Local Boat Life 기술 Slice
 
 ### Boat Decoration
