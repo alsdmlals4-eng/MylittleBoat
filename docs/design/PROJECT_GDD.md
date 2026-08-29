@@ -4,6 +4,62 @@
 **갱신일:** 2026-08-29
 **읽는 법:** 이 문서는 사람이 게임의 경험과 결정 상태를 이해하기 위한 정본입니다. 실제 코드·Scene·테스트·캡처는 [현재 Godot handoff](../handoffs/CURRENT_GODOT_IMPLEMENTATION.md)가, visual consumer와 provenance는 [visual inventory](../visual/CURRENT_SCREEN_SURFACE_INVENTORY_AND_VISUAL_ASSET_COVERAGE.md)가 소유합니다.
 
+## 0. Human Game Blueprint 읽기 profile
+
+`HUMAN_GAME_BLUEPRINT_GDD_LAYERED_PROFILE`
+
+`NO_SEPARATE_BLUEPRINT_ARTIFACT`
+
+이 profile은 새 Blueprint 문서·보드·부록을 만들지 않고 현재 editing master인 이 GDD 안에서 기존 경험·system card·flow·구현 evidence를 계층적으로 읽게 합니다. `docs/design/PROJECT_AI_PRODUCTION_SPEC.md`는 `SUPERSEDED_AS_CURRENT_GDD` 안내 포인터이며 current editing master로 승격하지 않습니다. 이 profile의 repository baseline은 `main@50909b33bd1d4a4ebc550b5be2a4f9cfe7ccf6d6`입니다.
+
+### 산출물과 publication 경계
+
+`exports/my-little-boat_MASTER_PRODUCTION_GDD_20260829.pdf` = `TRACKED_LATEST_PUBLICATION_SOURCE_BINDING_UNVERIFIED`. tracked latest publication이지만 generator, source SHA, publication receipt가 없으므로 이 GDD의 source-bound current projection이라고 주장하지 않습니다. `exports/my-little-boat_MASTER_PRODUCTION_GDD_20260828.pdf` = `HISTORICAL_DERIVED_NOT_CURRENT_SOURCE`.
+
+`PDF_REISSUE_DEFERRED`: 이번 profile adoption은 두 PDF binary를 수정하거나 새 PDF를 생성하지 않습니다. source-bound generator와 receipt가 설치된 뒤 별도 publication package에서 재발행합니다.
+
+### Layered reader route
+
+| layer | 먼저 답할 질문 | 현재 section |
+| --- | --- | --- |
+| `PROJECT_PLAYER_LAYER` | 어떤 휴식 경험이며 무엇을 선택하지 않아도 되는가 | §1–§3 |
+| `SYSTEM_LAYER` | 머무르기·분위기·풍경·기억이 어떤 flow와 상태로 이어지는가 | §4–§5 |
+| `CONTENT_UX_PRESENTATION_LAYER` | 어떤 화면·시각·입력·audio가 경험을 전달하는가 | §5–§6 |
+| `PRODUCTION_EVIDENCE_LAYER` | 무엇이 구현됐고 어떤 test/runtime/Human evidence가 남았는가 | §7–§8 및 current handoff/visual inventory |
+
+```text
+3-MINUTE PROJECT / PLAYER READ
+-> 10-MINUTE SYSTEM + CONTENT / UX / PRESENTATION READ
+-> DETAIL READ
+-> IMPLEMENTATION READ
+-> VERIFICATION READ
+```
+
+### 상태와 evidence legend
+
+`STATE_AND_EVIDENCE_LEGEND`
+
+| 상태 | 허용하는 주장 | 허용하지 않는 상위 주장 |
+| --- | --- | --- |
+| `CONFIRMED` | current GDD·Decision에 제품 방향이 기록됨 | 구현·runtime 동작 |
+| `IMPLEMENTED` / `IMPLEMENTED_AND_TESTED` | exact code/Scene/data consumer가 있고 지정 자동 계약이 존재하거나 통과한 receipt가 있음 | 실제 기기 편안함·Human UX |
+| `GPU_CAPTURED` | 지정 renderer와 화면 크기에서 화면이 실제 렌더됨 | touch/audio/5분 calmness |
+| `PARTIAL_IMPLEMENTED` | 일부 consumer만 존재하고 남은 product alignment가 있음 | system 전체 완료 |
+| `CONFIRMED_NOT_IMPLEMENTED` | 제품 방향은 확정됐지만 runtime consumer가 없음 | 구현 시작·완료 |
+| `NOT_RUN` | 해당 device/Human/audio evidence가 아직 없음 | 추정에 의한 PASS |
+
+### Prospective future-package gate
+
+`PLAN -> REQUIRED_IMAGE_AND_MATERIAL_PREPARATION -> BLUEPRINT_REVIEW_PUBLICATION -> USER_FINAL_REVIEW_APPROVAL -> IMPLEMENTATION`
+
+`NO_IMPLEMENTATION_BEFORE_USER_FINAL_APPROVAL`: 이 profile 채택 뒤 새 implementation package는 exact reviewed Blueprint revision에 대한 명시적 `USER_FINAL_REVIEW_APPROVAL` 전 시작하지 않습니다. 계획·task breakdown·acceptance는 준비할 수 있지만 implementation execution은 blocked입니다.
+
+`PROSPECTIVE_ONLY_EXISTING_IMPLEMENTATION_EVIDENCE_PRESERVED`: 이미 merge된 code/data/Scene/test와 기존 GPU/runtime evidence는 역사적 사실로 유지되며 이 gate 때문에 취소·하향되지 않습니다.
+
+`PROSPECTIVE_ONLY_PREEXISTING_EXACT_USER_APPROVED_IMPLEMENTATION_AUTHORITY_PRESERVED`: profile 채택 전에 package ID, exact scope, artifact revision/branch/SHA에 연결된 명시적 사용자 구현 승인이 있었다면 그 package의 기존 authority는 유지합니다. `EXACT_APPROVED_SCOPE_AND_REVISION_ONLY`: grandfathering은 승인 기록과 같은 package·scope·revision만 허용합니다. `SCOPE_EXPANSION | SUCCESSOR_PACKAGE | INFERRED_BLANKET_APPROVAL`에는 기존 authority를 재사용할 수 없습니다. PR #19를 포함한 별도 workstream의 authority는 이 profile로 추정하거나 흡수하지 않습니다.
+
+새 image deliverable의 생성·편집은 Base current conversation-approval gate와 `IMAGE_MODEL_REQUIRED_FOR_IMAGE_CREATION_OR_EDITING`을 따라야 합니다. exact flow/state/system 관계는 `TEXT_NATIVE_EXACT_DIAGRAMS`와 `STRUCTURED_INFORMATION_ARTIFACTS_REMAIN_TEXT_NATIVE`에 따라 Mermaid/Flow/table로 유지합니다. 이미지 생성 성공은 asset 승인·runtime 연결·Human PASS가 아닙니다.
+
 ## 1. 이 게임은 무엇인가
 
 `마이 리틀 보트`는 내 캐릭터와 동반자가 바다 위 작은 보트에서 함께 쉬는 휴식 우선 게임입니다. 플레이어는 목표를 해내기 위해 보트에 오르는 것이 아니라, 게임을 여는 순간 이미 그곳에 있습니다.
@@ -81,7 +137,51 @@
 | Appreciation Camera | 화면을 덜 보고 바다를 더 볼 것인가 | 낮은 UI의 수평선 감상 | normal view를 유지하는 것 |
 | 꾸미기 | 내 공간을 어떤 모습으로 두고 싶은가 | cosmetic appearance 변화 | 장식을 바꾸지 않는 것 |
 
+### 첫 5·15·30분 truth table
+
+`FIRST_5_MINUTES_NOMINAL_SESSION_HYPOTHESIS`: 첫 5분은 반드시 채워야 하는 목표가 아니라 한 번의 명목상 휴식 세션을 설명하는 hypothesis입니다. 실제 기기에서 이 시간이 calm한지는 actual-device calmness `NOT_RUN`입니다.
+
+`FIRST_15_30_MINUTES_CONDITIONAL_OPTIONAL_EXTENDED_STAY_NOT_FORCED_MILESTONES`: 첫 15분과 30분은 플레이어가 스스로 더 머물 때만 생기는 conditional optional extended stay이며 forced onboarding·retention·reward milestone이 아닙니다.
+
+| 시간 | 경험 contract | evidence |
+| --- | --- | --- |
+| 첫 5분 | 명목상 한 항해에서 머무르거나 원할 때 낮은 압력 행동을 쓰고 자연스럽게 떠날 수 있음 | implementation/automation 일부 존재; actual-device calmness `NOT_RUN` |
+| 첫 15분 | 선택적으로 더 머물며 분위기·풍경·개인 기록을 느슨하게 경험할 수 있음 | optional extended-stay hypothesis; Human `NOT_RUN` |
+| 첫 30분 | 선택적으로 계속 머물거나 album/꾸미기를 오갈 수 있음 | optional extended-stay hypothesis; Human `NOT_RUN` |
+
 ## 4. 시스템 카드
+
+`REUSABLE_FLOW_AND_SYSTEM_CARDS`
+
+기존 system 설명은 아래 공통 card field를 공유합니다. 새 규칙을 복제하지 않고 각 section과 실제 owner를 연결합니다.
+
+| card field | 이 GDD의 표현 |
+| --- | --- |
+| player purpose | `플레이어가 보고 하는 일`, `필요한 이유` |
+| trigger/input + choice/condition | §3 핵심 반복·선택과 결과, §5 화면 flow |
+| state/data change | current handoff의 foreground/session/persistence owner |
+| output/feedback + failure/recovery | `피드백`, `피해야 할 압박`; 실패 pressure는 N/A |
+| content/UX/presentation consumer | §5 화면, §6 visual direction, soundscape requirement |
+| implementation owner | `CURRENT_GODOT_IMPLEMENTATION.md`의 exact Scene/script table |
+| acceptance/evidence | §7 상태, Blueprint evidence ceiling, tests/captures/Human boundary |
+
+### Core flow card
+
+| flow ID | player purpose | trigger/input | choice/condition | state/data change | output/feedback | owner/evidence |
+| --- | --- | --- | --- | --- | --- | --- |
+| `FLOW-REST-001` | 보트 위에 바로 도착해 압박 없이 머무름 | app 실행 또는 normal voyage 복귀 | 머무르기·선택 행동·자연스럽게 떠나기 | foreground time과 선택적 local memory만 변화 | calm diorama, atmosphere, 낮은 밀도 풍경 | `game.tscn`, `game_scene.gd`; automated/GPU evidence, Human `NOT_RUN` |
+
+### System traceability cards
+
+`LAYERED_TRACEABILITY_REQUIRED`
+
+| system ID | player contract | exact implementation owner | content/UX/presentation consumer | acceptance/evidence |
+| --- | --- | --- | --- | --- |
+| `SYS-REST-001` | 아무 입력 없이 머무르기도 complete play | `scenes/game.tscn`, `scenes/boat_space.tscn`, `scripts/voyage/game_scene.gd` | Direct boat entry, normal/appreciation camera, boat-water presentation | direct-entry contracts + 540 x 960 GPU capture; device calmness `NOT_RUN` |
+| `SYS-ATMOS-001` | 현실 시간은 시각 분위기만 바꿈 | `scripts/voyage/real_time_atmosphere_resolver.gd`, `scripts/voyage/game_scene.gd` | dawn/bright/sunset/night sea and light | resolver/game contracts + GPU captures; Human transition judgment `NOT_RUN` |
+| `SYS-SCENERY-001` | foreground에서 풍경이 낮은 밀도로 지나감 | `scripts/voyage/drift_scenery_director.gd`, `scenes/distant_scenery.tscn` | buoy/islet/lighthouse, auto-fade notice | director/runtime contracts + islet capture; 5-minute frequency `NOT_RUN` |
+| `SYS-MEMORY-001` | 일부 풍경이 보상 압박 없는 local memory로 남음 | `scripts/core/ambient_memory_persistence.gd` | Ambient Discovery, Album | persistence/GameState round-trip contracts; noticeability `NOT_RUN` |
+| `SYS-RELATIONSHIP-001` | 함께 머문 시간이 조용한 관계 문구로 남음 | runtime owner 없음 | future Album relationship copy | `CONFIRMED_NOT_IMPLEMENTED` |
 
 ### 떠 있는 휴식
 
@@ -250,6 +350,20 @@ main scene을 direct boat route로 바꾸고 optional customization을 같은 �
 6. 540 x 960 GPU capture에서 boat-water contact, 시간대, 원거리 작은 섬을 확인했습니다.
 
 남은 것은 사람 검증입니다. 실제 기기 첫 30초, 5분 휴식, 터치, 알림 noticeability, 오디오 편안함은 `NOT_RUN`이며, 함께 보낸 foreground 시간의 조용한 호감도 표현도 아직 구현하지 않았습니다.
+
+### Blueprint evidence ceiling
+
+| evidence subject | current ceiling | next proof |
+| --- | --- | --- |
+| Direct boat entry | `IMPLEMENTED_AND_GPU_CAPTURED` | actual-device first 30 seconds |
+| Real-time atmosphere | `IMPLEMENTED_AND_TESTED`; GPU capture exists | device transition/readability observation |
+| Foreground scenery | `IMPLEMENTED_AND_GPU_CAPTURED` | normal 5-minute density observation |
+| Ambient memory | `IMPLEMENTED_AND_TESTED` | noticeability and calmness observation |
+| Relationship/shared-time expression | `CONFIRMED_NOT_IMPLEMENTED` | separately approved future package and runtime evidence |
+| Device first 30 seconds / 5 minutes | `NOT_RUN` | named Human/device session |
+| Touch / audio / notification intensity | `NOT_RUN` | real touch, soundscape, notification observation |
+
+Static docs, automated tests, generated assets, and GPU captures do not promote any `NOT_RUN` row to Human or device PASS.
 
 ## 8. 금지 범위와 열린 결정
 
