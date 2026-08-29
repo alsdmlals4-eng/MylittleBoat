@@ -75,15 +75,72 @@ Rewards:
 ## Work Style
 
 - Inspect the actual files before editing. Use `rg` or Godot project structure instead of relying on memory.
-- State assumptions when the request is ambiguous. Ask before making risky product or architecture decisions.
-- Prefer the smallest change that solves the request.
-- Match the existing scene, node, script, and naming style.
-- Avoid speculative abstractions, large rewrites, or broad cleanup.
+- State assumptions when the request is ambiguous. Ask only before risky product, safety, irreversible, or materially different architecture decisions.
+- Prefer the `MINIMUM_SUFFICIENT_COMPLEXITY` change that solves the root cause and remains maintainable. Do not prefer a smaller local patch when it predictably creates repeated work, canon drift, or technical debt.
+- Apply `LONG_TERM_QUALITY_OVER_LOCAL_SPEED`, `ROOT_CAUSE_AND_REUSE_BEFORE_REPEATED_MANUAL_PATCH`, `SPECULATIVE_OVERENGINEERING_REJECTED`, and `PLAYABLE_OR_OPERATIONAL_VALUE_OVER_DOCUMENT_VOLUME`.
+- Match the existing scene, node, script, data, asset, and naming style.
+- Avoid speculative abstractions, broad frameworks, large rewrites, or cleanup without current project value and verification.
 - Do not revert, overwrite, or reformat unrelated user changes.
 - If the worktree is dirty, understand whether the dirty files are related before editing them.
 - Read real error messages and logs before applying a fix.
-- For every material design, visual, or implementation decision, re-read the relevant current repository owner and fresh official primary-source documentation when it can affect feasibility, platform behavior, safety, or cost.
-- Run an adversarial review after a material candidate: attack authority drift, player value, scope creep, implementation feasibility, evidence overclaim, visual/rights drift, and consumer ownership. Correct only the affected owner, then re-run the whole review until one clean pass remains.
+- For every material design, visual, data, safety, platform, or implementation decision, apply `IMPLEMENTATION_FEASIBILITY_BEFORE_COMMITMENT`: re-read the current repository owner, current official primary-source documentation, directly relevant successful/failed/mixed field cases, and the actual Godot Scene/Resource/script/data/consumer boundary. Record the result as `FEASIBLE | PARTIAL | BLOCKED_UNVERIFIED`.
+- External research may be skipped only for a purely mechanical change whose result cannot be changed by external facts; record that narrow reason as `MECHANICAL_NO_EXTERNAL_DEPENDENCY`.
+- Run `ACTUAL_POST_COMPLETION_ADVERSARIAL_REVIEW_REQUIRED` after every material candidate. `FULL_LOOP_COUNT_MINIMUM: 5` whole-state loops are required. Each loop records input head, evidence delta, findings, critique validation, applied correction, verification/regression recheck, better alternative, long-term fit, unresolved items, and output head.
+- Correct validated findings in the affected owner and re-run the whole review. Do not claim completion from a checklist or review statement alone. `EXECUTION_EVIDENCE_REQUIRED`, `NO_REVIEW_COMPLETION_CLAIM_WITHOUT_EVIDENCE`, and `CLEAN_REVIEW_EXIT` apply.
+
+## Visual Candidate and Approval Boundary
+
+Use `CANDIDATE_FIRST_VISUAL_PRODUCTION` when an image is required by an actual or explicitly planned screen, Scene, UI slot, object, state, release surface, or production review deliverable.
+
+```text
+VISUAL_NEED_CONFIRMED
+→ CURRENT_PROJECT_AND_VISUAL_CANON_READBACK
+→ ACTUAL_OR_EXPLICITLY_PLANNED_CONSUMER_REQUIRED
+→ EXISTING_APPROVED_ASSET_AND_CANDIDATE_REUSE_CHECK
+→ BOUNDED_BRIEF_READY
+→ IMAGE_MODEL_GENERATES_ONE_CANDIDATE
+→ OBJECTIVE_QA_AND_BOUNDED_CORRECTION
+→ PRESENT_FOR_USER_FINAL_LOCK
+```
+
+- Read current project decisions, approved visual references, existing candidates, actual/planned consumer, dimensions, Keep/Avoid/Do Not Drift, and rights/provenance before generation.
+- Do not stop for a duplicate per-image preapproval when the preflight is complete. Produce one bounded candidate and let the user approve, revise, reject, or retain it as reference after seeing the result.
+- Use the host image generation/editing model for image deliverables. Do not author SVG/vector, Canvas, Python-drawn, or Godot-primitive artwork as a substitute.
+- Do not automatically chain into another character, screen, state family, or asset package. Objective defects may receive one bounded correction; a new direction or consumer is new scope.
+
+```text
+NEEDED
+→ BRIEF_READY
+→ GENERATED_CANDIDATE
+→ USER_FINAL_LOCKED
+→ CANON_REGISTERED
+→ IMPLEMENTED
+→ RUNTIME_VERIFIED
+```
+
+```text
+GENERATED_CANDIDATE != USER_FINAL_LOCKED
+USER_FINAL_LOCKED != PROJECT_ASSET_APPROVED
+CANDIDATE_PRODUCTION_IS_NOT_IMPLEMENTATION_AUTHORITY
+```
+
+A candidate or user visual lock does not bypass the exact Blueprint/Decision implementation approval, asset-manifest registration, repository provenance/SHA-256 readback, Codex implementation boundary, or runtime verification.
+
+## Automation and Learning
+
+Apply `MINIMIZE_USER_INTERVENTION_WITH_SAFE_FINAL_CONTROL`.
+
+Agents should continue fresh-read, reuse search, official/field research, alternative comparison, candidate preparation, safe documentation/test correction, readback, regression checks, and remaining-work recalculation without repeatedly asking the user for mechanical decisions.
+
+Escalate only when the result changes core rest-first player meaning, economy, safety/moderation, Art Direction, narrative identity, scope/cost, release/external exposure, security/permissions, irreversible deletion, or an objective tie that needs user taste. Visual final lock remains a user decision.
+
+Use `INCIDENT_SOLUTION_LESSON_AUTOMATION_LOOP`:
+
+```text
+problem → reproducible evidence → root cause → correction → regression prevention → project owner/readback → reusable lesson → Base BCP when cross-project evidence exists
+```
+
+Do not treat conversation memory as learned canon. Persist reusable learning in repository owners, tests, validators, templates, checklists, or an approved Base proposal.
 
 ## Godot Rules
 
