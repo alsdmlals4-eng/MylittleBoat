@@ -9,4 +9,4 @@
 
 두 2초 frame pair의 boat와 UI를 피해 아래 수면 영역 `y=650..850`만 비교했다. title idle pair는 `108,540` pixel 중 `101,132` pixel, 즉 `93.17%`가 RGB absolute delta `>3`으로 바뀌었고 mean RGB absolute delta는 `7.901`이었다. voyage pair는 `104,173` pixel, 즉 `95.98%`가 바뀌었고 mean delta는 `9.674`였다. 따라서 명소 event와 항해 progress와 무관하게 아래 수면 texture가 실제 renderer frame에서 연속 이동했다는 machine evidence가 된다.
 
-이 이미지들은 renderer가 실제 장면을 그렸다는 증거다. 보트가 물 위에 충분히 자연스럽게 느껴지는지, 타이틀·버튼·텍스트가 실제 기기에서 편안한지는 Human 검증 전까지 `NOT_RUN`이다. 기존 큰 ring asset의 선체 하단 접점 한계는 별도 `GENERATED_CANDIDATE` waterline raster의 user `LOCK` 여부가 결정되기 전까지 해결 완료로 표시하지 않는다.
+이 이미지들은 renderer가 실제 장면을 그렸다는 증거다. 보트가 물 위에 충분히 자연스럽게 느껴지는지, 타이틀·버튼·텍스트가 실제 기기에서 편안한지는 Human 검증 전까지 `NOT_RUN`이다. 이 receipt 시점의 큰 ring asset 선체 하단 한계는 이후 user-approved `MLB-BOAT-FLT-006` waterline v2로 보강됐으며, 현재의 별도 machine capture는 [`../2026-08-31-waterline-contact-v2`](../2026-08-31-waterline-contact-v2/README.md)에 남긴다.

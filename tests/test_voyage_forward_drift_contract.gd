@@ -4,7 +4,7 @@ extends SceneTree
 const GAME_SCENE_PATH := "res://scenes/game.tscn"
 const COMFORT_STORAGE_PATH := "user://test_voyage_forward_drift_comfort.cfg"
 const WATER_FLOW_SHADER_PATH := "res://assets/shaders/voyage_water_flow.gdshader"
-const MIN_WATER_CONTACT_BASE_HEIGHT := 0.0
+const MAX_WATER_CONTACT_BASE_OFFSET_FROM_BOAT := 0.05
 const MAX_CONTACT_GAP_DELTA_DURING_BOB := 0.012
 
 var _failures := 0
@@ -41,7 +41,10 @@ func _run() -> void:
 	if boat_space != null and water_contact != null and final_diorama_card != null:
 		var boat_base_position: Vector3 = scene.get("_boat_space_base_position")
 		var water_base_position: Vector3 = scene.get("_boat_water_contact_base_position")
-		_expect(water_base_position.y >= MIN_WATER_CONTACT_BASE_HEIGHT, "water-contact raster origin must be raised from the old below-hull position")
+		_expect(
+			absf(water_base_position.y - boat_base_position.y) <= MAX_WATER_CONTACT_BASE_OFFSET_FROM_BOAT,
+			"water-contact base must remain attached to the lowered boat instead of retaining a fixed world height",
+		)
 		_expect(scene.has_method("get_background_flow_offset"), "game scene must expose the continuously advancing visual water-flow state")
 		var background_flow_before: float = float(scene.call("get_background_flow_offset")) if scene.has_method("get_background_flow_offset") else 0.0
 		_expect(not is_zero_approx(background_flow_before) or scene.has_method("get_background_flow_offset"), "title waiting must initialize a visual-only background-flow state")

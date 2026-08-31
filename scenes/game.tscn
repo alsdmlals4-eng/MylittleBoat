@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3]
+[gd_scene load_steps=16 format=3]
 
 [ext_resource type="Script" path="res://scripts/voyage/game_scene.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/voyage/boat_camera_controller.gd" id="2"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://scripts/voyage/look_around_camera_controller.gd" id="7"]
 [ext_resource type="Shader" path="res://assets/shaders/voyage_water_flow.gdshader" id="8"]
 [ext_resource type="Texture2D" path="res://assets/images/brand/my_little_boat_title_lockup_v1.png" id="9"]
+[ext_resource type="Texture2D" path="res://assets/images/runtime/voyage/boat-waterline-contact-v2.png" id="10"]
 
 [sub_resource type="Environment" id="Environment_sky"]
 background_mode = 1
@@ -131,14 +132,23 @@ mesh = SubResource("PlaneMesh_ocean")
 surface_material_override/0 = SubResource("StandardMaterial3D_ocean")
 
 [node name="BoatSpace" parent="VoyageWorld" instance=ExtResource("3")]
+position = Vector3(0, -2.7, 0)
 
 [node name="BoatWaterContact" type="Sprite3D" parent="VoyageWorld"]
-position = Vector3(0, 0, 0.35)
+position = Vector3(0, -2.7, 0.35)
 pixel_size = 0.0032
 billboard = 1
 no_depth_test = false
 modulate = Color(0.9, 0.96, 1, 0.42)
 texture = ExtResource("6")
+
+[node name="BoatWaterlineContact" type="Sprite3D" parent="VoyageWorld"]
+position = Vector3(0, -2.4, 0.38)
+pixel_size = 0.00135
+billboard = 1
+no_depth_test = false
+modulate = Color(0.9, 0.97, 1, 0.42)
+texture = ExtResource("10")
 
 [node name="TitleOverlay" type="Control" parent="."]
 layout_mode = 1

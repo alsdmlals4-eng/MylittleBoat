@@ -33,7 +33,7 @@ Notion은 historical archive이며 이 문서의 current owner가 아닙니다. 
 | --- | --- | --- | --- |
 | `MLB-SCR-001` Title boat waiting | 확정 로고와 실제 보트·동반자·바다를 보고 항해를 시작하는 첫 장면 | `project.godot` → `game.tscn/TitleOverlay`, `GameScene.start_voyage_from_title()` | `IMPLEMENTED → MACHINE_VERIFIED → RUNTIME_CAPTURE_VERIFIED`; Human comfort `NOT_RUN` |
 | `MLB-SCR-003` Normal voyage diorama | character, companion, boat, sea와 낮은 밀도의 풍경을 함께 보는 core surface | `game.tscn`, `boat_space.tscn`, `game_scene.gd` | `IMPLEMENTED → RUNTIME_CAPTURE_VERIFIED`; Human comfort `NOT_RUN` |
-| `MLB-OVR-004` Appreciation Camera | UI를 줄이고 수평선에 집중하는 선택 화면 | `AppreciationCameraRig`, `GameScene` | `IMPLEMENTED → RUNTIME_CAPTURE_VERIFIED`; Human comfort `NOT_RUN` |
+| `MLB-OVR-004` Appreciation Camera | UI를 줄이고 수평선에 집중하는 선택 화면 | `AppreciationCameraRig`, `GameScene._set_normal_boat_foreground_visible(false)` | `IMPLEMENTED → MACHINE_VERIFIED → RUNTIME_CAPTURE_VERIFIED`; Human comfort `NOT_RUN` |
 | `MLB-OVR-005` 꾸미기 | arrival 뒤 원할 때 local cosmetic state를 바꾸는 surface | DecorPanel, `DecorPreview`, identity/decor local storage | `IMPLEMENTED → RUNTIME_CAPTURE_VERIFIED`; Human readability/touch `NOT_RUN` |
 | `MLB-SCR-010` Album | 실제 사진·기억·함께한 시간을 보는 archive | `scenes/album.tscn`, `AlbumView` | `PARTIAL_IMPLEMENTED → RUNTIME_CAPTURE_VERIFIED`; Human readability `NOT_RUN` |
 | `MLB-SCR-001-LEGACY` main menu | 시작 전 identity/time/mood selection의 이전 slice | `main_menu.tscn`, `main_menu.gd` | `SUPERSEDED_RUNTIME_SLICE`, current entry가 아님 |
@@ -63,8 +63,11 @@ Notion은 historical archive이며 이 문서의 current owner가 아닙니다. 
 | `MLB-LOOK-CHIBI-NORMAL-REAR-001`과 derived matte | default C+dog `BoatSpace/FinalDioramaCard`의 explicit chroma shader | `USER_APPROVED → CANON_REGISTERED → IMPLEMENTED → RUNTIME_CAPTURE_VERIFIED`; Human/device comfort `NOT_RUN` |
 | `MLB-LOOK-CHIBI-TRN-001..004` | `LookAroundPresentationRouter`의 port/starboard/aft/overhead exact routing | `USER_APPROVED → CANON_REGISTERED → IMPLEMENTED → RUNTIME_CAPTURE_VERIFIED`; Human motion comfort `NOT_RUN` |
 | `MLB-AMB-MOTIF-001..006` | current local-time bucket의 normal·Appreciation `AmbientSceneryPass`, water-only `SeaBackdrop`은 유지 | `USER_APPROVED → CANON_REGISTERED → IMPLEMENTED → RUNTIME_CAPTURE_VERIFIED`; 2026-08-31 six-pass capture, Human long-run observation `NOT_RUN` |
+| `MLB-BOAT-FLT-006` | `assets/images/runtime/voyage/boat-waterline-contact-v2.png` → `GameScene/VoyageWorld/BoatWaterlineContact` | `USER_APPROVED → CANON_REGISTERED → ASSET_READY → IMPLEMENTED → MACHINE_VERIFIED → RUNTIME_CAPTURE_VERIFIED`; Human motion comfort `NOT_RUN` |
 
 `FinalDioramaCard`는 기본 C+강아지 route에서만 사용한다. alternate pair는 동일한 `BoatSpace`의 layered `Sprite3D` route를 사용한다. 이 차이는 save 의미·voyage 시간·reward·soundscape를 바꾸지 않는다.
+
+`MLB-BOAT-FLT-006`은 built-in image generation으로 만든 `2172×724` transparent RGBA waterline strip이며, 사용자가 2026-08-31에 승인했습니다. canonical binary SHA-256은 `8C145B545B913567A19F47927A13E83FB7328177D7DCC8A195B4BA857F10C22B`입니다. 기존 `MLB-BOAT-FLT-005`의 넓은 legacy ripple은 뒤쪽의 느린 확산 수면으로 남기고, 이 자산은 depth test를 유지한 전면 선체 하단의 좁은 접점만 담당합니다. 둘은 `BoatSpace`와 같은 lateral·forward·vertical drift를 따르며, `still` comfort에서는 모두 base position으로 돌아갑니다.
 
 ## 5. 승인 decor와 alternate 치비 family
 

@@ -41,6 +41,12 @@ const WATER_CONTACT_MODULATES := {
 	"sunset": Color(1.0, 0.72, 0.58, 0.30),
 	"night": Color(0.5, 0.66, 1.0, 0.22),
 }
+const WATERLINE_CONTACT_MODULATES := {
+	"dawn": Color(0.8, 0.9, 1.0, 0.36),
+	"bright": Color(0.9, 0.97, 1.0, 0.42),
+	"sunset": Color(1.0, 0.78, 0.64, 0.34),
+	"night": Color(0.58, 0.76, 1.0, 0.24),
+}
 const FISH_NAMES: Array[String] = ["정어리", "전갱이", "고등어", "도미"]
 const FISHING_OUTCOME_IDS: Array[String] = ["catch", "quiet"]
 const DECOR_SLOT_NODE_NAMES := {
@@ -81,6 +87,9 @@ var _boat_space_base_rotation := Vector3.ZERO
 var _boat_water_contact_base_position := Vector3.ZERO
 var _boat_water_contact_base_scale := Vector3.ONE
 var _boat_water_contact_base_modulate := Color.WHITE
+var _boat_waterline_contact_base_position := Vector3.ZERO
+var _boat_waterline_contact_base_scale := Vector3.ONE
+var _boat_waterline_contact_base_modulate := Color.WHITE
 var _time_of_day_background_color := Color(0.58, 0.76, 0.86, 1.0)
 var _rest_menu_open := false
 var _active_atmosphere_id := "bright"
@@ -107,6 +116,9 @@ func _ready() -> void:
 	_boat_water_contact_base_position = $VoyageWorld/BoatWaterContact.position
 	_boat_water_contact_base_scale = $VoyageWorld/BoatWaterContact.scale
 	_boat_water_contact_base_modulate = $VoyageWorld/BoatWaterContact.modulate
+	_boat_waterline_contact_base_position = $VoyageWorld/BoatWaterlineContact.position
+	_boat_waterline_contact_base_scale = $VoyageWorld/BoatWaterlineContact.scale
+	_boat_waterline_contact_base_modulate = $VoyageWorld/BoatWaterlineContact.modulate
 	_configure_main_final_composite_decor_visibility()
 	_apply_time_of_day_tone()
 	_apply_stored_boat_decor()
@@ -236,6 +248,10 @@ func _apply_atmosphere_id(time_of_day_id: String) -> String:
 	if water_contact != null:
 		water_contact.modulate = WATER_CONTACT_MODULATES[normalized_time_of_day] as Color
 		_boat_water_contact_base_modulate = water_contact.modulate
+	var waterline_contact := $VoyageWorld/BoatWaterlineContact as Sprite3D
+	if waterline_contact != null:
+		waterline_contact.modulate = WATERLINE_CONTACT_MODULATES[normalized_time_of_day] as Color
+		_boat_waterline_contact_base_modulate = waterline_contact.modulate
 	_apply_look_around_presentation()
 	return _active_atmosphere_id
 
@@ -766,6 +782,14 @@ func _apply_drift_motion(delta: float) -> void:
 		var contact_modulate := _boat_water_contact_base_modulate
 		contact_modulate.a *= 0.9 + maxf(boat_bob_signal, 0.0) * 0.16
 		water_contact.modulate = contact_modulate
+	var waterline_contact := $VoyageWorld/BoatWaterlineContact as Sprite3D
+	if waterline_contact != null:
+		var waterline_breath := 1.0 + sin(_drift_phase * 1.05 - 0.15) * 0.022 * comfort_scale
+		waterline_contact.position = _boat_waterline_contact_base_position + Vector3(lateral_current, boat_bob * 0.96, forward_surge)
+		waterline_contact.scale = _boat_waterline_contact_base_scale * waterline_breath
+		var waterline_modulate := _boat_waterline_contact_base_modulate
+		waterline_modulate.a *= 0.92 + maxf(boat_bob_signal, 0.0) * 0.12
+		waterline_contact.modulate = waterline_modulate
 
 
 ## Starts persistent voyage state only after the player leaves the title boat view.
@@ -927,6 +951,7 @@ func _set_fishing_status(message: String) -> void:
 
 func _apply_appreciation_mode() -> void:
 	var controls_visible := not GameState.appreciation_mode
+	_set_normal_boat_foreground_visible(controls_visible)
 	$TopPanel.visible = controls_visible and _rest_menu_open
 	$BottomPanel.visible = GameState.appreciation_mode or _rest_menu_open
 	%RestMenuButton.visible = controls_visible and not _rest_menu_open
@@ -949,6 +974,13 @@ func _apply_appreciation_mode() -> void:
 	_apply_camera_mode()
 	_sync_next_voyage_button()
 	%FishingStatusLabel.visible = controls_visible and %FishingStatusLabel.text != ""
+
+
+## 감상 카메라에서 하단 디오라마가 바다 중심 화면과 조작을 가리지 않게 한다.
+func _set_normal_boat_foreground_visible(is_visible: bool) -> void:
+	$VoyageWorld/BoatSpace.visible = is_visible
+	$VoyageWorld/BoatWaterContact.visible = is_visible
+	$VoyageWorld/BoatWaterlineContact.visible = is_visible
 
 
 func _sync_next_voyage_button() -> void:

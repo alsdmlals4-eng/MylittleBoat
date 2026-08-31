@@ -36,9 +36,11 @@ func _run() -> void:
 	var pet := scene.get_node_or_null("VoyageWorld/BoatSpace/RestingPetPlaceholder") as Node3D
 	var boat := scene.get_node_or_null("VoyageWorld/BoatSpace/BoatBow") as Node3D
 	var water_contact := scene.get_node_or_null("VoyageWorld/BoatWaterContact") as Sprite3D
+	var waterline_contact := scene.get_node_or_null("VoyageWorld/BoatWaterlineContact") as Sprite3D
 	_expect(boat_space != null, "normal play must provide one BoatSpace owner")
 	_expect(boat_space != null and boat_space.visible, "normal play must render one actual BoatSpace instead of a baked duplicate")
 	_expect(water_contact != null and water_contact.visible and water_contact.texture != null, "normal play must render a local water-contact layer below the boat")
+	_expect(waterline_contact != null and waterline_contact.visible and waterline_contact.texture != null, "normal play must render the narrow waterline contact below the hull")
 	_expect(avatar != null, "normal play must include a visible player avatar placeholder")
 	if avatar != null:
 		_expect(avatar.has_method("is_technical_placeholder"), "avatar must expose its evidence class")
@@ -89,6 +91,9 @@ func _run() -> void:
 			_expect(appreciation_camera.current, "appreciation camera must become current")
 		if scene.has_method("get_active_camera_mode"):
 			_expect(str(scene.call("get_active_camera_mode")) == "appreciation", "camera mode must report appreciation")
+		_expect(boat_space != null and not boat_space.visible, "sea-focused appreciation mode must hide the lower normal boat foreground")
+		_expect(water_contact != null and not water_contact.visible, "appreciation mode must hide the legacy ripple with the boat")
+		_expect(waterline_contact != null and not waterline_contact.visible, "appreciation mode must hide the narrow waterline with the boat")
 		_expect(is_equal_approx(float(game_state.remaining_seconds), before_time), "camera toggle itself must not change voyage time")
 		_expect(int(game_state.speed_index) == before_speed, "camera toggle must not change speed choice")
 		_expect(game_state.photos.size() == before_photos, "camera toggle must not create photo rewards")
