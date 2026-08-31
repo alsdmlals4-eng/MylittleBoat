@@ -2,7 +2,7 @@
 extends SceneTree
 
 const GAME_SCENE_PATH := "res://scenes/game.tscn"
-const PORT_ANGLE_TEXTURE_PATH := "res://assets/images/runtime/voyage/look_around/chibi_transparent/chibi-transparent-port.png"
+const PORT_FOREGROUND_TEXTURE_PATH := "res://assets/images/runtime/voyage/look_around/foreground_split/port-foreground.png"
 const BRIGHT_MOTIF_TEXTURE_PATH := "res://assets/images/runtime/voyage/ambient_motifs/bright-seagrass-sandbar.png"
 
 var _failures := 0
@@ -42,6 +42,7 @@ func _run() -> void:
 	var look_around_camera := scene.get_node_or_null("VoyageWorld/LookAroundCameraRig/LookAroundCamera3D") as Camera3D
 	var look_around_backdrop := scene.get_node_or_null("VoyageWorld/LookAroundCameraRig/LookAroundCamera3D/SeaBackdrop") as Sprite3D
 	var look_around_sky := scene.get_node_or_null("VoyageWorld/LookAroundCameraRig/LookAroundCamera3D/SkyBackdrop") as Sprite3D
+	var look_around_foreground := scene.get_node_or_null("VoyageWorld/LookAroundCameraRig/LookAroundCamera3D/LookAroundForeground") as Sprite3D
 	var final_diorama_card := scene.get_node_or_null("VoyageWorld/BoatSpace/FinalDioramaCard") as Sprite3D
 	var boat_space := scene.get_node_or_null("VoyageWorld/BoatSpace") as Node3D
 	var water_contact := scene.get_node_or_null("VoyageWorld/BoatWaterContact") as Sprite3D
@@ -49,6 +50,7 @@ func _run() -> void:
 	_expect(look_around_camera != null, "game scene must provide LookAroundCamera3D")
 	_expect(look_around_backdrop != null, "game scene must provide the Look Around backdrop consumer")
 	_expect(look_around_sky != null, "game scene must provide the Look Around static sky consumer")
+	_expect(look_around_foreground != null, "game scene must provide the Look Around foreground consumer")
 	_expect(look_around_button != null, "rest menu must expose LookAroundButton")
 	_expect(scene.has_method("set_look_around_mode"), "game scene must expose local Look Around mode routing")
 	if scene.has_method("set_look_around_mode"):
@@ -68,11 +70,11 @@ func _run() -> void:
 			look_around_controller.call("set_view_angles", 76.0, 0.0)
 			_expect(str(scene.call("get_look_around_requested_angle_id")) == "port", "camera yaw must retain a port request for approved art routing")
 			_expect(str(scene.call("get_look_around_display_angle_id")) == "port", "approved port request must retain its own display angle")
-			_expect(look_around_backdrop != null and look_around_backdrop.texture != null and look_around_backdrop.texture.resource_path == PORT_ANGLE_TEXTURE_PATH, "approved port request must load the exact port backdrop")
-			_expect(look_around_sky != null and not look_around_sky.visible, "approved composite port art must hide the split sky instead of covering its boat with moving water")
-			_expect(look_around_backdrop != null and look_around_backdrop.material_override == null, "approved composite port art must remain a whole still image rather than half-flowing")
+			_expect(look_around_foreground != null and look_around_foreground.texture != null and look_around_foreground.texture.resource_path == PORT_FOREGROUND_TEXTURE_PATH, "approved port request must load the exact port foreground")
+			_expect(look_around_sky != null and look_around_sky.visible, "approved port foreground must retain the static sky behind the boat")
+			_expect(look_around_backdrop != null and look_around_backdrop.material_override is ShaderMaterial, "approved port foreground must retain the flowing sea shader")
 			scene.call("_show_temporary_ambient_scenery_backdrop", BRIGHT_MOTIF_TEXTURE_PATH, 8.0)
-			_expect(look_around_backdrop != null and look_around_backdrop.texture != null and look_around_backdrop.texture.resource_path == PORT_ANGLE_TEXTURE_PATH, "foreground scenery must not replace approved Look Around angle art")
+			_expect(look_around_foreground != null and look_around_foreground.texture != null and look_around_foreground.texture.resource_path == PORT_FOREGROUND_TEXTURE_PATH, "ambient scenery must not replace approved Look Around foreground art")
 			_expect(final_diorama_card != null and not final_diorama_card.visible, "non-front Look Around art must hide the duplicated normal diorama card")
 			_expect(boat_space != null and boat_space.visible, "Look Around must keep the local BoatSpace state alive")
 			_expect(water_contact != null and water_contact.visible, "Look Around must keep the water-contact ripple available")

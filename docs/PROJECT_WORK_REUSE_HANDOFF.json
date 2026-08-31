@@ -453,8 +453,8 @@
       "workflow_owner": ".github/workflows/godot-validation.yml",
       "initial_recovery_contract_count": 52,
       "initial_recovery_headless_contract_count": 51,
-      "current_contract_count": 56,
-      "headless_contract_count": 55,
+      "current_contract_count": 57,
+      "headless_contract_count": 56,
       "display_only_contract": "test_chibi_normal_chroma_material_proof.gd",
       "selected_approach": "SORTED_DISCOVERY_WITH_EXACT_COUNT_AND_EXCLUSION_GUARDS",
       "alternatives": [
@@ -462,10 +462,10 @@
         "ADAPT: separate static manifest, because it makes review explicit but duplicates the test-directory list.",
         "ADOPT: sorted test-directory discovery with exact all/headless/exclusion guards, because a contract-set change fails closed until its renderer boundary is reviewed."
       ],
-      "workflow_contract": "The Ubuntu Bash step gathers sorted tests/test_*.gd, requires 54 sources, skips exactly the named display-only proof, runs every remaining contract with the existing 20-second timeout, and requires 53 executions before returning aggregate status.",
-      "local_equivalent_result": "PASS: after the locked title-brand and waterline-v2 contracts were added, a local Godot 4.7.2 sorted-discovery run completed the current inclusion/exclusion boundary with all=54, headless=53, display_only=1, status=0; 53 runs returned aggregate success. The earlier recovery receipt remains all=52, headless=51, display_only=1.",
+      "workflow_contract": "The Ubuntu Bash step gathers sorted tests/test_*.gd, requires 57 sources, skips exactly the named display-only proof, runs every remaining contract with the existing 20-second timeout, and requires 56 executions before returning aggregate status.",
+      "local_equivalent_result": "PASS: after the Look Around foreground split contract was added, a local Godot 4.7.2 sorted-discovery run completed the current inclusion/exclusion boundary with all=57, headless=56, display_only=1, status=0; the 56 headless contracts ran in four bounded batches with aggregate success. Earlier recovery receipts remain historical.",
       "local_yaml_parser": "NOT_AVAILABLE: Python PyYAML, actionlint, yamllint, Ruby YAML, PowerShell ConvertFrom-Yaml, and Node yaml/js-yaml were not installed. No new dependency was added; static workflow contract plus the actual Bash loop are the local checks.",
-      "evidence_boundary": "This is local workflow-configuration and 53-contract machine evidence only. It is not a remote CI PASS, Human/device UX PASS, or a headless replacement for the Windows GL Compatibility material proof.",
+      "evidence_boundary": "This is local workflow-configuration and 56-contract machine evidence only. It is not a remote CI PASS, Human/device UX PASS, or a headless replacement for the Windows GL Compatibility material proof.",
       "adversarial_review": [
         "Loop 1: re-read the recovery-time 52-file test set, renderer-sensitive assertions, dirty recovery ownership, and read-only PR #19 boundary.",
         "Loop 2: reject the partial manual list and duplicate manifest alternatives; select discovery with exact total, exclusion, and executed-count guards.",
@@ -473,7 +473,8 @@
         "Loop 4: run the selected sorted discovery inclusion/exclusion boundary locally; recovery-time all=52, headless=51, display_only=1, status=0.",
         "Loop 5: parse the handoff JSON, re-run static/document checks and the human GDD profile, audit exact user://test_* leftovers, preserve display evidence, and record unavailable local YAML parser without overclaiming remote CI.",
         "Title-brand extension: add one current headless contract, update the exact CI guard to all=53/headless=52/display_only=1, and re-run all 52 current headless contracts with aggregate success.",
-        "Waterline-v2 extension: add one current headless contract, update the exact CI guard to all=54/headless=53/display_only=1, and re-run all 53 current headless contracts with aggregate success."
+        "Waterline-v2 extension: add one current headless contract, update the exact CI guard to all=54/headless=53/display_only=1, and re-run all 53 current headless contracts with aggregate success.",
+        "Look Around foreground split extension: add one current headless contract, update the exact CI guard to all=57/headless=56/display_only=1, and re-run the 56 headless contracts in bounded batches with aggregate success."
       ],
       "rollback": "Restore only the behavior-contract workflow step and delete tests/test_ci_contract_coverage.py plus its plan/document record. No runtime scene, save schema, asset, Base lock, or open PR is coupled to this change."
     }

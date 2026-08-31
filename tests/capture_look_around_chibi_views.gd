@@ -1,14 +1,14 @@
-# 승인된 치비 둘러보기 각도와 감상 시점의 실제 런타임 화면 증거를 저장한다.
+# 분리 전경 치비 둘러보기 각도와 감상 시점의 실제 런타임 화면 증거를 저장한다.
 extends SceneTree
 
-const EVIDENCE_DIRECTORY := "res://docs/evidence/2026-08-30-look-around-chibi-transparent"
+const EVIDENCE_DIRECTORY := "res://docs/evidence/2026-09-01-look-around-foreground-split"
 const GAME_SCENE_PATH := "res://scenes/game.tscn"
 const RUNTIME_CAPTURE_GUARD_SCRIPT = preload("res://scripts/visual/runtime_capture_guard.gd")
-const RUNTIME_ANGLE_TEXTURE_PATHS := {
-	"port": "res://assets/images/runtime/voyage/look_around/chibi_transparent/chibi-transparent-port.png",
-	"starboard": "res://assets/images/runtime/voyage/look_around/chibi_transparent/chibi-transparent-starboard.png",
-	"aft": "res://assets/images/runtime/voyage/look_around/chibi_transparent/chibi-transparent-aft.png",
-	"overhead": "res://assets/images/runtime/voyage/look_around/chibi_transparent/chibi-transparent-overhead.png",
+const RUNTIME_FOREGROUND_TEXTURE_PATHS := {
+	"port": "res://assets/images/runtime/voyage/look_around/foreground_split/port-foreground.png",
+	"starboard": "res://assets/images/runtime/voyage/look_around/foreground_split/starboard-foreground.png",
+	"aft": "res://assets/images/runtime/voyage/look_around/foreground_split/aft-foreground.png",
+	"overhead": "res://assets/images/runtime/voyage/look_around/foreground_split/overhead-foreground.png",
 }
 const ANGLE_CAPTURES := [
 	{"id": "port", "yaw": 76.0, "pitch": 0.0},
@@ -34,8 +34,8 @@ func _capture() -> void:
 	var runtime_capture_guard = RUNTIME_CAPTURE_GUARD_SCRIPT.new()
 	var capture_texture_paths: Array[String] = []
 	capture_texture_paths.append_array(runtime_capture_guard.REQUIRED_TEXTURE_PATHS)
-	for angle_id in RUNTIME_ANGLE_TEXTURE_PATHS:
-		capture_texture_paths.append(str(RUNTIME_ANGLE_TEXTURE_PATHS[angle_id]))
+	for angle_id in RUNTIME_FOREGROUND_TEXTURE_PATHS:
+		capture_texture_paths.append(str(RUNTIME_FOREGROUND_TEXTURE_PATHS[angle_id]))
 	var unavailable_texture_paths := runtime_capture_guard.get_unavailable_texture_paths(capture_texture_paths)
 	if not unavailable_texture_paths.is_empty():
 		_fail("required imported runtime textures unavailable: %s" % ", ".join(unavailable_texture_paths))
@@ -75,7 +75,7 @@ func _capture() -> void:
 		await _cleanup(scene, game_state)
 		return
 	await _cleanup(scene, game_state)
-	print("PASS: approved chibi Look Around runtime captures")
+	print("PASS: split-foreground Look Around runtime captures")
 	quit(0)
 
 
@@ -85,9 +85,11 @@ func _capture_approved_angles(scene: Node) -> bool:
 		return false
 	scene.set_look_around_mode(true)
 	var look_around_controller := scene.get_node_or_null("VoyageWorld/LookAroundCameraRig")
-	var backdrop := scene.get_node_or_null("VoyageWorld/LookAroundCameraRig/LookAroundCamera3D/SeaBackdrop") as Sprite3D
-	if look_around_controller == null or not look_around_controller.has_method("set_view_angles") or backdrop == null:
-		_fail("Look Around camera controller and backdrop must exist")
+	var foreground := scene.get_node_or_null("VoyageWorld/LookAroundCameraRig/LookAroundCamera3D/LookAroundForeground") as Sprite3D
+	var sky := scene.get_node_or_null("VoyageWorld/LookAroundCameraRig/LookAroundCamera3D/SkyBackdrop") as Sprite3D
+	var sea := scene.get_node_or_null("VoyageWorld/LookAroundCameraRig/LookAroundCamera3D/SeaBackdrop") as Sprite3D
+	if look_around_controller == null or not look_around_controller.has_method("set_view_angles") or foreground == null or sky == null or sea == null:
+		_fail("Look Around camera controller, split background, and foreground must exist")
 		return false
 	for angle_capture in ANGLE_CAPTURES:
 		var angle_id := str(angle_capture["id"])
@@ -96,12 +98,19 @@ func _capture_approved_angles(scene: Node) -> bool:
 		if not scene.has_method("get_look_around_display_angle_id") or scene.get_look_around_display_angle_id() != angle_id:
 			_fail("Look Around capture must resolve %s" % angle_id)
 			return false
-		var expected_path := str(RUNTIME_ANGLE_TEXTURE_PATHS[angle_id])
-		if backdrop.texture == null or backdrop.texture.resource_path != expected_path:
-			_fail("Look Around capture must render exact %s artwork" % angle_id)
+		var expected_path := str(RUNTIME_FOREGROUND_TEXTURE_PATHS[angle_id])
+		if foreground.texture == null or foreground.texture.resource_path != expected_path:
+			_fail("Look Around capture must render exact %s foreground" % angle_id)
+			return false
+		if not foreground.visible or not sky.visible or not sea.visible or not (sea.material_override is ShaderMaterial):
+			_fail("Look Around capture must retain visible static sky, flowing sea, and keyed foreground")
 			return false
 		if not await _save_runtime_image("%s_540x960.png" % angle_id):
 			return false
+		if angle_id == "port":
+			await _wait_for_frames(108)
+			if not await _save_runtime_image("port_flow_1800ms_540x960.png"):
+				return false
 	return true
 
 

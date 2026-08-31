@@ -3,10 +3,10 @@ extends SceneTree
 
 const ROUTER_PATH := "res://scripts/voyage/look_around_presentation_router.gd"
 const APPROVED_ANGLE_PATHS := {
-	"port": "res://assets/images/runtime/voyage/look_around/chibi_transparent/chibi-transparent-port.png",
-	"starboard": "res://assets/images/runtime/voyage/look_around/chibi_transparent/chibi-transparent-starboard.png",
-	"aft": "res://assets/images/runtime/voyage/look_around/chibi_transparent/chibi-transparent-aft.png",
-	"overhead": "res://assets/images/runtime/voyage/look_around/chibi_transparent/chibi-transparent-overhead.png",
+	"port": "res://assets/images/runtime/voyage/look_around/foreground_split/port-foreground.png",
+	"starboard": "res://assets/images/runtime/voyage/look_around/foreground_split/starboard-foreground.png",
+	"aft": "res://assets/images/runtime/voyage/look_around/foreground_split/aft-foreground.png",
+	"overhead": "res://assets/images/runtime/voyage/look_around/foreground_split/overhead-foreground.png",
 }
 
 var _failures := 0

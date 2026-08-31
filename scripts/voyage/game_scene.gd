@@ -10,6 +10,7 @@ const REAL_TIME_ATMOSPHERE_RESOLVER_SCRIPT = preload("res://scripts/voyage/real_
 const DRIFT_SCENERY_DIRECTOR_SCRIPT = preload("res://scripts/voyage/drift_scenery_director.gd")
 const LOOK_AROUND_PRESENTATION_ROUTER_SCRIPT = preload("res://scripts/voyage/look_around_presentation_router.gd")
 const SEA_FLOW_SHADER = preload("res://assets/shaders/voyage_split_sea_flow.gdshader")
+const LOOK_AROUND_FOREGROUND_KEY_SHADER = preload("res://assets/shaders/look_around_foreground_chroma_key.gdshader")
 
 const SPEED_NAMES: Array[String] = ["느림", "보통", "빠름"]
 const SPEED_MULTIPLIERS: Array[float] = [0.65, 1.0, 1.45]
@@ -354,10 +355,13 @@ func _apply_camera_mode() -> void:
 func _apply_look_around_presentation() -> void:
 	var look_around_backdrop := $VoyageWorld/LookAroundCameraRig/LookAroundCamera3D/SeaBackdrop as Sprite3D
 	var look_around_sky := $VoyageWorld/LookAroundCameraRig/LookAroundCamera3D/SkyBackdrop as Sprite3D
+	var look_around_foreground := $VoyageWorld/LookAroundCameraRig/LookAroundCamera3D/LookAroundForeground as Sprite3D
 	var final_diorama_card := $VoyageWorld/BoatSpace/FinalDioramaCard as Sprite3D
 	if not _look_around_mode:
 		var inactive_tone := _time_of_day_catalog.get_visual_tone(_active_atmosphere_id)
 		_apply_split_backdrop_textures(_active_atmosphere_id, inactive_tone["backdrop_modulate"] as Color)
+		if look_around_foreground != null:
+			look_around_foreground.visible = false
 		final_diorama_card.visible = true
 		return
 
@@ -367,19 +371,25 @@ func _apply_look_around_presentation() -> void:
 		_apply_split_backdrop_textures(_active_atmosphere_id, tone["backdrop_modulate"] as Color)
 		look_around_sky.visible = true
 		look_around_backdrop.visible = true
+		if look_around_foreground != null:
+			look_around_foreground.visible = false
 		final_diorama_card.visible = true
 		return
 
 	var asset_path := _look_around_presentation_router.get_runtime_angle_asset_path(display_angle_id)
 	var angle_texture := load(asset_path) as Texture2D
-	if angle_texture == null:
+	if angle_texture == null or look_around_foreground == null:
 		final_diorama_card.visible = true
 		return
-	look_around_sky.visible = false
+	var tone := _time_of_day_catalog.get_visual_tone(_active_atmosphere_id)
+	_apply_split_backdrop_textures(_active_atmosphere_id, tone["backdrop_modulate"] as Color)
+	look_around_sky.visible = true
 	look_around_backdrop.visible = true
-	look_around_backdrop.texture = angle_texture
-	look_around_backdrop.material_override = null
-	look_around_backdrop.modulate = Color.WHITE
+	look_around_foreground.texture = angle_texture
+	_ensure_look_around_foreground_material(look_around_foreground)
+	var foreground_material := look_around_foreground.material_override as ShaderMaterial
+	foreground_material.set_shader_parameter("source_texture", angle_texture)
+	look_around_foreground.visible = true
 	final_diorama_card.visible = false
 
 
@@ -791,6 +801,15 @@ func _ensure_sea_flow_material(backdrop: Sprite3D) -> void:
 	flow_material = ShaderMaterial.new()
 	flow_material.shader = SEA_FLOW_SHADER
 	backdrop.material_override = flow_material
+
+
+func _ensure_look_around_foreground_material(foreground: Sprite3D) -> void:
+	var foreground_material := foreground.material_override as ShaderMaterial
+	if foreground_material != null and foreground_material.shader == LOOK_AROUND_FOREGROUND_KEY_SHADER:
+		return
+	foreground_material = ShaderMaterial.new()
+	foreground_material.shader = LOOK_AROUND_FOREGROUND_KEY_SHADER
+	foreground.material_override = foreground_material
 
 
 func _apply_background_flow_to_backdrop(backdrop: Sprite3D) -> void:

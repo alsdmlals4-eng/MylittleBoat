@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3]
+[gd_scene load_steps=18 format=3]
 
 [ext_resource type="Script" path="res://scripts/voyage/game_scene.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/voyage/boat_camera_controller.gd" id="2"]
@@ -12,6 +12,8 @@
 [ext_resource type="Texture2D" path="res://assets/images/runtime/voyage/split/bright-static-sky.png" id="11"]
 [ext_resource type="Texture2D" path="res://assets/images/runtime/voyage/split/bright-flowing-sea.png" id="12"]
 [ext_resource type="Shader" path="res://assets/shaders/voyage_split_sea_flow.gdshader" id="13"]
+[ext_resource type="Texture2D" path="res://assets/images/runtime/voyage/look_around/foreground_split/port-foreground.png" id="14"]
+[ext_resource type="Shader" path="res://assets/shaders/look_around_foreground_chroma_key.gdshader" id="15"]
 
 [sub_resource type="Environment" id="Environment_sky"]
 background_mode = 1
@@ -34,6 +36,10 @@ shader_parameter/source_texture = ExtResource("12")
 shader_parameter/flow_offset = 0.0
 shader_parameter/sea_start = 0.42
 shader_parameter/sea_fade = 0.08
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_look_around_foreground_key"]
+shader = ExtResource("15")
+shader_parameter/source_texture = ExtResource("14")
 
 [sub_resource type="Environment" id="Environment_decor_preview"]
 background_mode = 1
@@ -114,6 +120,14 @@ pixel_size = 0.02
 no_depth_test = false
 texture = ExtResource("12")
 material_override = SubResource("ShaderMaterial_split_sea_flow")
+
+[node name="LookAroundForeground" type="Sprite3D" parent="VoyageWorld/LookAroundCameraRig/LookAroundCamera3D"]
+visible = false
+position = Vector3(0, -0.75, -14.96)
+pixel_size = 0.0055
+no_depth_test = false
+texture = ExtResource("14")
+material_override = SubResource("ShaderMaterial_look_around_foreground_key")
 
 [node name="AppreciationCameraRig" type="Node3D" parent="VoyageWorld"]
 position = Vector3(0, 2.2, 6.8)

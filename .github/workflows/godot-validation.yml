@@ -35,8 +35,8 @@ jobs:
         shell: bash
         run: |
           set -uo pipefail
-          EXPECTED_ALL_CONTRACT_COUNT=56
-          EXPECTED_HEADLESS_CONTRACT_COUNT=55
+          EXPECTED_ALL_CONTRACT_COUNT=57
+          EXPECTED_HEADLESS_CONTRACT_COUNT=56
           DISPLAY_ONLY_CONTRACT=test_chibi_normal_chroma_material_proof.gd
           mapfile -t all_contracts < <(find tests -maxdepth 1 -type f -name 'test_*.gd' -printf '%f\n' | LC_ALL=C sort)
           total_contract_count=${#all_contracts[@]}

@@ -4,10 +4,10 @@ extends SceneTree
 const GUARD_PATH := "res://scripts/visual/runtime_capture_guard.gd"
 const APPROVED_TEXTURE_PATH := "res://assets/images/runtime/voyage/normal_chibi/chibi-normal-rear-chroma-key.png"
 const APPROVED_LOOK_AROUND_TEXTURE_PATHS := [
-	"res://assets/images/runtime/voyage/look_around/chibi_transparent/chibi-transparent-port.png",
-	"res://assets/images/runtime/voyage/look_around/chibi_transparent/chibi-transparent-starboard.png",
-	"res://assets/images/runtime/voyage/look_around/chibi_transparent/chibi-transparent-aft.png",
-	"res://assets/images/runtime/voyage/look_around/chibi_transparent/chibi-transparent-overhead.png",
+	"res://assets/images/runtime/voyage/look_around/foreground_split/port-foreground.png",
+	"res://assets/images/runtime/voyage/look_around/foreground_split/starboard-foreground.png",
+	"res://assets/images/runtime/voyage/look_around/foreground_split/aft-foreground.png",
+	"res://assets/images/runtime/voyage/look_around/foreground_split/overhead-foreground.png",
 ]
 const APPROVED_CHIBI_DECOR_TEXTURE_PATHS := [
 	"res://assets/images/runtime/chibi_alternates/avatar_a_soft_hooded_chibi.png",
