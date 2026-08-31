@@ -2,10 +2,18 @@
 extends SceneTree
 
 const GAME_SCENE_PATH := "res://scenes/game.tscn"
-const BRIGHT_TEXTURE_PATH := "res://assets/images/runtime/voyage/bright-open-sea-water-only.png"
-const DAWN_TEXTURE_PATH := "res://assets/images/runtime/voyage/dawn-arches-waterfall-water-only.png"
-const SUNSET_TEXTURE_PATH := "res://assets/images/runtime/voyage/sunset-sandstone-cove-water-only.png"
-const NIGHT_TEXTURE_PATH := "res://assets/images/runtime/voyage/night-indigo-rain-bay-water-only.png"
+const SKY_TEXTURE_PATHS := {
+	"bright": "res://assets/images/runtime/voyage/split/bright-static-sky.png",
+	"dawn": "res://assets/images/runtime/voyage/split/dawn-static-sky.png",
+	"sunset": "res://assets/images/runtime/voyage/split/sunset-static-sky.png",
+	"night": "res://assets/images/runtime/voyage/split/night-static-sky.png",
+}
+const SEA_TEXTURE_PATHS := {
+	"bright": "res://assets/images/runtime/voyage/split/bright-flowing-sea.png",
+	"dawn": "res://assets/images/runtime/voyage/split/dawn-flowing-sea.png",
+	"sunset": "res://assets/images/runtime/voyage/split/sunset-flowing-sea.png",
+	"night": "res://assets/images/runtime/voyage/split/night-flowing-sea.png",
+}
 const BOAT_WATER_CONTACT_TEXTURE_PATH := "res://assets/images/runtime/voyage/boat-water-contact-ripple.png"
 
 var _failures := 0
@@ -16,8 +24,10 @@ func _init() -> void:
 
 
 func _run() -> void:
-	for texture_path in [BRIGHT_TEXTURE_PATH, DAWN_TEXTURE_PATH, SUNSET_TEXTURE_PATH, NIGHT_TEXTURE_PATH]:
-		_expect(ResourceLoader.exists(texture_path), "approved runtime atmosphere texture must exist: %s" % texture_path)
+	for texture_path in SKY_TEXTURE_PATHS.values():
+		_expect(ResourceLoader.exists(texture_path), "approved static sky atmosphere texture must exist: %s" % texture_path)
+	for texture_path in SEA_TEXTURE_PATHS.values():
+		_expect(ResourceLoader.exists(texture_path), "approved flowing sea atmosphere texture must exist: %s" % texture_path)
 	_expect(ResourceLoader.exists(BOAT_WATER_CONTACT_TEXTURE_PATH), "boat-water contact texture must exist")
 	var packed_scene := load(GAME_SCENE_PATH) as PackedScene
 	_expect(packed_scene != null, "game.tscn must load")
@@ -33,12 +43,18 @@ func _run() -> void:
 	_expect(dawn.get("atmosphere_id", "") == "dawn", "06:00 must apply Dawn")
 	_expect(sunset.get("atmosphere_id", "") == "sunset", "18:00 must apply Sunset")
 	_expect(night.get("atmosphere_id", "") == "night", "22:00 must apply Night")
-	_expect(bright.get("diorama_texture_path", "") == BRIGHT_TEXTURE_PATH, "Bright uses the approved direct-entry image")
-	_expect(dawn.get("diorama_texture_path", "") == DAWN_TEXTURE_PATH, "Dawn uses the approved sea-arches image")
-	_expect(sunset.get("diorama_texture_path", "") == SUNSET_TEXTURE_PATH, "Sunset uses the approved sandstone-cove image")
-	_expect(night.get("diorama_texture_path", "") == NIGHT_TEXTURE_PATH, "Night uses the approved indigo-rain image")
-	_expect(night.get("diorama_texture_path", "") == night.get("appreciation_texture_path", ""), "both cameras must share one Night texture")
+	_expect(bright.get("diorama_sky_texture_path", "") == SKY_TEXTURE_PATHS["bright"], "Bright uses the approved static sky image")
+	_expect(dawn.get("diorama_sky_texture_path", "") == SKY_TEXTURE_PATHS["dawn"], "Dawn uses the approved static sky image")
+	_expect(sunset.get("diorama_sky_texture_path", "") == SKY_TEXTURE_PATHS["sunset"], "Sunset uses the approved static sky image")
+	_expect(night.get("diorama_sky_texture_path", "") == SKY_TEXTURE_PATHS["night"], "Night uses the approved static sky image")
+	_expect(bright.get("diorama_sea_texture_path", "") == SEA_TEXTURE_PATHS["bright"], "Bright uses the approved flowing sea image")
+	_expect(dawn.get("diorama_sea_texture_path", "") == SEA_TEXTURE_PATHS["dawn"], "Dawn uses the approved flowing sea image")
+	_expect(sunset.get("diorama_sea_texture_path", "") == SEA_TEXTURE_PATHS["sunset"], "Sunset uses the approved flowing sea image")
+	_expect(night.get("diorama_sea_texture_path", "") == SEA_TEXTURE_PATHS["night"], "Night uses the approved flowing sea image")
+	_expect(night.get("diorama_sky_texture_path", "") == night.get("appreciation_sky_texture_path", ""), "both cameras must share one Night sky texture")
+	_expect(night.get("diorama_sea_texture_path", "") == night.get("appreciation_sea_texture_path", ""), "both cameras must share one Night sea texture")
 	_expect(night.get("diorama_modulate", Color.WHITE) == night.get("appreciation_modulate", Color.BLACK), "both cameras must share one Night tone")
+	_expect((sunset.get("diorama_modulate", Color.WHITE) as Color).r < 0.9, "Sunset split layers must not receive an orange-overload red multiplier")
 	_expect(bright.get("water_contact_texture_path", "") == BOAT_WATER_CONTACT_TEXTURE_PATH, "normal diorama must retain the one approved water-contact layer")
 	_expect(night.get("light_energy", 0.0) < bright.get("light_energy", 0.0), "Night must use a gentler key light than Bright")
 	_finish()
@@ -58,17 +74,21 @@ func _capture_scene_tone(packed_scene: PackedScene, hour: int) -> Dictionary:
 		scene.apply_real_time_atmosphere_for_hour(hour)
 	var world_environment := scene.get_node_or_null("VoyageWorld/WorldEnvironment") as WorldEnvironment
 	var light := scene.get_node_or_null("VoyageWorld/SunLight") as DirectionalLight3D
-	var diorama_backdrop := scene.get_node_or_null("VoyageWorld/DioramaCameraRig/DioramaCamera3D/SeaBackdrop") as Sprite3D
-	var appreciation_backdrop := scene.get_node_or_null("VoyageWorld/AppreciationCameraRig/AppreciationCamera3D/SeaBackdrop") as Sprite3D
+	var diorama_sky := scene.get_node_or_null("VoyageWorld/DioramaCameraRig/DioramaCamera3D/SkyBackdrop") as Sprite3D
+	var appreciation_sky := scene.get_node_or_null("VoyageWorld/AppreciationCameraRig/AppreciationCamera3D/SkyBackdrop") as Sprite3D
+	var diorama_sea := scene.get_node_or_null("VoyageWorld/DioramaCameraRig/DioramaCamera3D/SeaBackdrop") as Sprite3D
+	var appreciation_sea := scene.get_node_or_null("VoyageWorld/AppreciationCameraRig/AppreciationCamera3D/SeaBackdrop") as Sprite3D
 	var water_contact := scene.get_node_or_null("VoyageWorld/BoatWaterContact") as Sprite3D
 	result = {
 		"atmosphere_id": scene.get_active_atmosphere_id() if scene.has_method("get_active_atmosphere_id") else "",
 		"background": world_environment.environment.background_color if world_environment != null and world_environment.environment != null else Color.BLACK,
 		"light_energy": light.light_energy if light != null else 0.0,
-		"diorama_modulate": diorama_backdrop.modulate if diorama_backdrop != null else Color.BLACK,
-		"appreciation_modulate": appreciation_backdrop.modulate if appreciation_backdrop != null else Color.BLACK,
-		"diorama_texture_path": diorama_backdrop.texture.resource_path if diorama_backdrop != null and diorama_backdrop.texture != null else "",
-		"appreciation_texture_path": appreciation_backdrop.texture.resource_path if appreciation_backdrop != null and appreciation_backdrop.texture != null else "",
+		"diorama_modulate": diorama_sea.modulate if diorama_sea != null else Color.BLACK,
+		"appreciation_modulate": appreciation_sea.modulate if appreciation_sea != null else Color.BLACK,
+		"diorama_sky_texture_path": diorama_sky.texture.resource_path if diorama_sky != null and diorama_sky.texture != null else "",
+		"appreciation_sky_texture_path": appreciation_sky.texture.resource_path if appreciation_sky != null and appreciation_sky.texture != null else "",
+		"diorama_sea_texture_path": diorama_sea.texture.resource_path if diorama_sea != null and diorama_sea.texture != null else "",
+		"appreciation_sea_texture_path": appreciation_sea.texture.resource_path if appreciation_sea != null and appreciation_sea.texture != null else "",
 		"water_contact_texture_path": water_contact.texture.resource_path if water_contact != null and water_contact.texture != null else "",
 	}
 	scene.queue_free()

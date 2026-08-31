@@ -30,7 +30,7 @@ const DEFINITIONS := {
 		"ambient_energy": 0.70,
 		"light_color": Color(1.0, 0.74, 0.58, 1.0),
 		"light_energy": 0.76,
-		"backdrop_modulate": Color(0.97, 0.77, 0.72, 1.0),
+		"backdrop_modulate": Color(0.86, 0.91, 0.96, 1.0),
 	},
 	"night": {
 		"label": "밤",

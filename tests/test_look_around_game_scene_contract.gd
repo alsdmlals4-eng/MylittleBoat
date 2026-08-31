@@ -41,12 +41,14 @@ func _run() -> void:
 	var appreciation_camera := scene.get_node_or_null("VoyageWorld/AppreciationCameraRig/AppreciationCamera3D") as Camera3D
 	var look_around_camera := scene.get_node_or_null("VoyageWorld/LookAroundCameraRig/LookAroundCamera3D") as Camera3D
 	var look_around_backdrop := scene.get_node_or_null("VoyageWorld/LookAroundCameraRig/LookAroundCamera3D/SeaBackdrop") as Sprite3D
+	var look_around_sky := scene.get_node_or_null("VoyageWorld/LookAroundCameraRig/LookAroundCamera3D/SkyBackdrop") as Sprite3D
 	var final_diorama_card := scene.get_node_or_null("VoyageWorld/BoatSpace/FinalDioramaCard") as Sprite3D
 	var boat_space := scene.get_node_or_null("VoyageWorld/BoatSpace") as Node3D
 	var water_contact := scene.get_node_or_null("VoyageWorld/BoatWaterContact") as Sprite3D
 	var look_around_button := scene.get_node_or_null("BottomPanel/ButtonGrid/LookAroundButton") as Button
 	_expect(look_around_camera != null, "game scene must provide LookAroundCamera3D")
 	_expect(look_around_backdrop != null, "game scene must provide the Look Around backdrop consumer")
+	_expect(look_around_sky != null, "game scene must provide the Look Around static sky consumer")
 	_expect(look_around_button != null, "rest menu must expose LookAroundButton")
 	_expect(scene.has_method("set_look_around_mode"), "game scene must expose local Look Around mode routing")
 	if scene.has_method("set_look_around_mode"):
@@ -67,6 +69,8 @@ func _run() -> void:
 			_expect(str(scene.call("get_look_around_requested_angle_id")) == "port", "camera yaw must retain a port request for approved art routing")
 			_expect(str(scene.call("get_look_around_display_angle_id")) == "port", "approved port request must retain its own display angle")
 			_expect(look_around_backdrop != null and look_around_backdrop.texture != null and look_around_backdrop.texture.resource_path == PORT_ANGLE_TEXTURE_PATH, "approved port request must load the exact port backdrop")
+			_expect(look_around_sky != null and not look_around_sky.visible, "approved composite port art must hide the split sky instead of covering its boat with moving water")
+			_expect(look_around_backdrop != null and look_around_backdrop.material_override == null, "approved composite port art must remain a whole still image rather than half-flowing")
 			scene.call("_show_temporary_ambient_scenery_backdrop", BRIGHT_MOTIF_TEXTURE_PATH, 8.0)
 			_expect(look_around_backdrop != null and look_around_backdrop.texture != null and look_around_backdrop.texture.resource_path == PORT_ANGLE_TEXTURE_PATH, "foreground scenery must not replace approved Look Around angle art")
 			_expect(final_diorama_card != null and not final_diorama_card.visible, "non-front Look Around art must hide the duplicated normal diorama card")

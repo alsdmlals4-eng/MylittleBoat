@@ -46,6 +46,8 @@ var _ui_juicy_mode_toggle: CheckButton
 var _game_feel_mode_toggle: CheckButton
 
 func _enter_tree() -> void:
+	if DisplayServer.get_name() == "headless":
+		return
 	set_process(true)
 	_create_main_screen()
 	_ensure_game_autoload()

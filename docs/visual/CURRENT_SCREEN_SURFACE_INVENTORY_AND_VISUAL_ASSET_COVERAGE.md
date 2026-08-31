@@ -62,12 +62,28 @@ Notion은 historical archive이며 이 문서의 current owner가 아닙니다. 
 | --- | --- | --- |
 | `MLB-LOOK-CHIBI-NORMAL-REAR-001`과 derived matte | default C+dog `BoatSpace/FinalDioramaCard`의 explicit chroma shader | `USER_APPROVED → CANON_REGISTERED → IMPLEMENTED → RUNTIME_CAPTURE_VERIFIED`; Human/device comfort `NOT_RUN` |
 | `MLB-LOOK-CHIBI-TRN-001..004` | `LookAroundPresentationRouter`의 port/starboard/aft/overhead exact routing | `USER_APPROVED → CANON_REGISTERED → IMPLEMENTED → RUNTIME_CAPTURE_VERIFIED`; Human motion comfort `NOT_RUN` |
-| `MLB-AMB-MOTIF-001..006` | current local-time bucket의 normal·Appreciation `AmbientSceneryPass`, water-only `SeaBackdrop`은 유지 | `USER_APPROVED → CANON_REGISTERED → IMPLEMENTED → RUNTIME_CAPTURE_VERIFIED`; 2026-08-31 six-pass capture, Human long-run observation `NOT_RUN` |
+| `MLB-BG-SPLIT-001..008` | `dawn / bright / sunset / night`별 `SkyBackdrop` + `SeaBackdrop`, normal·front Look Around·Appreciation | `USER_APPROVED → CANON_REGISTERED → ASSET_READY → IMPLEMENTED → MACHINE_VERIFIED → RUNTIME_CAPTURE_VERIFIED`; 2026-08-31 OpenGL 9-frame capture, Human motion/color comfort `NOT_RUN` |
+| `MLB-AMB-MOTIF-001..006` | current local-time bucket의 normal·Appreciation `AmbientSceneryPass`, split sky·flowing sea는 유지 | `USER_APPROVED → CANON_REGISTERED → IMPLEMENTED → RUNTIME_CAPTURE_VERIFIED`; 2026-08-31 six-pass capture, Human long-run observation `NOT_RUN` |
 | `MLB-BOAT-FLT-006` | `assets/images/runtime/voyage/boat-waterline-contact-v2.png` → `GameScene/VoyageWorld/BoatWaterlineContact` | `USER_APPROVED → CANON_REGISTERED → ASSET_READY → IMPLEMENTED → MACHINE_VERIFIED → RUNTIME_CAPTURE_VERIFIED`; Human motion comfort `NOT_RUN` |
 
 `FinalDioramaCard`는 기본 C+강아지 route에서만 사용한다. alternate pair는 동일한 `BoatSpace`의 layered `Sprite3D` route를 사용한다. 이 차이는 save 의미·voyage 시간·reward·soundscape를 바꾸지 않는다.
 
 `MLB-BOAT-FLT-006`은 built-in image generation으로 만든 `2172×724` transparent RGBA waterline strip이며, 사용자가 2026-08-31에 승인했습니다. canonical binary SHA-256은 `8C145B545B913567A19F47927A13E83FB7328177D7DCC8A195B4BA857F10C22B`입니다. 기존 `MLB-BOAT-FLT-005`의 넓은 legacy ripple은 뒤쪽의 느린 확산 수면으로 남기고, 이 자산은 depth test를 유지한 전면 선체 하단의 좁은 접점만 담당합니다. 둘은 `BoatSpace`와 같은 lateral·forward·vertical drift를 따르며, `still` comfort에서는 모두 base position으로 돌아갑니다.
+
+### 4.1 2026-08-31 사용자 승인 분리 하늘·바다 family
+
+`MLB-BG-SPLIT-001..008`은 built-in image generation으로 만든 한 family다. 사용자는 밝은 시간대의 candidate 쌍을 검토한 뒤 권장 구조로 연속 진행하도록 승인했다. 각 candidate source는 `docs/visual/generated/2026-08-31-split-sky-sea/`에, 같은 SHA-256의 canonical runtime copy는 `assets/images/runtime/voyage/split/`에 보존한다. static sky는 material override가 없고, flowing sea만 `voyage_split_sea_flow.gdshader`로 수평선 아래 alpha/motion을 가진다.
+
+| asset id | canonical runtime file | SHA-256 | consumer |
+| --- | --- | --- | --- |
+| `MLB-BG-SPLIT-001` | `bright-static-sky.png` | `3BCF0A54CF7939556E39F31F1029FA4016D595CC05B01F9486E266E6AF58D4A6` | Bright `SkyBackdrop` |
+| `MLB-BG-SPLIT-002` | `bright-flowing-sea.png` | `AA43722C3B5EC89F784CA338F877B5FB11173F22AC1ED003E5B883501522A0A1` | Bright `SeaBackdrop` |
+| `MLB-BG-SPLIT-003` | `dawn-static-sky.png` | `83F024878A9EC3619058AA7BBEF11A56C0345965C4F05CD40D13D1A146AD1950` | Dawn `SkyBackdrop` |
+| `MLB-BG-SPLIT-004` | `dawn-flowing-sea.png` | `6358DF903FDB3D6293B6DE52CBAEB440C3A56F44E15664A0A894097D0AD0BE0A` | Dawn `SeaBackdrop` |
+| `MLB-BG-SPLIT-005` | `sunset-static-sky.png` | `F00AA8D4A68FA96F809C402E7232A0A112BED0E4CF7474200D04D574AE2144FD` | Sunset `SkyBackdrop` |
+| `MLB-BG-SPLIT-006` | `sunset-flowing-sea.png` | `1BF695BB6CBC806B60864BA0D10948D1FF7405DDCE126A92469E5E40657277E6` | Sunset `SeaBackdrop` |
+| `MLB-BG-SPLIT-007` | `night-static-sky.png` | `FE7AD39F9812A947E396DE7DC1DE81AA7B72CD68CA59C008BC99B407B3E395E1` | Night `SkyBackdrop` |
+| `MLB-BG-SPLIT-008` | `night-flowing-sea.png` | `87B44108258C7047FBF9C4B887E6C8334678992B9CDB5651D9AD1C00D87C37EA` | Night `SeaBackdrop` |
 
 ## 5. 승인 decor와 alternate 치비 family
 

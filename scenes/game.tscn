@@ -7,9 +7,11 @@
 [ext_resource type="Script" path="res://scripts/decor/decor_preview.gd" id="5"]
 [ext_resource type="Texture2D" path="res://assets/images/runtime/voyage/boat-water-contact-ripple.png" id="6"]
 [ext_resource type="Script" path="res://scripts/voyage/look_around_camera_controller.gd" id="7"]
-[ext_resource type="Shader" path="res://assets/shaders/voyage_water_flow.gdshader" id="8"]
 [ext_resource type="Texture2D" path="res://assets/images/brand/my_little_boat_title_lockup_v1.png" id="9"]
 [ext_resource type="Texture2D" path="res://assets/images/runtime/voyage/boat-waterline-contact-v2.png" id="10"]
+[ext_resource type="Texture2D" path="res://assets/images/runtime/voyage/split/bright-static-sky.png" id="11"]
+[ext_resource type="Texture2D" path="res://assets/images/runtime/voyage/split/bright-flowing-sea.png" id="12"]
+[ext_resource type="Shader" path="res://assets/shaders/voyage_split_sea_flow.gdshader" id="13"]
 
 [sub_resource type="Environment" id="Environment_sky"]
 background_mode = 1
@@ -26,12 +28,12 @@ albedo_color = Color(0.2, 0.47, 0.62, 1)
 metallic = 0.0
 roughness = 0.96
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_voyage_water_flow"]
-shader = ExtResource("8")
-shader_parameter/source_texture = ExtResource("4")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_split_sea_flow"]
+shader = ExtResource("13")
+shader_parameter/source_texture = ExtResource("12")
 shader_parameter/flow_offset = 0.0
-shader_parameter/horizon_start = 0.42
-shader_parameter/horizon_fade = 0.16
+shader_parameter/sea_start = 0.42
+shader_parameter/sea_fade = 0.08
 
 [sub_resource type="Environment" id="Environment_decor_preview"]
 background_mode = 1
@@ -69,12 +71,18 @@ fov = 48.0
 near = 0.05
 far = 200.0
 
-[node name="SeaBackdrop" type="Sprite3D" parent="VoyageWorld/DioramaCameraRig/DioramaCamera3D"]
+[node name="SkyBackdrop" type="Sprite3D" parent="VoyageWorld/DioramaCameraRig/DioramaCamera3D"]
 position = Vector3(0, 0, -15)
 pixel_size = 0.02
 no_depth_test = false
-texture = ExtResource("4")
-material_override = SubResource("ShaderMaterial_voyage_water_flow")
+texture = ExtResource("11")
+
+[node name="SeaBackdrop" type="Sprite3D" parent="VoyageWorld/DioramaCameraRig/DioramaCamera3D"]
+position = Vector3(0, 0, -14.98)
+pixel_size = 0.02
+no_depth_test = false
+texture = ExtResource("12")
+material_override = SubResource("ShaderMaterial_split_sea_flow")
 
 [node name="AmbientSceneryPass" type="Sprite3D" parent="VoyageWorld/DioramaCameraRig/DioramaCamera3D"]
 visible = false
@@ -94,12 +102,18 @@ fov = 48.0
 near = 0.05
 far = 200.0
 
-[node name="SeaBackdrop" type="Sprite3D" parent="VoyageWorld/LookAroundCameraRig/LookAroundCamera3D"]
+[node name="SkyBackdrop" type="Sprite3D" parent="VoyageWorld/LookAroundCameraRig/LookAroundCamera3D"]
 position = Vector3(0, 0, -15)
 pixel_size = 0.02
 no_depth_test = false
-texture = ExtResource("4")
-material_override = SubResource("ShaderMaterial_voyage_water_flow")
+texture = ExtResource("11")
+
+[node name="SeaBackdrop" type="Sprite3D" parent="VoyageWorld/LookAroundCameraRig/LookAroundCamera3D"]
+position = Vector3(0, 0, -14.98)
+pixel_size = 0.02
+no_depth_test = false
+texture = ExtResource("12")
+material_override = SubResource("ShaderMaterial_split_sea_flow")
 
 [node name="AppreciationCameraRig" type="Node3D" parent="VoyageWorld"]
 position = Vector3(0, 2.2, 6.8)
@@ -112,12 +126,18 @@ fov = 62.0
 near = 0.05
 far = 200.0
 
-[node name="SeaBackdrop" type="Sprite3D" parent="VoyageWorld/AppreciationCameraRig/AppreciationCamera3D"]
+[node name="SkyBackdrop" type="Sprite3D" parent="VoyageWorld/AppreciationCameraRig/AppreciationCamera3D"]
 position = Vector3(0, 0, -15)
 pixel_size = 0.02
 no_depth_test = false
-texture = ExtResource("4")
-material_override = SubResource("ShaderMaterial_voyage_water_flow")
+texture = ExtResource("11")
+
+[node name="SeaBackdrop" type="Sprite3D" parent="VoyageWorld/AppreciationCameraRig/AppreciationCamera3D"]
+position = Vector3(0, 0, -14.98)
+pixel_size = 0.02
+no_depth_test = false
+texture = ExtResource("12")
+material_override = SubResource("ShaderMaterial_split_sea_flow")
 
 [node name="AmbientSceneryPass" type="Sprite3D" parent="VoyageWorld/AppreciationCameraRig/AppreciationCamera3D"]
 visible = false

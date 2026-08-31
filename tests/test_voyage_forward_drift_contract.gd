@@ -3,7 +3,7 @@ extends SceneTree
 
 const GAME_SCENE_PATH := "res://scenes/game.tscn"
 const COMFORT_STORAGE_PATH := "user://test_voyage_forward_drift_comfort.cfg"
-const WATER_FLOW_SHADER_PATH := "res://assets/shaders/voyage_water_flow.gdshader"
+const WATER_FLOW_SHADER_PATH := "res://assets/shaders/voyage_split_sea_flow.gdshader"
 const MAX_WATER_CONTACT_BASE_OFFSET_FROM_BOAT := 0.05
 const MAX_CONTACT_GAP_DELTA_DURING_BOB := 0.012
 

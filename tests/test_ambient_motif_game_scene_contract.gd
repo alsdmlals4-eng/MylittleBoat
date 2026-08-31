@@ -3,7 +3,8 @@ extends SceneTree
 
 const GAME_SCENE_PATH := "res://scenes/game.tscn"
 const DIRECTOR_PATH := "res://scripts/voyage/drift_scenery_director.gd"
-const BASE_BRIGHT_TEXTURE_PATH := "res://assets/images/runtime/voyage/bright-open-sea-water-only.png"
+const BASE_BRIGHT_SKY_TEXTURE_PATH := "res://assets/images/runtime/voyage/split/bright-static-sky.png"
+const BASE_BRIGHT_SEA_TEXTURE_PATH := "res://assets/images/runtime/voyage/split/bright-flowing-sea.png"
 const BRIGHT_MOTIF_PATHS := [
 	"res://assets/images/runtime/voyage/ambient_motifs/bright-seagrass-sandbar.png",
 	"res://assets/images/runtime/voyage/ambient_motifs/bright-chalk-cliffs-birds.png",
@@ -49,15 +50,19 @@ func _run() -> void:
 		scene.set_application_foreground(false)
 		var normal_backdrop := scene.get_node_or_null("VoyageWorld/DioramaCameraRig/DioramaCamera3D/SeaBackdrop") as Sprite3D
 		var appreciation_backdrop := scene.get_node_or_null("VoyageWorld/AppreciationCameraRig/AppreciationCamera3D/SeaBackdrop") as Sprite3D
+		var normal_sky := scene.get_node_or_null("VoyageWorld/DioramaCameraRig/DioramaCamera3D/SkyBackdrop") as Sprite3D
+		var appreciation_sky := scene.get_node_or_null("VoyageWorld/AppreciationCameraRig/AppreciationCamera3D/SkyBackdrop") as Sprite3D
 		var normal_pass := scene.get_node_or_null("VoyageWorld/DioramaCameraRig/DioramaCamera3D/AmbientSceneryPass") as Sprite3D
 		var appreciation_pass := scene.get_node_or_null("VoyageWorld/AppreciationCameraRig/AppreciationCamera3D/AmbientSceneryPass") as Sprite3D
 		var diorama_camera := scene.get_node_or_null("VoyageWorld/DioramaCameraRig/DioramaCamera3D") as Camera3D
 		var scenery_label := scene.get_node_or_null("DistantSceneryLabel") as Label
 		var scenery_timer := scene.get_node_or_null("AmbientSceneryReturnTimer") as Timer
-		_expect(normal_backdrop != null and normal_backdrop.texture != null and normal_backdrop.texture.resource_path == BASE_BRIGHT_TEXTURE_PATH, "bright scenery must preserve the normal water-only backdrop")
-		_expect(appreciation_backdrop != null and appreciation_backdrop.texture != null and appreciation_backdrop.texture.resource_path == BASE_BRIGHT_TEXTURE_PATH, "bright scenery must preserve the Appreciation water-only backdrop")
-		_expect(normal_backdrop != null and is_zero_approx(normal_backdrop.position.x), "bright scenery must not shift the normal water-only backdrop")
-		_expect(appreciation_backdrop != null and is_zero_approx(appreciation_backdrop.position.x), "bright scenery must not shift the Appreciation water-only backdrop")
+		_expect(normal_sky != null and normal_sky.texture != null and normal_sky.texture.resource_path == BASE_BRIGHT_SKY_TEXTURE_PATH, "bright scenery must preserve the normal static sky")
+		_expect(appreciation_sky != null and appreciation_sky.texture != null and appreciation_sky.texture.resource_path == BASE_BRIGHT_SKY_TEXTURE_PATH, "bright scenery must preserve the Appreciation static sky")
+		_expect(normal_backdrop != null and normal_backdrop.texture != null and normal_backdrop.texture.resource_path == BASE_BRIGHT_SEA_TEXTURE_PATH, "bright scenery must preserve the normal flowing sea")
+		_expect(appreciation_backdrop != null and appreciation_backdrop.texture != null and appreciation_backdrop.texture.resource_path == BASE_BRIGHT_SEA_TEXTURE_PATH, "bright scenery must preserve the Appreciation flowing sea")
+		_expect(normal_backdrop != null and is_zero_approx(normal_backdrop.position.x), "bright scenery must not shift the normal flowing sea")
+		_expect(appreciation_backdrop != null and is_zero_approx(appreciation_backdrop.position.x), "bright scenery must not shift the Appreciation flowing sea")
 		_expect(normal_pass != null and normal_pass.visible and normal_pass.texture != null and normal_pass.texture.resource_path in BRIGHT_MOTIF_PATHS, "bright scenery must use an approved normal-camera pass card")
 		_expect(appreciation_pass != null and appreciation_pass.visible and appreciation_pass.texture != null and appreciation_pass.texture.resource_path in BRIGHT_MOTIF_PATHS, "bright scenery must use an approved Appreciation-camera pass card")
 		_expect(normal_pass != null and is_equal_approx(normal_pass.pixel_size, 0.02), "bright scenery pass must overscan vertically so a hard horizontal image edge cannot cross the boat view")
@@ -74,9 +79,10 @@ func _run() -> void:
 		_expect(scenery_label != null and scenery_label.visible and not scenery_label.text.is_empty(), "ambient motif must retain one quiet non-interactive label")
 		_expect(scenery_timer != null and not scenery_timer.is_stopped(), "ambient motif must schedule its existing temporary return")
 		scene.call("_restore_active_atmosphere_backdrop")
-		_expect(normal_backdrop != null and normal_backdrop.texture != null and normal_backdrop.texture.resource_path == BASE_BRIGHT_TEXTURE_PATH, "restoring the current atmosphere must return to the normal bright backdrop")
-		_expect(normal_backdrop != null and is_zero_approx(normal_backdrop.position.x), "restoring the current atmosphere must recenter the normal backdrop")
-		_expect(appreciation_backdrop != null and is_zero_approx(appreciation_backdrop.position.x), "restoring the current atmosphere must recenter the Appreciation backdrop")
+		_expect(normal_backdrop != null and normal_backdrop.texture != null and normal_backdrop.texture.resource_path == BASE_BRIGHT_SEA_TEXTURE_PATH, "restoring the current atmosphere must return to the normal bright flowing sea")
+		_expect(normal_sky != null and normal_sky.texture != null and normal_sky.texture.resource_path == BASE_BRIGHT_SKY_TEXTURE_PATH, "restoring the current atmosphere must retain the normal bright static sky")
+		_expect(normal_backdrop != null and is_zero_approx(normal_backdrop.position.x), "restoring the current atmosphere must recenter the normal flowing sea")
+		_expect(appreciation_backdrop != null and is_zero_approx(appreciation_backdrop.position.x), "restoring the current atmosphere must recenter the Appreciation flowing sea")
 		_expect(normal_pass != null and not normal_pass.visible, "restoring the current atmosphere must hide the normal scenery pass")
 		_expect(appreciation_pass != null and not appreciation_pass.visible, "restoring the current atmosphere must hide the Appreciation scenery pass")
 		_expect(game_state.photos.size() == before_photos, "ambient scenery must not create a photo")

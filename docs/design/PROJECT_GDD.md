@@ -64,7 +64,7 @@
 | 주제 | 현재 상태 | evidence ceiling |
 | --- | --- | --- |
 | Direct boat entry | 실행 즉시 사용자 승인 후면 3/4 치비 player·강아지·ivory/deep-teal 보트·바다 구도와 compact `쉬는 메뉴`가 보입니다. 보트는 540×960 세로 화면의 하단 20% 부근에 있고, 플레이어는 stern 쪽에 기대어 뒷모습으로, 강아지는 옆에서 함께 쉬는 모습으로 읽힙니다. `MLB-LOOK-CHIBI-NORMAL-REAR-001`의 보관 원본에서 만든 foreground matte를 `FinalDioramaCard`의 explicit shader material에 연결해, 보트 bob·legacy ripple·`MLB-BOAT-FLT-006` narrow waterline·시간대 backdrop을 분리한 채 stern-side normal 3/4를 보입니다. 감상모드는 이 normal foreground와 두 수면 접점을 숨겨 바다·수평선과 `감상 끝내기`만 남깁니다. 저장된 `꽃` 펫 쿠션만 bow-side overlay로 보입니다. `엽서`는 main rest composite에 합성하지 않고 꾸미기 preview 난간 장식과 Album의 항해 포스트카드에서 읽습니다. | rear-normal/material/final-card/direct-entry/decor/waterline/appreciation contracts와 bright title·voyage·Appreciation 540×960 GPU capture `PASS`; Human comfort `NOT_RUN` |
-| 현지 시간과 풍경 | 현지 시간은 visual-only 네 분위기를 정하고, foreground에 머문 시간만 low-density 자연 명소 기회를 보냅니다. 새벽 아치·해초 모래톱·흰 절벽·사암 코브·갈대섬·밤 생물발광은 water-only 바다를 바꾸지 않는 전용 pass에서 약 14초 동안 수평선을 가로질러 각 시간대에만 조용히 지나갑니다. 첫 기회는 90–150초, 기회별 표시는 65%, 다음 기회는 표시 여부와 무관하게 120–180초입니다. | 47 contracts와 여섯 540×960 GPU pass capture `PASS`; Human long-run observation `NOT_RUN` |
+| 현지 시간과 풍경 | 현지 시간은 visual-only 네 분위기를 정하고, foreground에 머문 시간만 low-density 자연 명소 기회를 보냅니다. 각 시간대의 고정 하늘과 독립 흐름 바다는 그대로 유지되고, 새벽 아치·해초 모래톱·흰 절벽·사암 코브·갈대섬·밤 생물발광은 전용 pass에서 약 14초 동안 수평선을 가로질러 조용히 지나갑니다. 첫 기회는 90–150초, 기회별 표시는 65%, 다음 기회는 표시 여부와 무관하게 120–180초입니다. | split background/time contracts와 여섯 540×960 GPU pass capture `PASS`; Human long-run observation `NOT_RUN` |
 | 꾸미기 | `꾸미기`에서 플레이어 외형, 동반자 종류, 보트 장식을 local-only로 고르고, 별도 보트 preview에서 즉시 확인합니다. 기본 first-view backdrop은 바꾸지 않습니다. A/B player, cat/rabbit/otter, `stripe`·`moon` cushion은 승인된 soft-matte 치비 family로 실제 선택 경로에 연결됐습니다. | identity/decor/asset-guard contracts와 alternate family 540×960 GPU capture `PASS`; Human readability `NOT_RUN` |
 | 함께한 시간 | foreground 항해의 실제 시간을 local-only로 누적하고 Album에서만 분 단위·관계 문구로 보여 줍니다. | together-time contracts와 540×960 Album capture `PASS`; Human readability `NOT_RUN` |
 | 모션 편안함 | `파도: 기본/잔잔/고요`는 보트·카메라·수면 접점의 자동 진폭만 `1.0 / 0.5 / 0.0`으로 바꾸는 local-only 선택입니다. | preference/state/scene contracts와 bright GPU capture `PASS`; Human motion comfort `NOT_RUN` |
@@ -209,7 +209,7 @@
 
 **피해야 할 압박.** 특정 시점을 모두 찾아야 하는 수집, 각도별 보상, 생물 추적, 목표표식, 이동 강요, 멀미를 유발하는 관성·강제 카메라.
 
-**상태.** 입력·mode 격리, 승인된 `port`·`starboard`·`aft`·`overhead` canonical asset routing, 기본 Normal의 후면 치비 foreground material, 저장된 `꽃` 펫 쿠션·`엽서`의 치비 decor consumer, 그리고 normal·네 각도·Appreciation의 540×960 GPU capture가 `IMPLEMENTED / RUNTIME_CAPTURE_VERIFIED`입니다. 이 상태는 항해 시간·속도·저장·보상·soundscape를 바꾸지 않습니다. 기본 C+강아지 Normal은 `MLB-LOOK-CHIBI-NORMAL-REAR-001` 보관 원본에서 만든 `MLB-LOOK-CHIBI-NORMAL-REAR-MATTE-001`를 `FinalDioramaCard`에 연결하고 stern-side rig에서 보여 주며, water-only backdrop과 BoatSpace 부유를 유지합니다. 사용자가 승인한 alternate A/B player, cat/rabbit/otter, `stripe`·`moon` cushion 7종은 exact canonical copy와 기존 save ID를 사용해 layered `Sprite3D`와 decor texture consumer에 연결됐습니다. 실제 기기의 motion comfort, touch reachability, 장시간 휴식감은 `NOT_RUN`입니다.
+**상태.** 입력·mode 격리, 승인된 `port`·`starboard`·`aft`·`overhead` canonical asset routing, 기본 Normal의 후면 치비 foreground material, 저장된 `꽃` 펫 쿠션·`엽서`의 치비 decor consumer, 그리고 normal·네 각도·Appreciation의 540×960 GPU capture가 `IMPLEMENTED / RUNTIME_CAPTURE_VERIFIED`입니다. 이 상태는 항해 시간·속도·저장·보상·soundscape를 바꾸지 않습니다. 기본 C+강아지 Normal은 `MLB-LOOK-CHIBI-NORMAL-REAR-001` 보관 원본에서 만든 `MLB-LOOK-CHIBI-NORMAL-REAR-MATTE-001`를 `FinalDioramaCard`에 연결하고 stern-side rig에서 보여 주며, time-paired static sky·flowing sea backdrop과 BoatSpace 부유를 유지합니다. 정면 Look Around은 같은 분리 배경을 사용하고, `port`·`starboard`·`aft`·`overhead`의 보트+바다 composite 원화는 선체가 가려지지 않도록 whole-image still로 보존합니다. 사용자가 승인한 alternate A/B player, cat/rabbit/otter, `stripe`·`moon` cushion 7종은 exact canonical copy와 기존 save ID를 사용해 layered `Sprite3D`와 decor texture consumer에 연결됐습니다. 실제 기기의 motion comfort, touch reachability, 장시간 휴식감은 `NOT_RUN`입니다.
 
 ### 꾸미기
 
@@ -290,7 +290,7 @@
 - 전체: `HANDPAINTED_STORYBOOK_3D_DIORAMA`
 - 브랜드 표지: `MLB-BRAND-TITLE-001`은 deep teal ink, warm ivory paper, 작은 파도·별빛으로 `MY LITTLE BOAT`와 `파도 위에서, 함께 쉬는 시간`을 읽히게 한다. `USER_APPROVED → CANON_REGISTERED → ASSET_READY → IMPLEMENTED`; user가 요청한 `TitleOverlay/BrandLogo` runtime consumer에서만 쓰며 player/pet identity consumer는 없다.
 - 둘러보기 foreground: `MLB-LOOK-STYLE-006`의 soft-matte chibi player + round dog + matte ivory/deep-teal rounded dinghy
-- 기본 Normal Diorama foreground: 기본 C+강아지 route는 stern 쪽에 기대어 뒷모습으로 보이는 `MLB-LOOK-CHIBI-NORMAL-REAR-001`의 user-approved source와 그 기술용 foreground matte `MLB-LOOK-CHIBI-NORMAL-REAR-MATTE-001`를 `FinalDioramaCard` shader material로 소비한다. normal rig는 보트 뒤쪽 위에서 바라보며, card `pixel_size=0.0037`은 새 원화의 넓은 하늘 여백 속에서도 보트·player·dog가 모바일에서 읽히도록 한다. material은 녹색 기술 배경만 alpha 처리하고, 시간대별 water-only backdrop·수면 접점·BoatSpace bob을 유지한다. user-approved `꽃` 펫 쿠션만 bow-side overlay로 보인다. `엽서`는 main normal art에 합성하지 않으며, independent 꾸미기 preview 난간 장식과 Album 항해 포스트카드로만 소비한다. alternate identity와 `stripe`·`moon` decor variant도 승인 치비 family로 current consumer에 연결됐지만, 기본 C+강아지 first-view route는 바꾸지 않는다.
+- 기본 Normal Diorama foreground: 기본 C+강아지 route는 stern 쪽에 기대어 뒷모습으로 보이는 `MLB-LOOK-CHIBI-NORMAL-REAR-001`의 user-approved source와 그 기술용 foreground matte `MLB-LOOK-CHIBI-NORMAL-REAR-MATTE-001`를 `FinalDioramaCard` shader material로 소비한다. normal rig는 보트 뒤쪽 위에서 바라보며, card `pixel_size=0.0037`은 새 원화의 넓은 하늘 여백 속에서도 보트·player·dog가 모바일에서 읽히도록 한다. material은 녹색 기술 배경만 alpha 처리하고, 시간대별 static `SkyBackdrop`·flowing `SeaBackdrop`·수면 접점·BoatSpace bob을 유지한다. user-approved `꽃` 펫 쿠션만 bow-side overlay로 보인다. `엽서`는 main normal art에 합성하지 않으며, independent 꾸미기 preview 난간 장식과 Album 항해 포스트카드로만 소비한다. alternate identity와 `stripe`·`moon` decor variant도 승인 치비 family로 current consumer에 연결됐지만, 기본 C+강아지 first-view route는 바꾸지 않는다.
 - 밤: `INDIGO_RAIN_REFLECTION`
 
 ### 유지할 것
@@ -323,7 +323,7 @@
 | 타이틀 대기 | `IMPLEMENTED / RUNTIME_CAPTURE_VERIFIED` | `game.tscn`이 startup route이며, `항해 시작` 전에는 voyage state를 만들지 않는다. Human comfort는 별도 검증 전 |
 | 오늘의 마음 제거 | `IMPLEMENTED / MACHINE_VERIFIED` | mood data와 pre-entry prompt를 current product route에서 retire함 |
 | 현실 시간 분위기 | `IMPLEMENTED / RUNTIME_CAPTURE_VERIFIED` | 현지 시간은 시각만 바꾸고, startup selector·saved preference는 없음 |
-| 기본 바다 흐름 | `IMPLEMENTED / RUNTIME_CAPTURE_VERIFIED` | 수평선 아래 water-only texture는 타이틀 대기와 항해 중 계속 느리게 흐르며, 항해 시간·저장·보상에는 영향을 주지 않음. 밝은 바다 2초 frame pair의 아래 수면 영역 pixel delta가 persisted runtime evidence에 기록됨 |
+| 기본 하늘·바다 흐름 | `IMPLEMENTED / MACHINE_VERIFIED / RUNTIME_CAPTURE_VERIFIED` | 각 시간대의 `SkyBackdrop`은 material override 없이 고정되고, `SeaBackdrop`만 `voyage_split_sea_flow.gdshader`의 alpha mask와 shared flow offset으로 타이틀 대기·항해 중 계속 느리게 흐른다. 항해 시간·저장·보상에는 영향을 주지 않는다. Bright 1.8초 frame pair에서 upper sky `0.00%`, open sea `70.79%`, lower sea `83.81%` changed-pixel 증거가 남아 있다. |
 | 선체-수면 접점 | `IMPLEMENTED / MACHINE_VERIFIED / RUNTIME_CAPTURE_VERIFIED` | existing ripple은 보트의 x/z와 거의 같은 y bob을 따른다. user-approved `MLB-BOAT-FLT-006` narrow waterline raster는 `BoatWaterlineContact`가 depth test를 유지한 채 선체 하단에만 표시하며, 같은 x/z·vertical drift와 `still` comfort base return을 사용한다. 540×960 title·voyage capture에서 캐릭터·동반자·`쉬는 메뉴`를 가리지 않는다. Human comfort는 별도 검증 전 |
 | 흘러가는 풍경 | `IMPLEMENTED / RUNTIME_CAPTURE_VERIFIED` | 첫 기회 90–150초와 기회별 65% 표시를 사용하며, local ambient memory 저장은 구현됨. 0회 항해도 정상이고 Human five-minute observation은 별도 검증 전 |
 | cosmetic 꾸미기 | `IMPLEMENTED / RUNTIME_CAPTURE_VERIFIED` | in-voyage selector와 독립 preview가 local cosmetic state만 바꿈 |
@@ -384,7 +384,7 @@ Static docs, automated tests, generated assets, and GPU captures do not promote 
 | 항목 | 현재 결정 | 나중에 정할 것 |
 | --- | --- | --- |
 | 현실 시간 분위기 | 현지 현실 시간이 자동 적용 | 계절·지역 일몰까지 반영할지 여부. 첫 구현에는 포함하지 않음 |
-| direct-entry visual production | 구형 composition reject, water-only backdrop·기본 normal chibi material foreground·저장된 `꽃` 쿠션/`엽서` chibi decor consumer와 alternate identity/`stripe`·`moon` family가 runtime consumer로 확정 | actual-device color, readability, motion/visual comfort review |
+| direct-entry visual production | 구형 composite-flow composition reject, static sky + flowing sea pair·기본 normal chibi material foreground·저장된 `꽃` 쿠션/`엽서` chibi decor consumer와 alternate identity/`stripe`·`moon` family가 runtime consumer로 확정 | actual-device color, readability, motion/visual comfort review |
 | 함께 보낸 시간 | active foreground 시간만 1:1 누적, Album-only 분 단위 copy, local ConfigFile | Human/device readability와 5분 pressure review |
 | 물고기와 완료 항해 기록 | `memory_ledger_v1.cfg`에 string 목록만 local save·restore, Album-only 소비 | Human/device readability와 delayed bottle letter의 별도 safety gate |
 | 흘러가는 풍경 / Ambient Discovery | active foreground, passive, auto-save, 첫 기회 90–150초, 기회별 65% 표시, `ambient_memory_v1.cfg` | Human five-minute calm/noticeability와 장기 표현 검증 |

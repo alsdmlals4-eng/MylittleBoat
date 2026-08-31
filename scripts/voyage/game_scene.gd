@@ -9,6 +9,7 @@ const TIME_OF_DAY_CATALOG_SCRIPT = preload("res://scripts/voyage/time_of_day_cat
 const REAL_TIME_ATMOSPHERE_RESOLVER_SCRIPT = preload("res://scripts/voyage/real_time_atmosphere_resolver.gd")
 const DRIFT_SCENERY_DIRECTOR_SCRIPT = preload("res://scripts/voyage/drift_scenery_director.gd")
 const LOOK_AROUND_PRESENTATION_ROUTER_SCRIPT = preload("res://scripts/voyage/look_around_presentation_router.gd")
+const SEA_FLOW_SHADER = preload("res://assets/shaders/voyage_split_sea_flow.gdshader")
 
 const SPEED_NAMES: Array[String] = ["느림", "보통", "빠름"]
 const SPEED_MULTIPLIERS: Array[float] = [0.65, 1.0, 1.45]
@@ -29,11 +30,17 @@ const POSTCARD_LABELS := {
 	"sunset": "노을 물결의 포스트카드",
 	"night": "인디고 밤바다의 포스트카드",
 }
-const ATMOSPHERE_TEXTURE_PATHS := {
-	"dawn": "res://assets/images/runtime/voyage/dawn-arches-waterfall-water-only.png",
-	"bright": "res://assets/images/runtime/voyage/bright-open-sea-water-only.png",
-	"sunset": "res://assets/images/runtime/voyage/sunset-sandstone-cove-water-only.png",
-	"night": "res://assets/images/runtime/voyage/night-indigo-rain-bay-water-only.png",
+const SKY_TEXTURE_PATHS := {
+	"dawn": "res://assets/images/runtime/voyage/split/dawn-static-sky.png",
+	"bright": "res://assets/images/runtime/voyage/split/bright-static-sky.png",
+	"sunset": "res://assets/images/runtime/voyage/split/sunset-static-sky.png",
+	"night": "res://assets/images/runtime/voyage/split/night-static-sky.png",
+}
+const SEA_TEXTURE_PATHS := {
+	"dawn": "res://assets/images/runtime/voyage/split/dawn-flowing-sea.png",
+	"bright": "res://assets/images/runtime/voyage/split/bright-flowing-sea.png",
+	"sunset": "res://assets/images/runtime/voyage/split/sunset-flowing-sea.png",
+	"night": "res://assets/images/runtime/voyage/split/night-flowing-sea.png",
 }
 const WATER_CONTACT_MODULATES := {
 	"dawn": Color(0.78, 0.88, 1.0, 0.32),
@@ -237,13 +244,7 @@ func _apply_atmosphere_id(time_of_day_id: String) -> String:
 	var sun_light := $VoyageWorld/SunLight as DirectionalLight3D
 	sun_light.light_color = tone["light_color"] as Color
 	sun_light.light_energy = float(tone["light_energy"])
-	var backdrop_modulate := tone["backdrop_modulate"] as Color
-	var backdrop_texture := load(str(ATMOSPHERE_TEXTURE_PATHS[normalized_time_of_day])) as Texture2D
-	for backdrop in _get_sea_backdrops():
-		backdrop.modulate = backdrop_modulate
-		if backdrop_texture != null:
-			backdrop.texture = backdrop_texture
-		_apply_background_flow_to_backdrop(backdrop)
+	_apply_split_backdrop_textures(normalized_time_of_day, tone["backdrop_modulate"] as Color)
 	var water_contact := $VoyageWorld/BoatWaterContact as Sprite3D
 	if water_contact != null:
 		water_contact.modulate = WATER_CONTACT_MODULATES[normalized_time_of_day] as Color
@@ -343,27 +344,29 @@ func _apply_camera_mode() -> void:
 	$VoyageWorld/DioramaCameraRig/DioramaCamera3D.current = not use_appreciation and not use_look_around
 	$VoyageWorld/LookAroundCameraRig/LookAroundCamera3D.current = use_look_around
 	$VoyageWorld/AppreciationCameraRig/AppreciationCamera3D.current = use_appreciation
-	$VoyageWorld/DioramaCameraRig/DioramaCamera3D/SeaBackdrop.visible = not use_appreciation and not use_look_around
-	$VoyageWorld/LookAroundCameraRig/LookAroundCamera3D/SeaBackdrop.visible = use_look_around
-	$VoyageWorld/AppreciationCameraRig/AppreciationCamera3D/SeaBackdrop.visible = use_appreciation
+	_set_camera_split_backdrop_visible("DioramaCameraRig/DioramaCamera3D", not use_appreciation and not use_look_around)
+	_set_camera_split_backdrop_visible("LookAroundCameraRig/LookAroundCamera3D", use_look_around)
+	_set_camera_split_backdrop_visible("AppreciationCameraRig/AppreciationCamera3D", use_appreciation)
 	_apply_look_around_presentation()
 
 
 ## Applies approved angle art without mutating voyage or local cosmetic state.
 func _apply_look_around_presentation() -> void:
 	var look_around_backdrop := $VoyageWorld/LookAroundCameraRig/LookAroundCamera3D/SeaBackdrop as Sprite3D
+	var look_around_sky := $VoyageWorld/LookAroundCameraRig/LookAroundCamera3D/SkyBackdrop as Sprite3D
 	var final_diorama_card := $VoyageWorld/BoatSpace/FinalDioramaCard as Sprite3D
 	if not _look_around_mode:
+		var inactive_tone := _time_of_day_catalog.get_visual_tone(_active_atmosphere_id)
+		_apply_split_backdrop_textures(_active_atmosphere_id, inactive_tone["backdrop_modulate"] as Color)
 		final_diorama_card.visible = true
 		return
 
 	var display_angle_id := get_look_around_display_angle_id()
 	if display_angle_id == "front":
-		var front_texture := load(str(ATMOSPHERE_TEXTURE_PATHS[_active_atmosphere_id])) as Texture2D
-		if front_texture != null:
-			look_around_backdrop.texture = front_texture
 		var tone := _time_of_day_catalog.get_visual_tone(_active_atmosphere_id)
-		look_around_backdrop.modulate = tone["backdrop_modulate"] as Color
+		_apply_split_backdrop_textures(_active_atmosphere_id, tone["backdrop_modulate"] as Color)
+		look_around_sky.visible = true
+		look_around_backdrop.visible = true
 		final_diorama_card.visible = true
 		return
 
@@ -372,7 +375,10 @@ func _apply_look_around_presentation() -> void:
 	if angle_texture == null:
 		final_diorama_card.visible = true
 		return
+	look_around_sky.visible = false
+	look_around_backdrop.visible = true
 	look_around_backdrop.texture = angle_texture
+	look_around_backdrop.material_override = null
 	look_around_backdrop.modulate = Color.WHITE
 	final_diorama_card.visible = false
 
@@ -738,11 +744,60 @@ func _get_sea_backdrops() -> Array[Sprite3D]:
 	]
 
 
+func _get_sky_backdrops() -> Array[Sprite3D]:
+	return [
+		$VoyageWorld/DioramaCameraRig/DioramaCamera3D/SkyBackdrop as Sprite3D,
+		$VoyageWorld/LookAroundCameraRig/LookAroundCamera3D/SkyBackdrop as Sprite3D,
+		$VoyageWorld/AppreciationCameraRig/AppreciationCamera3D/SkyBackdrop as Sprite3D,
+	]
+
+
+func _set_camera_split_backdrop_visible(camera_path: String, is_visible: bool) -> void:
+	var camera := get_node_or_null("VoyageWorld/%s" % camera_path) as Camera3D
+	if camera == null:
+		return
+	var sky_backdrop := camera.get_node_or_null("SkyBackdrop") as Sprite3D
+	var sea_backdrop := camera.get_node_or_null("SeaBackdrop") as Sprite3D
+	if sky_backdrop != null:
+		sky_backdrop.visible = is_visible
+	if sea_backdrop != null:
+		sea_backdrop.visible = is_visible
+
+
+func _apply_split_backdrop_textures(time_of_day_id: String, backdrop_modulate: Color) -> void:
+	var sky_texture := load(str(SKY_TEXTURE_PATHS[time_of_day_id])) as Texture2D
+	var sea_texture := load(str(SEA_TEXTURE_PATHS[time_of_day_id])) as Texture2D
+	for sky_backdrop in _get_sky_backdrops():
+		if sky_backdrop == null:
+			continue
+		sky_backdrop.modulate = backdrop_modulate
+		sky_backdrop.material_override = null
+		if sky_texture != null:
+			sky_backdrop.texture = sky_texture
+	for sea_backdrop in _get_sea_backdrops():
+		if sea_backdrop == null:
+			continue
+		sea_backdrop.modulate = backdrop_modulate
+		if sea_texture != null:
+			sea_backdrop.texture = sea_texture
+		_ensure_sea_flow_material(sea_backdrop)
+		_apply_background_flow_to_backdrop(sea_backdrop)
+
+
+func _ensure_sea_flow_material(backdrop: Sprite3D) -> void:
+	var flow_material := backdrop.material_override as ShaderMaterial
+	if flow_material != null and flow_material.shader == SEA_FLOW_SHADER:
+		return
+	flow_material = ShaderMaterial.new()
+	flow_material.shader = SEA_FLOW_SHADER
+	backdrop.material_override = flow_material
+
+
 func _apply_background_flow_to_backdrop(backdrop: Sprite3D) -> void:
 	if backdrop == null:
 		return
 	var flow_material := backdrop.material_override as ShaderMaterial
-	if flow_material == null:
+	if flow_material == null or flow_material.shader != SEA_FLOW_SHADER:
 		return
 	flow_material.set_shader_parameter("source_texture", backdrop.texture)
 	flow_material.set_shader_parameter("flow_offset", _background_flow_offset)

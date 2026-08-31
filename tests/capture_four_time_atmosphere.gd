@@ -1,7 +1,7 @@
-# 네 시간대의 두 카메라 런타임 화면 증거를 저장한다.
+# 분리된 하늘과 흐르는 바다의 네 시간대·두 카메라 런타임 증거를 저장한다.
 extends SceneTree
 
-const EVIDENCE_DIRECTORY := "res://docs/evidence/2026-08-30-water-only-atmosphere-v2"
+const EVIDENCE_DIRECTORY := "res://docs/evidence/2026-08-31-split-sky-sea-background"
 const IDENTITY_TEST_SAVE_PATH := "user://capture_four_time_identity.cfg"
 const DECOR_TEST_SAVE_PATH := "user://capture_four_time_decor.cfg"
 const TIME_OF_DAY_CATALOG_SCRIPT = preload("res://scripts/voyage/time_of_day_catalog.gd")
@@ -71,6 +71,13 @@ func _capture_pair(game_state: Node, time_of_day_id: String) -> bool:
 		scene.queue_free()
 		await process_frame
 		return false
+	if time_of_day_id == "bright":
+		scene.call("_apply_drift_motion", 1.8)
+		await _wait_for_frames(2)
+		if not await _save_runtime_image("bright_normal_flow_1p8s_540x960.png"):
+			scene.queue_free()
+			await process_frame
+			return false
 	if scene.has_method("open_rest_menu"):
 		scene.open_rest_menu()
 	var appreciation_button := scene.get_node_or_null("BottomPanel/ButtonGrid/AppreciationButton") as Button

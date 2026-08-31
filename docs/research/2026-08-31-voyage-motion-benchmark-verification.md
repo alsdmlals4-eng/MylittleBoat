@@ -11,7 +11,7 @@
 | 참고 | 관찰된 원리 | 프로젝트 판단 |
 | --- | --- | --- |
 | [Bondee sailing guide](https://thehoneycombers.com/singapore/bondee-app-guide/) | 작은 보트 위 avatar와 시간이 지난 뒤의 산·물고기·발광 해파리·꽃 같은 풍경 조우를 한 흐름으로 보여 준다. | `ADAPT`. 보트·동반자·저밀도 자연 경관 통과만 채택한다. 장시간 대기 보상, 희귀 아이템, 낯선 사람 연결은 rest-first 정본과 충돌하므로 `REJECT`다. |
-| [Tangerine Development water study](https://tangerinedev.com/play/clouds-and-water) | 서로 위상이 다른 잔물결, 가까운 수면을 더 많이 움직이는 parallax, 보트의 상하 bob을 분리한다. | `ADOPT`. `voyage_water_flow.gdshader`의 below-horizon 흐름, camera/boat의 저진폭 bob, 수면 접점 동기화를 유지한다. |
+| [Tangerine Development water study](https://tangerinedev.com/play/clouds-and-water) | 서로 위상이 다른 잔물결, 가까운 수면을 더 많이 움직이는 parallax, 보트의 상하 bob을 분리한다. | `ADOPT`. `voyage_split_sea_flow.gdshader`의 sea-only 흐름, camera/boat의 저진폭 bob, 수면 접점 동기화를 유지한다. |
 | [Chromosphere ocean case study](https://chromosphere-la.com/case-study/yuki7study6/) | 비슷하지만 다른 속도의 수면 레이어, 한 방향 wave, 보트·camera 주변에 국한한 추가 효과가 큰 전역 시뮬레이션보다 충분할 수 있다. | `ADAPT`. broad ripple과 narrow waterline을 선체 주변에만 두고, 전역 Gerstner mesh·고대비 sparkle·추가 procedural asset은 현재 범위에서 `DEFER`한다. |
 | [Godot spatial shader guide](https://docs.godotengine.org/en/stable/tutorials/shaders/your_first_shader/your_first_3d_shader.html) | spatial shader uniform은 GDScript에서 frame마다 갱신할 수 있고, texture sampling·vertex deformation은 필요한 수준에 맞춰 분리할 수 있다. | `ADOPT`. `flow_offset` uniform만 frame마다 갱신하고, 승인한 water-only 배경 원화와 simple fragment flow를 유지한다. |
 
@@ -21,7 +21,7 @@
 
 `GameScene._process(delta)`는 매 frame `_apply_drift_motion(delta)`를 호출한다.
 
-1. `background_flow_offset`은 speed tier에 따라 누적되고 `voyage_water_flow.gdshader`의 `flow_offset` uniform으로 세 개 camera-local `SeaBackdrop`에 전달된다. shader는 horizon 아래의 UV만 천천히 이동시켜 하늘과 수평선을 고정한다.
+1. `background_flow_offset`은 speed tier에 따라 누적되고 `voyage_split_sea_flow.gdshader`의 `flow_offset` uniform으로 세 개 camera-local `SeaBackdrop`에 전달된다. static `SkyBackdrop`은 material override 없이 고정되고, shader는 sea layer에서만 horizon 아래 alpha와 느린 UV 흐름을 적용한다.
 2. `BoatSpace`는 low-amplitude y bob, roll, 반복형 forward surge, lateral current를 사용한다. 이는 목적지·world traversal·save를 만들지 않는 visual context다.
 3. `BoatWaterContact`와 `BoatWaterlineContact`는 BoatSpace와 같은 x/z offset과 거의 같은 y bob을 사용한다. 한쪽은 넓은 반사, 다른 한쪽은 좁은 선체 수면선이라는 역할을 가진다.
 4. `standard/gentle/still`은 보트·camera·접점의 motion amplitude를 `1.0/0.5/0.0`으로 조절한다. `still`은 정지 화면이 아니라 보트 안정화이며, background water flow는 계속된다.
