@@ -51,8 +51,13 @@ func _run() -> void:
 	state.add_photo("테스트 사진")
 	state.add_scenery("테스트 풍경")
 	state.add_letter("테스트 편지")
+<<<<<<< HEAD
 	_expect(is_equal_approx(state.together_time_seconds, together_time_before_memories), "photo, scenery, and letter memories must not create together time")
 	var together_time_before_reset: float = state.together_time_seconds
+=======
+	var affection_before_reset: int = state.companion_affection
+	_expect(affection_before_reset == 1, "memories must not become companion-affection rewards")
+>>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 
 	state.reset_session()
 	_expect(state.photos.size() == 1, "reset_session must keep accumulated photos")
@@ -60,8 +65,18 @@ func _run() -> void:
 	_expect(state.letters.size() == 1, "reset_session must keep accumulated letters")
 	_expect(is_equal_approx(state.together_time_seconds, together_time_before_reset), "reset_session must keep accumulated together time")
 
+<<<<<<< HEAD
 	_expect(state.has_method("begin_voyage"), "GameState must expose direct begin_voyage")
 	state.begin_voyage()
+=======
+	var state_source := FileAccess.get_file_as_string("res://scripts/core/game_state.gd")
+	_expect(state_source.contains("func begin_voyage()"), "GameState must expose a mood-free begin_voyage()")
+	_expect(not state_source.contains("selected_mood"), "mood must not remain product state")
+	if state_source.contains("func begin_voyage()"):
+		state.begin_voyage()
+	else:
+		state.begin_voyage("설렘")
+>>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 	_expect(state.voyage_active, "begin_voyage must activate the voyage")
 	_expect(is_equal_approx(state.remaining_seconds, 300.0), "begin_voyage must start the 5-minute baseline")
 	var source := FileAccess.get_file_as_string("res://scripts/core/game_state.gd")
@@ -84,7 +99,12 @@ func _run() -> void:
 	state.complete_voyage()
 	state.complete_voyage()
 	_expect(state.voyage_records.size() == records_before + 1, "complete_voyage must create exactly one record after the active voyage reaches zero")
+<<<<<<< HEAD
 	_expect(state.voyage_records.back().begins_with("오늘의 항해"), "voyage record must use neutral direct-voyage copy")
+=======
+	if not state.voyage_records.is_empty():
+		_expect(state.voyage_records.back().begins_with("오늘의 항해 ·"), "record must use neutral voyage wording")
+>>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 
 	state.set_memory_ledger_storage_path("user://memory_ledger_v1.cfg")
 	_remove_memory_ledger_storage()

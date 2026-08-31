@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 시작 경로가 아닌 legacy 메뉴의 현재 현지 분위기 자료를 저장한다.
 extends SceneTree
 
@@ -33,22 +34,12 @@ func _capture() -> void:
 	scene.queue_free()
 	await process_frame
 	print("PASS: legacy main menu current-local capture")
+=======
+# 제품 흐름에서 빠진 main menu capture를 historical evidence로 retire한다.
+extends SceneTree
+
+
+func _init() -> void:
+	print("HISTORICAL_RETIRED: use res://tests/capture_direct_boat_entry_atmospheres.gd")
+>>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 	quit(0)
-
-
-func _save_runtime_image(file_name: String) -> bool:
-	var image := root.get_texture().get_image()
-	if image == null or image.is_empty():
-		_fail("empty runtime image for %s" % file_name)
-		return false
-	var output_path := "%s/%s" % [EVIDENCE_DIRECTORY, file_name]
-	if image.save_png(output_path) != OK:
-		_fail("could not save %s" % file_name)
-		return false
-	print("SAVED: %s (%dx%d)" % [output_path, image.get_width(), image.get_height()])
-	return true
-
-
-func _fail(message: String) -> void:
-	printerr("FAILED: %s" % message)
-	quit(1)

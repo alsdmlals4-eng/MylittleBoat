@@ -1,47 +1,20 @@
-# 네 시간대의 두 카메라 런타임 화면 증거를 저장한다.
+# 현재 현실 시간 분위기 capture로 대체된 과거 네 시간대 runner를 retire한다.
 extends SceneTree
 
+<<<<<<< HEAD
 const EVIDENCE_DIRECTORY := "res://docs/evidence/2026-08-30-water-only-atmosphere-v2"
 const IDENTITY_TEST_SAVE_PATH := "user://capture_four_time_identity.cfg"
 const DECOR_TEST_SAVE_PATH := "user://capture_four_time_decor.cfg"
 const TIME_OF_DAY_CATALOG_SCRIPT = preload("res://scripts/voyage/time_of_day_catalog.gd")
 const RUNTIME_CAPTURE_GUARD_SCRIPT = preload("res://scripts/visual/runtime_capture_guard.gd")
 
+=======
+>>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 
 func _init() -> void:
-	call_deferred("_capture")
-
-
-func _capture() -> void:
-	root.size = Vector2i(540, 960)
-	if DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(EVIDENCE_DIRECTORY)) != OK:
-		_fail("could not create runtime evidence directory")
-		return
-	var game_state := root.get_node_or_null("GameState")
-	if game_state == null:
-		_fail("GameState autoload must exist")
-		return
-	var runtime_capture_guard = RUNTIME_CAPTURE_GUARD_SCRIPT.new()
-	var unavailable_texture_paths := runtime_capture_guard.get_unavailable_texture_paths(runtime_capture_guard.REQUIRED_TEXTURE_PATHS)
-	if not unavailable_texture_paths.is_empty():
-		_fail("required imported runtime textures unavailable: %s" % ", ".join(unavailable_texture_paths))
-		return
-	_remove_identity_test_save()
-	_remove_decor_test_save()
-	game_state.set_identity_storage_path(IDENTITY_TEST_SAVE_PATH)
-	game_state.set_boat_decor_storage_path(DECOR_TEST_SAVE_PATH)
-	game_state.boat_decor.clear()
-	game_state.boat_decor_appearances.clear()
-	game_state.set_selected_player_style("c_loose_knit")
-	game_state.set_selected_pet_type("dog")
-	var time_of_day_catalog = TIME_OF_DAY_CATALOG_SCRIPT.new()
-	for time_of_day_id in time_of_day_catalog.get_time_of_day_ids():
-		if not await _capture_pair(game_state, time_of_day_id):
-			_restore_test_state(game_state)
-			return
-	_restore_test_state(game_state)
-	print("PASS: four-time atmosphere runtime captures")
+	print("HISTORICAL_RETIRED: use res://tests/capture_direct_boat_entry_atmospheres.gd")
 	quit(0)
+<<<<<<< HEAD
 
 
 func _capture_pair(game_state: Node, time_of_day_id: String) -> bool:
@@ -147,3 +120,5 @@ func _remove_decor_test_save() -> void:
 func _fail(message: String) -> void:
 	printerr("FAILED: %s" % message)
 	quit(1)
+=======
+>>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564

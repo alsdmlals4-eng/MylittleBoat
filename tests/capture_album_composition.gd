@@ -1,11 +1,13 @@
+<<<<<<< HEAD
 # 실제 기록 유무에 따른 현재 현지 분위기의 앨범 화면을 세로 해상도로 저장한다.
+=======
+# 현재 direct boat entry 흐름으로 대체된 과거 앨범 capture를 retire한다.
+>>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 extends SceneTree
-
-const EVIDENCE_DIRECTORY := "res://docs/evidence/2026-08-28-album-composition"
-const ALBUM_PATH := "res://scenes/album.tscn"
 
 
 func _init() -> void:
+<<<<<<< HEAD
 	call_deferred("_capture")
 
 
@@ -69,3 +71,7 @@ func _clear_memories(game_state: Node) -> void:
 func _fail(message: String) -> void:
 	printerr("FAILED: %s" % message)
 	quit(1)
+=======
+	print("HISTORICAL_RETIRED: use res://tests/capture_direct_boat_entry_atmospheres.gd")
+	quit(0)
+>>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564

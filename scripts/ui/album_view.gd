@@ -3,17 +3,26 @@ extends Control
 
 const TIME_OF_DAY_CATALOG_SCRIPT = preload("res://scripts/voyage/time_of_day_catalog.gd")
 const REAL_TIME_ATMOSPHERE_RESOLVER_SCRIPT = preload("res://scripts/voyage/real_time_atmosphere_resolver.gd")
+<<<<<<< HEAD
 const TOGETHER_TIME_PRESENTATION_SCRIPT = preload("res://scripts/companion/together_time_presentation.gd")
 const ATMOSPHERE_BACKGROUNDS := {
 	"dawn": preload("res://assets/images/ui/main_menu/main_menu_dawn_storybook_v1.png"),
 	"bright": preload("res://assets/images/ui/main_menu/main_menu_bright_storybook_v1.png"),
 	"sunset": preload("res://assets/images/ui/main_menu/main_menu_sunset_storybook_v1.png"),
 	"night": preload("res://assets/images/ui/main_menu/main_menu_night_storybook_v1.png"),
+=======
+const ALBUM_SEA_BACKGROUNDS := {
+	"default": preload("res://assets/images/runtime/storybook/sea_bright_storybook.png"),
+	"night": preload("res://assets/images/runtime/storybook/sea_night_indigo_rain_storybook.png"),
+>>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 }
 
 var _time_of_day_catalog = TIME_OF_DAY_CATALOG_SCRIPT.new()
 var _real_time_atmosphere_resolver = REAL_TIME_ATMOSPHERE_RESOLVER_SCRIPT.new()
+<<<<<<< HEAD
 var _together_time_presentation = TOGETHER_TIME_PRESENTATION_SCRIPT.new()
+=======
+>>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 
 
 func _ready() -> void:
@@ -30,8 +39,25 @@ func refresh_album() -> void:
 
 
 func _refresh_atmosphere_background() -> void:
+<<<<<<< HEAD
 	var current_time_of_day := _time_of_day_catalog.normalize_time_of_day(_real_time_atmosphere_resolver.resolve_system_time())
 	%AtmosphereBackground.texture = ATMOSPHERE_BACKGROUNDS[current_time_of_day] as Texture2D
+=======
+	_apply_real_time_background(_real_time_atmosphere_resolver.resolve_system_time())
+
+
+func apply_real_time_background_for_hour(hour: int) -> String:
+	var atmosphere_id := _real_time_atmosphere_resolver.resolve_hour(hour)
+	_apply_real_time_background(atmosphere_id)
+	return atmosphere_id
+
+
+func _apply_real_time_background(atmosphere_id: String) -> void:
+	var tone := _time_of_day_catalog.get_visual_tone(atmosphere_id)
+	var texture_key := "night" if atmosphere_id == "night" else "default"
+	%AtmosphereBackground.texture = ALBUM_SEA_BACKGROUNDS[texture_key] as Texture2D
+	%AtmosphereBackground.modulate = tone["backdrop_modulate"] as Color
+>>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 
 
 func _refresh_summary() -> void:

@@ -106,6 +106,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_ocean")
 
 [node name="BoatSpace" parent="VoyageWorld" instance=ExtResource("3")]
 
+<<<<<<< HEAD
 [node name="BoatWaterContact" type="Sprite3D" parent="VoyageWorld"]
 position = Vector3(0, -0.06, 0.26)
 pixel_size = 0.00215
@@ -113,6 +114,32 @@ billboard = 1
 no_depth_test = false
 modulate = Color(0.9, 0.96, 1, 0.36)
 texture = ExtResource("6")
+=======
+[node name="DistantSceneryLayer" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="MemoryNotificationLabel" type="Label" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 48.0
+offset_top = 176.0
+offset_right = -48.0
+offset_bottom = 220.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.95, 0.9, 0.72, 1)
+theme_override_font_sizes/font_size = 16
+text = ""
+horizontal_alignment = 1
+>>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 
 [node name="TopPanel" type="PanelContainer" parent="."]
 visible = false
@@ -155,6 +182,7 @@ text = ""
 horizontal_alignment = 1
 autowrap_mode = 2
 
+<<<<<<< HEAD
 [node name="DistantSceneryLabel" type="Label" parent="."]
 unique_name_in_owner = true
 visible = false
@@ -169,6 +197,11 @@ grow_horizontal = 2
 text = ""
 horizontal_alignment = 1
 autowrap_mode = 2
+=======
+[node name="AtmosphereRefreshTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 30.0
+>>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 
 [node name="DecorPanel" type="PanelContainer" parent="."]
 visible = false
@@ -179,9 +212,15 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -170.0
+<<<<<<< HEAD
 offset_top = -752.0
 offset_right = 170.0
 offset_bottom = -300.0
+=======
+offset_top = -660.0
+offset_right = 170.0
+offset_bottom = -210.0
+>>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 grow_horizontal = 2
 grow_vertical = 0
 
@@ -190,6 +229,7 @@ layout_mode = 2
 
 [node name="DecorTitle" type="Label" parent="DecorPanel/DecorVBox"]
 layout_mode = 2
+<<<<<<< HEAD
 text = "내 보트 꾸미기"
 horizontal_alignment = 1
 
@@ -251,6 +291,22 @@ custom_minimum_size = Vector2(156, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "동반자 종류"
+=======
+text = "꾸미기"
+horizontal_alignment = 1
+
+[node name="IdentityLabel" type="Label" parent="DecorPanel/DecorVBox"]
+layout_mode = 2
+text = "내 모습과 동반자"
+
+[node name="PlayerStyleOption" type="OptionButton" parent="DecorPanel/DecorVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="PetTypeOption" type="OptionButton" parent="DecorPanel/DecorVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+>>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 
 [node name="DecorSlotOption" type="OptionButton" parent="DecorPanel/DecorVBox"]
 unique_name_in_owner = true
@@ -368,6 +424,21 @@ one_shot = true
 [node name="ButtonGrid" type="GridContainer" parent="BottomPanel"]
 layout_mode = 2
 columns = 2
+
+[node name="RestMenuButton" type="Button" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -78.0
+offset_right = -20.0
+offset_bottom = -24.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "메뉴"
 
 [node name="TakePhotoButton" type="Button" parent="BottomPanel/ButtonGrid"]
 unique_name_in_owner = true

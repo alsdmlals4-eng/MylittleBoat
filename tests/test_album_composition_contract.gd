@@ -2,7 +2,11 @@
 extends SceneTree
 
 const ALBUM_PATH := "res://scenes/album.tscn"
+<<<<<<< HEAD
 const MEMORY_LEDGER_STORAGE_PATH := "user://test_album_composition_memory_ledger.cfg"
+=======
+const NIGHT_BACKGROUND_PATH := "res://assets/images/runtime/storybook/sea_night_indigo_rain_storybook.png"
+>>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 
 var _failures := 0
 
@@ -25,7 +29,11 @@ func _run() -> void:
 	game_state.letters.clear()
 	game_state.fish.clear()
 	game_state.voyage_records.clear()
+<<<<<<< HEAD
 	game_state.together_time_seconds = 125.0
+=======
+	game_state.companion_affection = 1
+>>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 	var scene := (load(ALBUM_PATH) as PackedScene).instantiate()
 	root.add_child(scene)
 	await process_frame
@@ -33,10 +41,17 @@ func _run() -> void:
 	var summary := scene.get_node_or_null("Margin/Panel/VBox/SummaryLabel") as Label
 	var recent_memory := scene.get_node_or_null("Margin/Panel/VBox/RecentMemoryLabel") as Label
 	_expect(background != null, "album must expose the approved atmosphere background surface")
+<<<<<<< HEAD
 	_expect(background != null and background.texture != null, "album background must resolve a local-time atmosphere texture")
 	var source := FileAccess.get_file_as_string("res://scripts/ui/album_view.gd")
 	_expect(source.contains("real_time_atmosphere_resolver"), "album must resolve the current local atmosphere without saved selection")
 	_expect(not source.contains("get_selected_time_of_day"), "album must not read a saved time preference")
+=======
+	_expect(scene.has_method("apply_real_time_background_for_hour"), "album must resolve atmosphere from real time without a selector")
+	if scene.has_method("apply_real_time_background_for_hour"):
+		scene.call("apply_real_time_background_for_hour", 21)
+		_expect(background != null and background.texture != null and background.texture.resource_path == NIGHT_BACKGROUND_PATH, "album Night background must follow the current real-time band")
+>>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 	_expect(summary != null, "album must expose a total-memory summary")
 	_expect(recent_memory != null, "album must expose a recent-memory summary")
 	_expect(summary != null and "함께한 시간: 2분" in summary.text, "album must show the calm together-time duration")
@@ -51,8 +66,11 @@ func _run() -> void:
 	_expect(recent_memory != null and "최근 항해: 오늘의 항해" in recent_memory.text, "recent-memory area must show the most recent voyage")
 	scene.queue_free()
 	await process_frame
+<<<<<<< HEAD
 	game_state.set_memory_ledger_storage_path("user://memory_ledger_v1.cfg")
 	_clear_memory_ledger_storage()
+=======
+>>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 	_finish()
 
 

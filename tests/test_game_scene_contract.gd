@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # 보트 휴식 화면의 저밀도 메뉴·감상·낚시·세션 연속성을 검증한다.
+=======
+# 항해 화면이 선택 없이 시작하고 선택형 휴식 행동을 보존하는지 검증한다.
+>>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 extends SceneTree
 
 const GAME_SCENE_PATH := "res://scenes/game.tscn"
@@ -25,6 +29,7 @@ func _run() -> void:
 	game_state.remaining_seconds = 123.0
 	game_state.speed_index = 1
 	game_state.appreciation_mode = false
+<<<<<<< HEAD
 	_remove_test_file()
 	_cleanup_photo_storage()
 	if game_state.has_method("set_comfort_storage_path"):
@@ -34,6 +39,10 @@ func _run() -> void:
 	if game_state.has_method("set_photo_memory_storage"):
 		game_state.set_photo_memory_storage(PHOTO_CONFIG_PATH, PHOTO_IMAGE_DIRECTORY)
 	var packed_scene := load(GAME_SCENE_PATH) as PackedScene
+=======
+
+	var packed_scene := load("res://scenes/game.tscn") as PackedScene
+>>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 	_expect(packed_scene != null, "game.tscn must load")
 	if packed_scene == null:
 		_finish()
@@ -43,12 +52,16 @@ func _run() -> void:
 	root.add_child(scene)
 	await process_frame
 	var timer_label := scene.get_node_or_null("TopPanel/TopVBox/TimerLabel") as Label
+<<<<<<< HEAD
 	var voyage_status := scene.get_node_or_null("TopPanel/TopVBox/VoyageStatusLabel") as Label
+=======
+>>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 	var rest_menu_button := scene.get_node_or_null("RestMenuButton") as Button
 	var bottom_panel := scene.get_node_or_null("BottomPanel") as Control
 	var take_photo_button := scene.get_node_or_null("BottomPanel/ButtonGrid/TakePhotoButton") as Button
 	var appreciation_button := scene.get_node_or_null("BottomPanel/ButtonGrid/AppreciationButton") as Button
 	var speed_button := scene.get_node_or_null("BottomPanel/ButtonGrid/SpeedButton") as Button
+<<<<<<< HEAD
 	var album_button := scene.get_node_or_null("BottomPanel/ButtonGrid/AlbumButton") as Button
 	var fishing_button := scene.get_node_or_null("BottomPanel/ButtonGrid/FishingButton") as Button
 	var fishing_status := scene.get_node_or_null("TopPanel/TopVBox/FishingStatusLabel") as Label
@@ -96,6 +109,23 @@ func _run() -> void:
 			_expect(comfort_button.text == "파도: 잔잔", "comfort button cycles to the gentle motion profile")
 	else:
 		_expect(false, "game scene must provide open_rest_menu")
+=======
+	var fishing_button := scene.get_node_or_null("BottomPanel/ButtonGrid/FishingButton") as Button
+	var decor_button := scene.get_node_or_null("BottomPanel/ButtonGrid/DecorButton") as Button
+	var interact_button := scene.get_node_or_null("BottomPanel/ButtonGrid/InteractButton") as Button
+	var album_button := scene.get_node_or_null("BottomPanel/ButtonGrid/AlbumButton") as Button
+	var camera_rig := scene.get_node_or_null("VoyageWorld/DioramaCameraRig") as Node3D
+
+	_expect(timer_label != null and timer_label.text == "02:03", "game scene must resume GameState.remaining_seconds after a scene round trip")
+	_expect(rest_menu_button != null and rest_menu_button.visible, "game scene must expose a quiet menu button")
+	_expect(bottom_panel != null and not bottom_panel.visible, "game scene must begin as a clean boat view")
+	if rest_menu_button != null:
+		rest_menu_button.emit_signal("pressed")
+		await process_frame
+	_expect(bottom_panel != null and bottom_panel.visible, "menu button must reveal optional actions")
+	_expect(take_photo_button != null and appreciation_button != null and speed_button != null, "menu must retain photo, appreciation, and speed actions")
+	_expect(fishing_button != null and decor_button != null and interact_button != null and album_button != null, "menu must retain optional calm actions")
+>>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 
 	if appreciation_button != null and take_photo_button != null and speed_button != null and album_button != null:
 		appreciation_button.emit_signal("pressed")
@@ -145,6 +175,7 @@ func _run() -> void:
 	else:
 		_expect(false, "game scene must provide diorama camera rig and speed behavior")
 
+<<<<<<< HEAD
 	_expect(scene.has_method("_handle_fishing_action"), "game scene must connect the calm fishing interaction")
 	var source := FileAccess.get_file_as_string("res://scripts/voyage/game_scene.gd")
 	_expect(not source.contains("main_menu.tscn"), "completed voyages must not return to a setup menu")
@@ -161,6 +192,14 @@ func _run() -> void:
 	await _release_runtime_soundscape_for_test_shutdown()
 	_remove_test_file()
 	_cleanup_photo_storage()
+=======
+	var source := FileAccess.get_file_as_string("res://scripts/voyage/game_scene.gd")
+	_expect(not source.contains("main_menu.tscn"), "next voyage must not return to a selection screen")
+	_expect(not source.contains("selected_mood"), "game scene must not depend on removed mood state")
+
+	scene.queue_free()
+	await process_frame
+>>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 	_finish()
 
 

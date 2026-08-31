@@ -8,6 +8,7 @@ const IDENTITY_VISUAL_CATALOG_SCRIPT = preload("res://scripts/identity/identity_
 const TIME_OF_DAY_CATALOG_SCRIPT = preload("res://scripts/voyage/time_of_day_catalog.gd")
 const REAL_TIME_ATMOSPHERE_RESOLVER_SCRIPT = preload("res://scripts/voyage/real_time_atmosphere_resolver.gd")
 const DRIFT_SCENERY_DIRECTOR_SCRIPT = preload("res://scripts/voyage/drift_scenery_director.gd")
+<<<<<<< HEAD
 const LOOK_AROUND_PRESENTATION_ROUTER_SCRIPT = preload("res://scripts/voyage/look_around_presentation_router.gd")
 
 const SPEED_NAMES: Array[String] = ["느림", "보통", "빠름"]
@@ -35,6 +36,26 @@ const WATER_CONTACT_MODULATES := {
 	"sunset": Color(1.0, 0.72, 0.58, 0.30),
 	"night": Color(0.5, 0.66, 1.0, 0.22),
 }
+=======
+const DISTANT_SCENERY_SCENE = preload("res://scenes/distant_scenery.tscn")
+const DISTANT_SCENERY_TEXTURES := {
+	"buoy": preload("res://assets/images/runtime/scenery/distant_buoy_storybook.png"),
+	"islet": preload("res://assets/images/runtime/scenery/distant_islet_storybook.png"),
+	"lighthouse": preload("res://assets/images/runtime/scenery/distant_lighthouse_storybook.png"),
+}
+const SEA_BACKDROP_TEXTURES := {
+	"default": preload("res://assets/images/runtime/storybook/sea_bright_storybook.png"),
+	"night": preload("res://assets/images/runtime/storybook/sea_night_indigo_rain_storybook.png"),
+}
+const DISTANT_SCENERY_LABELS := {
+	"buoy": "작은 부표",
+	"islet": "작은 섬",
+	"lighthouse": "먼 등대",
+}
+
+const SPEED_NAMES: Array[String] = ["느림", "보통", "빠름"]
+const SPEED_MULTIPLIERS: Array[float] = [0.65, 1.0, 1.45]
+>>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 const FISH_NAMES: Array[String] = ["정어리", "전갱이", "고등어", "도미"]
 const FISHING_OUTCOME_IDS: Array[String] = ["catch", "quiet"]
 const DECOR_SLOT_NODE_NAMES := {
@@ -49,6 +70,14 @@ const DECOR_SLOT_NODE_NAMES := {
 }
 const FISHING_WAIT_MIN_SECONDS := 6.0
 const FISHING_WAIT_MAX_SECONDS := 12.0
+const ATMOSPHERE_REFRESH_SECONDS := 30.0
+const DISTANT_SCENERY_DRIFT_PER_SECOND := 8.0
+const MEMORY_NOTIFICATION_SECONDS := 2.5
+const DISTANT_SCENERY_SIZES := {
+	"buoy": Vector2(48, 96),
+	"islet": Vector2(156, 88),
+	"lighthouse": Vector2(72, 128),
+}
 
 var _fishing_session = FISHING_SESSION_SCRIPT.new()
 var _next_fishing_outcome_index := 0
@@ -58,6 +87,11 @@ var _identity_visual_catalog = IDENTITY_VISUAL_CATALOG_SCRIPT.new()
 var _time_of_day_catalog = TIME_OF_DAY_CATALOG_SCRIPT.new()
 var _real_time_atmosphere_resolver = REAL_TIME_ATMOSPHERE_RESOLVER_SCRIPT.new()
 var _drift_scenery_director = DRIFT_SCENERY_DIRECTOR_SCRIPT.new()
+<<<<<<< HEAD
+=======
+var _active_distant_scenery: Array[Control] = []
+var _memory_notification_remaining := 0.0
+>>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 var _drift_phase := 0.0
 var _diorama_camera_base_position := Vector3.ZERO
 var _look_around_camera_base_position := Vector3.ZERO
@@ -71,12 +105,18 @@ var _boat_water_contact_base_scale := Vector3.ONE
 var _boat_water_contact_base_modulate := Color.WHITE
 var _time_of_day_background_color := Color(0.58, 0.76, 0.86, 1.0)
 var _rest_menu_open := false
+<<<<<<< HEAD
 var _active_atmosphere_id := "bright"
 var _application_in_foreground := true
 var _look_around_mode := false
 var _look_around_angle_id := "front"
 var _look_around_presentation_router = LOOK_AROUND_PRESENTATION_ROUTER_SCRIPT.new()
 var _photo_capture_in_progress := false
+=======
+var _current_atmosphere_id := ""
+var _application_foreground := true
+var _atmosphere_tween: Tween
+>>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 
 
 func _ready() -> void:
@@ -89,13 +129,20 @@ func _ready() -> void:
 	_diorama_backdrop_base_position = ($VoyageWorld/DioramaCameraRig/DioramaCamera3D/SeaBackdrop as Sprite3D).position
 	_appreciation_backdrop_base_position = ($VoyageWorld/AppreciationCameraRig/AppreciationCamera3D/SeaBackdrop as Sprite3D).position
 	_boat_space_base_position = $VoyageWorld/BoatSpace.position
+<<<<<<< HEAD
 	_boat_space_base_rotation = $VoyageWorld/BoatSpace.rotation
 	_boat_water_contact_base_position = $VoyageWorld/BoatWaterContact.position
 	_boat_water_contact_base_scale = $VoyageWorld/BoatWaterContact.scale
 	_boat_water_contact_base_modulate = $VoyageWorld/BoatWaterContact.modulate
 	_configure_main_final_composite_decor_visibility()
 	_apply_time_of_day_tone()
+=======
+	%AtmosphereRefreshTimer.timeout.connect(_refresh_real_time_atmosphere)
+	%AtmosphereRefreshTimer.start(ATMOSPHERE_REFRESH_SECONDS)
+	_refresh_real_time_atmosphere(false)
+>>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 	_apply_stored_boat_decor()
+	%RestMenuButton.pressed.connect(_toggle_rest_menu)
 	%TakePhotoButton.pressed.connect(_take_photo)
 	%RestMenuButton.pressed.connect(open_rest_menu)
 	%AppreciationButton.pressed.connect(_toggle_appreciation_mode)
@@ -117,6 +164,7 @@ func _ready() -> void:
 	%InteractionCloseButton.pressed.connect(_close_interaction_panel)
 	%AlbumButton.pressed.connect(_open_album)
 	%NextVoyageButton.pressed.connect(_start_next_voyage)
+<<<<<<< HEAD
 	%AtmosphereRefreshTimer.timeout.connect(refresh_real_time_atmosphere)
 	%AmbientSceneryReturnTimer.timeout.connect(_restore_active_atmosphere_backdrop)
 	%DistantSceneryFadeTimer.timeout.connect(_hide_distant_scenery)
@@ -125,6 +173,10 @@ func _ready() -> void:
 	_populate_decor_slot_options()
 	set_application_foreground(true)
 	close_rest_menu()
+=======
+	_populate_identity_options()
+	_populate_decor_slot_options()
+>>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 	_apply_appreciation_mode()
 	var message := "동반자가 곁에서 조용히 바다를 바라봅니다."
 	if GameState.remaining_seconds < 299.9 and not GameState.voyage_record_created:
@@ -134,12 +186,47 @@ func _ready() -> void:
 	_update_ui(message)
 
 
+func _notification(what: int) -> void:
+	match what:
+		NOTIFICATION_APPLICATION_FOCUS_IN, NOTIFICATION_APPLICATION_RESUMED:
+			set_application_foreground(true)
+		NOTIFICATION_APPLICATION_FOCUS_OUT, NOTIFICATION_APPLICATION_PAUSED:
+			set_application_foreground(false)
+
+
+func set_application_foreground(is_foreground: bool) -> void:
+	_application_foreground = is_foreground
+	if _application_foreground:
+		_refresh_real_time_atmosphere(true)
+
+
+func is_application_foreground() -> bool:
+	return _application_foreground
+
+
+func _refresh_real_time_atmosphere(allow_transition: bool = true) -> void:
+	_apply_time_of_day_tone(_real_time_atmosphere_resolver.resolve_system_time(), allow_transition)
+
+
+func apply_real_time_atmosphere_for_hour(hour: int) -> String:
+	var atmosphere_id := _real_time_atmosphere_resolver.resolve_hour(hour)
+	_apply_time_of_day_tone(atmosphere_id, false)
+	return atmosphere_id
+
+
 func _process(delta: float) -> void:
+	if not _application_foreground:
+		return
 	_apply_drift_motion(delta)
 	_advance_fishing(delta)
+<<<<<<< HEAD
 	_advance_drift_scenery(delta)
 	if _application_in_foreground:
 		GameState.advance_together_time(delta)
+=======
+	_advance_distant_scenery(delta)
+	_advance_memory_notification(delta)
+>>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 	var completed_now := GameState.tick_voyage(delta)
 	if completed_now:
 		GameState.complete_voyage()
@@ -149,6 +236,7 @@ func _process(delta: float) -> void:
 		_update_ui()
 
 
+<<<<<<< HEAD
 func _notification(what: int) -> void:
 	if not is_node_ready():
 		return
@@ -194,15 +282,42 @@ func _apply_atmosphere_id(time_of_day_id: String) -> String:
 	_reset_temporary_ambient_backdrop_positions()
 	var tone := _time_of_day_catalog.get_visual_tone(normalized_time_of_day)
 	_active_atmosphere_id = normalized_time_of_day
+=======
+func _apply_time_of_day_tone(atmosphere_id: String, allow_transition: bool = false) -> void:
+	var tone := _time_of_day_catalog.get_visual_tone(atmosphere_id)
+>>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 	_time_of_day_background_color = tone["background_color"] as Color
 	var world_environment := $VoyageWorld/WorldEnvironment as WorldEnvironment
+	var sun_light := $VoyageWorld/SunLight as DirectionalLight3D
+	var backdrop_modulate := tone["backdrop_modulate"] as Color
+	_apply_sea_backdrop_art(atmosphere_id)
+	var should_transition := allow_transition and _current_atmosphere_id != "" and _current_atmosphere_id != atmosphere_id
+	_current_atmosphere_id = atmosphere_id
+	if not should_transition:
+		_apply_atmosphere_values(world_environment, sun_light, tone, backdrop_modulate)
+		return
+	if _atmosphere_tween != null and _atmosphere_tween.is_valid():
+		_atmosphere_tween.kill()
+	_atmosphere_tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	if world_environment.environment != null:
+		_atmosphere_tween.tween_property(world_environment.environment, "background_color", _time_of_day_background_color, 1.5)
+		_atmosphere_tween.parallel().tween_property(world_environment.environment, "ambient_light_color", tone["ambient_color"] as Color, 1.5)
+		_atmosphere_tween.parallel().tween_property(world_environment.environment, "ambient_light_energy", float(tone["ambient_energy"]), 1.5)
+	_atmosphere_tween.parallel().tween_property(sun_light, "light_color", tone["light_color"] as Color, 1.5)
+	_atmosphere_tween.parallel().tween_property(sun_light, "light_energy", float(tone["light_energy"]), 1.5)
+	_atmosphere_tween.parallel().tween_property($VoyageWorld/DioramaCameraRig/DioramaCamera3D/SeaBackdrop, "modulate", backdrop_modulate, 1.5)
+	_atmosphere_tween.parallel().tween_property($VoyageWorld/AppreciationCameraRig/AppreciationCamera3D/SeaBackdrop, "modulate", backdrop_modulate, 1.5)
+	_atmosphere_tween.parallel().tween_property($VoyageWorld/BoatSpace/BoatWaterlineOverlay, "modulate", backdrop_modulate, 1.5)
+
+
+func _apply_atmosphere_values(world_environment: WorldEnvironment, sun_light: DirectionalLight3D, tone: Dictionary, backdrop_modulate: Color) -> void:
 	if world_environment.environment != null:
 		world_environment.environment.background_color = _time_of_day_background_color
 		world_environment.environment.ambient_light_color = tone["ambient_color"] as Color
 		world_environment.environment.ambient_light_energy = float(tone["ambient_energy"])
-	var sun_light := $VoyageWorld/SunLight as DirectionalLight3D
 	sun_light.light_color = tone["light_color"] as Color
 	sun_light.light_energy = float(tone["light_energy"])
+<<<<<<< HEAD
 	var backdrop_modulate := tone["backdrop_modulate"] as Color
 	var backdrop_texture := load(str(ATMOSPHERE_TEXTURE_PATHS[normalized_time_of_day])) as Texture2D
 	for backdrop in [
@@ -253,6 +368,23 @@ func _capture_voyage_postcard() -> void:
 		_update_ui("사진 한 장이 항해 포스트카드로 남았습니다.")
 		return
 	_update_ui("사진을 남기지 못했어요. 바다를 계속 바라봐도 좋아요.")
+=======
+	$VoyageWorld/DioramaCameraRig/DioramaCamera3D/SeaBackdrop.modulate = backdrop_modulate
+	$VoyageWorld/AppreciationCameraRig/AppreciationCamera3D/SeaBackdrop.modulate = backdrop_modulate
+	$VoyageWorld/BoatSpace/BoatWaterlineOverlay.modulate = backdrop_modulate
+
+
+func _apply_sea_backdrop_art(atmosphere_id: String) -> void:
+	var texture_key := "night" if atmosphere_id == "night" else "default"
+	var backdrop_texture := SEA_BACKDROP_TEXTURES[texture_key] as Texture2D
+	$VoyageWorld/DioramaCameraRig/DioramaCamera3D/SeaBackdrop.texture = backdrop_texture
+	$VoyageWorld/AppreciationCameraRig/AppreciationCamera3D/SeaBackdrop.texture = backdrop_texture
+
+
+func _take_photo() -> void:
+	GameState.add_photo("사진 %d - 오늘의 바다" % [GameState.photos.size() + 1])
+	_update_ui("사진을 한 장 남겼습니다. 동반자가 가까이 다가옵니다.")
+>>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 
 
 func _toggle_appreciation_mode() -> void:
@@ -386,10 +518,13 @@ func _get_decor_slot(slot_id: String) -> Node:
 
 func _sync_identity_decor_visuals() -> void:
 	var identity_visual_router := $VoyageWorld/BoatSpace/IdentityVisualRouter
+	if identity_visual_router != null and identity_visual_router.has_method("apply_selection"):
+		identity_visual_router.apply_selection(GameState.get_selected_player_style(), GameState.get_selected_pet_type())
 	if identity_visual_router != null and identity_visual_router.has_method("sync_decor_from_state"):
 		identity_visual_router.sync_decor_from_state()
 
 
+<<<<<<< HEAD
 func _configure_main_final_composite_decor_visibility() -> void:
 	var identity_visual_router := $VoyageWorld/BoatSpace/IdentityVisualRouter
 	if identity_visual_router != null and identity_visual_router.has_method("set_suppress_technical_decor_for_final_composite"):
@@ -449,6 +584,44 @@ func _apply_identity_visuals() -> void:
 	if identity_visual_router != null and identity_visual_router.has_method("sync_decor_from_state"):
 		identity_visual_router.call("sync_decor_from_state")
 	_refresh_decor_preview()
+=======
+func _populate_identity_options() -> void:
+	%PlayerStyleOption.clear()
+	for player_style_id in _identity_visual_catalog.get_player_style_ids():
+		%PlayerStyleOption.add_item(_identity_visual_catalog.get_player_label(player_style_id))
+		%PlayerStyleOption.set_item_metadata(%PlayerStyleOption.item_count - 1, player_style_id)
+	%PetTypeOption.clear()
+	for pet_type_id in _identity_visual_catalog.get_pet_type_ids():
+		%PetTypeOption.add_item(_identity_visual_catalog.get_pet_label(pet_type_id))
+		%PetTypeOption.set_item_metadata(%PetTypeOption.item_count - 1, pet_type_id)
+	_select_option_by_metadata(%PlayerStyleOption, GameState.get_selected_player_style())
+	_select_option_by_metadata(%PetTypeOption, GameState.get_selected_pet_type())
+
+
+func _on_player_style_selected(index: int) -> void:
+	if index < 0 or index >= %PlayerStyleOption.item_count:
+		return
+	%PlayerStyleOption.select(index)
+	GameState.set_selected_player_style(str(%PlayerStyleOption.get_item_metadata(index)))
+	_sync_identity_decor_visuals()
+
+
+func _on_pet_type_selected(index: int) -> void:
+	if index < 0 or index >= %PetTypeOption.item_count:
+		return
+	%PetTypeOption.select(index)
+	GameState.set_selected_pet_type(str(%PetTypeOption.get_item_metadata(index)))
+	_sync_identity_decor_visuals()
+
+
+func _select_option_by_metadata(option: OptionButton, value: String) -> void:
+	for index in option.item_count:
+		if str(option.get_item_metadata(index)) == value:
+			option.select(index)
+			return
+	if option.item_count > 0:
+		option.select(0)
+>>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 
 
 func _populate_decor_slot_options() -> void:
@@ -711,6 +884,7 @@ func _apply_drift_motion(delta: float) -> void:
 		water_contact.modulate = contact_modulate
 
 
+<<<<<<< HEAD
 func _advance_drift_scenery(delta: float) -> void:
 	var event := _drift_scenery_director.advance(delta, _active_atmosphere_id)
 	if event.is_empty():
@@ -757,6 +931,55 @@ func _reset_temporary_ambient_backdrop_positions() -> void:
 
 func _hide_distant_scenery() -> void:
 	%DistantSceneryLabel.visible = false
+=======
+func _advance_distant_scenery(delta: float) -> void:
+	var event := _drift_scenery_director.advance(delta, _application_foreground)
+	if bool(event.get("show_scenery", false)):
+		_spawn_distant_scenery(str(event.get("scenery_id", "")), bool(event.get("save_memory", false)))
+	if not _application_foreground:
+		return
+	for scenery in _active_distant_scenery.duplicate():
+		if not is_instance_valid(scenery):
+			_active_distant_scenery.erase(scenery)
+			continue
+		scenery.position.x += DISTANT_SCENERY_DRIFT_PER_SECOND * maxf(delta, 0.0)
+		if scenery.position.x > size.x + 24.0:
+			scenery.queue_free()
+			_active_distant_scenery.erase(scenery)
+
+
+func _spawn_distant_scenery(scenery_id: String, save_memory: bool) -> void:
+	var texture = DISTANT_SCENERY_TEXTURES.get(scenery_id, null)
+	if texture == null:
+		return
+	var instance := DISTANT_SCENERY_SCENE.instantiate() as TextureRect
+	if instance == null:
+		return
+	instance.texture = texture
+	var scenery_size := DISTANT_SCENERY_SIZES.get(scenery_id, Vector2(80, 80)) as Vector2
+	instance.size = scenery_size
+	instance.position = Vector2(-scenery_size.x, 386.0 - scenery_size.y)
+	$DistantSceneryLayer.add_child(instance)
+	_active_distant_scenery.append(instance)
+	if save_memory:
+		var scenery_label := str(DISTANT_SCENERY_LABELS.get(scenery_id, "먼 풍경"))
+		GameState.add_ambient_scenery("지나간 %s" % scenery_label)
+		_show_memory_notification("%s을 조용히 남겼습니다." % scenery_label)
+
+
+func _show_memory_notification(message: String) -> void:
+	%MemoryNotificationLabel.text = message
+	%MemoryNotificationLabel.visible = true
+	_memory_notification_remaining = MEMORY_NOTIFICATION_SECONDS
+
+
+func _advance_memory_notification(delta: float) -> void:
+	if _memory_notification_remaining <= 0.0:
+		return
+	_memory_notification_remaining = maxf(0.0, _memory_notification_remaining - maxf(delta, 0.0))
+	if _memory_notification_remaining <= 0.0:
+		%MemoryNotificationLabel.visible = false
+>>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 
 
 func _handle_fishing_action() -> void:
@@ -810,6 +1033,7 @@ func _set_fishing_status(message: String) -> void:
 
 
 func _apply_appreciation_mode() -> void:
+<<<<<<< HEAD
 	var controls_visible := not GameState.appreciation_mode
 	$TopPanel.visible = controls_visible and _rest_menu_open
 	$BottomPanel.visible = GameState.appreciation_mode or _rest_menu_open
@@ -825,6 +1049,22 @@ func _apply_appreciation_mode() -> void:
 	%InteractButton.visible = controls_visible
 	%AlbumButton.visible = controls_visible
 	%AppreciationButton.visible = true
+=======
+	var action_controls_visible := not GameState.appreciation_mode
+	$TopPanel.visible = _rest_menu_open and action_controls_visible
+	$BottomPanel.visible = _rest_menu_open
+	$BottomPanel.offset_top = -56.0 if GameState.appreciation_mode else -176.0
+	$BottomPanel/ButtonGrid.columns = 1 if GameState.appreciation_mode else 2
+	%RestMenuButton.visible = action_controls_visible
+	%RestMenuButton.text = "닫기" if _rest_menu_open else "메뉴"
+	%TakePhotoButton.visible = action_controls_visible
+	%SpeedButton.visible = action_controls_visible
+	%FishingButton.visible = action_controls_visible
+	%DecorButton.visible = action_controls_visible
+	%InteractButton.visible = action_controls_visible
+	%AlbumButton.visible = action_controls_visible
+	%AppreciationButton.visible = _rest_menu_open
+>>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 	%AppreciationButton.text = "감상 끝내기" if GameState.appreciation_mode else "감상모드"
 	%LookAroundButton.text = "기본 시점" if _look_around_mode else "둘러보기"
 	if GameState.appreciation_mode:
@@ -832,7 +1072,14 @@ func _apply_appreciation_mode() -> void:
 		$InteractionPanel.visible = false
 	_apply_camera_mode()
 	_sync_next_voyage_button()
-	%FishingStatusLabel.visible = controls_visible and %FishingStatusLabel.text != ""
+	%FishingStatusLabel.visible = _rest_menu_open and action_controls_visible and %FishingStatusLabel.text != ""
+
+
+func _toggle_rest_menu() -> void:
+	if GameState.appreciation_mode:
+		return
+	_rest_menu_open = not _rest_menu_open
+	_apply_appreciation_mode()
 
 
 func _sync_next_voyage_button() -> void:

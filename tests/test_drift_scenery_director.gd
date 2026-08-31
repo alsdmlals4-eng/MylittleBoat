@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 포그라운드 시간만 저밀도 풍경을 진행시키는지 검증한다.
 extends SceneTree
 
@@ -16,6 +17,12 @@ const EXPECTED_BACKDROP_OFFSET_X_BY_MOTIF_ID := {
 	"MLB-AMB-MOTIF-005": 8.0,
 	"MLB-AMB-MOTIF-006": 8.0,
 }
+=======
+# 전경에 머문 시간만 먼 풍경 기회로 바뀌는지 검증한다.
+extends SceneTree
+
+const DIRECTOR_PATH := "res://scripts/voyage/drift_scenery_director.gd"
+>>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 
 var _failures := 0
 
@@ -29,6 +36,7 @@ func _run() -> void:
 	if not ResourceLoader.exists(DIRECTOR_PATH):
 		_finish()
 		return
+<<<<<<< HEAD
 	var director = load(DIRECTOR_PATH).new()
 	_expect(director.has_method("get_next_event_seconds_for_tests"), "director must expose its scheduled next opportunity for cadence regression checks")
 	if director.has_method("get_next_event_seconds_for_tests"):
@@ -118,6 +126,21 @@ func _expect_immediate_bright_repeat_is_avoided() -> void:
 	_expect(str(first_event.get("motif_id", "")) != str(second_event.get("motif_id", "")), "bright scenery must avoid immediately repeating the same approved motif when another bright motif exists")
 
 
+=======
+	var director = load(DIRECTOR_PATH).new(12345)
+	_expect(is_equal_approx(director.get_active_seconds(), 0.0), "new scenery director starts empty")
+	director.advance(151.0, false)
+	_expect(is_equal_approx(director.get_active_seconds(), 0.0), "background time must not advance scenery")
+	var event: Dictionary = director.advance(151.0, true)
+	_expect(is_equal_approx(director.get_active_seconds(), 151.0), "foreground time advances scenery")
+	_expect(bool(event.get("show_scenery", false)), "first foreground window shows distant scenery")
+	_expect(["buoy", "islet", "lighthouse"].has(str(event.get("scenery_id", ""))), "event must choose an approved distant scenery ID")
+	_expect(not event.has("reward"), "scenery event must not expose a reward")
+	_expect(event.has("save_memory") and event.get("save_memory") is bool, "event may only offer passive memory saving")
+	_finish()
+
+
+>>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 func _expect(condition: bool, message: String) -> void:
 	if condition:
 		return
@@ -127,8 +150,15 @@ func _expect(condition: bool, message: String) -> void:
 
 func _finish() -> void:
 	if _failures == 0:
+<<<<<<< HEAD
 		print("PASS: drift scenery director contract")
 		quit(0)
 	else:
 		printerr("FAILED: %d drift scenery director assertions" % _failures)
+=======
+		print("PASS: drifting scenery director contract")
+		quit(0)
+	else:
+		printerr("FAILED: %d drifting scenery assertions" % _failures)
+>>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 		quit(1)
