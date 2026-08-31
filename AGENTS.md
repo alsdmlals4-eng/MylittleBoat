@@ -85,6 +85,16 @@ Rewards:
 - For every material design, visual, or implementation decision, re-read the relevant current repository owner and fresh official primary-source documentation when it can affect feasibility, platform behavior, safety, or cost.
 - Run an adversarial review after a material candidate: attack authority drift, player value, scope creep, implementation feasibility, evidence overclaim, visual/rights drift, and consumer ownership. Correct only the affected owner, then re-run the whole review until one clean pass remains.
 
+### Temporary Artifact Hygiene
+
+- Create temporary files only in an ignored, task-scoped location and remove them as soon as their consumer or verification use is complete.
+- A Git-ignored folder is still visible to Godot's importer. Keep temporary rendered rasters, PDF page previews, and build probes outside the project root. Use a narrowly scoped `.gdignore` only when a project-internal temporary folder is unavoidable and has no Godot consumer.
+- Every test that writes an isolated `user://test_*` file or directory must remove that exact path during teardown. After a suite, audit and remove only any remaining `user://test_*` artifacts; never delete production saves by pattern.
+- Before removing a worktree or local temporary branch, verify its exact path, confirm it is clean and merged into the current target, and preserve every dirty or unmerged worktree for its owner.
+- Treat `.godot/imported`, `.godot/shader_cache`, and `*.import` as regenerable local cache. They may be removed after machine verification, but never in place of source assets, approved candidates, canonical assets, runtime evidence, or current project documentation.
+- After clearing `.godot/imported`, run `Godot --headless --path . --import` before resource or scene verification. `--editor --quit` exits before import completion and is not a substitute.
+- At task closeout, read back temporary artifact and worktree state. Record what was removed and keep the remaining source/provenance and verification boundaries explicit.
+
 ## Godot Rules
 
 - Use Godot 4.7 stable.
@@ -136,10 +146,12 @@ godot --headless --path . --scene "res://scenes/main_menu.tscn" --quit-after 1
 Known Windows local fallback in this workspace:
 
 ```powershell
-& "C:\Users\user\Downloads\Godot_v4.7-stable_win64.exe\Godot_v4.7-stable_win64_console.exe" --headless --path . --quit
+& "C:\Users\user\Downloads\Godot_v4.7.2-stable_win64.exe\Godot_v4.7.2-stable_win64_console.exe" --headless --path . --quit
 ```
 
 For UI-only or documentation-only changes, explain what was inspected instead of claiming gameplay was tested.
+
+Tests that read `ViewportTexture` must run on a display renderer. A headless contract may explicitly skip only that capture assertion; it must not attempt the unsupported read and report an engine error.
 
 Final replies should include:
 - What changed.

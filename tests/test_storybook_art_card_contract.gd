@@ -41,7 +41,11 @@ func _run() -> void:
 	if final_card != null:
 		_expect(final_card.texture != null, "composite final diorama card needs a texture")
 		if final_card.texture != null:
-			_expect(final_card.texture.resource_path == "res://assets/images/runtime/storybook/boat_c_dog_diorama_storybook.png", "composite card must use the reference-aligned diorama art")
+			_expect(final_card.texture.resource_path == "res://assets/images/runtime/voyage/normal_chibi/chibi-normal-rear-chroma-key.png", "composite card must use the approved rear chibi normal foreground")
+		var final_material := final_card.material_override as ShaderMaterial
+		_expect(final_material != null, "composite final diorama card must use the chibi chroma material")
+		if final_material != null:
+			_expect(final_material.shader != null and final_material.shader.resource_path == "res://shaders/chibi_normal_chroma_key.gdshader", "composite final diorama card must use the chibi chroma shader")
 		_expect(final_card.billboard != BaseMaterial3D.BILLBOARD_DISABLED, "composite final diorama card must face the active camera")
 
 	boat_space.queue_free()

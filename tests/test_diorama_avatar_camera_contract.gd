@@ -35,7 +35,10 @@ func _run() -> void:
 	var avatar := scene.get_node_or_null("VoyageWorld/BoatSpace/PlayerAvatarPlaceholder") as Node3D
 	var pet := scene.get_node_or_null("VoyageWorld/BoatSpace/RestingPetPlaceholder") as Node3D
 	var boat := scene.get_node_or_null("VoyageWorld/BoatSpace/BoatBow") as Node3D
+	var water_contact := scene.get_node_or_null("VoyageWorld/BoatWaterContact") as Sprite3D
 	_expect(boat_space != null, "normal play must provide one BoatSpace owner")
+	_expect(boat_space != null and boat_space.visible, "normal play must render one actual BoatSpace instead of a baked duplicate")
+	_expect(water_contact != null and water_contact.visible and water_contact.texture != null, "normal play must render a local water-contact layer below the boat")
 	_expect(avatar != null, "normal play must include a visible player avatar placeholder")
 	if avatar != null:
 		_expect(avatar.has_method("is_technical_placeholder"), "avatar must expose its evidence class")
@@ -57,10 +60,14 @@ func _run() -> void:
 
 	if boat_space != null and avatar != null and pet != null and boat != null:
 		var space_before := boat_space.position
+		var rotation_before := boat_space.rotation
 		var avatar_before := avatar.position
 		var pet_before := pet.position
+		var contact_scale_before := water_contact.scale if water_contact != null else Vector3.ZERO
 		scene.call("_apply_drift_motion", 0.5)
 		_expect(boat_space.position != space_before, "BoatSpace must carry visible deck composition through bob")
+		_expect(boat_space.rotation != rotation_before, "visible BoatSpace must add a gentle hull roll during bob")
+		_expect(water_contact != null and water_contact.scale != contact_scale_before, "water-contact layer must breathe independently with the floating boat")
 		_expect(avatar.position == avatar_before, "visible avatar must keep local deck position during bob")
 		_expect(pet.position == pet_before, "resting pet must keep local deck position during bob")
 	else:

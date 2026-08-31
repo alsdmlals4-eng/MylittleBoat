@@ -1,8 +1,9 @@
-# 오늘의 마음을 선택하고 새 항해를 시작한다.
+# 과거 메뉴 자료의 외형 선택을 보존하되 시작 경로는 책임지지 않는다.
 extends Control
 
 const IDENTITY_CATALOG_SCRIPT = preload("res://scripts/identity/identity_visual_catalog.gd")
 const TIME_OF_DAY_CATALOG_SCRIPT = preload("res://scripts/voyage/time_of_day_catalog.gd")
+const REAL_TIME_ATMOSPHERE_RESOLVER_SCRIPT = preload("res://scripts/voyage/real_time_atmosphere_resolver.gd")
 const ATMOSPHERE_BACKGROUNDS := {
 	"dawn": preload("res://assets/images/ui/main_menu/main_menu_dawn_storybook_v1.png"),
 	"bright": preload("res://assets/images/ui/main_menu/main_menu_bright_storybook_v1.png"),
@@ -12,33 +13,33 @@ const ATMOSPHERE_BACKGROUNDS := {
 
 var _identity_catalog = IDENTITY_CATALOG_SCRIPT.new()
 var _time_of_day_catalog = TIME_OF_DAY_CATALOG_SCRIPT.new()
+var _real_time_atmosphere_resolver = REAL_TIME_ATMOSPHERE_RESOLVER_SCRIPT.new()
 
 
 func _ready() -> void:
-	_connect_mood_button(%CalmButton, "평온")
-	_connect_mood_button(%TiredButton, "지침")
-	_connect_mood_button(%LonelyButton, "외로움")
-	_connect_mood_button(%ExcitedButton, "설렘")
+	_connect_mood_button(%CalmButton)
+	_connect_mood_button(%TiredButton)
+	_connect_mood_button(%LonelyButton)
+	_connect_mood_button(%ExcitedButton)
 	%IdentityButton.pressed.connect(_show_identity_panel)
 	%IdentityCloseButton.pressed.connect(_hide_identity_panel)
 	%PlayerStyleOption.item_selected.connect(_on_player_style_selected)
 	%PetTypeOption.item_selected.connect(_on_pet_type_selected)
-	%TimeOfDayOption.item_selected.connect(_on_time_of_day_selected)
 	_populate_identity_options()
-	_populate_time_of_day_options()
+	%TimeOfDayOption.visible = false
 	_refresh_identity_summary()
 	refresh_atmosphere_background()
 
 
-func _connect_mood_button(button: Button, mood: String) -> void:
+func _connect_mood_button(button: Button) -> void:
 	button.pressed.connect(func() -> void:
-		_start_voyage(mood)
+		_start_voyage()
 	)
 
 
-## Starts a new voyage with the selected mood while keeping accumulated memories.
-func _start_voyage(mood: String) -> void:
-	GameState.begin_voyage(mood)
+## Starts a new direct voyage while keeping accumulated memories.
+func _start_voyage() -> void:
+	GameState.begin_voyage()
 	get_tree().change_scene_to_file("res://scenes/game.tscn")
 
 
@@ -80,26 +81,10 @@ func _on_pet_type_selected(index: int) -> void:
 	_refresh_identity_summary()
 
 
-func _populate_time_of_day_options() -> void:
-	%TimeOfDayOption.clear()
-	for time_of_day_id in _time_of_day_catalog.get_time_of_day_ids():
-		%TimeOfDayOption.add_item(_time_of_day_catalog.get_label(time_of_day_id))
-		%TimeOfDayOption.set_item_metadata(%TimeOfDayOption.item_count - 1, time_of_day_id)
-	_select_option_by_id(%TimeOfDayOption, GameState.get_selected_time_of_day())
-
-
-func _on_time_of_day_selected(index: int) -> void:
-	if index < 0 or index >= %TimeOfDayOption.item_count:
-		return
-	%TimeOfDayOption.select(index)
-	GameState.select_time_of_day(str(%TimeOfDayOption.get_item_metadata(index)))
-	refresh_atmosphere_background()
-
-
-## Applies the approved sea-and-horizon atmosphere to the current menu choice.
+## Applies a local-time atmosphere only if this legacy surface is intentionally opened.
 func refresh_atmosphere_background() -> void:
-	var selected_time_of_day := _time_of_day_catalog.normalize_time_of_day(GameState.get_selected_time_of_day())
-	%AtmosphereBackground.texture = ATMOSPHERE_BACKGROUNDS[selected_time_of_day] as Texture2D
+	var current_time_of_day := _time_of_day_catalog.normalize_time_of_day(_real_time_atmosphere_resolver.resolve_system_time())
+	%AtmosphereBackground.texture = ATMOSPHERE_BACKGROUNDS[current_time_of_day] as Texture2D
 
 
 func _refresh_identity_summary() -> void:

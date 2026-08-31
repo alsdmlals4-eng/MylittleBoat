@@ -5,14 +5,14 @@ const CATALOG_PATH := "res://scripts/identity/identity_visual_catalog.gd"
 const BOAT_SPACE_PATH := "res://scenes/boat_space.tscn"
 const GAME_STATE_TEST_SAVE_PATH := "user://identity_visual_contract.cfg"
 const EXPECTED_PLAYER_PATHS := {
-	"a_soft_hooded": "res://assets/images/runtime/storybook/avatar_a_soft_hooded_storybook.png",
-	"b_short_cape": "res://assets/images/runtime/storybook/avatar_b_short_cape_storybook.png",
+	"a_soft_hooded": "res://assets/images/runtime/chibi_alternates/avatar_a_soft_hooded_chibi.png",
+	"b_short_cape": "res://assets/images/runtime/chibi_alternates/avatar_b_short_cape_chibi.png",
 	"c_loose_knit": "res://assets/images/runtime/storybook/c_default_storybook.png",
 }
 const EXPECTED_PET_PATHS := {
-	"cat": "res://assets/images/runtime/storybook/pet_cat_storybook.png",
-	"rabbit": "res://assets/images/runtime/storybook/pet_rabbit_storybook.png",
-	"otter": "res://assets/images/runtime/storybook/pet_otter_storybook.png",
+	"cat": "res://assets/images/runtime/chibi_alternates/pet_cat_chibi.png",
+	"rabbit": "res://assets/images/runtime/chibi_alternates/pet_rabbit_chibi.png",
+	"otter": "res://assets/images/runtime/chibi_alternates/pet_otter_chibi.png",
 	"dog": "res://assets/images/runtime/storybook/dog_default_storybook.png",
 }
 
@@ -77,6 +77,10 @@ func _expect_visual_route(player_style_id: String, pet_type_id: String, expected
 		_expect(route.get("mode", "") == expected_mode, "selected pair must use expected route")
 		_expect(route.get("player_style_id", "") == player_style_id, "router must expose selected player")
 		_expect(route.get("pet_type_id", "") == pet_type_id, "router must expose selected pet")
+		var selected_avatar := _get_selected_avatar_node(scene, player_style_id)
+		var selected_pet := _get_selected_pet_node(scene, pet_type_id)
+		_expect(_get_art_card_texture_path(selected_avatar) == EXPECTED_PLAYER_PATHS[player_style_id], "selected player card must consume its approved texture")
+		_expect(_get_art_card_texture_path(selected_pet) == EXPECTED_PET_PATHS[pet_type_id], "selected pet card must consume its approved texture")
 		var final_card := scene.get_node_or_null("FinalDioramaCard") as Sprite3D
 		_expect(final_card != null, "BoatSpace must preserve FinalDioramaCard")
 		if expected_mode == "final_composite":
@@ -85,8 +89,6 @@ func _expect_visual_route(player_style_id: String, pet_type_id: String, expected
 			var avatar_cards := scene.get_node_or_null("PlayerAvatarPlaceholder/VisualStudy/AvatarCards")
 			var pet_cards := scene.get_node_or_null("RestingPetPlaceholder/VisualStudy/PetCards")
 			_expect(final_card != null and not final_card.visible, "non-default pair must hide C + dog composite")
-			var selected_avatar := _get_selected_avatar_node(scene, player_style_id)
-			var selected_pet := _get_selected_pet_node(scene, pet_type_id)
 			_expect(selected_avatar != null and selected_avatar.visible, "layered route must show the selected player card")
 			_expect(selected_pet != null and selected_pet.visible, "layered route must show the selected pet card")
 			_expect(_visible_child_count(avatar_cards) + int(player_style_id == "c_loose_knit") == 1, "layered route must show exactly one player card")
@@ -115,6 +117,13 @@ func _get_selected_avatar_node(scene: Node, player_style_id: String) -> Node3D:
 func _get_selected_pet_node(scene: Node, pet_type_id: String) -> Node3D:
 	var path := "RestingPetPlaceholder/VisualStudy/StorybookDogDefault" if pet_type_id == "dog" else "RestingPetPlaceholder/VisualStudy/PetCards/%s" % pet_type_id
 	return scene.get_node_or_null(path) as Node3D
+
+
+func _get_art_card_texture_path(owner: Node3D) -> String:
+	if owner == null:
+		return ""
+	var art_card := owner.get_node_or_null("ArtCard") as Sprite3D
+	return art_card.texture.resource_path if art_card != null and art_card.texture != null else ""
 
 
 func _remove_game_state_test_save() -> void:

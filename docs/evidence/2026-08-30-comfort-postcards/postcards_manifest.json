@@ -1,0 +1,22 @@
+{
+	"postcards": [
+		{
+			"atmosphere_id": "bright",
+			"comfort_profile": "standard",
+			"image_path": "user://test_capture_voyage_postcards/postcard_1788086934.png",
+			"label": "밝은 바다의 포스트카드"
+		},
+		{
+			"atmosphere_id": "bright",
+			"comfort_profile": "gentle",
+			"image_path": "user://test_capture_voyage_postcards/postcard_1788086934_2.png",
+			"label": "밝은 바다의 포스트카드"
+		},
+		{
+			"atmosphere_id": "bright",
+			"comfort_profile": "still",
+			"image_path": "user://test_capture_voyage_postcards/postcard_1788086935.png",
+			"label": "밝은 바다의 포스트카드"
+		}
+	]
+}

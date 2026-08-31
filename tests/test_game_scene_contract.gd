@@ -1,5 +1,10 @@
-# 항해 화면이 디오라마·상태 연속성·감상·발견·낚시·마음 톤·다음 항해 흐름을 실제 UI/환경으로 표현하는지 검증한다.
+# 보트 휴식 화면의 저밀도 메뉴·감상·낚시·세션 연속성을 검증한다.
 extends SceneTree
+
+const GAME_SCENE_PATH := "res://scenes/game.tscn"
+const COMFORT_STORAGE_PATH := "user://test_game_scene_comfort.cfg"
+const PHOTO_CONFIG_PATH := "user://test_game_scene_postcards.cfg"
+const PHOTO_IMAGE_DIRECTORY := "user://test_game_scene_postcards"
 
 var _failures := 0
 
@@ -20,9 +25,15 @@ func _run() -> void:
 	game_state.remaining_seconds = 123.0
 	game_state.speed_index = 1
 	game_state.appreciation_mode = false
-	game_state.selected_mood = "평온"
-
-	var packed_scene := load("res://scenes/game.tscn") as PackedScene
+	_remove_test_file()
+	_cleanup_photo_storage()
+	if game_state.has_method("set_comfort_storage_path"):
+		game_state.set_comfort_storage_path(COMFORT_STORAGE_PATH)
+	if game_state.has_method("set_motion_comfort_profile"):
+		game_state.set_motion_comfort_profile("standard")
+	if game_state.has_method("set_photo_memory_storage"):
+		game_state.set_photo_memory_storage(PHOTO_CONFIG_PATH, PHOTO_IMAGE_DIRECTORY)
+	var packed_scene := load(GAME_SCENE_PATH) as PackedScene
 	_expect(packed_scene != null, "game.tscn must load")
 	if packed_scene == null:
 		_finish()
@@ -31,32 +42,60 @@ func _run() -> void:
 	var scene := packed_scene.instantiate()
 	root.add_child(scene)
 	await process_frame
-
 	var timer_label := scene.get_node_or_null("TopPanel/TopVBox/TimerLabel") as Label
+	var voyage_status := scene.get_node_or_null("TopPanel/TopVBox/VoyageStatusLabel") as Label
+	var rest_menu_button := scene.get_node_or_null("RestMenuButton") as Button
+	var bottom_panel := scene.get_node_or_null("BottomPanel") as Control
 	var take_photo_button := scene.get_node_or_null("BottomPanel/ButtonGrid/TakePhotoButton") as Button
 	var appreciation_button := scene.get_node_or_null("BottomPanel/ButtonGrid/AppreciationButton") as Button
 	var speed_button := scene.get_node_or_null("BottomPanel/ButtonGrid/SpeedButton") as Button
-	var letter_button := scene.get_node_or_null("BottomPanel/ButtonGrid/LetterButton") as Button
-	var scenery_button := scene.get_node_or_null("BottomPanel/ButtonGrid/SceneryButton") as Button
 	var album_button := scene.get_node_or_null("BottomPanel/ButtonGrid/AlbumButton") as Button
 	var fishing_button := scene.get_node_or_null("BottomPanel/ButtonGrid/FishingButton") as Button
-	var next_voyage_button := scene.get_node_or_null("BottomPanel/ButtonGrid/NextVoyageButton") as Button
 	var fishing_status := scene.get_node_or_null("TopPanel/TopVBox/FishingStatusLabel") as Label
+	var distant_scenery_label := scene.get_node_or_null("DistantSceneryLabel") as Label
+	var next_voyage_button := scene.get_node_or_null("BottomPanel/ButtonGrid/NextVoyageButton") as Button
+	var comfort_button := scene.get_node_or_null("BottomPanel/ButtonGrid/ComfortButton") as Button
 	var camera_rig := scene.get_node_or_null("VoyageWorld/DioramaCameraRig") as Node3D
-	var world_environment := scene.get_node_or_null("VoyageWorld/WorldEnvironment") as WorldEnvironment
-	var calm_environment_present := world_environment != null and world_environment.environment != null
-	var calm_color := Color.BLACK
-	if calm_environment_present:
-		calm_color = world_environment.environment.background_color
+	var boat_space := scene.get_node_or_null("VoyageWorld/BoatSpace") as Node3D
+	var can_capture_viewport := DisplayServer.get_name() != "headless"
 
 	_expect(timer_label != null and timer_label.text == "02:03", "game scene must resume GameState.remaining_seconds after a scene round trip")
-	_expect(letter_button != null and not letter_button.visible, "letter action must stay hidden until an ambient letter exists")
-	_expect(scenery_button != null and not scenery_button.visible, "scenery action must stay hidden until an ambient scenery exists")
+	_expect(voyage_status != null and not voyage_status.text.contains("마음:"), "first-frame status must remain neutral")
+	_expect(rest_menu_button != null and rest_menu_button.visible, "normal view must show a compact rest menu entry")
+	_expect(bottom_panel != null and not bottom_panel.visible, "normal view must keep the large action grid closed")
 	_expect(fishing_button != null, "game scene must expose optional FishingButton")
 	_expect(fishing_status != null, "game scene must expose FishingStatusLabel")
-	_expect(next_voyage_button != null, "game scene must expose a NextVoyageButton for repeated memory-building sessions")
-	if next_voyage_button != null:
-		_expect(not next_voyage_button.visible, "NextVoyageButton must stay hidden before the current five-minute voyage is complete")
+	_expect(distant_scenery_label != null and not distant_scenery_label.visible, "distant scenery must begin as quiet non-interactive context")
+	_expect(scene.get_node_or_null("BottomPanel/ButtonGrid/LetterButton") == null, "direct voyage must not expose a letter-recording action")
+	_expect(scene.get_node_or_null("BottomPanel/ButtonGrid/SceneryButton") == null, "direct voyage must not expose a scenery-recording action")
+	_expect(next_voyage_button != null and not next_voyage_button.visible, "next voyage stays hidden before the five-minute session completes")
+	_expect(comfort_button != null, "rest menu must expose an optional ComfortButton")
+	if take_photo_button != null and can_capture_viewport:
+		var postcard_count_before: int = game_state.photo_memories.size()
+		take_photo_button.emit_signal("pressed")
+		RenderingServer.force_draw(true)
+		await RenderingServer.frame_post_draw
+		await process_frame
+		_expect(game_state.photo_memories.size() == postcard_count_before + 1, "photo button must save one postcard after a rendered frame")
+		_expect(rest_menu_button != null and rest_menu_button.visible, "photo capture must restore compact rest menu visibility")
+		_expect(bottom_panel != null and not bottom_panel.visible, "photo capture must restore closed rest menu state")
+		_expect(scene.get_active_camera_mode() == "diorama", "photo capture must not switch camera mode")
+		if game_state.photo_memories.size() == postcard_count_before + 1:
+			_expect(FileAccess.file_exists(str(game_state.photo_memories.back().get("image_path", ""))), "photo button postcard must reference a real local PNG")
+	elif take_photo_button != null:
+		print("SKIP: headless renderer does not support viewport postcard capture")
+
+	if scene.has_method("open_rest_menu"):
+		scene.open_rest_menu()
+		_expect(bottom_panel != null and bottom_panel.visible, "rest menu API must reveal optional actions")
+		_expect(rest_menu_button != null and not rest_menu_button.visible, "opening rest menu must hide the compact entry")
+		if comfort_button != null:
+			_expect(comfort_button.visible and comfort_button.text == "파도: 기본", "comfort starts at the approved standard motion profile")
+			comfort_button.emit_signal("pressed")
+			await process_frame
+			_expect(comfort_button.text == "파도: 잔잔", "comfort button cycles to the gentle motion profile")
+	else:
+		_expect(false, "game scene must provide open_rest_menu")
 
 	if appreciation_button != null and take_photo_button != null and speed_button != null and album_button != null:
 		appreciation_button.emit_signal("pressed")
@@ -65,10 +104,40 @@ func _run() -> void:
 		_expect(not take_photo_button.visible, "appreciation mode must hide TakePhotoButton")
 		_expect(not speed_button.visible, "appreciation mode must hide SpeedButton")
 		_expect(not album_button.visible, "appreciation mode must hide AlbumButton")
+		_expect(comfort_button != null and not comfort_button.visible, "appreciation mode must hide ComfortButton with other optional controls")
 		appreciation_button.emit_signal("pressed")
 		await process_frame
 
+	if boat_space != null and camera_rig != null and game_state.has_method("set_motion_comfort_profile"):
+		var base_boat_position: Vector3 = scene.get("_boat_space_base_position")
+		var base_boat_rotation: Vector3 = scene.get("_boat_space_base_rotation")
+		var base_camera_position: Vector3 = scene.get("_diorama_camera_base_position")
+		var base_boat_y := base_boat_position.y
+		var base_boat_roll := base_boat_rotation.z
+		var base_camera_y := base_camera_position.y
+		scene.set("_drift_phase", 0.0)
+		game_state.set_motion_comfort_profile("standard")
+		scene.call("_apply_drift_motion", 0.5)
+		var standard_boat_offset := absf(boat_space.position.y - base_boat_y)
+		var standard_camera_offset := absf(camera_rig.position.y - base_camera_y)
+		scene.set("_drift_phase", 0.0)
+		game_state.set_motion_comfort_profile("gentle")
+		scene.call("_apply_drift_motion", 0.5)
+		var gentle_boat_offset := absf(boat_space.position.y - base_boat_y)
+		var gentle_camera_offset := absf(camera_rig.position.y - base_camera_y)
+		scene.set("_drift_phase", 0.0)
+		game_state.set_motion_comfort_profile("still")
+		scene.call("_apply_drift_motion", 0.5)
+		_expect(is_equal_approx(gentle_boat_offset, standard_boat_offset * 0.5), "gentle comfort must halve visible boat bob at the same drift phase")
+		_expect(is_equal_approx(gentle_camera_offset, standard_camera_offset * 0.5), "gentle comfort must halve visible camera bob at the same drift phase")
+		_expect(is_equal_approx(boat_space.position.y, base_boat_y), "still comfort must remove automatic boat bob")
+		_expect(is_equal_approx(boat_space.rotation.z, base_boat_roll), "still comfort must remove automatic boat roll")
+		_expect(is_equal_approx(camera_rig.position.y, base_camera_y), "still comfort must remove automatic camera bob")
+	else:
+		_expect(false, "game scene must expose boat, camera, and comfort profile behavior")
+
 	if camera_rig != null and scene.has_method("_cycle_speed"):
+		game_state.set_motion_comfort_profile("standard")
 		var before_y := camera_rig.position.y
 		scene.call("_cycle_speed")
 		scene.call("_process", 0.5)
@@ -76,34 +145,22 @@ func _run() -> void:
 	else:
 		_expect(false, "game scene must provide diorama camera rig and speed behavior")
 
-	_expect(scene.has_method("_spawn_ambient_discovery"), "game scene must schedule ambient discoveries instead of permanent reward buttons")
 	_expect(scene.has_method("_handle_fishing_action"), "game scene must connect the calm fishing interaction")
-	_expect(scene.has_method("_start_next_voyage"), "game scene must provide a path back to mood selection for the next voyage")
+	var source := FileAccess.get_file_as_string("res://scripts/voyage/game_scene.gd")
+	_expect(not source.contains("main_menu.tscn"), "completed voyages must not return to a setup menu")
+	_expect(not source.contains("_spawn_ambient_discovery"), "old action-gated ambient discovery must not remain in the product route")
+	_expect(source.contains("drift_scenery_director"), "game scene must consume foreground-only drifting scenery")
 
 	game_state.remaining_seconds = 0.01
 	game_state.voyage_record_created = false
 	scene.call("_process", 0.02)
 	await process_frame
-	if next_voyage_button != null:
-		_expect(next_voyage_button.visible, "NextVoyageButton must appear after the five-minute voyage record is created")
+	_expect(next_voyage_button != null and next_voyage_button.visible, "NextVoyageButton must appear after the five-minute voyage record is created")
 
 	scene.queue_free()
-	await process_frame
-
-	game_state.appreciation_mode = false
-	game_state.selected_mood = "설렘"
-	var excited_scene := packed_scene.instantiate()
-	root.add_child(excited_scene)
-	await process_frame
-	var excited_environment := excited_scene.get_node_or_null("VoyageWorld/WorldEnvironment") as WorldEnvironment
-	if not calm_environment_present or excited_environment == null or excited_environment.environment == null:
-		_expect(false, "game scene must expose a mood-tintable WorldEnvironment")
-	else:
-		var excited_color := excited_environment.environment.background_color
-		_expect(excited_color != calm_color, "different selected moods must make a subtle observable sea/sky tone difference")
-
-	excited_scene.queue_free()
-	await process_frame
+	await _release_runtime_soundscape_for_test_shutdown()
+	_remove_test_file()
+	_cleanup_photo_storage()
 	_finish()
 
 
@@ -112,6 +169,33 @@ func _expect(condition: bool, message: String) -> void:
 		return
 	_failures += 1
 	printerr("FAIL: %s" % message)
+
+
+func _remove_test_file() -> void:
+	if FileAccess.file_exists(COMFORT_STORAGE_PATH):
+		DirAccess.remove_absolute(ProjectSettings.globalize_path(COMFORT_STORAGE_PATH))
+
+
+func _cleanup_photo_storage() -> void:
+	if FileAccess.file_exists(PHOTO_CONFIG_PATH):
+		DirAccess.remove_absolute(ProjectSettings.globalize_path(PHOTO_CONFIG_PATH))
+	var absolute_directory := ProjectSettings.globalize_path(PHOTO_IMAGE_DIRECTORY)
+	if not DirAccess.dir_exists_absolute(absolute_directory):
+		return
+	var directory := DirAccess.open(absolute_directory)
+	if directory != null:
+		for file_name in directory.get_files():
+			DirAccess.remove_absolute(absolute_directory.path_join(file_name))
+	DirAccess.remove_absolute(absolute_directory)
+
+
+# 독립 GPU 검사 종료 전에 AudioServer가 재생 참조를 비울 프레임을 확보한다.
+func _release_runtime_soundscape_for_test_shutdown() -> void:
+	var soundscape := root.get_node_or_null("RestingSoundscape")
+	if soundscape != null and soundscape.has_method("release_ocean_bed_for_shutdown"):
+		soundscape.call("release_ocean_bed_for_shutdown")
+	for _frame in 4:
+		await process_frame
 
 
 func _finish() -> void:

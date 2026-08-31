@@ -58,6 +58,12 @@ func is_technical_placeholder() -> bool:
 	return true
 
 
+## Allows the final flat diorama to suppress only this temporary 3D mesh.
+func set_technical_visual_visible(is_visible: bool) -> void:
+	if is_instance_valid(_visual):
+		_visual.visible = is_visible
+
+
 func get_actions(actor_context: Dictionary = {}) -> Array[Dictionary]:
 	return _interaction.get_actions(actor_context)
 

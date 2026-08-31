@@ -1,6 +1,7 @@
 ﻿# Godot local cache
 .godot/
 .import/
+*.import
 
 # Godot export settings and credentials
 export.cfg

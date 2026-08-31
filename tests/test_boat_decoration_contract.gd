@@ -17,7 +17,7 @@ func _run() -> void:
 		_finish()
 		return
 
-	var before_affection: int = int(game_state.companion_affection)
+	var before_together_time: float = game_state.together_time_seconds
 	var before_photos: int = game_state.photos.size()
 	var before_sceneries: int = game_state.sceneries.size()
 	var before_letters: int = game_state.letters.size()
@@ -37,12 +37,12 @@ func _run() -> void:
 		_expect(str(game_state.call("get_boat_decor", "bow_left")) == "lantern", "decor placement must be stored")
 		game_state.reset_session()
 		_expect(str(game_state.call("get_boat_decor", "bow_left")) == "lantern", "reset_session must preserve boat decor")
-		game_state.begin_voyage("평온")
+		game_state.begin_voyage()
 		_expect(str(game_state.call("get_boat_decor", "bow_left")) == "lantern", "begin_voyage must preserve boat decor")
 		game_state.call("set_boat_decor", "bow_left", "")
 		_expect(str(game_state.call("get_boat_decor", "bow_left")) == "", "empty item id must clear a decor slot without loss")
 
-	_expect(int(game_state.companion_affection) == before_affection, "decor placement must not change companion affection")
+	_expect(is_equal_approx(game_state.together_time_seconds, before_together_time), "decor placement must not create together time")
 	_expect(game_state.photos.size() == before_photos, "decor placement must not create photo rewards")
 	_expect(game_state.sceneries.size() == before_sceneries, "decor placement must not create scenery rewards")
 	_expect(game_state.letters.size() == before_letters, "decor placement must not create letter rewards")

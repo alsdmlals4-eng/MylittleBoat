@@ -1,4 +1,4 @@
-# 실제 기록 유무에 따른 앨범 화면을 세로 해상도로 저장한다.
+# 실제 기록 유무에 따른 현재 현지 분위기의 앨범 화면을 세로 해상도로 저장한다.
 extends SceneTree
 
 const EVIDENCE_DIRECTORY := "res://docs/evidence/2026-08-28-album-composition"
@@ -23,20 +23,17 @@ func _capture() -> void:
 		_fail("album scene must load")
 		return
 	_clear_memories(game_state)
-	game_state.select_time_of_day("dawn")
-	if not await _capture_scene(packed_scene, "album_empty_dawn_540x960.png"):
+	if not await _capture_scene(packed_scene, "album_empty_current_local_540x960.png"):
 		return
 	game_state.photos.append("랜턴과 구름 사이의 바다")
 	game_state.sceneries.append("푸른 수평선")
 	game_state.letters.append("파도 소리가 고요했어요")
 	game_state.fish.append("정어리")
-	game_state.voyage_records.append("평온의 항해 · 사진 1 · 풍경 1 · 편지 1 · 물고기 1")
-	game_state.companion_affection = 2
-	game_state.select_time_of_day("sunset")
-	if not await _capture_scene(packed_scene, "album_populated_sunset_540x960.png"):
+	game_state.voyage_records.append("오늘의 항해 · 사진 1 · 풍경 1 · 편지 1 · 물고기 1")
+	game_state.together_time_seconds = 3660.0
+	if not await _capture_scene(packed_scene, "album_populated_current_local_540x960.png"):
 		return
 	_clear_memories(game_state)
-	game_state.select_time_of_day("bright")
 	print("PASS: album composition runtime captures")
 	quit(0)
 
@@ -66,7 +63,7 @@ func _clear_memories(game_state: Node) -> void:
 	game_state.letters.clear()
 	game_state.fish.clear()
 	game_state.voyage_records.clear()
-	game_state.companion_affection = 1
+	game_state.together_time_seconds = 0.0
 
 
 func _fail(message: String) -> void:

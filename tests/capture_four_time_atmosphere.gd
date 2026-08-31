@@ -1,7 +1,7 @@
 # 네 시간대의 두 카메라 런타임 화면 증거를 저장한다.
 extends SceneTree
 
-const EVIDENCE_DIRECTORY := "res://docs/evidence/2026-08-27-four-time-atmosphere"
+const EVIDENCE_DIRECTORY := "res://docs/evidence/2026-08-30-water-only-atmosphere-v2"
 const IDENTITY_TEST_SAVE_PATH := "user://capture_four_time_identity.cfg"
 const DECOR_TEST_SAVE_PATH := "user://capture_four_time_decor.cfg"
 const TIME_OF_DAY_CATALOG_SCRIPT = preload("res://scripts/voyage/time_of_day_catalog.gd")
@@ -46,19 +46,33 @@ func _capture() -> void:
 
 func _capture_pair(game_state: Node, time_of_day_id: String) -> bool:
 	game_state.reset_session()
-	game_state.selected_mood = "평온"
-	game_state.select_time_of_day(time_of_day_id)
+	game_state.voyage_active = true
+	game_state.remaining_seconds = 300.0
 	var packed_scene := load("res://scenes/game.tscn") as PackedScene
 	if packed_scene == null:
 		_fail("game scene must load")
 		return false
 	var scene := packed_scene.instantiate()
 	root.add_child(scene)
-	await _wait_for_frames(10)
-	if not _save_runtime_image("%s_normal_540x960.png" % time_of_day_id):
+	var hour := _hour_for_time_of_day(time_of_day_id)
+	if not scene.has_method("apply_real_time_atmosphere_for_hour"):
+		_fail("game scene must expose injected real-time atmosphere API")
 		scene.queue_free()
 		await process_frame
 		return false
+	scene.apply_real_time_atmosphere_for_hour(hour)
+	if not scene.has_method("get_active_atmosphere_id") or scene.get_active_atmosphere_id() != time_of_day_id:
+		_fail("capture hour must apply requested visual ID: %s" % time_of_day_id)
+		scene.queue_free()
+		await process_frame
+		return false
+	await _wait_for_frames(10)
+	if not await _save_runtime_image("%s_normal_540x960.png" % time_of_day_id):
+		scene.queue_free()
+		await process_frame
+		return false
+	if scene.has_method("open_rest_menu"):
+		scene.open_rest_menu()
 	var appreciation_button := scene.get_node_or_null("BottomPanel/ButtonGrid/AppreciationButton") as Button
 	if appreciation_button == null:
 		_fail("appreciation button must exist")
@@ -67,7 +81,7 @@ func _capture_pair(game_state: Node, time_of_day_id: String) -> bool:
 		return false
 	appreciation_button.emit_signal("pressed")
 	await _wait_for_frames(10)
-	if not _save_runtime_image("%s_appreciation_540x960.png" % time_of_day_id):
+	if not await _save_runtime_image("%s_appreciation_540x960.png" % time_of_day_id):
 		scene.queue_free()
 		await process_frame
 		return false
@@ -82,6 +96,8 @@ func _wait_for_frames(frame_count: int) -> void:
 
 
 func _save_runtime_image(file_name: String) -> bool:
+	RenderingServer.force_draw(true)
+	await RenderingServer.frame_post_draw
 	var image := root.get_texture().get_image()
 	if image == null or image.is_empty():
 		_fail("empty runtime image for %s" % file_name)
@@ -101,7 +117,6 @@ func _remove_identity_test_save() -> void:
 
 func _restore_test_state(game_state: Node) -> void:
 	game_state.reset_session()
-	game_state.select_time_of_day("bright")
 	game_state.set_identity_storage_path("user://identity_profile_v1.cfg")
 	_remove_identity_test_save()
 	game_state.boat_decor.clear()
@@ -109,6 +124,19 @@ func _restore_test_state(game_state: Node) -> void:
 	game_state.set_boat_decor_storage_path("user://boat_decor_v1.cfg")
 	game_state.load_boat_decor()
 	_remove_decor_test_save()
+
+
+func _hour_for_time_of_day(time_of_day_id: String) -> int:
+	match time_of_day_id:
+		"dawn":
+			return 6
+		"bright":
+			return 12
+		"sunset":
+			return 18
+		"night":
+			return 22
+	return 12
 
 
 func _remove_decor_test_save() -> void:

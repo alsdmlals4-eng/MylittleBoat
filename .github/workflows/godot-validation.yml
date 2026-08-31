@@ -28,8 +28,8 @@ jobs:
       - name: Verify Godot version
         run: godot --version
 
-      - name: Import project through the editor headlessly
-        run: godot --editor --headless --path . --quit
+      - name: Complete Godot import cache hydration
+        run: godot --headless --path . --import
 
       - name: Run focused behavior contracts
         shell: bash

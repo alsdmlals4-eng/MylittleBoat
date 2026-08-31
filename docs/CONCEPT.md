@@ -2,11 +2,11 @@
 
 ## 한 문장
 
-작은 보트에서 내 캐릭터와 동반자가 바다를 바라보며 함께 쉬는, 아무것도 하지 않아도 완성되는 휴식 게임입니다.
+작은 보트에서 내 캐릭터와 동반자가 목적지 없이 잔잔한 바다를 천천히 지나며 함께 쉬는, 아무것도 하지 않아도 완성되는 휴식 게임입니다.
 
 ## Player Promise
 
-플레이어는 게임을 여는 즉시 물 위에 떠 있는 보트, 캐릭터, 동반자, 바다와 수평선을 봅니다. 그 순간부터 이미 플레이가 시작됩니다. 더 하고 싶을 때만 사진을 찍고, 낚시하거나, 감상 모드로 바다를 보거나, 보트를 꾸밉니다.
+플레이어는 게임을 여는 즉시 물 위를 느리게 지나가는 보트, 캐릭터, 동반자, 바다와 수평선을 봅니다. 그 순간부터 이미 플레이가 시작됩니다. 목적지나 도착 보상은 없으며, 더 하고 싶을 때만 사진을 찍고, 낚시하거나, 감상 모드로 바다를 보거나, 보트를 꾸밉니다.
 
 보상은 점수나 승리가 아니라 “내 작은 장소에서 잠시 쉬었다”는 개인적인 기억과 애착입니다.
 
@@ -21,18 +21,18 @@
 → 앨범에 개인적인 흔적을 남기거나 계속 쉬기
 ```
 
-`오늘의 마음`과 시작 전 선택은 제품에서 제거되었습니다. 기기의 현지 현실 시간이 새벽·밝음·해질녘·밤을 자동으로 정하며, 플레이어가 바꾸는 UI나 저장된 분위기 선택은 없습니다. 게임을 켜 둔 active foreground 시간은 먼 구조물과 풍경이 천천히 흘러가는 시각 연출에만 쓰입니다.
+`오늘의 마음`과 시작 전 선택은 제품에서 제거되었습니다. 기기의 현지 현실 시간이 새벽·밝음·해질녘·밤을 자동으로 정하며, 플레이어가 바꾸는 UI나 저장된 분위기 선택은 없습니다. 게임을 켜 둔 active foreground 시간은 먼 구조물과 풍경이 천천히 흘러가는 시각 연출에만 쓰이며, 목적지·진행도·도착 보상으로 바뀌지 않습니다.
 
 ## 핵심 시스템의 의미
 
 | 시스템 | 플레이어에게 주는 것 | 피해야 할 것 | 제품 상태 |
 | --- | --- | --- | --- |
-| Floating Rest | 보트·캐릭터·동반자와 바다를 함께 보는 휴식 | 기다려야만 보상이 나오는 구조 | `CONFIRMED`, direct-entry 구현 대기 |
+| Floating Rest | 보트·캐릭터·동반자와 목적지 없이 잔잔한 바다를 함께 지나가는 휴식 | 기다려야만 보상이 나오는 구조와 도착 목표 | `CONFIRMED`, direct-entry 구현 대기 |
 | Appreciation Camera | UI를 줄이고 수평선에 집중하는 감상 | 시간·보상을 바꾸는 별도 모드 | earlier slice 구현, Human comfort `NOT_RUN` |
 | 꾸미기 | 내 공간을 조금씩 내 취향으로 만드는 선택 | stats, rarity, gacha, 숙제 | earlier slice 구현, entry 이동 대기 |
 | 사진·낚시·작은 상호작용 | 원하는 순간에만 사용하는 가벼운 행동 | 반복 파밍·실패 패널티 | `PARTIAL_IMPLEMENTED` |
-| 함께 보낸 시간 | 동반자와 머문 시간을 앨범의 조용한 관계 기억으로 남김 | live level, progress bar, 행동 보상 | `CONFIRMED_NOT_IMPLEMENTED` |
-| Ambient Discovery | 드물게 바다가 남기는 작은 자동 기억 | 첫 발견 보장, 버튼 요구, 보상·과제 | `CONFIRMED_NOT_IMPLEMENTED` |
+| 함께 보낸 시간 | foreground 항해에서 함께 머문 시간을 앨범의 조용한 관계 기억으로 남김 | live level, progress bar, 행동 보상 | `IMPLEMENTED / RUNTIME_CAPTURE_VERIFIED`; Human readability `NOT_RUN` |
+| Ambient Discovery | 드물게 바다가 남기는 작은 자동 기억 | 첫 발견 보장, 버튼 요구, 보상·과제 | `IMPLEMENTED / RUNTIME_CAPTURE_VERIFIED`; local auto-save와 no-guarantee cadence 완료, Human five-minute observation `NOT_RUN` |
 | Album | 진짜 항해 흔적을 돌아보는 개인 기록 | completion checklist | `PARTIAL_IMPLEMENTED` |
 
 ## 시각 원칙

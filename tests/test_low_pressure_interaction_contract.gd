@@ -15,7 +15,7 @@ func _run() -> void:
 		_finish()
 		return
 
-	var before_affection: int = int(game_state.companion_affection)
+	var before_together_time: float = game_state.together_time_seconds
 	var before_photos: int = game_state.photos.size()
 	var before_sceneries: int = game_state.sceneries.size()
 	var before_letters: int = game_state.letters.size()
@@ -91,7 +91,7 @@ func _run() -> void:
 			await process_frame
 
 	_expect(game_state.appreciation_mode, "interactions must never force exit from Appreciation Camera")
-	_expect(int(game_state.companion_affection) == before_affection, "interactions must not change companion affection")
+	_expect(is_equal_approx(game_state.together_time_seconds, before_together_time), "interactions must not create together time")
 	_expect(game_state.photos.size() == before_photos, "interactions must not create photo rewards")
 	_expect(game_state.sceneries.size() == before_sceneries, "interactions must not create scenery rewards")
 	_expect(game_state.letters.size() == before_letters, "interactions must not create letter rewards")

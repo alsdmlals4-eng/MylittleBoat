@@ -35,6 +35,7 @@ func perform(actor_context: Dictionary, action_id: String) -> Dictionary:
 			"ok": false,
 			"target_id": _target_id,
 			"action_id": action_id,
+			"moment_id": "",
 			"message": "",
 			"state": _state.duplicate(true),
 		}
@@ -49,6 +50,7 @@ func perform(actor_context: Dictionary, action_id: String) -> Dictionary:
 		"target_id": _target_id,
 		"display_name": _display_name,
 		"action_id": action_id,
+		"moment_id": str(action.get("moment_id", "")),
 		"message": str(action.get("message", "")),
 		"state": _state.duplicate(true),
 	}

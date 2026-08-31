@@ -2,9 +2,9 @@
 extends RefCounted
 
 const CUSHION_TEXTURE_PATHS := {
-	"stripe": "res://assets/images/decor/pet_cushion/cushion_stripe.png",
-	"moon": "res://assets/images/decor/pet_cushion/cushion_moon.png",
-	"floral": "res://assets/images/decor/pet_cushion/cushion_floral.png",
+	"stripe": "res://assets/images/decor/pet_cushion/cushion_stripe_chibi.png",
+	"moon": "res://assets/images/decor/pet_cushion/cushion_moon_chibi.png",
+	"floral": "res://assets/images/decor/pet_cushion/cushion_floral_chibi.png",
 }
 const CUSHION_APPEARANCE_LABELS := {
 	"stripe": "줄무늬",
@@ -12,7 +12,7 @@ const CUSHION_APPEARANCE_LABELS := {
 	"floral": "꽃",
 }
 const DEFAULT_CUSHION_APPEARANCE := "stripe"
-const POSTCARD_TEXTURE_PATH := "res://assets/images/decor/postcard/postcard_boat_bright.png"
+const POSTCARD_TEXTURE_PATH := "res://assets/images/decor/postcard/postcard_chibi_moonboat.png"
 
 
 func get_cushion_appearance_ids() -> Array[String]:

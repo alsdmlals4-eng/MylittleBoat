@@ -1,9 +1,8 @@
-# 메인 메뉴의 네 가지 승인된 시간대 화면을 저장한다.
+# 시작 경로가 아닌 legacy 메뉴의 현재 현지 분위기 자료를 저장한다.
 extends SceneTree
 
 const EVIDENCE_DIRECTORY := "res://docs/evidence/2026-08-28-main-menu-composition"
 const MAIN_MENU_PATH := "res://scenes/main_menu.tscn"
-const TIME_OF_DAY_IDS := ["dawn", "bright", "sunset", "night"]
 
 
 func _init() -> void:
@@ -23,20 +22,17 @@ func _capture() -> void:
 	if packed_scene == null:
 		_fail("main menu scene must load")
 		return
-	for time_of_day_id in TIME_OF_DAY_IDS:
-		game_state.select_time_of_day(time_of_day_id)
-		var scene := packed_scene.instantiate()
-		root.add_child(scene)
-		for _frame in 10:
-			await process_frame
-		if not _save_runtime_image("main_menu_%s_540x960.png" % time_of_day_id):
-			scene.queue_free()
-			await process_frame
-			return
+	var scene := packed_scene.instantiate()
+	root.add_child(scene)
+	for _frame in 10:
+		await process_frame
+	if not _save_runtime_image("legacy_main_menu_current_local_540x960.png"):
 		scene.queue_free()
 		await process_frame
-	game_state.select_time_of_day("bright")
-	print("PASS: main menu atmosphere runtime captures")
+		return
+	scene.queue_free()
+	await process_frame
+	print("PASS: legacy main menu current-local capture")
 	quit(0)
 
 

@@ -31,7 +31,11 @@ func _run() -> void:
 		_expect(soundscape.has_method("is_authored_ocean_bed"), "soundscape must expose authored ocean-bed evidence")
 		if soundscape.has_method("is_authored_ocean_bed"):
 			_expect(bool(soundscape.call("is_authored_ocean_bed")), "current soundscape must identify as an authored ocean bed")
-	if ocean_bed != null:
+	var is_headless := DisplayServer.get_name() == "headless"
+	if ocean_bed != null and is_headless:
+		_expect(ocean_bed.stream == null, "headless machine checks must not allocate an audio stream with no output device")
+		_expect(not ocean_bed.playing, "headless machine checks must not start silent OceanBed playback")
+	elif ocean_bed != null:
 		_expect(ocean_bed.stream != null, "OceanBed must have an authored runtime stream wired")
 		_expect(ocean_bed.autoplay, "OceanBed must autoplay so doing nothing still produces the resting space")
 		_expect(ocean_bed.volume_db <= -12.0, "authored OceanBed must start conservatively below -12 dB")
@@ -42,6 +46,13 @@ func _run() -> void:
 			_expect(wave.loop_end > wave.loop_begin, "technical OceanBed loop range must be valid")
 			_expect(wave.mix_rate >= 24000, "authored OceanBed must keep enough sample resolution for a soft surf texture")
 			_expect(float(wave.loop_end - wave.loop_begin) / float(wave.mix_rate) >= 12.0, "authored OceanBed must use a long loop to reduce obvious repetition")
+			wave = null
+	_expect(soundscape != null and soundscape.has_method("release_ocean_bed_for_shutdown"), "persistent soundscape must release its generated audio before engine shutdown")
+	if soundscape != null and soundscape.has_method("release_ocean_bed_for_shutdown"):
+		soundscape.call("release_ocean_bed_for_shutdown")
+		_expect(not ocean_bed.playing, "shutdown release must stop the looping OceanBed playback")
+		_expect(ocean_bed.stream == null, "shutdown release must clear the generated OceanBed stream reference")
+		await process_frame
 
 	var pet := scene.get_node_or_null("VoyageWorld/BoatSpace/RestingPetPlaceholder") as Node3D
 	_expect(pet != null, "BoatSpace must include one clearly-placeholder resting pet")

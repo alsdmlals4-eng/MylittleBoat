@@ -20,6 +20,7 @@ func _ready() -> void:
 	_interaction.configure("pet", "동반자", [
 		{"id": "pet", "label": "쓰다듬기", "message": "동반자를 천천히 쓰다듬습니다."},
 		{"id": "look_at_sea", "label": "함께 바다 보기", "message": "동반자와 나란히 잔잔한 바다를 바라봅니다."},
+		{"id": "rest_together", "label": "나란히 쉬기", "message": "동반자가 곁에 몸을 붙이고 편히 쉽니다.", "moment_id": "pet_rest_together"},
 	])
 
 
@@ -54,6 +55,8 @@ func perform(actor_context: Dictionary, action_id: String) -> Dictionary:
 		_set_resting_state("glance")
 	elif action_id == "look_at_sea":
 		_set_resting_state("watch_sea")
+	elif action_id == "rest_together":
+		_set_resting_state("rest")
 	return result
 
 

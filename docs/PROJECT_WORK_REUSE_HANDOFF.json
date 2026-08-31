@@ -127,5 +127,187 @@
     ],
     "base_promotion_candidates": [],
     "reuse_learning_handoff": "NO_NEW_REUSE_LEARNING_FOR_BASE"
+  },
+  "learning_absorption_2026_08_31": {
+    "task": "BASE_PROJECT_LEARNING_ABSORPTION_AND_COMMON_PDF",
+    "status": "PROJECT_ABSORPTION_AND_PDF_QA_COMPLETE_BASE_REVIEW_PENDING",
+    "project_revision": {
+      "local_main_head": "5ca7343d1c47ee3e02d40eab11a2c84c055b0fd1",
+      "origin_main_observed": "8b78f8cba74d198a668ea2edcb77900d8b781564",
+      "working_tree": "DIRTY_UNMERGED_CURRENT_IMPLEMENTATION",
+      "open_pr_19": "READ_ONLY_NO_ABSORPTION"
+    },
+    "base_revision": {
+      "adopted_project_lock": "8553678f70e22f193a2336b591f677dcfa5a8965",
+      "remote_main_observed": "1f0ef9d8bdb1869c9ba25b33efdcb34cf2ccba83",
+      "base_mutation": "FORBIDDEN_THIS_TASK"
+    },
+    "selected_modules": [],
+    "reuse_mode": [
+      "REUSE_EXISTING_PROJECT_CANON",
+      "REUSE_EXISTING_BASE_EVIDENCE_AND_IMPORT_BOUNDARIES_READ_ONLY",
+      "PROJECT_ONLY_TEST_HYGIENE_CORRECTION",
+      "BASE_COMMON_CASE_PDF_ONLY"
+    ],
+    "project_paths_changed": [
+      ".github/workflows/godot-validation.yml",
+      "AGENTS.md",
+      "docs/learning/2026-08-28-clean-worktree-godot-import-baseline.md",
+      "docs/learning/2026-08-31-base-common-learning-report.md",
+      "docs/PROJECT_WORK_REUSE_HANDOFF.json",
+      "tests/test_ambient_memory_game_scene_contract.gd",
+      "tests/test_ambient_memory_persistence.gd",
+      "tests/test_ambient_memory_state_contract.gd",
+      "tests/test_memory_ledger_persistence.gd",
+      "tests/test_memory_ledger_state_contract.gd",
+      "tests/test_together_time_persistence.gd",
+      "output/pdf/MY_LITTLE_BOAT_BASE_COMMON_LEARNING_REPORT_2026-08-31.pdf"
+    ],
+    "verification_evidence": [
+      "Godot 4.7.2 six affected contract scripts PASS after teardown correction",
+      "Sequential user://test_*.cfg readback remaining_count=0 after those scripts",
+      "Current CI workflow uses godot --headless --path . --import",
+      "Godot 4.7.2 --import completed with exit 0 after temporary PDF previews were removed, but still emitted 45 ObjectDB / 22 resource shutdown warnings alongside Hera plugin startup/exit logs; root cause is not yet isolated",
+      "Official Godot command-line documentation confirms --import waits for resources and implies --editor plus --quit",
+      "Base HIGODOT owner and evidence-identity template readback confirms existing generic import/test/evidence boundaries",
+      "Project and Base revision/open-PR fresh readback recorded above"
+    ],
+    "evidence_ceiling": {
+      "project_worktree": "CURRENT_UNMERGED_NOT_MERGED_OR_RELEASE_VERIFIED",
+      "test_cleanup": "MACHINE_VERIFIED_ON_SIX_AFFECTED_CONTRACTS",
+      "import_command": "COMMAND_COMPLETION_EXIT_0_AND_OFFICIAL_DOCUMENTATION_VERIFIED; SHUTDOWN_WARNING_BASELINE_NOT_ISOLATED",
+      "base_review_pdf": "GENERATED_CANDIDATE_PENDING_BASE_REVIEW",
+      "base_rule_or_module_change": "NOT_REQUESTED_NOT_IMPLEMENTED",
+      "human_device_ux_audio_validation": "NOT_RUN"
+    },
+    "rollback": "Each changed project document, workflow line, and test teardown is independently reversible. Cleanup targets only the exact test-local user://test_* paths; no production save deletion, Base mutation, game feature change, or asset deletion occurred.",
+    "project_only_lessons": [
+      "Tests that create isolated user://test_* persistence artifacts must tear down their own exact paths; the project AGENTS now requires a post-suite exact-path audit.",
+      "The current project CI and clean-worktree operating record must use --import rather than the historical --editor --quit workaround.",
+      "Git-ignore does not prevent Godot import. Temporary raster render output must stay outside the project root or in a narrowly scoped .gdignore folder with no Godot consumer.",
+      "Current --import shutdown warnings repeated after project-internal temporary PNG removal. They may be plugin/engine lifecycle noise, but no cause or clean baseline is claimed until a scoped diagnostic separates it."
+    ],
+    "base_promotion_candidates": [
+      {
+        "candidate_id": "MLB-BASE-OBS-20260831-IMPORT-COMPLETION",
+        "classification": "MIXED",
+        "common_principle": "A clean-cache Godot validation gate must use a command that waits for import completion, and cache generation must remain distinct from product/runtime PASS.",
+        "project_only_values": "Exact CI job name, engine binary location, and current project asset set.",
+        "base_duplicate_comparison": "Base already owns generic Godot import/parse and generated-cache evidence boundaries in HIGODOT and execution-evidence owners; no exact completion-command rule was found in the targeted readback.",
+        "disposition": "BASE_COMMON_PDF_CANDIDATE_FOR_EXISTING_HIGODOT_OWNER_ONLY",
+        "new_module_skill_registry_or_pr": false
+      },
+      {
+        "candidate_id": "MLB-BASE-OBS-20260831-RENDERER_CAPABILITY",
+        "classification": "MIXED",
+        "common_principle": "A renderer-dependent assertion must state its required capability, run on a supporting route, and keep teardown evidence separate from exit-code success.",
+        "project_only_values": "ViewportTexture postcard capture and RestingSoundscape generated-audio teardown.",
+        "base_duplicate_comparison": "Base already requires import/test/runtime evidence separation and rejects diagnostic-only acceptance; this is corroborating case evidence, not a new Base mechanism.",
+        "disposition": "CORROBORATES_EXISTING_BASE_EVIDENCE_BOUNDARY",
+        "new_module_skill_registry_or_pr": false
+      }
+    ],
+    "recommended_followups": [
+      {
+        "id": "MLB-FOLLOWUP-20260831-CI-CONTRACT-COVERAGE",
+        "action": "MODIFY",
+        "element": "Existing Godot CI contract execution structure",
+        "current_state": "51 test_*.gd contract files exist, but godot-validation.yml explicitly invokes 26; 25 current contracts are not CI consumers.",
+        "request_reason": "A manually maintained partial list can make current unconsumed contracts look healthy and reintroduce false-green coverage drift.",
+        "expected_effect": "CI proves that every registered current headless-capable contract is consumed, while renderer-limited assertions retain an explicit skip/supporting-route boundary.",
+        "recommended_scope": "In a separate focused CI task, replace the partial list with one discoverable current-contract manifest or a bounded discovery loop plus an expected-count/allowlist check. Measure duration before raising CI timeout or cost.",
+        "status": "RECOMMEND_ONLY_NOT_IMPLEMENTED"
+      },
+      {
+        "id": "MLB-FOLLOWUP-20260831-RENDERER-MATRIX",
+        "action": "ADD",
+        "element": "Renderer capability matrix in the existing current implementation handoff",
+        "current_state": "Headless tests explicitly skip a rendered-image assertion; the supporting OpenGL verification is currently an executed local machine route and prose addendum, not a compact per-contract matrix.",
+        "request_reason": "Future workers can otherwise mistake a headless green run for full rendered-image coverage or attempt unsupported capture paths.",
+        "expected_effect": "Each renderer-dependent contract has one owner, required renderer, skip rationale, supporting command, and evidence ceiling without adding a new engine tool or Base skill.",
+        "recommended_scope": "Add a small table to docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md only after the current unmerged implementation becomes the selected review baseline.",
+        "status": "RECOMMEND_ONLY_NOT_IMPLEMENTED"
+      },
+      {
+        "id": "MLB-FOLLOWUP-20260831-BASE-LOCK-PREFLIGHT",
+        "action": "MODIFY_AFTER_REVIEW",
+        "element": "Project adopted Base lock and reuse profile",
+        "current_state": "The project adoption record pins Base 8553678f, while fresh read-only Base remote observation is 1f0ef9d8.",
+        "request_reason": "Unexplained drift makes later reuse decisions ambiguous, but automatically replacing an adopted contract can silently change project obligations.",
+        "expected_effect": "A separate exact compatibility preflight can record ADOPT, KEEP_PINNED, or REJECT with rollback and consumer impact rather than treating remote freshness as automatic adoption.",
+        "recommended_scope": "Do not modify docs/base-reuse-adoption.json in this task. Revisit only through the project-local adoption procedure after project worktree/PR ownership is settled.",
+        "status": "DEFERRED_BY_ADOPTED_CONTRACT_SAFETY"
+      },
+      {
+        "id": "MLB-FOLLOWUP-20260831-HISTORICAL-GAP-ROUTING",
+        "action": "RETIRE_OR_RELABEL",
+        "element": "Stale current-runtime-gap prose in CURRENT_GODOT_IMPLEMENTATION.md",
+        "current_state": "The table under '현재 제품 방향과 runtime gap' says startup proceeds through scenes/main_menu.tscn, while project.godot currently names res://scenes/game.tscn as run/main_scene.",
+        "request_reason": "A current handoff that presents a historical gap as present implementation can misroute future fixes and undermine fresh-read authority.",
+        "expected_effect": "Historical decisions remain auditable but are visibly separated from current runtime truth, preventing agents from re-solving an already superseded entry-flow issue.",
+        "recommended_scope": "First reconcile current scene/test evidence and then relabel that table as HISTORICAL_SUPERSEDED or move it to a historical decision record. Do not delete the main-menu scene, legacy code, or approved provenance without an exact consumer audit.",
+        "status": "RECOMMEND_ONLY_REQUIRES_FOCUSED_RECONCILIATION"
+      },
+      {
+        "id": "MLB-FOLLOWUP-20260831-TEMPORARY-ARTIFACTS",
+        "action": "RETIRE_COMPLETED",
+        "element": "Historical --editor --quit import gate and test-local leftover artifacts",
+        "current_state": "The old command was a non-completion workaround; affected tests left exact user://test_* config files after successful execution.",
+        "request_reason": "Neither behavior is suitable as current operational truth or persistent workspace state.",
+        "expected_effect": "The current workflow uses --import, exact test teardown runs, and sequential verification reports zero leftover test configs without touching production saves.",
+        "recommended_scope": "Completed in this task. Retain the old learning record only as clearly labeled historical evidence.",
+        "status": "IMPLEMENTED_AND_MACHINE_VERIFIED"
+      },
+      {
+        "id": "MLB-FOLLOWUP-20260831-IMPORT-SHUTDOWN-BASELINE",
+        "action": "DIAGNOSE",
+        "element": "Godot --import shutdown-warning baseline",
+        "current_state": "After project-internal PDF preview PNGs were removed, Godot 4.7.2 --headless --path . --import still exited 0 with 45 ObjectDB and 22 resource shutdown warnings. Hera startup/exit logs appeared in the same process output, but causal ownership is not proven.",
+        "request_reason": "A clean import gate should distinguish successful import completion from engine/plugin teardown noise; otherwise future work can either hide a project leak or overreact to external lifecycle warnings.",
+        "expected_effect": "A scoped comparison can classify the warning as project-owned, plugin-owned, engine baseline, or unresolved. The CI rule and evidence ceiling can then use the right condition instead of a blanket warning waiver.",
+        "recommended_scope": "Read-only/diagnostic only: resolve the current project, editor, and plugin-owned server dynamically; do not interrupt or change the active GRIMOIRE editor instance. Use a separate isolated project/editor session only after its owner is identified.",
+        "status": "RECOMMEND_ONLY_NOT_IMPLEMENTED"
+      }
+    ],
+    "adversarial_review_2026_08_31": [
+      {
+        "loop": 1,
+        "attack": "Authority drift, exact revision identity, open PR ownership, and unauthorized Base mutation",
+        "result": "CLEAN",
+        "evidence": "Project HEAD 5ca7343d, project origin/main 8b78f8cb, Base origin/main 1f0ef9d8, PR #19 read-only, Base tracked diff count 0, selected_modules empty."
+      },
+      {
+        "loop": 2,
+        "attack": "Scope creep into gameplay/assets and test cleanup safety",
+        "result": "CLEAN",
+        "evidence": "All six affected tests now call exact STORAGE_PATH cleanup; CI uses --import; historical --editor --quit is explicitly retired; no gameplay-scene, asset, save-schema, or production-save deletion was made by this absorption."
+      },
+      {
+        "loop": 3,
+        "attack": "Evidence overclaim and PDF state-boundary loss",
+        "result": "CLEAN",
+        "evidence": "Handoff JSON parses; PDF has 4 pages and every required A-F/status token; Human/device UX remains NOT_RUN; --import shutdown warning is recorded as unisolated rather than a clean PASS."
+      },
+      {
+        "loop": 4,
+        "attack": "Duplicate Base proposal, new shared-system invention, and adopted-lock overwrite",
+        "result": "CLEAN",
+        "evidence": "Base HIGODOT/evidence owners already cover generic import/cache boundaries; two cases are PDF-only observations; no Base module, skill, registry, PR, activation, or adopted lock change was made."
+      },
+      {
+        "loop": 5,
+        "attack": "Artifact hygiene, temporary-file import noise, and other-workstream protection",
+        "result": "CLEAN_AFTER_CORRECTION",
+        "evidence": "Project-internal PDF preview PNGs were removed after exposing import noise; AGENTS now routes temporary rasters outside the project root; project tmp is absent, test artifact readback is 0, output/pdf contains exactly one final PDF, and pre-existing Base untracked worktree directories remain untouched."
+      }
+    ],
+    "final_readback": {
+      "final_pdf_count": 1,
+      "project_tmp_directory": "ABSENT",
+      "test_artifact_leftovers": 0,
+      "base_tracked_diff_count": 0,
+      "base_untracked_worktree_directories": "PRESERVED_UNTOUCHED",
+      "remaining_known_risk": "Godot --import shutdown warnings require a separately owned plugin/engine baseline diagnosis before any warning-clean gate is claimed."
+    }
   }
 }

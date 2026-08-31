@@ -18,14 +18,14 @@ const PET_LABELS := {
 	"dog": "강아지",
 }
 const PLAYER_TEXTURE_PATHS := {
-	"a_soft_hooded": "res://assets/images/runtime/storybook/avatar_a_soft_hooded_storybook.png",
-	"b_short_cape": "res://assets/images/runtime/storybook/avatar_b_short_cape_storybook.png",
+	"a_soft_hooded": "res://assets/images/runtime/chibi_alternates/avatar_a_soft_hooded_chibi.png",
+	"b_short_cape": "res://assets/images/runtime/chibi_alternates/avatar_b_short_cape_chibi.png",
 	"c_loose_knit": "res://assets/images/runtime/storybook/c_default_storybook.png",
 }
 const PET_TEXTURE_PATHS := {
-	"cat": "res://assets/images/runtime/storybook/pet_cat_storybook.png",
-	"rabbit": "res://assets/images/runtime/storybook/pet_rabbit_storybook.png",
-	"otter": "res://assets/images/runtime/storybook/pet_otter_storybook.png",
+	"cat": "res://assets/images/runtime/chibi_alternates/pet_cat_chibi.png",
+	"rabbit": "res://assets/images/runtime/chibi_alternates/pet_rabbit_chibi.png",
+	"otter": "res://assets/images/runtime/chibi_alternates/pet_otter_chibi.png",
 	"dog": "res://assets/images/runtime/storybook/dog_default_storybook.png",
 }
 

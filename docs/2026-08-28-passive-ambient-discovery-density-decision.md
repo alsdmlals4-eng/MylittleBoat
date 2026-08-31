@@ -8,9 +8,10 @@ TRACKING_ISSUE = #95
 AMBIENT_DISCOVERY_DENSITY_TARGET = APPROXIMATELY_1_TO_2_PER_NOMINAL_5_MINUTE_VOYAGE
 FIRST_DISCOVERY_GUARANTEE = FORBIDDEN
 ONE_AT_A_TIME = REQUIRED
-EXACT_PROBABILITY_AND_COOLDOWN = PHASE_2_IMPLEMENTATION_CONTRACT_REQUIRED
-CURRENT_MAIN_IMPLEMENTATION = EARLY_FORCED_AND_HIGHER_FREQUENCY_PRODUCT_SUPERSEDED
-RUNTIME_IMPLEMENTATION = NOT_STARTED
+CURRENT_CADENCE = FIRST_OPPORTUNITY_90_TO_150_SECONDS_THEN_65_PERCENT_EMIT_PER_OPPORTUNITY_FOLLOW_UP_120_TO_180_SECONDS
+CURRENT_MAIN_IMPLEMENTATION = PASSIVE_FOREGROUND_DIRECTOR_WITH_NO_FIRST_EVENT_GUARANTEE
+CURRENT_APPROVED_MOTIF_SET = MLB_AMB_MOTIF_001_TO_006
+RUNTIME_IMPLEMENTATION = IMPLEMENTED_MACHINE_VERIFIED_RUNTIME_CAPTURE_VERIFIED
 HUMAN_PLAYER_EXPERIENCE_VALIDATION = NOT_RUN
 ```
 
@@ -25,7 +26,7 @@ HUMAN_PLAYER_EXPERIENCE_VALIDATION = NOT_RUN
 1. `약 5분`의 정상 활성 항해에서 관찰 가능한 event 수는 대체로 1~2회를 목표로 합니다. 이 target은 첫 5분과 이후 연속 휴식 모두에 적용되는 density envelope입니다.
 2. 첫 event는 보장하지 않고, zero-event voyage도 정상적인 휴식 결과입니다. 플레이어에게 예상 시간, 남은 횟수, 확률, cooldown 또는 missed-event를 보여 주지 않습니다.
 3. event는 계속 확률적으로 발생하며 one-at-a-time을 지킵니다. 직전 event의 작은 알림이 사라지고 auto-save가 끝나기 전에는 새 event가 겹치지 않습니다.
-4. exact probability, minimum/maximum cooldown, random seed policy, event catalogue별 weight와 session-boundary handling은 후속 단일 Phase 2 구현계약에서만 정합니다.
+4. 현재 v1은 첫 **기회**를 90–150초에 예약하고 기회마다 65% 확률로 표시합니다. 표시 여부와 관계없이 이후 기회는 120–180초 window를 사용하며, test-only deterministic hook은 다음 기회 시점만 고정하고 65% 표시 확률은 바꾸지 않습니다. random seed policy, event catalogue별 weight, session-boundary detail, future density re-tuning은 후속 단일 구현계약에서만 정합니다.
 5. 밀도는 Normal Diorama와 Appreciation Camera에서 같은 휴식 약속을 지킵니다. 카메라 전환, 속도, 마음, 시간대, 외형, 사진, 낚시, 꾸미기, 상호작용, 호감도 또는 Ambient memory 수는 발생률을 가산·감산하지 않습니다.
 6. 밀도는 reward cadence가 아닙니다. 점수, progress, rarity, collection completion, streak, purchase, 알림 stack, FOMO, player action requirement를 만들지 않습니다.
 
@@ -37,30 +38,33 @@ HUMAN_PLAYER_EXPERIENCE_VALIDATION = NOT_RUN
 | B. 2~4회 | REJECT | 변화는 늘지만 작은 알림이 시스템의 반복 신호처럼 읽히고 motif 제작량도 증가한다. |
 | C. 0~1회 | REJECT | 가장 조용하지만 첫 세션에서 `EMPTY`로 오해될 가능성이 커진다. |
 
-## Current implementation conflict
+## Historical implementation conflict
 
-Current `main` uses an earlier action-gated schedule in `scripts/voyage/game_scene.gd`:
+The following describes the pre-2026-08-30 action-gated schedule, not the current product route:
 
 - first discovery is scheduled in 18–30 seconds, effectively guaranteeing an early prompt;
 - later discovery waits are 35–60 seconds, so a nominal five-minute voyage can produce substantially more than the approved density;
 - Appreciation Camera stops the scheduler entirely;
 - each discovery is a timed `letter`/`scenery` button offer rather than a passive auto-save.
 
-This is implementation evidence for a superseded technical slice, not evidence of the approved density or passive behavior.
+This is implementation evidence for a superseded technical slice, not current evidence of density or passive behavior.
 
-## Future implementation contract boundary
+## Current implementation receipt
 
-A later single Phase 2 implementation contract must:
+`DriftSceneryDirector` uses foreground delta only, starts with a sampled 90–150 second opportunity, and rolls 65% before it creates a scene. It schedules every later opportunity at 120–180 seconds whether the preceding opportunity was empty or displayed. It has no button, expiry, reward, or speed/camera/species multiplier. `GameScene` shares the same director behavior across Normal Diorama and Appreciation Camera, including post-record resting. A sampled five-minute active voyage may therefore contain zero scenes without a player-visible missed state.
 
-1. define an algorithm whose sampled active-voyage behavior stays within the approved 1–2-per-5-minute density target without a first-event guarantee;
-2. preserve one-at-a-time, foreground-only lifecycle, Normal/Appreciation parity, post-record resting, and no burst after scene return;
-3. keep the passive auto-save and no-reward boundaries from `docs/2026-08-28-passive-ambient-discovery-decision.md`;
-4. specify deterministic test hooks and distribution-oriented automated checks without asserting that every individual voyage has an event;
-5. capture 540×960 runtime evidence and run separate Human five-minute `CALM / EMPTY / NOTICEABILITY` review.
+Deterministic director and scene contracts, including a sampled valid zero-event five-minute voyage, plus six controlled 540×960 GPU captures for the current `MLB-AMB-MOTIF-001..006` set provide machine/runtime evidence. The former single bright-lagoon capture remains historical. These captures do not prove Human calm.
 
-No probability value, cooldown, code, Scene, UI, asset, audio, runtime evidence, or Human UX PASS is created by this decision packet.
+## Remaining review boundary
+
+1. Run a separate Human five-minute `CALM / EMPTY / NOTICEABILITY` review; zero events must feel like a valid, complete rest outcome.
+2. Do not turn cadence into a player-visible probability, countdown, reward, or completion target.
+3. Treat future motif expansion or density re-tuning as a new product decision with distribution-oriented tests.
+
+이 원래 결정 packet 자체는 당시 probability value, cooldown, code, Scene, UI, asset, audio, runtime evidence, or Human UX PASS를 만들지 않았습니다. 위 current implementation receipt는 2026-08-30의 별도 구현·검증 결과입니다.
 
 ## Provenance and disposition
 
 - User approved the GPT recommendation, Alternative A, on 2026-08-28.
+- User approved the exact v1 cadence implementation on 2026-08-30: first opportunity 90–150 seconds, 65% display chance per opportunity, and 120–180 second follow-up opportunities after either result.
 - `NO_BASE_PROMOTION`: the density envelope is a My Little Boat rest-loop tuning decision, not a reusable Base workflow rule.

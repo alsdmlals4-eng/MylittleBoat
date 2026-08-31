@@ -10,6 +10,7 @@ func _ready() -> void:
 	_interaction.configure("rail", "보트 난간", [
 		{"id": "lean", "label": "기대기", "message": "난간에 기대어 파도를 천천히 바라봅니다."},
 		{"id": "look_at_sea", "label": "바다 바라보기", "message": "난간 너머의 잔잔한 바다를 바라봅니다."},
+		{"id": "listen_to_waves", "label": "파도 소리 듣기", "message": "난간에 기대어 작은 물결 소리를 듣습니다.", "moment_id": "rail_listen_to_waves"},
 	])
 
 

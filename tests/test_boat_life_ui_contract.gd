@@ -45,7 +45,7 @@ func _run() -> void:
 	_expect(scene.has_method("get_interaction_target_ids"), "interaction target discovery API required")
 	_expect(scene.has_method("perform_interaction"), "interaction routing API required")
 
-	var before_affection: int = int(gs.companion_affection)
+	var before_together_time: float = gs.together_time_seconds
 	var before_photos: int = gs.photos.size()
 	var before_records: int = gs.voyage_records.size()
 	var before_time: float = float(gs.remaining_seconds)
@@ -67,7 +67,7 @@ func _run() -> void:
 		_expect(targets.has("rail"), "rail must be an interaction target")
 		_expect(targets.has("decor:bow_left"), "placed interactive decor must become a target")
 
-	_expect(int(gs.companion_affection) == before_affection, "decor UI must not change affection")
+	_expect(is_equal_approx(gs.together_time_seconds, before_together_time), "decor UI must not create together time")
 	_expect(gs.photos.size() == before_photos, "decor UI must not create photos")
 	_expect(gs.voyage_records.size() == before_records, "decor UI must not create voyage records")
 	_expect(is_equal_approx(float(gs.remaining_seconds), before_time), "button actions themselves must not change voyage time")

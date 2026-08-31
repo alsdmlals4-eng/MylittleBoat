@@ -1,7 +1,7 @@
-# C+강아지 최종 합성 화면의 승인 장식 배치를 저장한다.
+# C+강아지 메인 합성에서 선택 엽서가 보이지 않는 장식 상태를 저장한다.
 extends SceneTree
 
-const EVIDENCE_PATH := "res://docs/evidence/2026-08-27-final-composite-decor/floral-cushion-postcard_540x960.png"
+const EVIDENCE_PATH := "res://docs/evidence/2026-08-27-final-composite-decor/floral-cushion_postcard-selected_main_540x960.png"
 const EVIDENCE_DIRECTORY := "res://docs/evidence/2026-08-27-final-composite-decor"
 const IDENTITY_TEST_SAVE_PATH := "user://capture_final_composite_identity.cfg"
 const DECOR_TEST_SAVE_PATH := "user://capture_final_composite_decor.cfg"
@@ -36,8 +36,6 @@ func _capture() -> void:
 	game_state.set_boat_decor_appearance("pet_corner", "floral")
 	game_state.set_boat_decor("rail_accent", "postcard")
 	game_state.reset_session()
-	game_state.selected_mood = "평온"
-	game_state.select_time_of_day("bright")
 	var scene := (load("res://scenes/game.tscn") as PackedScene).instantiate()
 	root.add_child(scene)
 	for _frame in 10:
@@ -52,13 +50,12 @@ func _capture() -> void:
 	scene.queue_free()
 	await process_frame
 	_restore_state(game_state)
-	print("PASS: final composite decor runtime capture")
+	print("PASS: final composite decor main-without-postcard-overlay runtime capture")
 	quit(0)
 
 
 func _restore_state(game_state: Node) -> void:
 	game_state.reset_session()
-	game_state.select_time_of_day("bright")
 	game_state.set_identity_storage_path("user://identity_profile_v1.cfg")
 	game_state.boat_decor.clear()
 	game_state.boat_decor_appearances.clear()

@@ -1,10 +1,9 @@
-# C+강아지 최종 합성 화면의 승인 장식이 평면 오버레이로 표시되는지 검증한다.
+# C+강아지 최종 합성에서 쿠션만 보이고 엽서는 Album·미리보기에 남는지 검증한다.
 extends SceneTree
 
 const BOAT_SPACE_PATH := "res://scenes/boat_space.tscn"
 const TEST_SAVE_PATH := "user://final_composite_decor_contract.cfg"
-const CUSHION_TEXTURE_PATH := "res://assets/images/decor/pet_cushion/cushion_floral.png"
-const POSTCARD_TEXTURE_PATH := "res://assets/images/decor/postcard/postcard_boat_bright.png"
+const CUSHION_TEXTURE_PATH := "res://assets/images/decor/pet_cushion/cushion_floral_chibi.png"
 
 var _failures := 0
 
@@ -45,8 +44,8 @@ func _run() -> void:
 		_expect(cushion_surface != null and cushion_surface.visible, "final composite must show a pet cushion surface overlay")
 		_expect(cushion_surface != null and cushion_surface.texture != null and cushion_surface.texture.resource_path == CUSHION_TEXTURE_PATH, "surface overlay must use selected approved cushion texture")
 		_expect(cushion_surface != null and cushion_surface.material_override is ShaderMaterial, "cushion surface overlay must mask the opaque texture to a soft cushion shape")
-		_expect(postcard_surface != null and postcard_surface.visible, "final composite must show a postcard surface overlay")
-		_expect(postcard_surface != null and postcard_surface.texture != null and postcard_surface.texture.resource_path == POSTCARD_TEXTURE_PATH, "surface overlay must use approved postcard texture")
+		_expect(cushion_surface != null and cushion_surface.position.x >= 0.7 and cushion_surface.pixel_size <= 0.00024, "floral cushion must stay small at the bow-side clear space instead of covering the companion")
+		_expect(postcard_surface == null, "main final composite must not include a postcard overlay node because Album and decor preview remain its consumer surfaces")
 		scene.queue_free()
 		await process_frame
 		game_state.boat_decor.clear()

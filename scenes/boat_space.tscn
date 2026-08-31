@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3]
+[gd_scene load_steps=26 format=3]
 
 [ext_resource type="Script" path="res://scripts/voyage/resting_pet_placeholder.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/avatar/player_avatar_placeholder.gd" id="2"]
@@ -8,14 +8,15 @@
 [ext_resource type="Texture2D" path="res://assets/images/runtime/storybook/dog_default_storybook.png" id="6"]
 [ext_resource type="Texture2D" path="res://assets/images/runtime/storybook/boat_default_storybook.png" id="7"]
 [ext_resource type="Script" path="res://scripts/visual/storybook_art_card.gd" id="8"]
-[ext_resource type="Texture2D" path="res://assets/images/runtime/storybook/boat_c_dog_diorama_storybook.png" id="9"]
+[ext_resource type="Texture2D" path="res://assets/images/runtime/voyage/normal_chibi/chibi-normal-rear-chroma-key.png" id="9"]
 [ext_resource type="Script" path="res://scripts/identity/identity_visual_router.gd" id="10"]
-[ext_resource type="Texture2D" path="res://assets/images/runtime/storybook/avatar_a_soft_hooded_storybook.png" id="11"]
-[ext_resource type="Texture2D" path="res://assets/images/runtime/storybook/avatar_b_short_cape_storybook.png" id="12"]
-[ext_resource type="Texture2D" path="res://assets/images/runtime/storybook/pet_cat_storybook.png" id="13"]
-[ext_resource type="Texture2D" path="res://assets/images/runtime/storybook/pet_rabbit_storybook.png" id="14"]
-[ext_resource type="Texture2D" path="res://assets/images/runtime/storybook/pet_otter_storybook.png" id="15"]
+[ext_resource type="Texture2D" path="res://assets/images/runtime/chibi_alternates/avatar_a_soft_hooded_chibi.png" id="11"]
+[ext_resource type="Texture2D" path="res://assets/images/runtime/chibi_alternates/avatar_b_short_cape_chibi.png" id="12"]
+[ext_resource type="Texture2D" path="res://assets/images/runtime/chibi_alternates/pet_cat_chibi.png" id="13"]
+[ext_resource type="Texture2D" path="res://assets/images/runtime/chibi_alternates/pet_rabbit_chibi.png" id="14"]
+[ext_resource type="Texture2D" path="res://assets/images/runtime/chibi_alternates/pet_otter_chibi.png" id="15"]
 [ext_resource type="Shader" path="res://shaders/storybook_cushion_surface.gdshader" id="16"]
+[ext_resource type="Shader" path="res://shaders/chibi_normal_chroma_key.gdshader" id="17"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_boat"]
 size = Vector3(2.8, 0.22, 2.4)
@@ -110,6 +111,10 @@ roughness = 0.92
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_cushion_surface"]
 shader = ExtResource("16")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_chibi_normal_chroma"]
+shader = ExtResource("17")
+shader_parameter/matte_texture = ExtResource("9")
 
 [node name="BoatSpace" type="Node3D"]
 
@@ -471,25 +476,19 @@ fallback_nodes = [NodePath("../HullMass"), NodePath("../DeckMass"), NodePath("..
 
 [node name="FinalDioramaCard" type="Sprite3D" parent="."]
 position = Vector3(0, 0.8, 0.4)
-pixel_size = 0.0017
+pixel_size = 0.0037
 billboard = 1
 no_depth_test = false
 texture = ExtResource("9")
+material_override = SubResource("ShaderMaterial_chibi_normal_chroma")
 
 [node name="StorybookPetCushionSurface" type="Sprite3D" parent="."]
 visible = false
-position = Vector3(0.55, 0.77, 0.43)
-pixel_size = 0.00032
+position = Vector3(0.76, 0.66, 0.43)
+pixel_size = 0.00022
 billboard = 1
 no_depth_test = false
 material_override = SubResource("ShaderMaterial_cushion_surface")
-
-[node name="StorybookPostcardSurface" type="Sprite3D" parent="."]
-visible = false
-position = Vector3(-0.05, 0.9, 0.43)
-pixel_size = 0.00027
-billboard = 1
-no_depth_test = false
 
 [node name="IdentityVisualRouter" type="Node" parent="."]
 script = ExtResource("10")

@@ -19,10 +19,25 @@ func _ready() -> void:
 		ocean_bed.volume_db = OCEAN_BED_VOLUME_DB
 		add_child(ocean_bed)
 
+	if DisplayServer.get_name() == "headless":
+		return
+
 	if ocean_bed.stream == null:
 		ocean_bed.stream = _build_authored_ocean_loop()
 	if not ocean_bed.playing:
 		ocean_bed.play()
+
+
+func _exit_tree() -> void:
+	release_ocean_bed_for_shutdown()
+
+
+## Stops and releases generated audio before the engine tears down AudioServer state.
+func release_ocean_bed_for_shutdown() -> void:
+	if ocean_bed == null or not is_instance_valid(ocean_bed):
+		return
+	ocean_bed.stop()
+	ocean_bed.stream = null
 
 
 func is_technical_prototype() -> bool:
