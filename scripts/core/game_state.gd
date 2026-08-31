@@ -4,18 +4,12 @@ extends Node
 const VOYAGE_SECONDS := 300.0
 const BOAT_DECOR_PERSISTENCE_SCRIPT = preload("res://scripts/core/boat_decor_persistence.gd")
 const IDENTITY_PROFILE_SCRIPT = preload("res://scripts/core/cosmetic_identity_profile.gd")
-<<<<<<< HEAD
 const TOGETHER_TIME_PERSISTENCE_SCRIPT = preload("res://scripts/core/together_time_persistence.gd")
 const AMBIENT_MEMORY_PERSISTENCE_SCRIPT = preload("res://scripts/core/ambient_memory_persistence.gd")
 const COMFORT_PREFERENCES_SCRIPT = preload("res://scripts/core/comfort_preferences.gd")
 const PHOTO_MEMORY_PERSISTENCE_SCRIPT = preload("res://scripts/core/photo_memory_persistence.gd")
 const MEMORY_LEDGER_PERSISTENCE_SCRIPT = preload("res://scripts/core/memory_ledger_persistence.gd")
 const TOGETHER_TIME_SAVE_INTERVAL_SECONDS := 15.0
-=======
-const AMBIENT_MEMORY_PERSISTENCE_SCRIPT = preload("res://scripts/core/ambient_memory_persistence.gd")
-
-var companion_affection: int = 1
->>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 
 # 여러 항해에 걸쳐 유지되는 기억이다.
 var photos: Array[String] = []
@@ -45,30 +39,22 @@ var _voyage_letter_start_count := 0
 var _voyage_fish_start_count := 0
 var _boat_decor_persistence = BOAT_DECOR_PERSISTENCE_SCRIPT.new()
 var _identity_profile = IDENTITY_PROFILE_SCRIPT.new()
-<<<<<<< HEAD
 var _together_time_persistence = TOGETHER_TIME_PERSISTENCE_SCRIPT.new()
 var _ambient_memory_persistence = AMBIENT_MEMORY_PERSISTENCE_SCRIPT.new()
 var _comfort_preferences = COMFORT_PREFERENCES_SCRIPT.new()
 var _photo_memory_persistence = PHOTO_MEMORY_PERSISTENCE_SCRIPT.new()
 var _memory_ledger_persistence = MEMORY_LEDGER_PERSISTENCE_SCRIPT.new()
 var _unsaved_together_time_seconds := 0.0
-=======
-var _ambient_memory_persistence = AMBIENT_MEMORY_PERSISTENCE_SCRIPT.new()
->>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 
 
 func _ready() -> void:
 	load_boat_decor()
 	load_identity()
-<<<<<<< HEAD
 	load_together_time()
 	load_ambient_memories()
 	load_motion_comfort()
 	load_photo_memories()
 	load_memory_ledger()
-=======
-	load_ambient_memories()
->>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 
 
 ## Starts a fresh five-minute voyage while preserving accumulated memories and boat decoration.
@@ -356,10 +342,7 @@ func complete_voyage() -> void:
 			fish_this_voyage,
 		]
 	)
-<<<<<<< HEAD
 	save_memory_ledger()
-=======
->>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 
 
 ## Adds a photo album entry.
@@ -370,30 +353,6 @@ func add_photo(entry: String) -> void:
 ## Adds a scenery album entry.
 func add_scenery(entry: String) -> void:
 	sceneries.append(entry)
-<<<<<<< HEAD
-=======
-
-
-## Adds one passive surrounding-scenery memory and writes it to the local device.
-func add_ambient_scenery(entry: String) -> void:
-	if entry.strip_edges().is_empty():
-		return
-	sceneries.append(entry)
-	_ambient_memory_persistence.save(sceneries)
-
-
-## Switches the ambient-memory storage target without changing other voyage state.
-func set_ambient_memory_storage_path(path: String) -> void:
-	if path == "":
-		return
-	_ambient_memory_persistence = AMBIENT_MEMORY_PERSISTENCE_SCRIPT.new(path)
-
-
-## Restores automatic surrounding-scenery memories without touching other voyage state.
-func load_ambient_memories() -> void:
-	for entry in _ambient_memory_persistence.load():
-		sceneries.append(entry)
->>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 
 
 ## Adds a bottle letter entry.
@@ -404,8 +363,4 @@ func add_letter(entry: String) -> void:
 ## Adds a caught fish as a quiet memory without turning fishing repetition into affection farming.
 func add_fish(entry: String) -> void:
 	fish.append(entry)
-<<<<<<< HEAD
 	save_memory_ledger()
-=======
-
->>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564

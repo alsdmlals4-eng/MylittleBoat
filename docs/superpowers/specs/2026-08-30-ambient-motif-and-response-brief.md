@@ -41,20 +41,20 @@
 
 `1672×941`은 현재 water-only runtime art와 같은 가로형 출력 규격이다. 16:9 cross-product에는 renderer output rounding에서 온 8-pixel 차이가 있으며, 모든 후보와 기준 runtime image가 동일하게 이 허용 범위 안에 있다. 이 검증은 파일 무결성·규격만 확인한다. composition, 정서, 실제 기기 가독성, 반복 피로는 승인 또는 Human evidence를 대신하지 않는다.
 
-**승인·등록 receipt.** 사용자는 2026-08-30에 여섯 자연 명소를 명시 승인했다. source/canonical SHA-256 equality와 Godot import를 확인한 뒤, `DriftSceneryDirector`가 active foreground 기회에 local-time motif만 고르고 `GameScene`이 normal·Appreciation `SeaBackdrop`에 10초간 표시하도록 연결했다. Look Around의 approved exact angle art는 이 consumer에서 변경하지 않는다. event에는 버튼·목적지·보상·희귀도·도착·수집 state가 없으며, `save_memory=true`인 경우에만 기존 local ambient-memory writer를 호출한다.
+**승인·등록 receipt.** 사용자는 2026-08-30에 여섯 자연 명소를 명시 승인했다. source/canonical SHA-256 equality와 Godot import를 확인한 뒤, `DriftSceneryDirector`가 active foreground 기회에 local-time motif만 고르고 `GameScene`이 water-only normal·Appreciation `SeaBackdrop`을 유지한 채 dedicated `AmbientSceneryPass`에서 약 14초간 좌우 통과시키도록 연결했다. Look Around의 approved exact angle art는 이 consumer에서 변경하지 않는다. event에는 버튼·목적지·보상·희귀도·도착·수집 state가 없으며, `save_memory=true`인 경우에만 기존 local ambient-memory writer를 호출한다.
 
 ### Canonical runtime asset과 세로 화면 표시 경계
 
-| ID | canonical runtime path | 세로 화면 `backdrop_offset_x` | consumer | runtime evidence |
+| ID | canonical runtime path | director-side `backdrop_offset_x` | consumer | runtime evidence |
 | --- | --- | ---: | --- | --- |
-| `MLB-AMB-MOTIF-001` | `assets/images/runtime/voyage/ambient_motifs/dawn-sea-arch-waterfall.png` | `+8.0` | dawn foreground event → normal·Appreciation temporary `SeaBackdrop` | `dawn_sea_arch_540x960.png` |
-| `MLB-AMB-MOTIF-002` | `assets/images/runtime/voyage/ambient_motifs/bright-seagrass-sandbar.png` | `+8.0` | bright foreground event → normal·Appreciation temporary `SeaBackdrop` | `bright_seagrass_540x960.png` |
-| `MLB-AMB-MOTIF-003` | `assets/images/runtime/voyage/ambient_motifs/bright-chalk-cliffs-birds.png` | `-8.0` | bright foreground event → normal·Appreciation temporary `SeaBackdrop` | `bright_chalk_cliffs_540x960.png` |
-| `MLB-AMB-MOTIF-004` | `assets/images/runtime/voyage/ambient_motifs/sunset-sandstone-cove.png` | `-8.0` | sunset foreground event → normal·Appreciation temporary `SeaBackdrop` | `sunset_sandstone_cove_540x960.png` |
-| `MLB-AMB-MOTIF-005` | `assets/images/runtime/voyage/ambient_motifs/sunset-reed-islet.png` | `+8.0` | sunset foreground event → normal·Appreciation temporary `SeaBackdrop` | `sunset_reed_islet_540x960.png` |
-| `MLB-AMB-MOTIF-006` | `assets/images/runtime/voyage/ambient_motifs/night-bioluminescent-band.png` | `+8.0` | night foreground event → normal·Appreciation temporary `SeaBackdrop` | `night_bioluminescence_540x960.png` |
+| `MLB-AMB-MOTIF-001` | `assets/images/runtime/voyage/ambient_motifs/dawn-sea-arch-waterfall.png` | `+8.0` | dawn foreground event → normal·Appreciation `AmbientSceneryPass` | `2026-08-31-ambient-scenery-pass/dawn_sea_arch_540x960.png` |
+| `MLB-AMB-MOTIF-002` | `assets/images/runtime/voyage/ambient_motifs/bright-seagrass-sandbar.png` | `+8.0` | bright foreground event → normal·Appreciation `AmbientSceneryPass` | `2026-08-31-ambient-scenery-pass/bright_seagrass_540x960.png` |
+| `MLB-AMB-MOTIF-003` | `assets/images/runtime/voyage/ambient_motifs/bright-chalk-cliffs-birds.png` | `-8.0` | bright foreground event → normal·Appreciation `AmbientSceneryPass` | `2026-08-31-ambient-scenery-pass/bright_chalk_cliffs_540x960.png` |
+| `MLB-AMB-MOTIF-004` | `assets/images/runtime/voyage/ambient_motifs/sunset-sandstone-cove.png` | `-8.0` | sunset foreground event → normal·Appreciation `AmbientSceneryPass` | `2026-08-31-ambient-scenery-pass/sunset_sandstone_cove_540x960.png` |
+| `MLB-AMB-MOTIF-005` | `assets/images/runtime/voyage/ambient_motifs/sunset-reed-islet.png` | `+8.0` | sunset foreground event → normal·Appreciation `AmbientSceneryPass` | `2026-08-31-ambient-scenery-pass/sunset_reed_islet_540x960.png` |
+| `MLB-AMB-MOTIF-006` | `assets/images/runtime/voyage/ambient_motifs/night-bioluminescent-band.png` | `+8.0` | night foreground event → normal·Appreciation `AmbientSceneryPass` | `2026-08-31-ambient-scenery-pass/night_bioluminescence_540x960.png` |
 
-현재 `Camera3D.KEEP_HEIGHT`는 승인된 후방 보트 구도를 보존한다. 16:9 source의 바깥쪽 landmark가 540×960 central slice에서 사라지는 문제는 카메라를 넓혀 보트를 작게 만들지 않고, 위의 per-motif `Sprite3D.position.x` 보정으로 해결했다. `tests/probe_ambient_portrait_projection.gd`의 비교 capture와 `tests/capture_ambient_motif_scenery.gd`의 최종 여섯 GPU capture가 이 consumer를 기록한다. 이는 renderer/runtime evidence이며 Human calm, 반복 피로, 기기별 색·가독성은 `NOT_RUN`이다.
+현재 `Camera3D.KEEP_HEIGHT`는 승인된 후방 보트 구도를 보존한다. Director의 per-motif side hint는 card transit의 좌우 방향만 정하고, pass 자체는 세로 화면보다 큰 높이로 overscan해 수평 image edge가 보트 화면을 자르지 않게 한다. `tests/probe_ambient_portrait_projection.gd`의 historical comparison capture와 `tests/capture_ambient_motif_scenery.gd`의 current 여섯 GPU pass capture가 이 consumer를 기록한다. 이는 renderer/runtime evidence이며 Human calm, 반복 피로, 기기별 색·가독성은 `NOT_RUN`이다.
 
 ## 동행 반응 프레임 후보 세 가지
 

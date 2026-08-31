@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=15 format=3]
 
 [ext_resource type="Script" path="res://scripts/voyage/game_scene.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/voyage/boat_camera_controller.gd" id="2"]
@@ -7,6 +7,8 @@
 [ext_resource type="Script" path="res://scripts/decor/decor_preview.gd" id="5"]
 [ext_resource type="Texture2D" path="res://assets/images/runtime/voyage/boat-water-contact-ripple.png" id="6"]
 [ext_resource type="Script" path="res://scripts/voyage/look_around_camera_controller.gd" id="7"]
+[ext_resource type="Shader" path="res://assets/shaders/voyage_water_flow.gdshader" id="8"]
+[ext_resource type="Texture2D" path="res://assets/images/brand/my_little_boat_title_lockup_v1.png" id="9"]
 
 [sub_resource type="Environment" id="Environment_sky"]
 background_mode = 1
@@ -22,6 +24,13 @@ size = Vector2(180, 180)
 albedo_color = Color(0.2, 0.47, 0.62, 1)
 metallic = 0.0
 roughness = 0.96
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_voyage_water_flow"]
+shader = ExtResource("8")
+shader_parameter/source_texture = ExtResource("4")
+shader_parameter/flow_offset = 0.0
+shader_parameter/horizon_start = 0.42
+shader_parameter/horizon_fade = 0.16
 
 [sub_resource type="Environment" id="Environment_decor_preview"]
 background_mode = 1
@@ -64,6 +73,14 @@ position = Vector3(0, 0, -15)
 pixel_size = 0.02
 no_depth_test = false
 texture = ExtResource("4")
+material_override = SubResource("ShaderMaterial_voyage_water_flow")
+
+[node name="AmbientSceneryPass" type="Sprite3D" parent="VoyageWorld/DioramaCameraRig/DioramaCamera3D"]
+visible = false
+position = Vector3(0, 0.5, -14.75)
+pixel_size = 0.02
+no_depth_test = false
+modulate = Color(1, 1, 1, 0)
 
 [node name="LookAroundCameraRig" type="Node3D" parent="VoyageWorld"]
 position = Vector3(3.8, 4.6, 6.7)
@@ -81,6 +98,7 @@ position = Vector3(0, 0, -15)
 pixel_size = 0.02
 no_depth_test = false
 texture = ExtResource("4")
+material_override = SubResource("ShaderMaterial_voyage_water_flow")
 
 [node name="AppreciationCameraRig" type="Node3D" parent="VoyageWorld"]
 position = Vector3(0, 2.2, 6.8)
@@ -98,6 +116,14 @@ position = Vector3(0, 0, -15)
 pixel_size = 0.02
 no_depth_test = false
 texture = ExtResource("4")
+material_override = SubResource("ShaderMaterial_voyage_water_flow")
+
+[node name="AmbientSceneryPass" type="Sprite3D" parent="VoyageWorld/AppreciationCameraRig/AppreciationCamera3D"]
+visible = false
+position = Vector3(0, 0.5, -14.75)
+pixel_size = 0.02
+no_depth_test = false
+modulate = Color(1, 1, 1, 0)
 
 [node name="OceanPlane" type="MeshInstance3D" parent="VoyageWorld"]
 visible = false
@@ -106,16 +132,15 @@ surface_material_override/0 = SubResource("StandardMaterial3D_ocean")
 
 [node name="BoatSpace" parent="VoyageWorld" instance=ExtResource("3")]
 
-<<<<<<< HEAD
 [node name="BoatWaterContact" type="Sprite3D" parent="VoyageWorld"]
-position = Vector3(0, -0.06, 0.26)
-pixel_size = 0.00215
+position = Vector3(0, 0, 0.35)
+pixel_size = 0.0032
 billboard = 1
 no_depth_test = false
-modulate = Color(0.9, 0.96, 1, 0.36)
+modulate = Color(0.9, 0.96, 1, 0.42)
 texture = ExtResource("6")
-=======
-[node name="DistantSceneryLayer" type="Control" parent="."]
+
+[node name="TitleOverlay" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -124,22 +149,41 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="MemoryNotificationLabel" type="Label" parent="."]
-unique_name_in_owner = true
-visible = false
+[node name="TitleLayout" type="VBoxContainer" parent="TitleOverlay"]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_left = 48.0
-offset_top = 176.0
-offset_right = -48.0
-offset_bottom = 220.0
+offset_left = 54.0
+offset_top = 42.0
+offset_right = -54.0
+offset_bottom = 276.0
 grow_horizontal = 2
-theme_override_colors/font_color = Color(0.95, 0.9, 0.72, 1)
-theme_override_font_sizes/font_size = 16
-text = ""
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="BrandLogo" type="TextureRect" parent="TitleOverlay/TitleLayout"]
+custom_minimum_size = Vector2(0, 132)
+layout_mode = 2
+texture = ExtResource("9")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TitlePrompt" type="Label" parent="TitleOverlay/TitleLayout"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.93, 0.98, 1, 0.95)
+theme_override_colors/font_shadow_color = Color(0.04, 0.12, 0.2, 0.72)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 18
+text = "동반자와 함께, 천천히"
 horizontal_alignment = 1
->>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
+
+[node name="StartVoyageButton" type="Button" parent="TitleOverlay/TitleLayout"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "항해 시작"
 
 [node name="TopPanel" type="PanelContainer" parent="."]
 visible = false
@@ -182,7 +226,6 @@ text = ""
 horizontal_alignment = 1
 autowrap_mode = 2
 
-<<<<<<< HEAD
 [node name="DistantSceneryLabel" type="Label" parent="."]
 unique_name_in_owner = true
 visible = false
@@ -197,11 +240,6 @@ grow_horizontal = 2
 text = ""
 horizontal_alignment = 1
 autowrap_mode = 2
-=======
-[node name="AtmosphereRefreshTimer" type="Timer" parent="."]
-unique_name_in_owner = true
-wait_time = 30.0
->>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 
 [node name="DecorPanel" type="PanelContainer" parent="."]
 visible = false
@@ -212,15 +250,9 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -170.0
-<<<<<<< HEAD
 offset_top = -752.0
 offset_right = 170.0
 offset_bottom = -300.0
-=======
-offset_top = -660.0
-offset_right = 170.0
-offset_bottom = -210.0
->>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 grow_horizontal = 2
 grow_vertical = 0
 
@@ -229,7 +261,6 @@ layout_mode = 2
 
 [node name="DecorTitle" type="Label" parent="DecorPanel/DecorVBox"]
 layout_mode = 2
-<<<<<<< HEAD
 text = "내 보트 꾸미기"
 horizontal_alignment = 1
 
@@ -291,22 +322,6 @@ custom_minimum_size = Vector2(156, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "동반자 종류"
-=======
-text = "꾸미기"
-horizontal_alignment = 1
-
-[node name="IdentityLabel" type="Label" parent="DecorPanel/DecorVBox"]
-layout_mode = 2
-text = "내 모습과 동반자"
-
-[node name="PlayerStyleOption" type="OptionButton" parent="DecorPanel/DecorVBox"]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="PetTypeOption" type="OptionButton" parent="DecorPanel/DecorVBox"]
-unique_name_in_owner = true
-layout_mode = 2
->>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 
 [node name="DecorSlotOption" type="OptionButton" parent="DecorPanel/DecorVBox"]
 unique_name_in_owner = true
@@ -413,7 +428,7 @@ autostart = true
 
 [node name="AmbientSceneryReturnTimer" type="Timer" parent="."]
 unique_name_in_owner = true
-wait_time = 10.0
+wait_time = 14.0
 one_shot = true
 
 [node name="DistantSceneryFadeTimer" type="Timer" parent="."]
@@ -424,21 +439,6 @@ one_shot = true
 [node name="ButtonGrid" type="GridContainer" parent="BottomPanel"]
 layout_mode = 2
 columns = 2
-
-[node name="RestMenuButton" type="Button" parent="."]
-unique_name_in_owner = true
-layout_mode = 1
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -100.0
-offset_top = -78.0
-offset_right = -20.0
-offset_bottom = -24.0
-grow_horizontal = 0
-grow_vertical = 0
-text = "메뉴"
 
 [node name="TakePhotoButton" type="Button" parent="BottomPanel/ButtonGrid"]
 unique_name_in_owner = true

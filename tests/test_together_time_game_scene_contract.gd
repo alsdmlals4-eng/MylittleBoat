@@ -59,16 +59,16 @@ func _run() -> void:
 	_expect(is_equal_approx(state.together_time_seconds, 4.0), "post-record resting must keep accumulating together time")
 	scene.queue_free()
 	await process_frame
+	state.set_together_time_storage_path("user://together_time_v1.cfg")
+	_clear_test_storage()
 	state.set_memory_ledger_storage_path("user://memory_ledger_v1.cfg")
 	_clear_memory_ledger_storage()
 	_finish()
 
 
 func _clear_test_storage() -> void:
-	var file := FileAccess.open(STORAGE_PATH, FileAccess.WRITE)
-	_expect(file != null, "test must be able to clear its isolated ConfigFile")
-	if file != null:
-		file.store_string("")
+	if FileAccess.file_exists(STORAGE_PATH):
+		DirAccess.remove_absolute(ProjectSettings.globalize_path(STORAGE_PATH))
 
 
 func _clear_memory_ledger_storage() -> void:

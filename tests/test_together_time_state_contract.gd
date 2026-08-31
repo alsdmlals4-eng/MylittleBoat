@@ -53,16 +53,16 @@ func _run() -> void:
 	state.together_time_seconds = 0.0
 	state.load_together_time()
 	_expect(is_equal_approx(state.together_time_seconds, 3.5), "flushed together time must restore locally")
+	state.set_together_time_storage_path("user://together_time_v1.cfg")
+	_clear_test_storage()
 	state.set_memory_ledger_storage_path("user://memory_ledger_v1.cfg")
 	_clear_memory_ledger_storage()
 	_finish()
 
 
 func _clear_test_storage() -> void:
-	var file := FileAccess.open(STORAGE_PATH, FileAccess.WRITE)
-	_expect(file != null, "test must be able to clear its isolated ConfigFile")
-	if file != null:
-		file.store_string("")
+	if FileAccess.file_exists(STORAGE_PATH):
+		DirAccess.remove_absolute(ProjectSettings.globalize_path(STORAGE_PATH))
 
 
 func _clear_memory_ledger_storage() -> void:

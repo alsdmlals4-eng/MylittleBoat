@@ -1,4 +1,4 @@
-# 승인 자연 명소가 현재 시간대의 normal·감상 배경에만 조용히 표시되는지 검증한다.
+# 승인 자연 명소가 물 배경을 덮지 않고 normal·감상 화면을 가로질러 흐르는지 검증한다.
 extends SceneTree
 
 const GAME_SCENE_PATH := "res://scenes/game.tscn"
@@ -8,9 +8,9 @@ const BRIGHT_MOTIF_PATHS := [
 	"res://assets/images/runtime/voyage/ambient_motifs/bright-seagrass-sandbar.png",
 	"res://assets/images/runtime/voyage/ambient_motifs/bright-chalk-cliffs-birds.png",
 ]
-const EXPECTED_BACKDROP_OFFSET_X_BY_PATH := {
-	"res://assets/images/runtime/voyage/ambient_motifs/bright-seagrass-sandbar.png": 8.0,
-	"res://assets/images/runtime/voyage/ambient_motifs/bright-chalk-cliffs-birds.png": -8.0,
+const EXPECTED_PASS_START_OFFSET_X_BY_PATH := {
+	"res://assets/images/runtime/voyage/ambient_motifs/bright-seagrass-sandbar.png": 21.0,
+	"res://assets/images/runtime/voyage/ambient_motifs/bright-chalk-cliffs-birds.png": -21.0,
 }
 
 var _failures := 0
@@ -29,6 +29,8 @@ func _run() -> void:
 		return
 	game_state.reset_session()
 	game_state.begin_voyage()
+	# 시간 경과 자체가 아니라 풍경 연출의 저장 상태 부작용만 측정한다.
+	# 실시간 프레임 대기는 이동 Tween을 검증하기 위해 필요하다.
 	var before_photos: int = int(game_state.photos.size())
 	var before_fish: int = int(game_state.fish.size())
 	var before_records: int = int(game_state.voyage_records.size())
@@ -44,17 +46,30 @@ func _run() -> void:
 		director.set_next_event_seconds_for_tests(0.0)
 		seed(motif_seed)
 		scene.call("_advance_drift_scenery", 0.1)
+		scene.set_application_foreground(false)
 		var normal_backdrop := scene.get_node_or_null("VoyageWorld/DioramaCameraRig/DioramaCamera3D/SeaBackdrop") as Sprite3D
 		var appreciation_backdrop := scene.get_node_or_null("VoyageWorld/AppreciationCameraRig/AppreciationCamera3D/SeaBackdrop") as Sprite3D
+		var normal_pass := scene.get_node_or_null("VoyageWorld/DioramaCameraRig/DioramaCamera3D/AmbientSceneryPass") as Sprite3D
+		var appreciation_pass := scene.get_node_or_null("VoyageWorld/AppreciationCameraRig/AppreciationCamera3D/AmbientSceneryPass") as Sprite3D
 		var diorama_camera := scene.get_node_or_null("VoyageWorld/DioramaCameraRig/DioramaCamera3D") as Camera3D
 		var scenery_label := scene.get_node_or_null("DistantSceneryLabel") as Label
 		var scenery_timer := scene.get_node_or_null("AmbientSceneryReturnTimer") as Timer
-		_expect(normal_backdrop != null and normal_backdrop.texture != null and normal_backdrop.texture.resource_path in BRIGHT_MOTIF_PATHS, "bright scenery must temporarily replace the normal backdrop with one approved bright motif")
-		_expect(appreciation_backdrop != null and appreciation_backdrop.texture != null and appreciation_backdrop.texture.resource_path in BRIGHT_MOTIF_PATHS, "bright scenery must temporarily replace the Appreciation backdrop with the same approved motif")
-		if normal_backdrop != null and normal_backdrop.texture != null:
-			var expected_offset_x := float(EXPECTED_BACKDROP_OFFSET_X_BY_PATH.get(normal_backdrop.texture.resource_path, 0.0))
-			_expect(is_equal_approx(normal_backdrop.position.x, expected_offset_x), "bright scenery must shift the normal backdrop to its verified portrait-safe horizontal position")
-			_expect(appreciation_backdrop != null and is_equal_approx(appreciation_backdrop.position.x, expected_offset_x), "bright scenery must shift the Appreciation backdrop to the same verified horizontal position")
+		_expect(normal_backdrop != null and normal_backdrop.texture != null and normal_backdrop.texture.resource_path == BASE_BRIGHT_TEXTURE_PATH, "bright scenery must preserve the normal water-only backdrop")
+		_expect(appreciation_backdrop != null and appreciation_backdrop.texture != null and appreciation_backdrop.texture.resource_path == BASE_BRIGHT_TEXTURE_PATH, "bright scenery must preserve the Appreciation water-only backdrop")
+		_expect(normal_backdrop != null and is_zero_approx(normal_backdrop.position.x), "bright scenery must not shift the normal water-only backdrop")
+		_expect(appreciation_backdrop != null and is_zero_approx(appreciation_backdrop.position.x), "bright scenery must not shift the Appreciation water-only backdrop")
+		_expect(normal_pass != null and normal_pass.visible and normal_pass.texture != null and normal_pass.texture.resource_path in BRIGHT_MOTIF_PATHS, "bright scenery must use an approved normal-camera pass card")
+		_expect(appreciation_pass != null and appreciation_pass.visible and appreciation_pass.texture != null and appreciation_pass.texture.resource_path in BRIGHT_MOTIF_PATHS, "bright scenery must use an approved Appreciation-camera pass card")
+		_expect(normal_pass != null and is_equal_approx(normal_pass.pixel_size, 0.02), "bright scenery pass must overscan vertically so a hard horizontal image edge cannot cross the boat view")
+		_expect(appreciation_pass != null and is_equal_approx(appreciation_pass.pixel_size, 0.02), "Appreciation scenery pass must use the same vertical overscan")
+		if normal_pass != null and normal_pass.texture != null:
+			var expected_offset_x := float(EXPECTED_PASS_START_OFFSET_X_BY_PATH.get(normal_pass.texture.resource_path, 0.0))
+			_expect(is_equal_approx(normal_pass.position.x, expected_offset_x), "bright scenery pass must begin from the authored horizon side")
+			_expect(appreciation_pass != null and is_equal_approx(appreciation_pass.position.x, expected_offset_x), "bright scenery pass must begin from the same horizon side in Appreciation mode")
+			var initial_pass_x := normal_pass.position.x
+			await create_timer(0.35).timeout
+			_expect(not is_equal_approx(normal_pass.position.x, initial_pass_x), "bright scenery pass must move across the horizon over live frames")
+			_expect(normal_pass.modulate.a > 0.0, "bright scenery pass must fade in instead of appearing as a hard backdrop swap")
 		_expect(diorama_camera != null and diorama_camera.keep_aspect == Camera3D.KEEP_HEIGHT, "portrait motif visibility must preserve the approved tight diorama camera framing")
 		_expect(scenery_label != null and scenery_label.visible and not scenery_label.text.is_empty(), "ambient motif must retain one quiet non-interactive label")
 		_expect(scenery_timer != null and not scenery_timer.is_stopped(), "ambient motif must schedule its existing temporary return")
@@ -62,6 +77,8 @@ func _run() -> void:
 		_expect(normal_backdrop != null and normal_backdrop.texture != null and normal_backdrop.texture.resource_path == BASE_BRIGHT_TEXTURE_PATH, "restoring the current atmosphere must return to the normal bright backdrop")
 		_expect(normal_backdrop != null and is_zero_approx(normal_backdrop.position.x), "restoring the current atmosphere must recenter the normal backdrop")
 		_expect(appreciation_backdrop != null and is_zero_approx(appreciation_backdrop.position.x), "restoring the current atmosphere must recenter the Appreciation backdrop")
+		_expect(normal_pass != null and not normal_pass.visible, "restoring the current atmosphere must hide the normal scenery pass")
+		_expect(appreciation_pass != null and not appreciation_pass.visible, "restoring the current atmosphere must hide the Appreciation scenery pass")
 		_expect(game_state.photos.size() == before_photos, "ambient scenery must not create a photo")
 		_expect(game_state.fish.size() == before_fish, "ambient scenery must not create fish")
 		_expect(game_state.voyage_records.size() == before_records, "ambient scenery must not create a voyage record")

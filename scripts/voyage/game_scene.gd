@@ -8,11 +8,16 @@ const IDENTITY_VISUAL_CATALOG_SCRIPT = preload("res://scripts/identity/identity_
 const TIME_OF_DAY_CATALOG_SCRIPT = preload("res://scripts/voyage/time_of_day_catalog.gd")
 const REAL_TIME_ATMOSPHERE_RESOLVER_SCRIPT = preload("res://scripts/voyage/real_time_atmosphere_resolver.gd")
 const DRIFT_SCENERY_DIRECTOR_SCRIPT = preload("res://scripts/voyage/drift_scenery_director.gd")
-<<<<<<< HEAD
 const LOOK_AROUND_PRESENTATION_ROUTER_SCRIPT = preload("res://scripts/voyage/look_around_presentation_router.gd")
 
 const SPEED_NAMES: Array[String] = ["느림", "보통", "빠름"]
 const SPEED_MULTIPLIERS: Array[float] = [0.65, 1.0, 1.45]
+const FORWARD_SURGE_DISTANCE := 0.16
+const LATERAL_CURRENT_DISTANCE := 0.022
+const FORWARD_SURGE_FREQUENCY := 0.45
+const LATERAL_CURRENT_FREQUENCY := 0.28
+const TITLE_IDLE_MOTION_MULTIPLIER := 0.42
+const BACKGROUND_FLOW_UNITS_PER_SECOND := 0.012
 const MOTION_COMFORT_NAMES := {
 	"standard": "기본",
 	"gentle": "잔잔",
@@ -36,26 +41,6 @@ const WATER_CONTACT_MODULATES := {
 	"sunset": Color(1.0, 0.72, 0.58, 0.30),
 	"night": Color(0.5, 0.66, 1.0, 0.22),
 }
-=======
-const DISTANT_SCENERY_SCENE = preload("res://scenes/distant_scenery.tscn")
-const DISTANT_SCENERY_TEXTURES := {
-	"buoy": preload("res://assets/images/runtime/scenery/distant_buoy_storybook.png"),
-	"islet": preload("res://assets/images/runtime/scenery/distant_islet_storybook.png"),
-	"lighthouse": preload("res://assets/images/runtime/scenery/distant_lighthouse_storybook.png"),
-}
-const SEA_BACKDROP_TEXTURES := {
-	"default": preload("res://assets/images/runtime/storybook/sea_bright_storybook.png"),
-	"night": preload("res://assets/images/runtime/storybook/sea_night_indigo_rain_storybook.png"),
-}
-const DISTANT_SCENERY_LABELS := {
-	"buoy": "작은 부표",
-	"islet": "작은 섬",
-	"lighthouse": "먼 등대",
-}
-
-const SPEED_NAMES: Array[String] = ["느림", "보통", "빠름"]
-const SPEED_MULTIPLIERS: Array[float] = [0.65, 1.0, 1.45]
->>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 const FISH_NAMES: Array[String] = ["정어리", "전갱이", "고등어", "도미"]
 const FISHING_OUTCOME_IDS: Array[String] = ["catch", "quiet"]
 const DECOR_SLOT_NODE_NAMES := {
@@ -70,14 +55,9 @@ const DECOR_SLOT_NODE_NAMES := {
 }
 const FISHING_WAIT_MIN_SECONDS := 6.0
 const FISHING_WAIT_MAX_SECONDS := 12.0
-const ATMOSPHERE_REFRESH_SECONDS := 30.0
-const DISTANT_SCENERY_DRIFT_PER_SECOND := 8.0
-const MEMORY_NOTIFICATION_SECONDS := 2.5
-const DISTANT_SCENERY_SIZES := {
-	"buoy": Vector2(48, 96),
-	"islet": Vector2(156, 88),
-	"lighthouse": Vector2(72, 128),
-}
+const AMBIENT_SCENERY_PASS_DURATION_SECONDS := 14.0
+const AMBIENT_SCENERY_PASS_MIN_TRAVEL_OFFSET_X := 21.0
+const AMBIENT_SCENERY_PASS_FADE_FRACTION := 0.12
 
 var _fishing_session = FISHING_SESSION_SCRIPT.new()
 var _next_fishing_outcome_index := 0
@@ -87,17 +67,15 @@ var _identity_visual_catalog = IDENTITY_VISUAL_CATALOG_SCRIPT.new()
 var _time_of_day_catalog = TIME_OF_DAY_CATALOG_SCRIPT.new()
 var _real_time_atmosphere_resolver = REAL_TIME_ATMOSPHERE_RESOLVER_SCRIPT.new()
 var _drift_scenery_director = DRIFT_SCENERY_DIRECTOR_SCRIPT.new()
-<<<<<<< HEAD
-=======
-var _active_distant_scenery: Array[Control] = []
-var _memory_notification_remaining := 0.0
->>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 var _drift_phase := 0.0
+var _background_flow_offset := 0.0
 var _diorama_camera_base_position := Vector3.ZERO
 var _look_around_camera_base_position := Vector3.ZERO
 var _appreciation_camera_base_position := Vector3.ZERO
-var _diorama_backdrop_base_position := Vector3.ZERO
-var _appreciation_backdrop_base_position := Vector3.ZERO
+var _ambient_scenery_pass_base_positions: Array[Vector3] = []
+var _ambient_scenery_pass_tween: Tween
+var _ambient_scenery_pass_start_offset_x := 0.0
+var _ambient_scenery_pass_end_offset_x := 0.0
 var _boat_space_base_position := Vector3.ZERO
 var _boat_space_base_rotation := Vector3.ZERO
 var _boat_water_contact_base_position := Vector3.ZERO
@@ -105,45 +83,35 @@ var _boat_water_contact_base_scale := Vector3.ONE
 var _boat_water_contact_base_modulate := Color.WHITE
 var _time_of_day_background_color := Color(0.58, 0.76, 0.86, 1.0)
 var _rest_menu_open := false
-<<<<<<< HEAD
 var _active_atmosphere_id := "bright"
 var _application_in_foreground := true
 var _look_around_mode := false
 var _look_around_angle_id := "front"
 var _look_around_presentation_router = LOOK_AROUND_PRESENTATION_ROUTER_SCRIPT.new()
 var _photo_capture_in_progress := false
-=======
-var _current_atmosphere_id := ""
-var _application_foreground := true
-var _atmosphere_tween: Tween
->>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
+var _title_waiting := false
 
 
 func _ready() -> void:
 	randomize()
-	if not GameState.voyage_active:
-		GameState.begin_voyage()
+	_title_waiting = not GameState.voyage_active
+	if _title_waiting:
+		GameState.reset_session()
 	_diorama_camera_base_position = $VoyageWorld/DioramaCameraRig.position
 	_look_around_camera_base_position = $VoyageWorld/LookAroundCameraRig.position
 	_appreciation_camera_base_position = $VoyageWorld/AppreciationCameraRig.position
-	_diorama_backdrop_base_position = ($VoyageWorld/DioramaCameraRig/DioramaCamera3D/SeaBackdrop as Sprite3D).position
-	_appreciation_backdrop_base_position = ($VoyageWorld/AppreciationCameraRig/AppreciationCamera3D/SeaBackdrop as Sprite3D).position
+	for scenery_pass in _get_ambient_scenery_passes():
+		_ambient_scenery_pass_base_positions.append(scenery_pass.position)
 	_boat_space_base_position = $VoyageWorld/BoatSpace.position
-<<<<<<< HEAD
 	_boat_space_base_rotation = $VoyageWorld/BoatSpace.rotation
 	_boat_water_contact_base_position = $VoyageWorld/BoatWaterContact.position
 	_boat_water_contact_base_scale = $VoyageWorld/BoatWaterContact.scale
 	_boat_water_contact_base_modulate = $VoyageWorld/BoatWaterContact.modulate
 	_configure_main_final_composite_decor_visibility()
 	_apply_time_of_day_tone()
-=======
-	%AtmosphereRefreshTimer.timeout.connect(_refresh_real_time_atmosphere)
-	%AtmosphereRefreshTimer.start(ATMOSPHERE_REFRESH_SECONDS)
-	_refresh_real_time_atmosphere(false)
->>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 	_apply_stored_boat_decor()
-	%RestMenuButton.pressed.connect(_toggle_rest_menu)
 	%TakePhotoButton.pressed.connect(_take_photo)
+	%StartVoyageButton.pressed.connect(start_voyage_from_title)
 	%RestMenuButton.pressed.connect(open_rest_menu)
 	%AppreciationButton.pressed.connect(_toggle_appreciation_mode)
 	%LookAroundButton.pressed.connect(_toggle_look_around_mode)
@@ -164,7 +132,6 @@ func _ready() -> void:
 	%InteractionCloseButton.pressed.connect(_close_interaction_panel)
 	%AlbumButton.pressed.connect(_open_album)
 	%NextVoyageButton.pressed.connect(_start_next_voyage)
-<<<<<<< HEAD
 	%AtmosphereRefreshTimer.timeout.connect(refresh_real_time_atmosphere)
 	%AmbientSceneryReturnTimer.timeout.connect(_restore_active_atmosphere_backdrop)
 	%DistantSceneryFadeTimer.timeout.connect(_hide_distant_scenery)
@@ -172,12 +139,13 @@ func _ready() -> void:
 	_populate_identity_options()
 	_populate_decor_slot_options()
 	set_application_foreground(true)
-	close_rest_menu()
-=======
-	_populate_identity_options()
-	_populate_decor_slot_options()
->>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
+	if _title_waiting:
+		_apply_title_waiting_presentation()
+	else:
+		_apply_voyage_presentation()
 	_apply_appreciation_mode()
+	if _title_waiting:
+		_apply_title_waiting_presentation()
 	var message := "동반자가 곁에서 조용히 바다를 바라봅니다."
 	if GameState.remaining_seconds < 299.9 and not GameState.voyage_record_created:
 		message = "바다로 돌아왔습니다. 이어서 천천히 항해합니다."
@@ -186,47 +154,14 @@ func _ready() -> void:
 	_update_ui(message)
 
 
-func _notification(what: int) -> void:
-	match what:
-		NOTIFICATION_APPLICATION_FOCUS_IN, NOTIFICATION_APPLICATION_RESUMED:
-			set_application_foreground(true)
-		NOTIFICATION_APPLICATION_FOCUS_OUT, NOTIFICATION_APPLICATION_PAUSED:
-			set_application_foreground(false)
-
-
-func set_application_foreground(is_foreground: bool) -> void:
-	_application_foreground = is_foreground
-	if _application_foreground:
-		_refresh_real_time_atmosphere(true)
-
-
-func is_application_foreground() -> bool:
-	return _application_foreground
-
-
-func _refresh_real_time_atmosphere(allow_transition: bool = true) -> void:
-	_apply_time_of_day_tone(_real_time_atmosphere_resolver.resolve_system_time(), allow_transition)
-
-
-func apply_real_time_atmosphere_for_hour(hour: int) -> String:
-	var atmosphere_id := _real_time_atmosphere_resolver.resolve_hour(hour)
-	_apply_time_of_day_tone(atmosphere_id, false)
-	return atmosphere_id
-
-
 func _process(delta: float) -> void:
-	if not _application_foreground:
-		return
 	_apply_drift_motion(delta)
+	if _title_waiting:
+		return
 	_advance_fishing(delta)
-<<<<<<< HEAD
 	_advance_drift_scenery(delta)
 	if _application_in_foreground:
 		GameState.advance_together_time(delta)
-=======
-	_advance_distant_scenery(delta)
-	_advance_memory_notification(delta)
->>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 	var completed_now := GameState.tick_voyage(delta)
 	if completed_now:
 		GameState.complete_voyage()
@@ -236,7 +171,6 @@ func _process(delta: float) -> void:
 		_update_ui()
 
 
-<<<<<<< HEAD
 func _notification(what: int) -> void:
 	if not is_node_ready():
 		return
@@ -279,55 +213,25 @@ func get_active_atmosphere_id() -> String:
 
 func _apply_atmosphere_id(time_of_day_id: String) -> String:
 	var normalized_time_of_day := _time_of_day_catalog.normalize_time_of_day(time_of_day_id)
-	_reset_temporary_ambient_backdrop_positions()
+	_clear_ambient_scenery_passes()
 	var tone := _time_of_day_catalog.get_visual_tone(normalized_time_of_day)
 	_active_atmosphere_id = normalized_time_of_day
-=======
-func _apply_time_of_day_tone(atmosphere_id: String, allow_transition: bool = false) -> void:
-	var tone := _time_of_day_catalog.get_visual_tone(atmosphere_id)
->>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 	_time_of_day_background_color = tone["background_color"] as Color
 	var world_environment := $VoyageWorld/WorldEnvironment as WorldEnvironment
-	var sun_light := $VoyageWorld/SunLight as DirectionalLight3D
-	var backdrop_modulate := tone["backdrop_modulate"] as Color
-	_apply_sea_backdrop_art(atmosphere_id)
-	var should_transition := allow_transition and _current_atmosphere_id != "" and _current_atmosphere_id != atmosphere_id
-	_current_atmosphere_id = atmosphere_id
-	if not should_transition:
-		_apply_atmosphere_values(world_environment, sun_light, tone, backdrop_modulate)
-		return
-	if _atmosphere_tween != null and _atmosphere_tween.is_valid():
-		_atmosphere_tween.kill()
-	_atmosphere_tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-	if world_environment.environment != null:
-		_atmosphere_tween.tween_property(world_environment.environment, "background_color", _time_of_day_background_color, 1.5)
-		_atmosphere_tween.parallel().tween_property(world_environment.environment, "ambient_light_color", tone["ambient_color"] as Color, 1.5)
-		_atmosphere_tween.parallel().tween_property(world_environment.environment, "ambient_light_energy", float(tone["ambient_energy"]), 1.5)
-	_atmosphere_tween.parallel().tween_property(sun_light, "light_color", tone["light_color"] as Color, 1.5)
-	_atmosphere_tween.parallel().tween_property(sun_light, "light_energy", float(tone["light_energy"]), 1.5)
-	_atmosphere_tween.parallel().tween_property($VoyageWorld/DioramaCameraRig/DioramaCamera3D/SeaBackdrop, "modulate", backdrop_modulate, 1.5)
-	_atmosphere_tween.parallel().tween_property($VoyageWorld/AppreciationCameraRig/AppreciationCamera3D/SeaBackdrop, "modulate", backdrop_modulate, 1.5)
-	_atmosphere_tween.parallel().tween_property($VoyageWorld/BoatSpace/BoatWaterlineOverlay, "modulate", backdrop_modulate, 1.5)
-
-
-func _apply_atmosphere_values(world_environment: WorldEnvironment, sun_light: DirectionalLight3D, tone: Dictionary, backdrop_modulate: Color) -> void:
 	if world_environment.environment != null:
 		world_environment.environment.background_color = _time_of_day_background_color
 		world_environment.environment.ambient_light_color = tone["ambient_color"] as Color
 		world_environment.environment.ambient_light_energy = float(tone["ambient_energy"])
+	var sun_light := $VoyageWorld/SunLight as DirectionalLight3D
 	sun_light.light_color = tone["light_color"] as Color
 	sun_light.light_energy = float(tone["light_energy"])
-<<<<<<< HEAD
 	var backdrop_modulate := tone["backdrop_modulate"] as Color
 	var backdrop_texture := load(str(ATMOSPHERE_TEXTURE_PATHS[normalized_time_of_day])) as Texture2D
-	for backdrop in [
-		$VoyageWorld/DioramaCameraRig/DioramaCamera3D/SeaBackdrop as Sprite3D,
-		$VoyageWorld/LookAroundCameraRig/LookAroundCamera3D/SeaBackdrop as Sprite3D,
-		$VoyageWorld/AppreciationCameraRig/AppreciationCamera3D/SeaBackdrop as Sprite3D,
-	]:
+	for backdrop in _get_sea_backdrops():
 		backdrop.modulate = backdrop_modulate
 		if backdrop_texture != null:
 			backdrop.texture = backdrop_texture
+		_apply_background_flow_to_backdrop(backdrop)
 	var water_contact := $VoyageWorld/BoatWaterContact as Sprite3D
 	if water_contact != null:
 		water_contact.modulate = WATER_CONTACT_MODULATES[normalized_time_of_day] as Color
@@ -368,23 +272,6 @@ func _capture_voyage_postcard() -> void:
 		_update_ui("사진 한 장이 항해 포스트카드로 남았습니다.")
 		return
 	_update_ui("사진을 남기지 못했어요. 바다를 계속 바라봐도 좋아요.")
-=======
-	$VoyageWorld/DioramaCameraRig/DioramaCamera3D/SeaBackdrop.modulate = backdrop_modulate
-	$VoyageWorld/AppreciationCameraRig/AppreciationCamera3D/SeaBackdrop.modulate = backdrop_modulate
-	$VoyageWorld/BoatSpace/BoatWaterlineOverlay.modulate = backdrop_modulate
-
-
-func _apply_sea_backdrop_art(atmosphere_id: String) -> void:
-	var texture_key := "night" if atmosphere_id == "night" else "default"
-	var backdrop_texture := SEA_BACKDROP_TEXTURES[texture_key] as Texture2D
-	$VoyageWorld/DioramaCameraRig/DioramaCamera3D/SeaBackdrop.texture = backdrop_texture
-	$VoyageWorld/AppreciationCameraRig/AppreciationCamera3D/SeaBackdrop.texture = backdrop_texture
-
-
-func _take_photo() -> void:
-	GameState.add_photo("사진 %d - 오늘의 바다" % [GameState.photos.size() + 1])
-	_update_ui("사진을 한 장 남겼습니다. 동반자가 가까이 다가옵니다.")
->>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 
 
 func _toggle_appreciation_mode() -> void:
@@ -518,13 +405,10 @@ func _get_decor_slot(slot_id: String) -> Node:
 
 func _sync_identity_decor_visuals() -> void:
 	var identity_visual_router := $VoyageWorld/BoatSpace/IdentityVisualRouter
-	if identity_visual_router != null and identity_visual_router.has_method("apply_selection"):
-		identity_visual_router.apply_selection(GameState.get_selected_player_style(), GameState.get_selected_pet_type())
 	if identity_visual_router != null and identity_visual_router.has_method("sync_decor_from_state"):
 		identity_visual_router.sync_decor_from_state()
 
 
-<<<<<<< HEAD
 func _configure_main_final_composite_decor_visibility() -> void:
 	var identity_visual_router := $VoyageWorld/BoatSpace/IdentityVisualRouter
 	if identity_visual_router != null and identity_visual_router.has_method("set_suppress_technical_decor_for_final_composite"):
@@ -584,44 +468,6 @@ func _apply_identity_visuals() -> void:
 	if identity_visual_router != null and identity_visual_router.has_method("sync_decor_from_state"):
 		identity_visual_router.call("sync_decor_from_state")
 	_refresh_decor_preview()
-=======
-func _populate_identity_options() -> void:
-	%PlayerStyleOption.clear()
-	for player_style_id in _identity_visual_catalog.get_player_style_ids():
-		%PlayerStyleOption.add_item(_identity_visual_catalog.get_player_label(player_style_id))
-		%PlayerStyleOption.set_item_metadata(%PlayerStyleOption.item_count - 1, player_style_id)
-	%PetTypeOption.clear()
-	for pet_type_id in _identity_visual_catalog.get_pet_type_ids():
-		%PetTypeOption.add_item(_identity_visual_catalog.get_pet_label(pet_type_id))
-		%PetTypeOption.set_item_metadata(%PetTypeOption.item_count - 1, pet_type_id)
-	_select_option_by_metadata(%PlayerStyleOption, GameState.get_selected_player_style())
-	_select_option_by_metadata(%PetTypeOption, GameState.get_selected_pet_type())
-
-
-func _on_player_style_selected(index: int) -> void:
-	if index < 0 or index >= %PlayerStyleOption.item_count:
-		return
-	%PlayerStyleOption.select(index)
-	GameState.set_selected_player_style(str(%PlayerStyleOption.get_item_metadata(index)))
-	_sync_identity_decor_visuals()
-
-
-func _on_pet_type_selected(index: int) -> void:
-	if index < 0 or index >= %PetTypeOption.item_count:
-		return
-	%PetTypeOption.select(index)
-	GameState.set_selected_pet_type(str(%PetTypeOption.get_item_metadata(index)))
-	_sync_identity_decor_visuals()
-
-
-func _select_option_by_metadata(option: OptionButton, value: String) -> void:
-	for index in option.item_count:
-		if str(option.get_item_metadata(index)) == value:
-			option.select(index)
-			return
-	if option.item_count > 0:
-		option.select(0)
->>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 
 
 func _populate_decor_slot_options() -> void:
@@ -863,28 +709,91 @@ func _get_motion_comfort_name() -> String:
 	return str(MOTION_COMFORT_NAMES.get(GameState.get_motion_comfort_profile(), "기본"))
 
 
+## Returns the visual-only current offset used by all active sea backdrops.
+func get_background_flow_offset() -> float:
+	return _background_flow_offset
+
+
+func _get_sea_backdrops() -> Array[Sprite3D]:
+	return [
+		$VoyageWorld/DioramaCameraRig/DioramaCamera3D/SeaBackdrop as Sprite3D,
+		$VoyageWorld/LookAroundCameraRig/LookAroundCamera3D/SeaBackdrop as Sprite3D,
+		$VoyageWorld/AppreciationCameraRig/AppreciationCamera3D/SeaBackdrop as Sprite3D,
+	]
+
+
+func _apply_background_flow_to_backdrop(backdrop: Sprite3D) -> void:
+	if backdrop == null:
+		return
+	var flow_material := backdrop.material_override as ShaderMaterial
+	if flow_material == null:
+		return
+	flow_material.set_shader_parameter("source_texture", backdrop.texture)
+	flow_material.set_shader_parameter("flow_offset", _background_flow_offset)
+
+
+func _apply_background_flow() -> void:
+	for backdrop in _get_sea_backdrops():
+		_apply_background_flow_to_backdrop(backdrop)
+
+
 func _apply_drift_motion(delta: float) -> void:
 	var speed_index := clampi(GameState.speed_index, 0, SPEED_MULTIPLIERS.size() - 1)
 	var comfort_scale := GameState.get_motion_comfort_scale()
-	_drift_phase += maxf(delta, 0.0) * SPEED_MULTIPLIERS[speed_index]
+	var visual_motion_multiplier := SPEED_MULTIPLIERS[speed_index] if not _title_waiting else TITLE_IDLE_MOTION_MULTIPLIER
+	var safe_delta := maxf(delta, 0.0)
+	_drift_phase += safe_delta * visual_motion_multiplier
+	_background_flow_offset = fposmod(
+		_background_flow_offset + safe_delta * BACKGROUND_FLOW_UNITS_PER_SECOND * visual_motion_multiplier,
+		1.0,
+	)
+	_apply_background_flow()
 	$VoyageWorld/DioramaCameraRig.position.y = _diorama_camera_base_position.y + sin(_drift_phase * 1.2) * 0.018 * comfort_scale
 	$VoyageWorld/LookAroundCameraRig.position.y = _look_around_camera_base_position.y + sin(_drift_phase * 1.2) * 0.018 * comfort_scale
 	$VoyageWorld/AppreciationCameraRig.position.y = _appreciation_camera_base_position.y + sin(_drift_phase * 1.2) * 0.025 * comfort_scale
 	var boat_bob_signal := sin(_drift_phase * 1.05 + 0.45)
 	var boat_bob := boat_bob_signal * 0.052 * comfort_scale
-	$VoyageWorld/BoatSpace.position.y = _boat_space_base_position.y + boat_bob
+	var forward_surge := sin(_drift_phase * FORWARD_SURGE_FREQUENCY) * FORWARD_SURGE_DISTANCE * comfort_scale
+	var lateral_current := sin(_drift_phase * LATERAL_CURRENT_FREQUENCY) * LATERAL_CURRENT_DISTANCE * comfort_scale
+	$VoyageWorld/BoatSpace.position = _boat_space_base_position + Vector3(lateral_current, boat_bob, forward_surge)
 	$VoyageWorld/BoatSpace.rotation = _boat_space_base_rotation + Vector3(0.0, 0.0, sin(_drift_phase * 0.82 + 0.2) * deg_to_rad(1.15) * comfort_scale)
 	var water_contact := $VoyageWorld/BoatWaterContact as Sprite3D
 	if water_contact != null:
-		var contact_breath := 1.0 + sin(_drift_phase * 1.05 - 0.2) * 0.028 * comfort_scale
-		water_contact.position = _boat_water_contact_base_position + Vector3(0.0, boat_bob * 0.12, 0.0)
-		water_contact.scale = _boat_water_contact_base_scale * contact_breath
+		var contact_breath := 1.0 + sin(_drift_phase * 1.05 - 0.2) * 0.045 * comfort_scale
+		var surge_emphasis := 1.0 + absf(forward_surge) * 0.72
+		water_contact.position = _boat_water_contact_base_position + Vector3(lateral_current, boat_bob * 0.92, forward_surge)
+		water_contact.scale = _boat_water_contact_base_scale * contact_breath * surge_emphasis
 		var contact_modulate := _boat_water_contact_base_modulate
-		contact_modulate.a *= 0.88 + maxf(boat_bob_signal, 0.0) * 0.18
+		contact_modulate.a *= 0.9 + maxf(boat_bob_signal, 0.0) * 0.16
 		water_contact.modulate = contact_modulate
 
 
-<<<<<<< HEAD
+## Starts persistent voyage state only after the player leaves the title boat view.
+func start_voyage_from_title() -> void:
+	if not _title_waiting:
+		return
+	GameState.begin_voyage()
+	_title_waiting = false
+	_apply_voyage_presentation()
+	_update_ui("동반자와 함께 천천히 항해를 시작합니다.")
+
+
+func _apply_title_waiting_presentation() -> void:
+	$TitleOverlay.visible = true
+	_rest_menu_open = false
+	$TopPanel.visible = false
+	$BottomPanel.visible = false
+	%RestMenuButton.visible = false
+	$DecorPanel.visible = false
+	$InteractionPanel.visible = false
+	%DistantSceneryLabel.visible = false
+
+
+func _apply_voyage_presentation() -> void:
+	$TitleOverlay.visible = false
+	close_rest_menu()
+
+
 func _advance_drift_scenery(delta: float) -> void:
 	var event := _drift_scenery_director.advance(delta, _active_atmosphere_id)
 	if event.is_empty():
@@ -909,12 +818,18 @@ func _show_temporary_ambient_scenery_backdrop(texture_path: String, backdrop_off
 	var scenery_texture := load(texture_path) as Texture2D
 	if scenery_texture == null:
 		return
-	var diorama_backdrop := $VoyageWorld/DioramaCameraRig/DioramaCamera3D/SeaBackdrop as Sprite3D
-	var appreciation_backdrop := $VoyageWorld/AppreciationCameraRig/AppreciationCamera3D/SeaBackdrop as Sprite3D
-	diorama_backdrop.texture = scenery_texture
-	appreciation_backdrop.texture = scenery_texture
-	diorama_backdrop.position = _diorama_backdrop_base_position + Vector3(backdrop_offset_x, 0.0, 0.0)
-	appreciation_backdrop.position = _appreciation_backdrop_base_position + Vector3(backdrop_offset_x, 0.0, 0.0)
+	_clear_ambient_scenery_passes()
+	_ambient_scenery_pass_start_offset_x = signf(backdrop_offset_x) * maxf(absf(backdrop_offset_x) * 1.5, AMBIENT_SCENERY_PASS_MIN_TRAVEL_OFFSET_X)
+	_ambient_scenery_pass_end_offset_x = -_ambient_scenery_pass_start_offset_x
+	for index in _get_ambient_scenery_passes().size():
+		var scenery_pass := _get_ambient_scenery_passes()[index]
+		scenery_pass.texture = scenery_texture
+		scenery_pass.position = _ambient_scenery_pass_base_positions[index] + Vector3(_ambient_scenery_pass_start_offset_x, 0.0, 0.0)
+		scenery_pass.modulate = Color(1.0, 1.0, 1.0, 0.0)
+		scenery_pass.visible = true
+	_ambient_scenery_pass_tween = create_tween().bind_node(self)
+	_ambient_scenery_pass_tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	_ambient_scenery_pass_tween.tween_method(_apply_ambient_scenery_pass_progress, 0.0, 1.0, AMBIENT_SCENERY_PASS_DURATION_SECONDS)
 	%AmbientSceneryReturnTimer.start()
 
 
@@ -922,64 +837,42 @@ func _restore_active_atmosphere_backdrop() -> void:
 	_apply_atmosphere_id(_active_atmosphere_id)
 
 
-func _reset_temporary_ambient_backdrop_positions() -> void:
-	var diorama_backdrop := $VoyageWorld/DioramaCameraRig/DioramaCamera3D/SeaBackdrop as Sprite3D
-	var appreciation_backdrop := $VoyageWorld/AppreciationCameraRig/AppreciationCamera3D/SeaBackdrop as Sprite3D
-	diorama_backdrop.position = _diorama_backdrop_base_position
-	appreciation_backdrop.position = _appreciation_backdrop_base_position
+func _get_ambient_scenery_passes() -> Array[Sprite3D]:
+	return [
+		$VoyageWorld/DioramaCameraRig/DioramaCamera3D/AmbientSceneryPass as Sprite3D,
+		$VoyageWorld/AppreciationCameraRig/AppreciationCamera3D/AmbientSceneryPass as Sprite3D,
+	]
+
+
+func _apply_ambient_scenery_pass_progress(progress: float) -> void:
+	var pass_alpha := minf(
+		smoothstep(0.0, AMBIENT_SCENERY_PASS_FADE_FRACTION, progress),
+		smoothstep(0.0, AMBIENT_SCENERY_PASS_FADE_FRACTION, 1.0 - progress),
+	)
+	var offset_x := lerpf(_ambient_scenery_pass_start_offset_x, _ambient_scenery_pass_end_offset_x, progress)
+	for index in _get_ambient_scenery_passes().size():
+		var scenery_pass := _get_ambient_scenery_passes()[index]
+		scenery_pass.position = _ambient_scenery_pass_base_positions[index] + Vector3(offset_x, 0.0, 0.0)
+		scenery_pass.modulate = Color(1.0, 1.0, 1.0, pass_alpha)
+
+
+func _clear_ambient_scenery_passes() -> void:
+	if _ambient_scenery_pass_tween != null:
+		_ambient_scenery_pass_tween.kill()
+		_ambient_scenery_pass_tween = null
+	if is_instance_valid(%AmbientSceneryReturnTimer):
+		%AmbientSceneryReturnTimer.stop()
+	for index in _get_ambient_scenery_passes().size():
+		var scenery_pass := _get_ambient_scenery_passes()[index]
+		scenery_pass.visible = false
+		scenery_pass.texture = null
+		scenery_pass.modulate = Color.WHITE
+		if index < _ambient_scenery_pass_base_positions.size():
+			scenery_pass.position = _ambient_scenery_pass_base_positions[index]
 
 
 func _hide_distant_scenery() -> void:
 	%DistantSceneryLabel.visible = false
-=======
-func _advance_distant_scenery(delta: float) -> void:
-	var event := _drift_scenery_director.advance(delta, _application_foreground)
-	if bool(event.get("show_scenery", false)):
-		_spawn_distant_scenery(str(event.get("scenery_id", "")), bool(event.get("save_memory", false)))
-	if not _application_foreground:
-		return
-	for scenery in _active_distant_scenery.duplicate():
-		if not is_instance_valid(scenery):
-			_active_distant_scenery.erase(scenery)
-			continue
-		scenery.position.x += DISTANT_SCENERY_DRIFT_PER_SECOND * maxf(delta, 0.0)
-		if scenery.position.x > size.x + 24.0:
-			scenery.queue_free()
-			_active_distant_scenery.erase(scenery)
-
-
-func _spawn_distant_scenery(scenery_id: String, save_memory: bool) -> void:
-	var texture = DISTANT_SCENERY_TEXTURES.get(scenery_id, null)
-	if texture == null:
-		return
-	var instance := DISTANT_SCENERY_SCENE.instantiate() as TextureRect
-	if instance == null:
-		return
-	instance.texture = texture
-	var scenery_size := DISTANT_SCENERY_SIZES.get(scenery_id, Vector2(80, 80)) as Vector2
-	instance.size = scenery_size
-	instance.position = Vector2(-scenery_size.x, 386.0 - scenery_size.y)
-	$DistantSceneryLayer.add_child(instance)
-	_active_distant_scenery.append(instance)
-	if save_memory:
-		var scenery_label := str(DISTANT_SCENERY_LABELS.get(scenery_id, "먼 풍경"))
-		GameState.add_ambient_scenery("지나간 %s" % scenery_label)
-		_show_memory_notification("%s을 조용히 남겼습니다." % scenery_label)
-
-
-func _show_memory_notification(message: String) -> void:
-	%MemoryNotificationLabel.text = message
-	%MemoryNotificationLabel.visible = true
-	_memory_notification_remaining = MEMORY_NOTIFICATION_SECONDS
-
-
-func _advance_memory_notification(delta: float) -> void:
-	if _memory_notification_remaining <= 0.0:
-		return
-	_memory_notification_remaining = maxf(0.0, _memory_notification_remaining - maxf(delta, 0.0))
-	if _memory_notification_remaining <= 0.0:
-		%MemoryNotificationLabel.visible = false
->>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 
 
 func _handle_fishing_action() -> void:
@@ -1033,7 +926,6 @@ func _set_fishing_status(message: String) -> void:
 
 
 func _apply_appreciation_mode() -> void:
-<<<<<<< HEAD
 	var controls_visible := not GameState.appreciation_mode
 	$TopPanel.visible = controls_visible and _rest_menu_open
 	$BottomPanel.visible = GameState.appreciation_mode or _rest_menu_open
@@ -1049,22 +941,6 @@ func _apply_appreciation_mode() -> void:
 	%InteractButton.visible = controls_visible
 	%AlbumButton.visible = controls_visible
 	%AppreciationButton.visible = true
-=======
-	var action_controls_visible := not GameState.appreciation_mode
-	$TopPanel.visible = _rest_menu_open and action_controls_visible
-	$BottomPanel.visible = _rest_menu_open
-	$BottomPanel.offset_top = -56.0 if GameState.appreciation_mode else -176.0
-	$BottomPanel/ButtonGrid.columns = 1 if GameState.appreciation_mode else 2
-	%RestMenuButton.visible = action_controls_visible
-	%RestMenuButton.text = "닫기" if _rest_menu_open else "메뉴"
-	%TakePhotoButton.visible = action_controls_visible
-	%SpeedButton.visible = action_controls_visible
-	%FishingButton.visible = action_controls_visible
-	%DecorButton.visible = action_controls_visible
-	%InteractButton.visible = action_controls_visible
-	%AlbumButton.visible = action_controls_visible
-	%AppreciationButton.visible = _rest_menu_open
->>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 	%AppreciationButton.text = "감상 끝내기" if GameState.appreciation_mode else "감상모드"
 	%LookAroundButton.text = "기본 시점" if _look_around_mode else "둘러보기"
 	if GameState.appreciation_mode:
@@ -1072,14 +948,7 @@ func _apply_appreciation_mode() -> void:
 		$InteractionPanel.visible = false
 	_apply_camera_mode()
 	_sync_next_voyage_button()
-	%FishingStatusLabel.visible = _rest_menu_open and action_controls_visible and %FishingStatusLabel.text != ""
-
-
-func _toggle_rest_menu() -> void:
-	if GameState.appreciation_mode:
-		return
-	_rest_menu_open = not _rest_menu_open
-	_apply_appreciation_mode()
+	%FishingStatusLabel.visible = controls_visible and %FishingStatusLabel.text != ""
 
 
 func _sync_next_voyage_button() -> void:

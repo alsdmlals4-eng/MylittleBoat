@@ -1,7 +1,7 @@
-# 승인된 자연 명소 여섯 장이 실제 항해 화면에 표시되는 GPU 증거를 저장한다.
+# 승인된 자연 명소 여섯 장이 실제 항해 화면에서 물 배경 위를 가로지르는 GPU 증거를 저장한다.
 extends SceneTree
 
-const EVIDENCE_DIRECTORY := "res://docs/evidence/2026-08-30-ambient-motifs"
+const EVIDENCE_DIRECTORY := "res://docs/evidence/2026-08-31-ambient-scenery-pass"
 const DIRECTOR_SCRIPT = preload("res://scripts/voyage/drift_scenery_director.gd")
 const CAPTURE_CASES := [
 	{
@@ -94,18 +94,37 @@ func _capture_case(game_state: Node, capture_case: Dictionary) -> bool:
 	var director = scene.get("_drift_scenery_director")
 	director.set_next_event_seconds_for_tests(0.0)
 	seed(seed_value)
-	scene.call("_advance_drift_scenery", 0.1)
-	for _frame in 8:
-		await process_frame
 	var normal_backdrop := scene.get_node_or_null("VoyageWorld/DioramaCameraRig/DioramaCamera3D/SeaBackdrop") as Sprite3D
-	if normal_backdrop == null or normal_backdrop.texture == null or normal_backdrop.texture.resource_path != str(capture_case["texture_path"]):
-		_fail("normal backdrop must use %s" % capture_case["id"])
+	var appreciation_backdrop := scene.get_node_or_null("VoyageWorld/AppreciationCameraRig/AppreciationCamera3D/SeaBackdrop") as Sprite3D
+	if normal_backdrop == null or normal_backdrop.texture == null or appreciation_backdrop == null or appreciation_backdrop.texture == null:
+		_fail("water-only backdrops must exist before %s" % capture_case["id"])
 		await _cleanup(scene, game_state)
 		return false
-	var appreciation_backdrop := scene.get_node_or_null("VoyageWorld/AppreciationCameraRig/AppreciationCamera3D/SeaBackdrop") as Sprite3D
-	var expected_offset_x := float(capture_case["backdrop_offset_x"])
-	if not is_equal_approx(normal_backdrop.position.x, expected_offset_x) or appreciation_backdrop == null or not is_equal_approx(appreciation_backdrop.position.x, expected_offset_x):
-		_fail("normal and Appreciation backdrops must use the portrait-safe offset for %s" % capture_case["id"])
+	var normal_base_texture_path := normal_backdrop.texture.resource_path
+	var appreciation_base_texture_path := appreciation_backdrop.texture.resource_path
+	scene.call("_advance_drift_scenery", 0.1)
+	var normal_pass := scene.get_node_or_null("VoyageWorld/DioramaCameraRig/DioramaCamera3D/AmbientSceneryPass") as Sprite3D
+	var appreciation_pass := scene.get_node_or_null("VoyageWorld/AppreciationCameraRig/AppreciationCamera3D/AmbientSceneryPass") as Sprite3D
+	if normal_backdrop.texture == null or normal_backdrop.texture.resource_path != normal_base_texture_path:
+		_fail("normal water-only backdrop must remain active for %s" % capture_case["id"])
+		await _cleanup(scene, game_state)
+		return false
+	if appreciation_backdrop.texture == null or appreciation_backdrop.texture.resource_path != appreciation_base_texture_path:
+		_fail("Appreciation water-only backdrop must remain active for %s" % capture_case["id"])
+		await _cleanup(scene, game_state)
+		return false
+	if normal_pass == null or not normal_pass.visible or normal_pass.texture == null or normal_pass.texture.resource_path != str(capture_case["texture_path"]):
+		_fail("normal scenery pass must use %s" % capture_case["id"])
+		await _cleanup(scene, game_state)
+		return false
+	if appreciation_pass == null or not appreciation_pass.visible or appreciation_pass.texture == null or appreciation_pass.texture.resource_path != str(capture_case["texture_path"]):
+		_fail("Appreciation scenery pass must use %s" % capture_case["id"])
+		await _cleanup(scene, game_state)
+		return false
+	var initial_pass_x := normal_pass.position.x
+	await create_timer(6.0).timeout
+	if is_equal_approx(normal_pass.position.x, initial_pass_x):
+		_fail("normal scenery pass must make lateral progress for %s" % capture_case["id"])
 		await _cleanup(scene, game_state)
 		return false
 	var scenery_label := scene.get_node_or_null("DistantSceneryLabel") as Label
@@ -113,7 +132,7 @@ func _capture_case(game_state: Node, capture_case: Dictionary) -> bool:
 		_fail("ambient motif must display a quiet label for %s" % capture_case["id"])
 		await _cleanup(scene, game_state)
 		return false
-	if not _save_runtime_image(str(capture_case["file_name"])):
+	if not await _save_runtime_image(str(capture_case["file_name"])):
 		await _cleanup(scene, game_state)
 		return false
 	await _cleanup(scene, game_state)
@@ -132,6 +151,8 @@ func _find_no_save_seed_for_motif(atmosphere_id: String, motif_id: String) -> in
 
 
 func _save_runtime_image(file_name: String) -> bool:
+	RenderingServer.force_draw(true)
+	await RenderingServer.frame_post_draw
 	var image := root.get_texture().get_image()
 	if image == null or image.is_empty():
 		_fail("empty runtime image for %s" % file_name)

@@ -1,34 +1,30 @@
-# 마이 리틀 보트
+# MY LITTLE BOAT
 
-`my little boat`는 내 캐릭터와 동반자가 작은 보트 위에서 바다를 바라보며 쉬는, 휴식 우선의 Godot 4.7 게임입니다. 이 게임에서 아무것도 하지 않고 머무르는 일은 비어 있는 시간이 아니라 완전한 플레이입니다.
+> 파도 위에서, 함께 쉬는 시간
+
+`MY LITTLE BOAT`는 내 캐릭터와 동반자가 작은 보트 위에서 바다를 바라보며 쉬는, 휴식 우선의 Godot 4.7 게임입니다. 이 게임에서 아무것도 하지 않고 머무르는 일은 비어 있는 시간이 아니라 완전한 플레이입니다.
 
 ## 먼저 알아둘 것
 
 - 현재 사람용 정본은 [프로젝트 GDD](docs/design/PROJECT_GDD.md)입니다.
-- 사람이 읽는 최신 PDF 출력은 [GDD PDF](exports/MY_LITTLE_BOAT_MASTER_PRODUCTION_GDD_20260830.pdf)입니다.
+- 사람용 PDF의 source binding 재검증·재발행은 현재 보류되어 있습니다. 지금의 읽기 기준은 프로젝트 GDD와 [문서 지도](docs/DOCUMENTATION_MAP.md)입니다.
 - 실제 코드·Scene·테스트·캡처의 사실은 [현재 Godot handoff](docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md)가 소유합니다.
 - 이전 Notion은 이관이 끝난 historical archive이며 새 작업의 정본이나 동기화 대상이 아닙니다.
-<<<<<<< HEAD
-- 실행은 `scenes/game.tscn`으로 바로 들어갑니다. 이전 `main_menu.tscn`은 시작 경로가 아닌 legacy 자료이며, 제품 흐름을 결정하지 않습니다.
-=======
-- 현재 기본 실행은 `scenes/game.tscn`의 direct boat entry입니다. `scenes/main_menu.tscn`은 오래된 링크를 보트 화면으로 넘기는 호환 경로이며, 선택 UI를 제품 화면으로 노출하지 않습니다.
->>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
+- 실행은 `scenes/game.tscn`의 **타이틀 대기**로 바로 들어갑니다. 실제 보트·동반자·바다가 잔잔히 움직이는 상태에서 확정 로고와 `항해 시작`만 보이며, 누르기 전에는 항해 시간·기억·보상이 시작되지 않습니다. 이전 `main_menu.tscn`은 시작 경로가 아닌 legacy 자료입니다.
+- `MLB-BRAND-TITLE-001`은 “MY LITTLE BOAT / 파도 위에서, 함께 쉬는 시간”의 확정 브랜드 자산입니다. store·splash·GDD 표지와 `GameScene/TitleOverlay/BrandLogo`에만 쓰며, 첫 보트 장면의 플레이어 외형·동반자 선택·save·reward를 고정하거나 가리지 않습니다.
 
 ## 플레이 경험
 
 ```text
 실행
-→ 이미 바다 위에 떠 있는 보트, 캐릭터, 동반자, 수평선
+→ 로고와 실제 보트가 잔잔히 떠 있는 타이틀 대기
+→ `항해 시작`을 눌러 실제 항해 시간과 쉬는 메뉴 열기
 → 그냥 쉬기 또는 사진·낚시·감상·작은 상호작용
 → 원할 때만 꾸미기에서 외형·동반자·보트 장식을 미리 보며 변경
 → 개인적인 기억을 남기거나 계속 머무르기
 ```
 
-<<<<<<< HEAD
-시작하면 기기의 **현지 현실 시간**에 맞춰 새벽·밝음·해질녘·밤 분위기가 자동으로 보입니다. 시작 화면이나 수동 분위기 선택은 없고, 기기 시계는 보상·진행·저장에 영향을 주지 않습니다. 게임을 켜 둔 active foreground 시간에 따라 새벽 바다 아치, 밝은 낮의 해초 또는 흰 절벽, 해질녘의 사암 코브 또는 갈대섬, 밤의 생물발광처럼 승인된 자연 명소가 낮은 빈도로 지나갑니다.
-=======
-시작하면 기기의 **현지 현실 시간**에 맞춰 새벽·밝음·해질녘·밤 분위기가 자동으로 보입니다. 시작 화면이나 수동 분위기 선택은 없고, 기기 시계는 보상·진행·저장에 영향을 주지 않습니다. 게임을 켜 두고 실제로 보고 있는 active foreground 시간에만 항해 timer·낚시 대기·먼 구조물·주변 풍경이 낮은 빈도로 진행되며, background 시간은 항해 기록을 만들지 않습니다.
->>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
+시작하면 기기의 **현지 현실 시간**에 맞춰 새벽·밝음·해질녘·밤 분위기가 자동으로 보입니다. 수동 분위기 선택은 없고, 기기 시계는 보상·진행·저장에 영향을 주지 않습니다. 타이틀 대기와 항해 중에는 수평선 아래 water-only 바다가 계속 미세하게 흐르며, 항해가 시작된 뒤 active foreground 시간에 따라 새벽 바다 아치, 밝은 낮의 해초 또는 흰 절벽, 해질녘의 사암 코브 또는 갈대섬, 밤의 생물발광처럼 승인된 자연 명소가 낮은 빈도로 지나갑니다.
 
 ## 핵심 보호선
 
@@ -43,23 +39,14 @@
 
 기본 방향은 `HANDPAINTED_STORYBOOK_3D_DIORAMA`이며, 둘러보기는 `MLB-LOOK-STYLE-006`의 soft-matte chibi player·round dog·matte ivory/deep-teal dinghy·투명한 청록 수면을 사용합니다. 기본 C+강아지 Normal Diorama는 사용자가 승인한 후면 3/4 source `MLB-LOOK-CHIBI-NORMAL-REAR-001`을 사용합니다. 플레이어는 보트 뒤쪽 난간에 기대어 뒷모습으로, 강아지는 바로 옆에서 함께 쉬는 모습으로 읽힙니다. `FinalDioramaCard`는 그 source에서 만든 기술용 foreground matte `MLB-LOOK-CHIBI-NORMAL-REAR-MATTE-001`와 `chibi_normal_chroma_key.gdshader`를 실제로 소비합니다. 재질의 명시적 `matte_texture` uniform이 녹색 기술 배경만 alpha로 바꾸므로, 시간대별 하늘·수면 backdrop과 보트 부유는 그대로 유지됩니다. 밤은 `INDIGO_RAIN_REFLECTION` 분위기를 사용합니다.
 
-<<<<<<< HEAD
-승인된 자연 경관은 보트가 없는 water-only runtime backdrop 위에, foreground 시간의 낮은 밀도 temporary scene으로 연결되어 있습니다. 각 명소는 normal·Appreciation `SeaBackdrop`에만 10초간 적용되며 Look Around의 승인 각도 원화는 바꾸지 않습니다. 세로 화면에서 landmark가 사라지지 않도록 명소마다 배경만 좌우 보정하고, 후방 보트 구도·항해 시간·저장·보상은 바꾸지 않습니다. 첫 화면에는 하나의 primary `BoatSpace`만 보이며, 치비 player·강아지·보트와 수면 접점 리플이 함께 잔잔히 상하로 움직입니다. 기본 C+강아지 route에서 저장된 `꽃` 펫 쿠션만 같은 치비 family의 작은 bow-side overlay로 보입니다. `엽서`는 메인 휴식 장면에 합성하지 않고, 꾸미기 preview의 실제 난간 장식과 사진을 남긴 뒤 Album에서 보는 항해 포스트카드로 소비합니다. 꾸미기용 보트 미리보기는 메뉴를 열 때만 별도 renderer·camera·보트 instance를 활성화하므로, 첫 화면에 중복 보트나 임시 장식이 섞이지 않습니다. 이전 보트 포함 source binary는 역사·참조 자산으로 보존하며, normal runtime에는 소비하지 않습니다.
-=======
-메인 진입은 보트 hull과 물의 접점에 잔물결·wake를 겹치고 넓은 수평선을 유지합니다. 실제 GPU capture는 [direct boat entry evidence](docs/evidence/2026-08-29-direct-boat-entry/README.md)에 남깁니다. 이는 실제 기기에서의 5분 휴식·터치·오디오 편안함까지 통과했다는 뜻은 아닙니다.
->>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
+승인된 자연 경관은 보트가 없는 water-only runtime `SeaBackdrop`을 바꾸지 않고, foreground 시간의 낮은 밀도 `AmbientSceneryPass`로 normal·Appreciation 화면의 수평선을 약 14초 동안 천천히 가로지릅니다. 기본 `SeaBackdrop`은 수평선 아래만 흐르게 하는 `voyage_water_flow.gdshader`를 사용하므로, 명소가 아직 나타나지 않아도 바다는 정지 화면처럼 보이지 않습니다. image는 화면 위아래로 overscan하고 좌우에서만 fade-in/out하므로, 보트 주변에 수평 카드 경계가 남지 않습니다. Look Around의 승인 각도 원화는 바꾸지 않으며, 후방 보트 구도·항해 시간·저장·보상도 바꾸지 않습니다. 첫 화면에는 하나의 primary `BoatSpace`만 보이며, 치비 player·강아지·보트와 수면 접점 리플이 같은 전후·측면·상하 drift를 따라 잔잔히 움직입니다. 기본 C+강아지 route에서 저장된 `꽃` 펫 쿠션만 같은 치비 family의 작은 bow-side overlay로 보입니다. `엽서`는 메인 휴식 장면에 합성하지 않고, 꾸미기 preview의 실제 난간 장식과 사진을 남긴 뒤 Album에서 보는 항해 포스트카드로 소비합니다. 꾸미기용 보트 미리보기는 메뉴를 열 때만 별도 renderer·camera·보트 instance를 활성화하므로, 첫 화면에 중복 보트나 임시 장식이 섞이지 않습니다. 선체 하단의 새 waterline contact 후보는 아직 `GENERATED_CANDIDATE`이며 user `LOCK` 전에는 runtime에 넣지 않습니다.
 
 ## 프로젝트 열기
 
 1. Godot 4.7 stable 계열로 `project.godot`을 Import합니다.
-<<<<<<< HEAD
-2. 기본 main scene을 실행하면 보트·동반자·바다·수평선이 바로 보입니다. 첫 프레임에는 큰 조작 패널 대신 `쉬는 메뉴`만 표시됩니다.
+2. 기본 main scene을 실행하면 실제 보트·동반자·바다·수평선과 브랜드 로고, `항해 시작`이 보입니다. 이 대기 상태에서는 항해 시간이 흐르지 않습니다. `항해 시작` 뒤에만 큰 조작 패널 대신 `쉬는 메뉴`가 표시됩니다.
 3. 기기 현지 시각은 시각만 바꿉니다. `05–08` 새벽, `09–16` 밝음, `17–20` 해질녘, `21–04` 밤이며 보상·진행·저장에는 영향을 주지 않습니다.
 4. 메뉴를 열면 사진, 감상모드, 둘러보기, 속도, `파도: 기본/잔잔/고요`, 낚시, 꾸미기, 상호작용, 앨범을 선택할 수 있습니다. `파도`는 보트·카메라·수면 접점의 자동 움직임 진폭만 `1.0 / 0.5 / 0.0`으로 바꾸는 기기 로컬 선택이며, 항해 시간·속도·보상·저장·시간대에는 영향을 주지 않습니다. `사진`은 선택 UI를 잠시 숨긴 실제 항해 프레임을 포스트카드로 저장합니다. `낚시`는 기다린 뒤 물고기를 남기거나, 입질 없이 조용히 거두거나, 기다리는 중 언제든 줄을 거둘 수 있으며 어느 경우에도 손해·점수·연속 보상은 없습니다. `상호작용`에서는 동반자와 나란히 쉬기, 난간에서 파도 소리 듣기처럼 짧은 문구와 작은 pose만 보입니다. `둘러보기`는 마우스·터치 드래그로 시점을 바꾸며, 승인된 좌·우·뒤·위 치비 원화를 실제로 전환합니다. 기본 시점·감상모드·꾸미기·앨범과는 독립적으로 전환되고, 항해 시간·속도·저장에는 영향을 주지 않습니다. `꾸미기`는 독립 보트 미리보기에서 외형·동반자·장식을 즉시 보여 주며, 기본 바다 화면은 바꾸지 않습니다. `감상모드`에서는 대부분의 UI가 숨겨집니다.
 5. 현재 구현은 포그라운드에 실제로 머문 90–150초 뒤 첫 자연 풍경 **기회**를 예약합니다. 각 기회는 65% 확률로만 현재 시간대의 승인 명소를 보이며, 표시되지 않아도 다음 기회는 120–180초 뒤 조용히 예약됩니다. bright와 sunset은 같은 명소가 바로 다시 나오지 않습니다. 배경에 있던 시간은 누적되지 않으며, 5분 항해에 풍경이 0회인 것도 정상입니다. 이 확률과 다음 기회 시간은 화면에 표시되지 않습니다.
-=======
-2. 기본 main scene을 실행하면 바로 보트 위 장면이 열립니다.
-3. `메뉴`를 눌렀을 때만 사진·감상·속도·낚시·꾸미기 같은 선택 행동이 열립니다.
->>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 
-49개 계약 테스트와 540×960 runtime capture는 현재 Godot handoff에 기록합니다. 후면 기본 구도, 녹색 매트 제거, `파도` 세 단계, 실제 포스트카드 저장과 앨범 최근 세 장, 복원된 물고기·완료 항해 기록, 그리고 여섯 자연 명소는 기계 계약과 GPU capture로 확인했습니다. 다만 실제 기기에서의 첫 30초, 5분 휴식감, 터치, 모션, 텍스트와 오디오 편안함은 아직 사람 검증이 필요합니다. 각 상태와 근거 ceiling은 프로젝트 GDD와 handoff에서 확인합니다.
+recovery revision 당시에는 Godot 계약 52개 중 headless-safe 51개를 다시 실행했고, `test_chibi_normal_chroma_material_proof.gd`는 Windows OpenGL Compatibility renderer에서 별도로 통과했습니다. 이후 `MLB-BRAND-TITLE-001` 계약이 추가되어, 현재 GitHub CI는 정렬된 `tests/test_*.gd` discovery로 **53개 전체 수**, display 전용 예외 1개, **52개 headless 계약**을 fail-closed로 확인합니다. 현재 52개 headless 집합은 로컬에서 다시 실행해 통과했습니다. 이 구성은 remote CI 실행 PASS가 아니며, display material proof를 headless `SKIP` PASS로 바꾸지 않습니다. 후면 기본 구도, 녹색 매트 제거, `파도` 세 단계, 목적지 없는 순환 전진감, 실제 포스트카드 저장과 앨범 최근 세 장, 복원된 물고기·완료 항해 기록, 그리고 여섯 자연 명소의 이전 runtime capture는 현재 Godot handoff에 historical evidence로 보존합니다. 실제 기기에서의 첫 30초, 5분 휴식감, 터치, 모션, 텍스트와 오디오 편안함은 아직 사람 검증이 필요합니다. 각 상태와 근거 ceiling은 프로젝트 GDD와 handoff에서 확인합니다.

@@ -92,7 +92,7 @@ class HumanGameBlueprintProfileTests(unittest.TestCase):
             "Real-time atmosphere | `IMPLEMENTED_AND_TESTED`; GPU capture exists",
             "Foreground scenery | `IMPLEMENTED_AND_GPU_CAPTURED`",
             "Ambient memory | `IMPLEMENTED_AND_TESTED`",
-            "Relationship/shared-time expression | `CONFIRMED_NOT_IMPLEMENTED`",
+            "Relationship/shared-time expression | `IMPLEMENTED_AND_TESTED`; Album GPU capture exists",
             "Device first 30 seconds / 5 minutes | `NOT_RUN`",
             "Touch / audio / notification intensity | `NOT_RUN`",
         )

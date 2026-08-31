@@ -31,42 +31,44 @@ jobs:
       - name: Complete Godot import cache hydration
         run: godot --headless --path . --import
 
-      - name: Run focused behavior contracts
+      - name: Run current headless behavior contracts
         shell: bash
         run: |
+          set -uo pipefail
+          EXPECTED_ALL_CONTRACT_COUNT=53
+          EXPECTED_HEADLESS_CONTRACT_COUNT=52
+          DISPLAY_ONLY_CONTRACT=test_chibi_normal_chroma_material_proof.gd
+          mapfile -t all_contracts < <(find tests -maxdepth 1 -type f -name 'test_*.gd' -printf '%f\n' | LC_ALL=C sort)
+          total_contract_count=${#all_contracts[@]}
+          if [[ "$total_contract_count" -ne "$EXPECTED_ALL_CONTRACT_COUNT" ]]; then
+            echo "::error::Expected $EXPECTED_ALL_CONTRACT_COUNT current Godot contracts, found $total_contract_count. Review the CI count and renderer boundary."
+            exit 1
+          fi
+
           status=0
-          timeout 20s godot --headless --path . --script res://tests/test_calm_voyage_state.gd || status=1
-          timeout 20s godot --headless --path . --script res://tests/test_fishing_session.gd || status=1
-          timeout 20s godot --headless --path . --script res://tests/test_game_scene_contract.gd || status=1
-          timeout 20s godot --headless --path . --script res://tests/test_direct_boat_entry_contract.gd || status=1
-          timeout 20s godot --headless --path . --script res://tests/test_game_scene_time_of_day_contract.gd || status=1
-          timeout 20s godot --headless --path . --script res://tests/test_drift_scenery_director.gd || status=1
-          timeout 20s godot --headless --path . --script res://tests/test_distant_scenery_runtime_contract.gd || status=1
-          timeout 20s godot --headless --path . --script res://tests/test_ambient_memory_persistence.gd || status=1
-          timeout 20s godot --headless --path . --script res://tests/test_ambient_memory_game_state_roundtrip.gd || status=1
-          timeout 20s godot --headless --path . --script res://tests/test_album_memory_contract.gd || status=1
-          timeout 20s godot --headless --path . --script res://tests/test_camera_input_contract.gd || status=1
-          timeout 20s godot --headless --path . --script res://tests/test_resting_core_contract.gd || status=1
-          timeout 20s godot --headless --path . --script res://tests/test_boat_decor_persistence.gd || status=1
-          timeout 20s godot --headless --path . --script res://tests/test_diorama_avatar_camera_contract.gd || status=1
-          timeout 20s godot --headless --path . --script res://tests/test_boat_decoration_contract.gd || status=1
-          timeout 20s godot --headless --path . --script res://tests/test_low_pressure_interaction_contract.gd || status=1
-          timeout 20s godot --headless --path . --script res://tests/test_boat_life_scene_contract.gd || status=1
-          timeout 20s godot --headless --path . --script res://tests/test_boat_life_ui_contract.gd || status=1
-          timeout 20s godot --headless --path . --script res://tests/test_runtime_image_asset_contract.gd || status=1
-          timeout 20s godot --headless --path . --script res://tests/test_handpainted_visual_slice_contract.gd || status=1
-          timeout 20s godot --headless --path . --script res://tests/test_cosmetic_identity_profile.gd || status=1
-          timeout 20s godot --headless --path . --script res://tests/test_identity_visual_contract.gd || status=1
-          timeout 20s godot --headless --path . --script res://tests/test_main_menu_identity_contract.gd || status=1
-          timeout 20s godot --headless --path . --script res://tests/test_storybook_art_card_contract.gd || status=1
-          timeout 20s godot --headless --path . --script res://tests/test_time_of_day_contract.gd || status=1
-          timeout 20s godot --headless --path . --script res://tests/test_main_menu_time_of_day_contract.gd || status=1
-          timeout 20s godot --headless --path . --script res://tests/test_game_scene_time_of_day_contract.gd || status=1
-          timeout 20s godot --headless --path . --script res://tests/test_runtime_capture_guard_contract.gd || status=1
-          timeout 20s godot --headless --path . --script res://tests/test_final_composite_decor_contract.gd || status=1
-          timeout 20s godot --headless --path . --script res://tests/test_windows_export_contract.gd || status=1
-          timeout 20s godot --headless --path . --script res://tests/test_main_menu_atmosphere_background_contract.gd || status=1
-          timeout 20s godot --headless --path . --script res://tests/test_album_composition_contract.gd || status=1
+          headless_contract_count=0
+          display_only_contract_count=0
+          for contract in "${all_contracts[@]}"; do
+            if [[ "$contract" == "$DISPLAY_ONLY_CONTRACT" ]]; then
+              display_only_contract_count=$((display_only_contract_count + 1))
+              echo "SKIP: $contract requires a display renderer and is verified separately."
+              continue
+            fi
+
+            headless_contract_count=$((headless_contract_count + 1))
+            echo "::group::Godot contract $contract"
+            timeout 20s godot --headless --path . --script "res://tests/$contract" || status=1
+            echo "::endgroup::"
+          done
+
+          if [[ "$display_only_contract_count" -ne 1 ]]; then
+            echo "::error::Expected exactly one display-only contract named $DISPLAY_ONLY_CONTRACT, found $display_only_contract_count."
+            status=1
+          fi
+          if [[ "$headless_contract_count" -ne "$EXPECTED_HEADLESS_CONTRACT_COUNT" ]]; then
+            echo "::error::Expected $EXPECTED_HEADLESS_CONTRACT_COUNT headless contracts, ran $headless_contract_count."
+            status=1
+          fi
           exit "$status"
 
       - name: Smoke main menu scene

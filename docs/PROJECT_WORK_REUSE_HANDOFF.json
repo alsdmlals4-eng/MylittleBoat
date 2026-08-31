@@ -210,13 +210,13 @@
     "recommended_followups": [
       {
         "id": "MLB-FOLLOWUP-20260831-CI-CONTRACT-COVERAGE",
-        "action": "MODIFY",
+        "action": "IMPLEMENTED",
         "element": "Existing Godot CI contract execution structure",
-        "current_state": "51 test_*.gd contract files exist, but godot-validation.yml explicitly invokes 26; 25 current contracts are not CI consumers.",
+        "current_state": "52 test_*.gd contract files exist. godot-validation.yml now discovers the sorted current set, excludes only the named display-only material proof, and executes the remaining 51 headless contracts.",
         "request_reason": "A manually maintained partial list can make current unconsumed contracts look healthy and reintroduce false-green coverage drift.",
-        "expected_effect": "CI proves that every registered current headless-capable contract is consumed, while renderer-limited assertions retain an explicit skip/supporting-route boundary.",
-        "recommended_scope": "In a separate focused CI task, replace the partial list with one discoverable current-contract manifest or a bounded discovery loop plus an expected-count/allowlist check. Measure duration before raising CI timeout or cost.",
-        "status": "RECOMMEND_ONLY_NOT_IMPLEMENTED"
+        "expected_effect": "ACHIEVED: CI configuration proves that every current headless-capable contract is consumed, while the renderer-limited material proof retains an explicit supporting-route boundary.",
+        "recommended_scope": "Completed in the 2026-08-31 recovery continuation with sorted discovery plus exact total, exclusion, and executed-count guards. The 20-second per-contract and 10-minute job ceilings are unchanged.",
+        "status": "IMPLEMENTED_LOCAL_MACHINE_VERIFIED_REMOTE_CI_NOT_RUN"
       },
       {
         "id": "MLB-FOLLOWUP-20260831-RENDERER-MATRIX",
@@ -308,6 +308,173 @@
       "base_tracked_diff_count": 0,
       "base_untracked_worktree_directories": "PRESERVED_UNTOUCHED",
       "remaining_known_risk": "Godot --import shutdown warnings require a separately owned plugin/engine baseline diagnosis before any warning-clean gate is claimed."
+    }
+  },
+  "merge_integrity_recovery_2026_08_31": {
+    "task": "MALFORMED_MERGE_INTEGRITY_RECOVERY",
+    "status": "MACHINE_RECOVERY_COMPLETE_PENDING_HUMAN_EVIDENCE",
+    "recovered_at": "2026-08-31",
+    "baseline": {
+      "current_head_before_recovery": "7181d5e6845e75107eade8c4d2e62e10334ab54b",
+      "first_parent_selected_for_runtime_recovery": "4cf09d90bc2d0bb18719a9c7c283b5a0e4d65141",
+      "second_parent_audited_for_orphaned_material": "8b78f8cba74d198a668ea2edcb77900d8b781564",
+      "base_read_only_head": "48dd501a10913251c4107d723bb677dae3ab9898",
+      "open_pr_protected": "PR #19 feat/social-fake-backend-20260824 remained read-only"
+    },
+    "reuse_mode": [
+      "EXACT_PARENT_BLOB_RECOVERY",
+      "REUSED_CURRENT_DOCUMENTATION_MAP_AND_LAYERED_PROFILE_REQUIREMENTS"
+    ],
+    "reuse_preflight_state": "REUSED_EVIDENCE",
+    "root_cause": [
+      "The merge commit contained 100 literal VCS conflict blocks across 35 tracked files, including Scene, GDScript, test, and current documentation surfaces.",
+      "Two already deleted test contracts and one unconsumed capture runner still targeted the retired DistantSceneryLayer API while current GameScene uses DriftSceneryDirector.",
+      "Second-parent-only scenery images, scene, runtime capture evidence, and a superseded uppercase 20260829 Blueprint PDF had no current consumer."
+    ],
+    "selected_structure_and_reason": {
+      "adopt": "Restore the 35 conflict-marked paths as hash-verified exact first-parent blobs, then remove only second-parent material proven to have no current consumer.",
+      "adapt": "Retain current DOCUMENTATION_MAP and the latest ignored 20260830 Human Blueprint PDF as non-canonical local review material; do not treat either as a replacement runtime source.",
+      "reject": [
+        "Keeping literal conflict markers or the stale capture runner as historical compatibility code",
+        "Reintroducing DistantSceneryLayer alongside the approved DriftSceneryDirector",
+        "Deleting the latest 20260830 local review PDF without source-binding evidence"
+      ]
+    },
+    "project_paths_changed": {
+      "recovered_exact_parent_blobs": "35 conflict-marked paths across README, current docs, scenes, scripts, captures, and contracts",
+      "retired_without_current_consumer": [
+        "tests/capture_direct_boat_entry_atmospheres.gd and UID",
+        "scenes/distant_scenery.tscn",
+        "five retired DistantSceneryLayer/BoatWaterline assets and import metadata",
+        "2026-08-29 direct-entry capture evidence and superseded image-consumer manifest",
+        "exports/MY_LITTLE_BOAT_MASTER_PRODUCTION_GDD_20260829.pdf"
+      ],
+      "current_owner_corrections": [
+        "README no longer links a tracked repository surface to an ignored PDF output",
+        "CURRENT_GODOT_IMPLEMENTATION distinguishes current recovery evidence from historical Issue #99 sections",
+        "2026-08-29 learning record routes stale direct-scenery evidence to the current DriftSceneryDirector owner",
+        "together-time contracts remove their exact user:// test storage during teardown"
+      ],
+      "preserved": [
+        "exports/MY_LITTLE_BOAT_MASTER_PRODUCTION_GDD_20260830.pdf as local review material with source binding unverified",
+        "tracked 20260828 and lowercase 20260829 PDF publication history",
+        "Base-worktrees and open PR #19"
+      ]
+    },
+    "verification_evidence": [
+      "Literal VCS conflict marker scan returned 0 after exact-parent recovery.",
+      "git diff --check passed after recovery.",
+      "godot --headless --path . --quit passed; main_menu, game, and album headless smokes passed.",
+      "29 unique CI workflow Godot contracts and 21 additional headless-safe Godot contracts passed.",
+      "python tests/test_human_game_blueprint_profile.py passed 5 of 5 tests.",
+      "Together-time affected contracts passed after teardown correction and exact user:// test artifact readback was 0.",
+      "Every retired file was hash-verified in the external task backup before its project copy was removed.",
+      "test_chibi_normal_chroma_material_proof.gd passed in an isolated Windows display + gl_compatibility process on NVIDIA GeForce RTX 3050."
+    ],
+    "evidence_ceiling": {
+      "headless_godot_contracts": "50_OF_51_CURRENT_CONTRACT_SCRIPTS_PASSED",
+      "display_renderer_chibi_material_proof": "MACHINE_RENDERER_VERIFIED_WINDOWS_GL_COMPATIBILITY_RTX_3050",
+      "human_device_ux_audio_motion": "NOT_RUN_USER_GATED",
+      "ci_remote_run": "NOT_RUN_NO_PR_OR_REMOTE_CI_OWNERSHIP_CHANGED",
+      "project_worktree": "CURRENT_UNMERGED_RECOVERY_PACKAGE",
+      "base_mutation": "NOT_REQUESTED_NOT_PERFORMED"
+    },
+    "adversarial_review": [
+      {
+        "loop": 1,
+        "attack": "Authority drift, exact revision identity, open PR ownership, and unauthorized Base adoption",
+        "result": "CLEAN",
+        "evidence": "Project HEAD and origin/main both 7181d5e; Base HEAD and origin/main both 48dd501; PR #19 stayed read-only; Base tracked state was not changed."
+      },
+      {
+        "loop": 2,
+        "attack": "Literal marker removal that leaves duplicate or partial Godot definitions",
+        "result": "CLEAN_AFTER_CORRECTION",
+        "evidence": "Generic hunk selection proved structurally insufficient, so all 35 affected paths were restored from hash-verified first-parent whole blobs; marker scan and Godot parse then passed."
+      },
+      {
+        "loop": 3,
+        "attack": "Untouched second-parent test and asset consumers still targeting retired DistantSceneryLayer",
+        "result": "CLEAN_AFTER_CORRECTION",
+        "evidence": "Static counterexample showed old API tokens only in the capture runner, never in current GameScene or DriftSceneryDirector; no current consumer remained after exact-path retirement."
+      },
+      {
+        "loop": 4,
+        "attack": "Current owner conflicts, stale PDF locator, and historical evidence overclaim",
+        "result": "CLEAN_AFTER_CORRECTION",
+        "evidence": "Current GDD/document map remain the source route; README no longer declares an ignored PDF as the repository publication; historical Issue #99 headings and recovery evidence ceiling are explicit."
+      },
+      {
+        "loop": 5,
+        "attack": "Regression, temporary artifacts, display-only test overclaim, and residual backup hygiene",
+        "result": "CLEAN",
+        "evidence": "Exact VCS marker scan, active old-consumer scan, 50 headless-safe contracts, three scene smokes, GDD profile 5/5, test-local user artifact audit 0, and CI path existence recheck all passed. After readback, 98 recovery/retirement backup files and 8 PDF-preview files were removed from verified task-scoped Temp roots."
+      }
+    ],
+    "rollback": "The task-scoped recovery backups were removed after final readback to reclaim space. Tracked-source recovery remains reproducible from 7181d5e and first parent 4cf09d9; the untracked uppercase 20260829 review PDF was intentionally retired as a no-consumer historical draft. No Base or open-PR mutation was made.",
+    "project_only_lessons": [
+      "Malformed merge recovery must audit both literal conflict markers and non-conflicted files that exist only in the losing parent; a parser-clean merge can still have stale consumers.",
+      "A Godot test that creates isolated user:// storage must remove its exact file in teardown and prove post-suite absence.",
+      "An ignored PDF may be useful local review material but cannot be advertised as a tracked repository publication until source binding and provenance are recorded."
+    ],
+    "base_promotion_candidates": [],
+    "base_learning_disposition": "NO_NEW_REUSE_LEARNING",
+    "remaining_known_risks": [
+      "Human/device first-30-seconds, five-minute calm, touch, motion, readability, and audio comfort remain intentionally NOT_RUN.",
+      "The current CI discovery guard is configured locally but has not yet produced remote CI evidence for this unmerged recovery package.",
+      "Godot --import shutdown warnings remain a separate plugin/engine baseline diagnostic and are not classified by this recovery."
+    ],
+    "display_renderer_material_proof_2026_08_31": {
+      "status": "MACHINE_RENDERER_VERIFIED_NOT_HUMAN_VALIDATED",
+      "selected_route": "Isolated Windows display driver plus gl_compatibility process; the existing GRIMOIRE Hera editor was read-only and untouched.",
+      "rejected_routes": [
+        "headless, because ViewportTexture image readback is unsupported",
+        "attaching to another project's live Godot editor",
+        "treating an earlier historical GPU receipt as current-revision evidence"
+      ],
+      "command_shape": "Godot 4.7.2 --path MyLittleBoat --display-driver windows --rendering-method gl_compatibility --audio-driver Dummy --script res://tests/test_chibi_normal_chroma_material_proof.gd",
+      "renderer_receipt": "OpenGL API 3.3.0 NVIDIA 572.16; Device NVIDIA GeForce RTX 3050; exit 0; PASS: chibi normal chroma material proof.",
+      "evidence": {
+        "path": "user://machine-test-evidence/chibi-normal-material-proof/chibi_normal_chroma_material_proof_540x960.png",
+        "sha256": "0198EDCD08C2F682C36D94ABA0FAC478277D9F2B6D121AEEFC1A8FFE7936878D",
+        "bytes": 80002,
+        "visual_readback": "Warm boat/player/dog foreground visible on blue background; no green technical matte visible."
+      },
+      "adversarial_review": [
+        "Loop 1: headless limitation re-read and rejected before run.",
+        "Loop 2: other-project Hera instance identified and left untouched.",
+        "Loop 3: owned isolated process exited 0 and logged the exact OpenGL device.",
+        "Loop 4: required PNG existed, hash matched the recorded receipt, and visual readback showed no green matte.",
+        "Loop 5: result was recorded as machine renderer evidence only; Human/device/audio claims remain NOT_RUN."
+      ]
+    },
+    "ci_contract_coverage_2026_08_31": {
+      "status": "IMPLEMENTED_LOCAL_MACHINE_VERIFIED_REMOTE_CI_NOT_RUN",
+      "workflow_owner": ".github/workflows/godot-validation.yml",
+      "initial_recovery_contract_count": 52,
+      "initial_recovery_headless_contract_count": 51,
+      "current_contract_count": 53,
+      "headless_contract_count": 52,
+      "display_only_contract": "test_chibi_normal_chroma_material_proof.gd",
+      "selected_approach": "SORTED_DISCOVERY_WITH_EXACT_COUNT_AND_EXCLUSION_GUARDS",
+      "alternatives": [
+        "REJECT: existing hand-maintained command list, because it silently left current contracts unconsumed.",
+        "ADAPT: separate static manifest, because it makes review explicit but duplicates the test-directory list.",
+        "ADOPT: sorted test-directory discovery with exact all/headless/exclusion guards, because a contract-set change fails closed until its renderer boundary is reviewed."
+      ],
+      "workflow_contract": "The Ubuntu Bash step gathers sorted tests/test_*.gd, requires 53 sources, skips exactly the named display-only proof, runs every remaining contract with the existing 20-second timeout, and requires 52 executions before returning aggregate status.",
+      "local_equivalent_result": "PASS: after the locked title-brand contract was added, a local Godot 4.7.2 sorted-discovery run completed the current inclusion/exclusion boundary with all=53, headless=52, display_only=1, status=0; 52 runs returned aggregate success. The earlier recovery receipt remains all=52, headless=51, display_only=1.",
+      "local_yaml_parser": "NOT_AVAILABLE: Python PyYAML, actionlint, yamllint, Ruby YAML, PowerShell ConvertFrom-Yaml, and Node yaml/js-yaml were not installed. No new dependency was added; static workflow contract plus the actual Bash loop are the local checks.",
+      "evidence_boundary": "This is local workflow-configuration and 52-contract machine evidence only. It is not a remote CI PASS, Human/device UX PASS, or a headless replacement for the Windows GL Compatibility material proof.",
+      "adversarial_review": [
+        "Loop 1: re-read the recovery-time 52-file test set, renderer-sensitive assertions, dirty recovery ownership, and read-only PR #19 boundary.",
+        "Loop 2: reject the partial manual list and duplicate manifest alternatives; select discovery with exact total, exclusion, and executed-count guards.",
+        "Loop 3: add the static workflow contract before implementation and observe its expected failure against the manual list.",
+        "Loop 4: run the selected sorted discovery inclusion/exclusion boundary locally; recovery-time all=52, headless=51, display_only=1, status=0.",
+        "Loop 5: parse the handoff JSON, re-run static/document checks and the human GDD profile, audit exact user://test_* leftovers, preserve display evidence, and record unavailable local YAML parser without overclaiming remote CI.",
+        "Title-brand extension: add one current headless contract, update the exact CI guard to all=53/headless=52/display_only=1, and re-run all 52 current headless contracts with aggregate success."
+      ],
+      "rollback": "Restore only the behavior-contract workflow step and delete tests/test_ci_contract_coverage.py plus its plan/document record. No runtime scene, save schema, asset, Base lock, or open PR is coupled to this change."
     }
   }
 }

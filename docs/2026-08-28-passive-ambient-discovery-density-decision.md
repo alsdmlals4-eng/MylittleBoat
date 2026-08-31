@@ -53,7 +53,7 @@ This is implementation evidence for a superseded technical slice, not current ev
 
 `DriftSceneryDirector` uses foreground delta only, starts with a sampled 90–150 second opportunity, and rolls 65% before it creates a scene. It schedules every later opportunity at 120–180 seconds whether the preceding opportunity was empty or displayed. It has no button, expiry, reward, or speed/camera/species multiplier. `GameScene` shares the same director behavior across Normal Diorama and Appreciation Camera, including post-record resting. A sampled five-minute active voyage may therefore contain zero scenes without a player-visible missed state.
 
-Deterministic director and scene contracts, including a sampled valid zero-event five-minute voyage, plus six controlled 540×960 GPU captures for the current `MLB-AMB-MOTIF-001..006` set provide machine/runtime evidence. The former single bright-lagoon capture remains historical. These captures do not prove Human calm.
+Deterministic director and scene contracts, including a sampled valid zero-event five-minute voyage, plus six controlled 540×960 GPU pass captures in `docs/evidence/2026-08-31-ambient-scenery-pass/` for the current `MLB-AMB-MOTIF-001..006` set provide machine/runtime evidence. Each capture uses the moving `AmbientSceneryPass` above the unchanged water-only backdrop. The former single bright-lagoon capture remains historical. These captures do not prove Human calm.
 
 ## Remaining review boundary
 
