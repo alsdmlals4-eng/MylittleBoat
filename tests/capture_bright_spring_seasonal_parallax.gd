@@ -40,16 +40,11 @@ func _capture() -> void:
 		await _cleanup(scene, game_state)
 		_fail("game scene must expose the deterministic bright spring visual context")
 		return
-	scene.call("apply_real_time_visual_context_for_tests", 12, 4)
-	if not _trigger_no_save_seasonal_island(scene):
-		await _cleanup(scene, game_state)
-		return
-	if not _assert_seasonal_render_route(scene):
+	if not await _prepare_bright_spring_capture(scene):
 		await _cleanup(scene, game_state)
 		return
 	_set_gameplay_ui_visible(scene, false)
-	await create_timer(7.0).timeout
-	if not await _save_runtime_image(NORMAL_CAPTURE_FILE):
+	if not await _save_runtime_image(NORMAL_CAPTURE_FILE, true):
 		await _cleanup(scene, game_state)
 		return
 	scene.call("_toggle_appreciation_mode")
@@ -60,6 +55,20 @@ func _capture() -> void:
 	await _cleanup(scene, game_state)
 	print("PASS: bright spring seasonal parallax GPU captures")
 	quit(0)
+
+
+func _prepare_bright_spring_capture(scene: Node) -> bool:
+	scene.call("apply_real_time_visual_context_for_tests", 12, 4)
+	if str(scene.call("get_active_atmosphere_id")) != "bright" or str(scene.call("get_active_season_id")) != "spring":
+		_fail("capture must restore the injected bright spring context after display focus notifications")
+		return false
+	if not _trigger_no_save_seasonal_island(scene):
+		return false
+	await create_timer(7.0).timeout
+	if str(scene.call("get_active_atmosphere_id")) != "bright" or str(scene.call("get_active_season_id")) != "spring":
+		_fail("capture must retain the injected bright spring context during the real drift interval")
+		return false
+	return _assert_seasonal_render_route(scene)
 
 
 func _trigger_no_save_seasonal_island(scene: Node) -> bool:
@@ -116,7 +125,7 @@ func _set_gameplay_ui_visible(scene: Node, is_visible: bool) -> void:
 			node.visible = is_visible
 
 
-func _save_runtime_image(file_name: String) -> bool:
+func _save_runtime_image(file_name: String, requires_clear_boat_lane: bool = false) -> bool:
 	RenderingServer.force_draw(true)
 	await RenderingServer.frame_post_draw
 	var image := root.get_texture().get_image()
@@ -129,6 +138,12 @@ func _save_runtime_image(file_name: String) -> bool:
 		return false
 	if not _has_visible_upper_cloud_mark(image):
 		_fail("seasonal cloud must leave a visible upper-sky mark in %s" % file_name)
+		return false
+	if requires_clear_boat_lane and not _has_clear_boat_lane(image):
+		_fail("seasonal island must remain above the boat lane in %s" % file_name)
+		return false
+	if requires_clear_boat_lane and not _has_visible_distant_island_mark(image):
+		_fail("seasonal island must remain visibly present in the distant horizon band in %s" % file_name)
 		return false
 	print("SAVED: %s (%dx%d)" % [output_path, image.get_width(), image.get_height()])
 	return true
@@ -143,6 +158,35 @@ func _has_visible_upper_cloud_mark(image: Image) -> bool:
 			if pixel.r >= 0.88 and pixel.g >= 0.86 and pixel.b >= 0.86:
 				bright_sample_count += 1
 	return bright_sample_count >= MIN_UPPER_CLOUD_BRIGHT_SAMPLES
+
+
+func _has_clear_boat_lane(image: Image) -> bool:
+	var island_like_sample_count := 0
+	var lower_y_start := int(image.get_height() * 0.64)
+	for y in range(lower_y_start, image.get_height(), 2):
+		for x in range(0, image.get_width(), 2):
+			if x >= 145 and x <= 405:
+				continue
+			var pixel := image.get_pixel(x, y)
+			var grass_like := pixel.g >= 0.45 and pixel.g >= pixel.r * 1.12 and pixel.g >= pixel.b * 1.18
+			var flower_like := pixel.r >= 0.78 and pixel.b >= 0.52 and pixel.g <= 0.70
+			if grass_like or flower_like:
+				island_like_sample_count += 1
+	return island_like_sample_count <= 12
+
+
+func _has_visible_distant_island_mark(image: Image) -> bool:
+	var island_like_sample_count := 0
+	var horizon_y_start := int(image.get_height() * 0.40)
+	var horizon_y_end := int(image.get_height() * 0.63)
+	for y in range(horizon_y_start, horizon_y_end, 2):
+		for x in range(0, image.get_width(), 2):
+			var pixel := image.get_pixel(x, y)
+			var grass_like := pixel.g >= 0.45 and pixel.g >= pixel.r * 1.12 and pixel.g >= pixel.b * 1.18
+			var flower_like := pixel.r >= 0.78 and pixel.b >= 0.52 and pixel.g <= 0.70
+			if grass_like or flower_like:
+				island_like_sample_count += 1
+	return island_like_sample_count >= 20
 
 
 func _cleanup(scene: Node, game_state: Node) -> void:

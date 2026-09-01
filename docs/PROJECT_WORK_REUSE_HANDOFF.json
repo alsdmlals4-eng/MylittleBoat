@@ -463,7 +463,7 @@
         "ADOPT: sorted test-directory discovery with exact all/headless/exclusion guards, because a contract-set change fails closed until its renderer boundary is reviewed."
       ],
       "workflow_contract": "The Ubuntu Bash step gathers sorted tests/test_*.gd, requires 58 sources, skips exactly the named display-only proof, runs every remaining contract with the existing 20-second timeout, and requires 57 executions before returning aggregate status.",
-      "local_equivalent_result": "PASS: after Bright/spring seasonal-parallax contract and runtime-capture guard additions, local Godot 4.7.2 bounded sorted-discovery batches completed all=58, headless=57, display_only=1, failed=0. The 27+30 headless batches preserve the one renderer-only exception. Earlier 57/56 Look Around receipt remains historical.",
+      "local_equivalent_result": "PASS: after Bright/spring seasonal-parallax contract, distant-island crop/lane guard, and runtime-capture guard additions, local Godot 4.7.2 bounded sorted-discovery batches completed all=58, headless=57, display_only=1, failed=0. The 27+30 headless batches preserve the one renderer-only exception. Earlier 57/56 Look Around receipt remains historical.",
       "local_yaml_parser": "NOT_AVAILABLE: Python PyYAML, actionlint, yamllint, Ruby YAML, PowerShell ConvertFrom-Yaml, and Node yaml/js-yaml were not installed. No new dependency was added; static workflow contract plus the actual Bash loop are the local checks.",
       "evidence_boundary": "This is local workflow-configuration and 57-contract machine evidence only. It is not a remote CI PASS, Human/device UX PASS, or a headless replacement for the Windows GL Compatibility material proof.",
       "adversarial_review": [

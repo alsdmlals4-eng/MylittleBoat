@@ -92,6 +92,7 @@ func _verify_scene_consumers() -> void:
 		_expect(island != null, "%s must own a named seasonal island layer" % camera_path)
 		if island != null:
 			_expect(island.texture != null and island.texture.resource_path == SEASONAL_ISLAND_TEXTURE_PATH, "%s island layer must use the exact approved island texture" % camera_path)
+	_verify_distant_island_geometry(scene)
 	var look_around_island := scene.get_node_or_null("VoyageWorld/LookAroundCameraRig/LookAroundCamera3D/SeasonalIslandLayer")
 	_expect(look_around_island == null, "Look Around must retain its angle-specific foreground policy without a seasonal island layer")
 	if scene.has_method("apply_real_time_visual_context_for_tests"):
@@ -104,6 +105,22 @@ func _verify_scene_consumers() -> void:
 		_expect(diorama_cloud != null and not diorama_cloud.visible, "non-spring bright time must hide the seasonal cloud layer")
 	scene.queue_free()
 	await process_frame
+
+
+func _verify_distant_island_geometry(scene: Node) -> void:
+	var camera := scene.get_node_or_null("VoyageWorld/DioramaCameraRig/DioramaCamera3D") as Camera3D
+	var sea := scene.get_node_or_null("VoyageWorld/DioramaCameraRig/DioramaCamera3D/SeaBackdrop") as Sprite3D
+	var ambient_scenery := scene.get_node_or_null("VoyageWorld/DioramaCameraRig/DioramaCamera3D/AmbientSceneryPass") as Sprite3D
+	var island := scene.get_node_or_null("VoyageWorld/DioramaCameraRig/DioramaCamera3D/SeasonalIslandLayer") as Sprite3D
+	_expect(camera != null and sea != null and ambient_scenery != null and island != null, "distant-island geometry needs the real normal camera, sea, ambient pass, and island layer")
+	if camera == null or sea == null or ambient_scenery == null or island == null or island.texture == null:
+		return
+	_expect(island.position.z > sea.position.z, "seasonal island must remain in front of the flowing sea so its transparent distant silhouette can render")
+	_expect(island.region_enabled, "seasonal island must crop the transparent source canvas before entering the distant background route")
+	var rendered_region := island.region_rect if island.region_enabled else Rect2(Vector2.ZERO, island.texture.get_size())
+	_expect(rendered_region.position.x > 0.0 and rendered_region.position.y > 0.0 and rendered_region.end.x < island.texture.get_width() and rendered_region.end.y < island.texture.get_height(), "seasonal island region must exclude the source image's empty margins")
+	var viewport_height_ratio := rendered_region.size.y * island.pixel_size / (2.0 * absf(island.position.z) * tan(deg_to_rad(camera.fov) * 0.5))
+	_expect(viewport_height_ratio <= 0.30, "seasonal island must occupy a distant horizon scale instead of the boat-overlapping foreground scale")
 
 
 func _verify_seasonal_motion_and_progression_boundary() -> void:
