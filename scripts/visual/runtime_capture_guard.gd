@@ -24,6 +24,8 @@ const REQUIRED_TEXTURE_PATHS: Array[String] = [
 	"res://assets/images/runtime/voyage/ambient_motifs/sunset-sandstone-cove.png",
 	"res://assets/images/runtime/voyage/ambient_motifs/sunset-reed-islet.png",
 	"res://assets/images/runtime/voyage/ambient_motifs/night-bioluminescent-band.png",
+	"res://assets/images/runtime/voyage/seasonal_parallax/bright-spring-islet.png",
+	"res://assets/images/runtime/voyage/seasonal_parallax/bright-spring-clouds-chroma.png",
 	"res://assets/images/runtime/voyage/sunset-sandstone-cove-water-only.png",
 	"res://assets/images/runtime/voyage/night-indigo-rain-bay-water-only.png",
 	"res://assets/images/runtime/voyage/boat-water-contact-ripple.png",

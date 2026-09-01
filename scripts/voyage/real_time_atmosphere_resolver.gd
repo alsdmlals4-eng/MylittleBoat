@@ -18,3 +18,13 @@ func resolve_hour(hour: int) -> String:
 func resolve_system_time() -> String:
 	var local_time := Time.get_time_dict_from_system(false)
 	return resolve_hour(int(local_time.get("hour", -1)))
+
+
+## Resolves the local calendar only into a visual bucket; it never owns gameplay time or persistence.
+func resolve_season_for_month(month: int) -> String:
+	return "spring" if month >= 3 and month <= 5 else ""
+
+
+func resolve_system_season() -> String:
+	var local_date := Time.get_date_dict_from_system(false)
+	return resolve_season_for_month(int(local_date.get("month", -1)))

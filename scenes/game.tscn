@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3]
+[gd_scene load_steps=20 format=3]
 
 [ext_resource type="Script" path="res://scripts/voyage/game_scene.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/voyage/boat_camera_controller.gd" id="2"]
@@ -14,6 +14,8 @@
 [ext_resource type="Shader" path="res://assets/shaders/voyage_split_sea_flow.gdshader" id="13"]
 [ext_resource type="Texture2D" path="res://assets/images/runtime/voyage/look_around/foreground_split/port-foreground.png" id="14"]
 [ext_resource type="Shader" path="res://assets/shaders/look_around_foreground_chroma_key.gdshader" id="15"]
+[ext_resource type="Texture2D" path="res://assets/images/runtime/voyage/seasonal_parallax/bright-spring-clouds-chroma.png" id="16"]
+[ext_resource type="Texture2D" path="res://assets/images/runtime/voyage/seasonal_parallax/bright-spring-islet.png" id="17"]
 
 [sub_resource type="Environment" id="Environment_sky"]
 background_mode = 1
@@ -90,12 +92,28 @@ no_depth_test = false
 texture = ExtResource("12")
 material_override = SubResource("ShaderMaterial_split_sea_flow")
 
+[node name="SeasonalCloudLayer" type="Sprite3D" parent="VoyageWorld/DioramaCameraRig/DioramaCamera3D"]
+visible = false
+position = Vector3(0, -3.2, -14.97)
+pixel_size = 0.02
+no_depth_test = false
+texture = ExtResource("16")
+material_override = SubResource("ShaderMaterial_look_around_foreground_key")
+
 [node name="AmbientSceneryPass" type="Sprite3D" parent="VoyageWorld/DioramaCameraRig/DioramaCamera3D"]
 visible = false
 position = Vector3(0, 0.5, -14.75)
 pixel_size = 0.02
 no_depth_test = false
 modulate = Color(1, 1, 1, 0)
+
+[node name="SeasonalIslandLayer" type="Sprite3D" parent="VoyageWorld/DioramaCameraRig/DioramaCamera3D"]
+visible = false
+position = Vector3(0, 0.5, -14.75)
+pixel_size = 0.02
+no_depth_test = false
+modulate = Color(1, 1, 1, 0)
+texture = ExtResource("17")
 
 [node name="LookAroundCameraRig" type="Node3D" parent="VoyageWorld"]
 position = Vector3(3.8, 4.6, 6.7)
@@ -120,6 +138,14 @@ pixel_size = 0.02
 no_depth_test = false
 texture = ExtResource("12")
 material_override = SubResource("ShaderMaterial_split_sea_flow")
+
+[node name="SeasonalCloudLayer" type="Sprite3D" parent="VoyageWorld/LookAroundCameraRig/LookAroundCamera3D"]
+visible = false
+position = Vector3(0, -3.2, -14.97)
+pixel_size = 0.02
+no_depth_test = false
+texture = ExtResource("16")
+material_override = SubResource("ShaderMaterial_look_around_foreground_key")
 
 [node name="LookAroundForeground" type="Sprite3D" parent="VoyageWorld/LookAroundCameraRig/LookAroundCamera3D"]
 visible = false
@@ -153,12 +179,28 @@ no_depth_test = false
 texture = ExtResource("12")
 material_override = SubResource("ShaderMaterial_split_sea_flow")
 
+[node name="SeasonalCloudLayer" type="Sprite3D" parent="VoyageWorld/AppreciationCameraRig/AppreciationCamera3D"]
+visible = false
+position = Vector3(0, -3.2, -14.97)
+pixel_size = 0.02
+no_depth_test = false
+texture = ExtResource("16")
+material_override = SubResource("ShaderMaterial_look_around_foreground_key")
+
 [node name="AmbientSceneryPass" type="Sprite3D" parent="VoyageWorld/AppreciationCameraRig/AppreciationCamera3D"]
 visible = false
 position = Vector3(0, 0.5, -14.75)
 pixel_size = 0.02
 no_depth_test = false
 modulate = Color(1, 1, 1, 0)
+
+[node name="SeasonalIslandLayer" type="Sprite3D" parent="VoyageWorld/AppreciationCameraRig/AppreciationCamera3D"]
+visible = false
+position = Vector3(0, 0.5, -14.75)
+pixel_size = 0.02
+no_depth_test = false
+modulate = Color(1, 1, 1, 0)
+texture = ExtResource("17")
 
 [node name="OceanPlane" type="MeshInstance3D" parent="VoyageWorld"]
 visible = false

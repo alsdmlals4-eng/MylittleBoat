@@ -53,6 +53,15 @@ const AMBIENT_MOTIFS_BY_ATMOSPHERE := {
 		},
 	],
 }
+const BRIGHT_SPRING_SEASONAL_MOTIFS := [
+	{
+		"id": "MLB-AMB-SEASONAL-ISLAND-001",
+		"label": "꽃이 핀 작은 섬이 수평선 너머로 천천히 지나갑니다.",
+		"backdrop_texture_path": "res://assets/images/runtime/voyage/seasonal_parallax/bright-spring-islet.png",
+		"backdrop_offset_x": 8.0,
+		"use_seasonal_island_layer": true,
+	},
+]
 
 var _is_foreground := true
 var _foreground_elapsed_seconds := 0.0
@@ -69,7 +78,7 @@ func set_foreground(is_foreground: bool) -> void:
 	_is_foreground = is_foreground
 
 
-func advance(delta: float, atmosphere_id: String) -> Dictionary:
+func advance(delta: float, atmosphere_id: String, season_id: String = "") -> Dictionary:
 	if not _is_foreground or delta <= 0.0:
 		return {}
 	_foreground_elapsed_seconds += delta
@@ -80,7 +89,7 @@ func advance(delta: float, atmosphere_id: String) -> Dictionary:
 	_schedule_next_event()
 	if not should_emit:
 		return {}
-	var motif := _pick_motif_for_atmosphere(atmosphere_id)
+	var motif := _pick_motif_for_context(atmosphere_id, season_id)
 	if motif.is_empty():
 		return {}
 	var save_memory := randi_range(0, 2) == 0
@@ -90,6 +99,7 @@ func advance(delta: float, atmosphere_id: String) -> Dictionary:
 		"save_memory": save_memory,
 		"backdrop_texture_path": str(motif["backdrop_texture_path"]),
 		"backdrop_offset_x": float(motif["backdrop_offset_x"]),
+		"use_seasonal_island_layer": bool(motif.get("use_seasonal_island_layer", false)),
 	}
 
 
@@ -107,19 +117,22 @@ func get_next_event_seconds_for_tests() -> float:
 	return _next_event_seconds
 
 
-func _pick_motif_for_atmosphere(atmosphere_id: String) -> Dictionary:
-	var motifs: Array = Array(AMBIENT_MOTIFS_BY_ATMOSPHERE.get(atmosphere_id, []))
+func _pick_motif_for_context(atmosphere_id: String, season_id: String) -> Dictionary:
+	var motifs: Array = Array(AMBIENT_MOTIFS_BY_ATMOSPHERE.get(atmosphere_id, [])).duplicate()
+	if atmosphere_id == "bright" and season_id == "spring":
+		motifs.append_array(BRIGHT_SPRING_SEASONAL_MOTIFS)
 	if motifs.is_empty():
 		return {}
 	var available_motifs: Array = motifs.duplicate()
-	var previous_motif_id := str(_last_motif_id_by_atmosphere.get(atmosphere_id, ""))
+	var context_key := "%s:%s" % [atmosphere_id, season_id]
+	var previous_motif_id := str(_last_motif_id_by_atmosphere.get(context_key, ""))
 	if motifs.size() > 1 and not previous_motif_id.is_empty():
 		available_motifs = []
 		for motif in motifs:
 			if str(motif["id"]) != previous_motif_id:
 				available_motifs.append(motif)
 	var selected_motif := Dictionary(available_motifs.pick_random())
-	_last_motif_id_by_atmosphere[atmosphere_id] = str(selected_motif["id"])
+	_last_motif_id_by_atmosphere[context_key] = str(selected_motif["id"])
 	return selected_motif
 
 

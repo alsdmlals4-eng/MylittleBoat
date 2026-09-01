@@ -11,6 +11,7 @@ const DRIFT_SCENERY_DIRECTOR_SCRIPT = preload("res://scripts/voyage/drift_scener
 const LOOK_AROUND_PRESENTATION_ROUTER_SCRIPT = preload("res://scripts/voyage/look_around_presentation_router.gd")
 const SEA_FLOW_SHADER = preload("res://assets/shaders/voyage_split_sea_flow.gdshader")
 const LOOK_AROUND_FOREGROUND_KEY_SHADER = preload("res://assets/shaders/look_around_foreground_chroma_key.gdshader")
+const SEASONAL_CLOUD_TEXTURE = preload("res://assets/images/runtime/voyage/seasonal_parallax/bright-spring-clouds-chroma.png")
 
 const SPEED_NAMES: Array[String] = ["느림", "보통", "빠름"]
 const SPEED_MULTIPLIERS: Array[float] = [0.65, 1.0, 1.45]
@@ -72,6 +73,8 @@ const FISHING_WAIT_MAX_SECONDS := 12.0
 const AMBIENT_SCENERY_PASS_DURATION_SECONDS := 14.0
 const AMBIENT_SCENERY_PASS_MIN_TRAVEL_OFFSET_X := 21.0
 const AMBIENT_SCENERY_PASS_FADE_FRACTION := 0.12
+const SEASONAL_CLOUD_PHASE_PER_SECOND := 0.38
+const SEASONAL_CLOUD_HORIZONTAL_DISTANCE := 0.72
 
 var _fishing_session = FISHING_SESSION_SCRIPT.new()
 var _next_fishing_outcome_index := 0
@@ -90,6 +93,13 @@ var _ambient_scenery_pass_base_positions: Array[Vector3] = []
 var _ambient_scenery_pass_tween: Tween
 var _ambient_scenery_pass_start_offset_x := 0.0
 var _ambient_scenery_pass_end_offset_x := 0.0
+var _seasonal_cloud_layer_base_positions: Array[Vector3] = []
+var _seasonal_cloud_phase := 0.0
+var _seasonal_island_layer_base_positions: Array[Vector3] = []
+var _seasonal_island_active := false
+var _seasonal_island_progress := 0.0
+var _seasonal_island_start_offset_x := 0.0
+var _seasonal_island_end_offset_x := 0.0
 var _boat_space_base_position := Vector3.ZERO
 var _boat_space_base_rotation := Vector3.ZERO
 var _boat_water_contact_base_position := Vector3.ZERO
@@ -101,6 +111,7 @@ var _boat_waterline_contact_base_modulate := Color.WHITE
 var _time_of_day_background_color := Color(0.58, 0.76, 0.86, 1.0)
 var _rest_menu_open := false
 var _active_atmosphere_id := "bright"
+var _active_season_id := ""
 var _application_in_foreground := true
 var _look_around_mode := false
 var _look_around_angle_id := "front"
@@ -119,6 +130,10 @@ func _ready() -> void:
 	_appreciation_camera_base_position = $VoyageWorld/AppreciationCameraRig.position
 	for scenery_pass in _get_ambient_scenery_passes():
 		_ambient_scenery_pass_base_positions.append(scenery_pass.position)
+	for cloud_layer in _get_seasonal_cloud_layers():
+		_seasonal_cloud_layer_base_positions.append(cloud_layer.position)
+	for island_layer in _get_seasonal_island_layers():
+		_seasonal_island_layer_base_positions.append(island_layer.position)
 	_boat_space_base_position = $VoyageWorld/BoatSpace.position
 	_boat_space_base_rotation = $VoyageWorld/BoatSpace.rotation
 	_boat_water_contact_base_position = $VoyageWorld/BoatWaterContact.position
@@ -219,23 +234,41 @@ func _apply_time_of_day_tone() -> String:
 
 ## Applies a deterministic local-hour atmosphere for automated capture and contracts.
 func apply_real_time_atmosphere_for_hour(hour: int) -> String:
-	return _apply_atmosphere_id(_real_time_atmosphere_resolver.resolve_hour(hour))
+	return _apply_visual_context(_real_time_atmosphere_resolver.resolve_hour(hour), "")
 
 
 ## Refreshes the visual-only atmosphere from the device's current local time.
 func refresh_real_time_atmosphere() -> String:
-	return _apply_atmosphere_id(_real_time_atmosphere_resolver.resolve_system_time())
+	return _apply_visual_context(_real_time_atmosphere_resolver.resolve_system_time(), _real_time_atmosphere_resolver.resolve_system_season())
 
 
 func get_active_atmosphere_id() -> String:
 	return _active_atmosphere_id
 
 
+## Applies deterministic local clock inputs only to visual routing for contracts and captures.
+func apply_real_time_visual_context_for_tests(hour: int, month: int) -> String:
+	return _apply_visual_context(
+		_real_time_atmosphere_resolver.resolve_hour(hour),
+		_real_time_atmosphere_resolver.resolve_season_for_month(month),
+	)
+
+
+func get_active_season_id() -> String:
+	return _active_season_id
+
+
 func _apply_atmosphere_id(time_of_day_id: String) -> String:
+	return _apply_visual_context(time_of_day_id, _active_season_id)
+
+
+func _apply_visual_context(time_of_day_id: String, season_id: String) -> String:
 	var normalized_time_of_day := _time_of_day_catalog.normalize_time_of_day(time_of_day_id)
+	var normalized_season := "spring" if season_id == "spring" else ""
 	_clear_ambient_scenery_passes()
 	var tone := _time_of_day_catalog.get_visual_tone(normalized_time_of_day)
 	_active_atmosphere_id = normalized_time_of_day
+	_active_season_id = normalized_season
 	_time_of_day_background_color = tone["background_color"] as Color
 	var world_environment := $VoyageWorld/WorldEnvironment as WorldEnvironment
 	if world_environment.environment != null:
@@ -254,7 +287,9 @@ func _apply_atmosphere_id(time_of_day_id: String) -> String:
 	if waterline_contact != null:
 		waterline_contact.modulate = WATERLINE_CONTACT_MODULATES[normalized_time_of_day] as Color
 		_boat_waterline_contact_base_modulate = waterline_contact.modulate
+	_configure_seasonal_cloud_layers()
 	_apply_look_around_presentation()
+	_refresh_seasonal_cloud_visibility()
 	return _active_atmosphere_id
 
 
@@ -762,16 +797,31 @@ func _get_sky_backdrops() -> Array[Sprite3D]:
 	]
 
 
+func _get_seasonal_cloud_layers() -> Array[Sprite3D]:
+	return [
+		$VoyageWorld/DioramaCameraRig/DioramaCamera3D/SeasonalCloudLayer as Sprite3D,
+		$VoyageWorld/LookAroundCameraRig/LookAroundCamera3D/SeasonalCloudLayer as Sprite3D,
+		$VoyageWorld/AppreciationCameraRig/AppreciationCamera3D/SeasonalCloudLayer as Sprite3D,
+	]
+
+
+func _is_bright_spring_visual_active() -> bool:
+	return _active_atmosphere_id == "bright" and _active_season_id == "spring"
+
+
 func _set_camera_split_backdrop_visible(camera_path: String, is_visible: bool) -> void:
 	var camera := get_node_or_null("VoyageWorld/%s" % camera_path) as Camera3D
 	if camera == null:
 		return
 	var sky_backdrop := camera.get_node_or_null("SkyBackdrop") as Sprite3D
 	var sea_backdrop := camera.get_node_or_null("SeaBackdrop") as Sprite3D
+	var seasonal_cloud_layer := camera.get_node_or_null("SeasonalCloudLayer") as Sprite3D
 	if sky_backdrop != null:
 		sky_backdrop.visible = is_visible
 	if sea_backdrop != null:
 		sea_backdrop.visible = is_visible
+	if seasonal_cloud_layer != null:
+		seasonal_cloud_layer.visible = is_visible and _is_bright_spring_visual_active()
 
 
 func _apply_split_backdrop_textures(time_of_day_id: String, backdrop_modulate: Color) -> void:
@@ -812,6 +862,33 @@ func _ensure_look_around_foreground_material(foreground: Sprite3D) -> void:
 	foreground.material_override = foreground_material
 
 
+func _configure_seasonal_cloud_layers() -> void:
+	for cloud_layer in _get_seasonal_cloud_layers():
+		if cloud_layer == null:
+			continue
+		cloud_layer.texture = SEASONAL_CLOUD_TEXTURE
+		_ensure_seasonal_cloud_material(cloud_layer)
+		var cloud_material := cloud_layer.material_override as ShaderMaterial
+		cloud_material.set_shader_parameter("source_texture", SEASONAL_CLOUD_TEXTURE)
+
+
+func _ensure_seasonal_cloud_material(cloud_layer: Sprite3D) -> void:
+	if cloud_layer.has_meta("seasonal_cloud_material_bound"):
+		return
+	var cloud_material := ShaderMaterial.new()
+	cloud_material.shader = LOOK_AROUND_FOREGROUND_KEY_SHADER
+	cloud_layer.material_override = cloud_material
+	cloud_layer.set_meta("seasonal_cloud_material_bound", true)
+
+
+func _refresh_seasonal_cloud_visibility() -> void:
+	for cloud_layer in _get_seasonal_cloud_layers():
+		if cloud_layer == null:
+			continue
+		var parent_camera := cloud_layer.get_parent() as Camera3D
+		cloud_layer.visible = _is_bright_spring_visual_active() and parent_camera != null and parent_camera.current
+
+
 func _apply_background_flow_to_backdrop(backdrop: Sprite3D) -> void:
 	if backdrop == null:
 		return
@@ -838,6 +915,7 @@ func _apply_drift_motion(delta: float) -> void:
 		1.0,
 	)
 	_apply_background_flow()
+	_apply_seasonal_parallax_motion(safe_delta, visual_motion_multiplier, comfort_scale)
 	$VoyageWorld/DioramaCameraRig.position.y = _diorama_camera_base_position.y + sin(_drift_phase * 1.2) * 0.018 * comfort_scale
 	$VoyageWorld/LookAroundCameraRig.position.y = _look_around_camera_base_position.y + sin(_drift_phase * 1.2) * 0.018 * comfort_scale
 	$VoyageWorld/AppreciationCameraRig.position.y = _appreciation_camera_base_position.y + sin(_drift_phase * 1.2) * 0.025 * comfort_scale
@@ -864,6 +942,23 @@ func _apply_drift_motion(delta: float) -> void:
 		var waterline_modulate := _boat_waterline_contact_base_modulate
 		waterline_modulate.a *= 0.92 + maxf(boat_bob_signal, 0.0) * 0.12
 		waterline_contact.modulate = waterline_modulate
+
+
+func _apply_seasonal_parallax_motion(safe_delta: float, visual_motion_multiplier: float, comfort_scale: float) -> void:
+	var seasonal_motion_delta := safe_delta * visual_motion_multiplier * comfort_scale
+	if _is_bright_spring_visual_active():
+		_seasonal_cloud_phase += seasonal_motion_delta * SEASONAL_CLOUD_PHASE_PER_SECOND
+		var cloud_offset_x := sin(_seasonal_cloud_phase) * SEASONAL_CLOUD_HORIZONTAL_DISTANCE
+		for index in _get_seasonal_cloud_layers().size():
+			if index >= _seasonal_cloud_layer_base_positions.size():
+				continue
+			_get_seasonal_cloud_layers()[index].position = _seasonal_cloud_layer_base_positions[index] + Vector3(cloud_offset_x, 0.0, 0.0)
+	if _seasonal_island_active and seasonal_motion_delta > 0.0:
+		_seasonal_island_progress = minf(
+			1.0,
+			_seasonal_island_progress + seasonal_motion_delta / AMBIENT_SCENERY_PASS_DURATION_SECONDS,
+		)
+		_apply_seasonal_island_progress(_seasonal_island_progress)
 
 
 ## Starts persistent voyage state only after the player leaves the title boat view.
@@ -893,7 +988,7 @@ func _apply_voyage_presentation() -> void:
 
 
 func _advance_drift_scenery(delta: float) -> void:
-	var event := _drift_scenery_director.advance(delta, _active_atmosphere_id)
+	var event := _drift_scenery_director.advance(delta, _active_atmosphere_id, _active_season_id)
 	if event.is_empty():
 		return
 	var label := str(event.get("label", ""))
@@ -907,14 +1002,18 @@ func _advance_drift_scenery(delta: float) -> void:
 	_show_temporary_ambient_scenery_backdrop(
 		str(event.get("backdrop_texture_path", "")),
 		float(event.get("backdrop_offset_x", 0.0)),
+		bool(event.get("use_seasonal_island_layer", false)),
 	)
 
 
-func _show_temporary_ambient_scenery_backdrop(texture_path: String, backdrop_offset_x: float) -> void:
+func _show_temporary_ambient_scenery_backdrop(texture_path: String, backdrop_offset_x: float, use_seasonal_island_layer: bool = false) -> void:
 	if texture_path.is_empty():
 		return
 	var scenery_texture := load(texture_path) as Texture2D
 	if scenery_texture == null:
+		return
+	if use_seasonal_island_layer:
+		_show_seasonal_island_layer(scenery_texture, backdrop_offset_x)
 		return
 	_clear_ambient_scenery_passes()
 	_ambient_scenery_pass_start_offset_x = signf(backdrop_offset_x) * maxf(absf(backdrop_offset_x) * 1.5, AMBIENT_SCENERY_PASS_MIN_TRAVEL_OFFSET_X)
@@ -931,6 +1030,23 @@ func _show_temporary_ambient_scenery_backdrop(texture_path: String, backdrop_off
 	%AmbientSceneryReturnTimer.start()
 
 
+func _show_seasonal_island_layer(scenery_texture: Texture2D, backdrop_offset_x: float) -> void:
+	_clear_ambient_scenery_passes()
+	_seasonal_island_active = true
+	_seasonal_island_progress = 0.0
+	_seasonal_island_start_offset_x = signf(backdrop_offset_x) * maxf(absf(backdrop_offset_x) * 1.5, AMBIENT_SCENERY_PASS_MIN_TRAVEL_OFFSET_X)
+	_seasonal_island_end_offset_x = -_seasonal_island_start_offset_x
+	for index in _get_seasonal_island_layers().size():
+		if index >= _seasonal_island_layer_base_positions.size():
+			continue
+		var island_layer := _get_seasonal_island_layers()[index]
+		island_layer.texture = scenery_texture
+		island_layer.position = _seasonal_island_layer_base_positions[index] + Vector3(_seasonal_island_start_offset_x, 0.0, 0.0)
+		island_layer.modulate = Color(1.0, 1.0, 1.0, 0.0)
+		island_layer.visible = true
+	%AmbientSceneryReturnTimer.start()
+
+
 func _restore_active_atmosphere_backdrop() -> void:
 	_apply_atmosphere_id(_active_atmosphere_id)
 
@@ -939,6 +1055,13 @@ func _get_ambient_scenery_passes() -> Array[Sprite3D]:
 	return [
 		$VoyageWorld/DioramaCameraRig/DioramaCamera3D/AmbientSceneryPass as Sprite3D,
 		$VoyageWorld/AppreciationCameraRig/AppreciationCamera3D/AmbientSceneryPass as Sprite3D,
+	]
+
+
+func _get_seasonal_island_layers() -> Array[Sprite3D]:
+	return [
+		$VoyageWorld/DioramaCameraRig/DioramaCamera3D/SeasonalIslandLayer as Sprite3D,
+		$VoyageWorld/AppreciationCameraRig/AppreciationCamera3D/SeasonalIslandLayer as Sprite3D,
 	]
 
 
@@ -954,12 +1077,28 @@ func _apply_ambient_scenery_pass_progress(progress: float) -> void:
 		scenery_pass.modulate = Color(1.0, 1.0, 1.0, pass_alpha)
 
 
+func _apply_seasonal_island_progress(progress: float) -> void:
+	var pass_alpha := minf(
+		smoothstep(0.0, AMBIENT_SCENERY_PASS_FADE_FRACTION, progress),
+		smoothstep(0.0, AMBIENT_SCENERY_PASS_FADE_FRACTION, 1.0 - progress),
+	)
+	var offset_x := lerpf(_seasonal_island_start_offset_x, _seasonal_island_end_offset_x, progress)
+	for index in _get_seasonal_island_layers().size():
+		if index >= _seasonal_island_layer_base_positions.size():
+			continue
+		var island_layer := _get_seasonal_island_layers()[index]
+		island_layer.position = _seasonal_island_layer_base_positions[index] + Vector3(offset_x, 0.0, 0.0)
+		island_layer.modulate = Color(1.0, 1.0, 1.0, pass_alpha)
+
+
 func _clear_ambient_scenery_passes() -> void:
 	if _ambient_scenery_pass_tween != null:
 		_ambient_scenery_pass_tween.kill()
 		_ambient_scenery_pass_tween = null
 	if is_instance_valid(%AmbientSceneryReturnTimer):
 		%AmbientSceneryReturnTimer.stop()
+	_seasonal_island_active = false
+	_seasonal_island_progress = 0.0
 	for index in _get_ambient_scenery_passes().size():
 		var scenery_pass := _get_ambient_scenery_passes()[index]
 		scenery_pass.visible = false
@@ -967,6 +1106,13 @@ func _clear_ambient_scenery_passes() -> void:
 		scenery_pass.modulate = Color.WHITE
 		if index < _ambient_scenery_pass_base_positions.size():
 			scenery_pass.position = _ambient_scenery_pass_base_positions[index]
+	for index in _get_seasonal_island_layers().size():
+		if index >= _seasonal_island_layer_base_positions.size():
+			continue
+		var island_layer := _get_seasonal_island_layers()[index]
+		island_layer.visible = false
+		island_layer.modulate = Color.WHITE
+		island_layer.position = _seasonal_island_layer_base_positions[index]
 
 
 func _hide_distant_scenery() -> void:

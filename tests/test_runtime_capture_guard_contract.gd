@@ -28,6 +28,10 @@ const APPROVED_AMBIENT_MOTIF_TEXTURE_PATHS := [
 	"res://assets/images/runtime/voyage/ambient_motifs/sunset-reed-islet.png",
 	"res://assets/images/runtime/voyage/ambient_motifs/night-bioluminescent-band.png",
 ]
+const APPROVED_SEASONAL_PARALLAX_TEXTURE_PATHS := [
+	"res://assets/images/runtime/voyage/seasonal_parallax/bright-spring-islet.png",
+	"res://assets/images/runtime/voyage/seasonal_parallax/bright-spring-clouds-chroma.png",
+]
 const MISSING_TEXTURE_PATH := "res://assets/images/runtime/storybook/missing.png"
 
 var _failures := 0
@@ -49,11 +53,14 @@ func _run() -> void:
 			_expect(guard.REQUIRED_TEXTURE_PATHS.has(texture_path), "capture guard must require approved chibi decor texture %s" % texture_path)
 		for texture_path in APPROVED_AMBIENT_MOTIF_TEXTURE_PATHS:
 			_expect(guard.REQUIRED_TEXTURE_PATHS.has(texture_path), "capture guard must require approved ambient motif texture %s" % texture_path)
+		for texture_path in APPROVED_SEASONAL_PARALLAX_TEXTURE_PATHS:
+			_expect(guard.REQUIRED_TEXTURE_PATHS.has(texture_path), "capture guard must require approved seasonal parallax texture %s" % texture_path)
 		if guard.has_method("get_unavailable_texture_paths"):
 			var approved_paths: Array[String] = [APPROVED_TEXTURE_PATH]
 			approved_paths.append_array(APPROVED_LOOK_AROUND_TEXTURE_PATHS)
 			approved_paths.append_array(APPROVED_CHIBI_DECOR_TEXTURE_PATHS)
 			approved_paths.append_array(APPROVED_AMBIENT_MOTIF_TEXTURE_PATHS)
+			approved_paths.append_array(APPROVED_SEASONAL_PARALLAX_TEXTURE_PATHS)
 			var missing_paths: Array[String] = [MISSING_TEXTURE_PATH]
 			_expect(guard.get_unavailable_texture_paths(approved_paths).is_empty(), "imported approved texture must be capture-ready")
 			_expect(guard.get_unavailable_texture_paths(missing_paths) == missing_paths, "missing texture must block capture")
