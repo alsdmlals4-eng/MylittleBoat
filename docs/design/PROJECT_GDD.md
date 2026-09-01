@@ -391,3 +391,59 @@ Static docs, automated tests, generated assets, and GPU captures do not promote 
 | Human validation | 아직 `NOT_RUN` | 실제 기기에서 first 30 seconds와 5 minutes가 calm인지 |
 
 새 결정은 current owner와 공식 근거를 대조한 뒤에만 정본으로 올립니다. 충돌은 해당 owner만 교정한 뒤 적대적 검토를 다시 통과합니다.
+
+### 8.1 2026-09-01 계절형 자연 명소 분리 합성 Pass v1 Blueprint review
+
+**상태.** `RESEARCHED → FEASIBLE → USER_APPROVED_MATERIAL → ASSET_READY → BLUEPRINT_REVIEW_READY → NOT_IMPLEMENTED`입니다. 이 section과 user-locked image material은 implementation 전에 검토할 exact package scope이며, Scene·GDScript·save schema·runtime capture·Human evidence를 이미 바꿨다는 뜻이 아닙니다.
+
+**목표.** 밝은 봄의 작은 꽃섬과 느린 구름이 existing clear sea 위에서 서로 다른 깊이와 속도로 움직여, 보트가 목적지 없이 계속 떠가고 있다는 감각을 강화합니다. 배경은 풍부해지되, 명소를 보거나 사진을 찍거나 기다려야 하는 목적은 만들지 않습니다.
+
+**플레이어가 보게 되는 흐름.** 기기의 현지 시간이 `bright`이고 현지 월이 3–5월이면, 일반 항해와 Appreciation Camera의 현재 low-density scenery opportunity가 기존 bright motif 또는 작은 꽃섬 중 하나를 지나가게 할 수 있습니다. 같은 기간에는 sky 위의 작은 구름이 섬보다 느리게, existing sea shader는 두 layer와 독립적으로 흐릅니다. 명소를 전혀 만나지 않아도 정상이며, 구름은 save·notice·reward를 만들지 않습니다.
+
+**범위와 고정 경계.**
+
+- `bright`의 시간 범위와 current `dawn / bright / sunset / night` decision은 바꾸지 않습니다.
+- 월 3–5월은 내부 `spring` visual bucket일 뿐, 날짜·계절 이름·지역·날씨·달력 UI·saved preference를 표시하지 않습니다.
+- first v1은 `bright + spring`의 one-island vertical slice입니다. 6–2월과 bright의 다른 기존 motif는 current pool로 fallback하며, 다른 계절 image batch는 이 package에 자동 포함하지 않습니다.
+- `SkyBackdrop`은 그대로 고정하고, existing `SeaBackdrop`과 `voyage_split_sea_flow.gdshader`를 재사용합니다. 새 sea image, full-scene moving texture, whole-sky pan은 만들지 않습니다.
+- `SeasonalCloudLayer`는 three camera path의 sky와 sea 사이에서 only-cloud parallax를 보이고, `SeasonalIslandLayer`는 current normal·Appreciation ambient transit에서 sea 앞/boat 뒤에 보입니다. Look Around의 angle-specific foreground와 existing ambient policy는 변경하지 않습니다.
+- 꽃섬은 current `DriftSceneryDirector`의 foreground-only cadence, one-at-a-time state, 65% display chance, 0-event-valid rule, existing short label, and optional local ambient memory save를 그대로 공유합니다. chance, cadence, save rate, camera mode, speed tier, cosmetic identity, together time, fishing, decor, affection, reward는 바꾸지 않습니다.
+- 구름은 visual-only loop이며 ambient memory, notification, timer, reward, photo requirement, score, completion, collection slot, seasonal event, daily goal, missed-state, social action을 만들지 않습니다.
+- user `still` motion comfort setting에서는 새 cloud parallax와 new island transit movement도 advance하지 않습니다. `standard / gentle`은 current normalized motion multiplier를 재사용해 amplitude와 transit speed를 낮춥니다. 이 behavior는 existing approved sea and boat semantics를 변경하지 않습니다.
+
+**approved material and composition.** `MLB-AMB-SEASONAL-REF-001` is a non-runtime visual direction source. `MLB-AMB-SEASONAL-ISLAND-001` is the actual RGBA island texture. `MLB-AMB-SEASONAL-CLOUD-001` is an intentionally opaque magenta technical matte that uses the existing verified `look_around_foreground_chroma_key.gdshader`, not a new image conversion or a new shader family. `MLB-BG-SPLIT-001 / 002` remain the current bright static-sky / flowing-sea pair. Exact paths, dimensions, hashes, candidate provenance, and state distinctions are owned by the current visual inventory.
+
+**implementation mapping after final approval.**
+
+| owner | bounded responsibility | save / rollback boundary |
+| --- | --- | --- |
+| `scripts/voyage/real_time_atmosphere_resolver.gd` | injectably resolve `spring` for months `3..5`; invalid month safely resolves to empty seasonal bucket | device date is visual-only; no persistence, reward, or progress use. Godot system time is not a monotonic gameplay clock |
+| `scripts/voyage/drift_scenery_director.gd` | select the existing bright motif pool plus exactly one `bright + spring` island when compatible; preserve no-immediate-repeat and fallback behavior | no new cadence/state persistence; reverting the seasonal entry restores the current six motif selection |
+| `scenes/game.tscn` | add named `SeasonalCloudLayer` to three camera paths and named `SeasonalIslandLayer` only beside existing normal/Appreciation `AmbientSceneryPass` | no changed BoatSpace, Look Around foreground, sky/sea source, or UI hierarchy |
+| `scripts/voyage/game_scene.gd` | bind exact approved textures, existing chroma-key shader, visual month bucket, cloud loop, island transit, and comfort multiplier without touching voyage/save semantics | a package reversion removes the named nodes/routes and returns exact current scene behavior |
+| `tests/test_seasonal_parallax_contract.gd` and focused existing contracts | injected month / atmosphere matrix, source-to-canonical hash, alpha/matte guard, layer order, fallback, no save/reward mutation, still/gentle motion boundaries | display capture assertions stay renderer-only and never report headless texture readback as PASS |
+
+**alternatives compared.**
+
+| alternative | verdict | reason |
+| --- | --- | --- |
+| Existing sky + existing flowing sea + separately composited cloud/island parallax | **ADOPT** | direct response to the user's movement-depth request, reuses approved surfaces and a tested chroma-key route, and keeps foreground boat legible |
+| Four fully illustrated seasonal full-screen backgrounds that move as one card | **REJECT** | repeats the original whole-image movement problem, duplicates the sea/sky asset family, and expands asset count without preserving independent motion |
+| Real-time daily quests, seasonal event calendar, photo objectives, collection completion or notice-driven rewards | **REJECT** | converts visual context into a chore/FOMO loop and violates the rest-first no-pressure boundary |
+| Local month only changing a static tint with no new landmark layers | **ADAPT later only** | cheap but does not solve the user-requested depth and continuous movement issue |
+
+**feasibility and test path.** Godot `Time.get_date_dict_from_system(false)` exposes local month data, but system-clock values can be changed by the user or OS; therefore the package uses it only for visual routing and injected deterministic tests, never elapsed-time, reward, or save computation. [Godot Time 공식 문서](https://docs.godotengine.org/en/stable/classes/class_time.html) The existing project already proves `SkyBackdrop`, flowing `SeaBackdrop`, camera-local Sprite3D depth, `AmbientSceneryPass`, and magenta chroma-key foreground material on the current renderer. The new package remains `NOT_IMPLEMENTED` until the next final approval, then requires failure-first contracts, Godot import/scene smokes, exact asset guards, display-renderer captures for Bright/spring Normal and Appreciation, untouched Look Around checks, and five evidence-backed review loops. Human/device five-minute calmness, color, motion comfort, and touch remain `NOT_RUN`.
+
+**final approval boundary.** The user has locked the source material and approved this direction to reach Blueprint review. Code implementation begins only after the user approves this exact Blueprint revision. That approval is limited to this Bright/spring vertical slice and does not authorize other seasonal images, daily systems, location settings, social features, or Human validation.
+
+#### 8.1.1 Preimplementation material and Blueprint review receipt
+
+| loop | exact review | validated result | correction / retained boundary | evidence ceiling |
+| --- | --- | --- | --- | --- |
+| 1 | current `AGENTS.md`, current GDD/handoff/visual inventory, `game.tscn`, `GameScene`, `DriftSceneryDirector`, existing split bright images and prior runtime evidence | whole-scene `AmbientSceneryPass` would move sky, sea and landmark together, while existing bright sea is already a separate flowing asset | adopt separate cloud/island composition and reuse existing static-sky/flowing-sea pair | current runtime remains unchanged |
+| 2 | Tiny Glade, Cozy Grove, TOEM, Palia and Godot Time primary/official material comparison with project no-pressure constraints | landmark variation is feasible; full seasonal screens and daily/quest/photo completion systems conflict with the product | select one bright/spring visual-only vertical slice with month `3..5` and no UI/reward/save meaning | research/feasibility, not runtime proof |
+| 3 | built-in image generation output plus alpha/matte pixel inspection | direction-reference scene, isolated island and cloud art met the intended composition; first island contained reflection and two cloud outputs were opaque checkerboard RGB | retain user-approved reference, regenerate reflection-free RGBA island, reject opaque checkerboard attempts, use existing chroma-key route for cloud matte | source asset quality only |
+| 4 | exact source/canonical byte hashes, free-space preflight, non-overwriting project copies, Godot `--headless --path . --import`, project headless smoke | source/canonical pairs match; two runtime textures import without project startup regression | register only source/reference plus exact two implementation-ready textures; no full-scene runtime duplicate or new sea file | asset import and project smoke only |
+| 5 | runtime-isolation search, documented ID/path readback, island alpha samples, cloud-key threshold samples, `git diff --check` | new asset paths have no Scene/script/test consumer before final approval; island alpha and chroma matte meet their respective source-level contracts; no whitespace error | preserve `NOT_IMPLEMENTED` / `NOT_RUN` status and require failure-first implementation contracts and display renderer capture next | no seasonal runtime, Human, device, audio, accessibility or release PASS |
+
+No valid MUST_FIX remains in the material-preparation scope. The rejected candidate-store outputs are not project assets. The only remaining gate is user review of this exact Blueprint revision before code implementation.

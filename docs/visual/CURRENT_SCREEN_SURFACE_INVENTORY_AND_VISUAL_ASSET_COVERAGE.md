@@ -65,6 +65,9 @@ Notion은 historical archive이며 이 문서의 current owner가 아닙니다. 
 | `MLB-LOOK-CHIBI-TRN-001..004` | 이전 whole-composite non-front Look Around art | `SUPERSEDED_PENDING_CLEANUP`; current router consumer를 제거했으며 full source/consumer search와 regression 후에만 exact deletion |
 | `MLB-BG-SPLIT-001..008` | `dawn / bright / sunset / night`별 `SkyBackdrop` + `SeaBackdrop`, normal·front Look Around·Appreciation | `USER_APPROVED → CANON_REGISTERED → ASSET_READY → IMPLEMENTED → MACHINE_VERIFIED → RUNTIME_CAPTURE_VERIFIED`; 2026-08-31 OpenGL 9-frame capture, Human motion/color comfort `NOT_RUN` |
 | `MLB-AMB-MOTIF-001..006` | current local-time bucket의 normal·Appreciation `AmbientSceneryPass`, split sky·flowing sea는 유지 | `USER_APPROVED → CANON_REGISTERED → IMPLEMENTED → RUNTIME_CAPTURE_VERIFIED`; 2026-08-31 six-pass capture, Human long-run observation `NOT_RUN` |
+| `MLB-AMB-SEASONAL-REF-001` | 2026-09-01 밝은 봄 꽃섬의 visual-direction source. runtime consumer 없음 | `USER_APPROVED → CANON_REGISTERED → REFERENCE_ONLY`; full-scene source는 split layer를 대체하지 않음 |
+| `MLB-AMB-SEASONAL-ISLAND-001` | prospective Bright spring `SeasonalIslandLayer`, Normal·Appreciation의 기존 ambient-scene transit 위 | `USER_APPROVED → CANON_REGISTERED → ASSET_READY → NOT_IMPLEMENTED`; alpha source/canonical SHA equality verified, runtime/renderer/Human `NOT_RUN` |
+| `MLB-AMB-SEASONAL-CLOUD-001` | prospective Bright spring `SeasonalCloudLayer`, three camera path의 static sky 위 chroma-key parallax | `USER_APPROVED → CANON_REGISTERED → ASSET_READY → NOT_IMPLEMENTED`; matte key compatibility verified, runtime/renderer/Human `NOT_RUN` |
 | `MLB-BOAT-FLT-006` | `assets/images/runtime/voyage/boat-waterline-contact-v2.png` → `GameScene/VoyageWorld/BoatWaterlineContact` | `USER_APPROVED → CANON_REGISTERED → ASSET_READY → IMPLEMENTED → MACHINE_VERIFIED → RUNTIME_CAPTURE_VERIFIED`; Human motion comfort `NOT_RUN` |
 
 `FinalDioramaCard`는 기본 C+강아지 route에서만 사용한다. alternate pair는 동일한 `BoatSpace`의 layered `Sprite3D` route를 사용한다. 이 차이는 save 의미·voyage 시간·reward·soundscape를 바꾸지 않는다.
@@ -85,6 +88,21 @@ Notion은 historical archive이며 이 문서의 current owner가 아닙니다. 
 | `MLB-BG-SPLIT-006` | `sunset-flowing-sea.png` | `1BF695BB6CBC806B60864BA0D10948D1FF7405DDCE126A92469E5E40657277E6` | Sunset `SeaBackdrop` |
 | `MLB-BG-SPLIT-007` | `night-static-sky.png` | `FE7AD39F9812A947E396DE7DC1DE81AA7B72CD68CA59C008BC99B407B3E395E1` | Night `SkyBackdrop` |
 | `MLB-BG-SPLIT-008` | `night-flowing-sea.png` | `87B44108258C7047FBF9C4B887E6C8334678992B9CDB5651D9AD1C00D87C37EA` | Night `SeaBackdrop` |
+
+### 4.2 2026-09-01 user-approved bright spring seasonal parallax material
+
+사용자는 전체 풍경 candidate의 거리감·색감·작은 명소 방향을 승인했지만, 하늘·구름·바다·섬이 한 장으로 함께 움직이는 runtime 사용은 승인하지 않았습니다. 따라서 전체 scene은 visual-direction source로만 보존하고, runtime은 기존 `Bright SkyBackdrop`과 `Bright SeaBackdrop`을 재사용한 뒤 구름과 섬을 독립 Sprite3D layer로 합성합니다. 이 경계는 보트·동반자·water contact의 foreground depth와 existing flowing-sea evidence를 보존합니다.
+
+| asset id | source / canonical file | dimensions / format | SHA-256 | approved role | implementation boundary |
+| --- | --- | --- | --- | --- | --- |
+| `MLB-AMB-SEASONAL-REF-001` | `docs/visual/generated/2026-09-01-seasonal-parallax-bright/bright-spring-direction-reference.png` | `1672×941`, RGB | `5E2CCBA025C584C8B8871EB08F9B650DCF9436916122BEB5663998B14A7EB960` | bright spring islet의 source composition·palette·distance reference | runtime texture가 아니며, full scene을 `AmbientSceneryPass`로 이동시키지 않음 |
+| `MLB-AMB-SEASONAL-ISLAND-001` | source `docs/visual/generated/2026-09-01-seasonal-parallax-bright/bright-spring-islet-candidate.png` → runtime `assets/images/runtime/voyage/seasonal_parallax/bright-spring-islet.png` | `1672×941`, RGBA | `22E9AE8B74B331F7147936B780823D81EA59DD407837BF4ACBC9F82FFC046987` | sky·ocean·reflection 없이 꽃·나무·풀·바위만 남긴 Bright/spring distant island | seasonal package final approval 뒤 `SeasonalIslandLayer`의 exact texture. source/canonical equality only verified |
+| `MLB-AMB-SEASONAL-CLOUD-001` | source `docs/visual/generated/2026-09-01-seasonal-parallax-bright/bright-spring-clouds-chroma-candidate.png` → runtime `assets/images/runtime/voyage/seasonal_parallax/bright-spring-clouds-chroma.png` | `1672×941`, RGB technical matte | `27174AB314DDB9D93E5FE2FA45821F7F6D3C2C38080E2A34AACFA5BCFF2B2557` | three small bright clouds above horizon on magenta technical matte | seasonal package final approval 뒤 existing `look_around_foreground_chroma_key.gdshader` binding으로 only-cloud alpha. Matte itself is never player-visible |
+| existing `MLB-BG-SPLIT-001` / `002` | `bright-static-sky.png` + `bright-flowing-sea.png` | `1672×941`, RGB pair | see §4.1 | static sky + independently flowing sea | re-used without duplicate generation or changed asset identity |
+
+`MLB-AMB-SEASONAL-ISLAND-001`의 empty-canvas samples are actual `A=0`; island sample is `A=253`. `MLB-AMB-SEASONAL-CLOUD-001` is intentionally opaque because the current built-in image output did not preserve actual transparent pixels for cloud candidates. Its non-cloud matte samples satisfy existing chroma-key thresholds with chroma `0.710–0.847` and brightness `0.827–0.882`; cloud samples do not meet the key condition. This is source-level matte compatibility, not a Godot runtime PASS.
+
+The two generated RGB checkerboard cloud attempts and one reflective-island exploration are `REJECTED_GENERATED_CANDIDATES`; they have no project copy, canonical ID, runtime consumer, capture, or release meaning. Candidate-store deletion was attempted after their rejection but platform deletion protection blocked it. No repository capacity, Godot importer, or build path consumes them.
 
 ## 5. 승인 decor와 alternate 치비 family
 
