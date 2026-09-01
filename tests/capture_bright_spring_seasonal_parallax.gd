@@ -10,7 +10,13 @@ const SEASONAL_CLOUD_TEXTURE_PATH := "res://assets/images/runtime/voyage/seasona
 const CHROMA_KEY_SHADER_PATH := "res://assets/shaders/look_around_foreground_chroma_key.gdshader"
 const NORMAL_CAPTURE_FILE := "bright_spring_normal_540x960.png"
 const APPRECIATION_CAPTURE_FILE := "bright_spring_appreciation_540x960.png"
+const MOTION_EARLY_CAPTURE_FILE := "bright_spring_normal_motion_early_540x960.png"
+const MOTION_LATE_CAPTURE_FILE := "bright_spring_normal_motion_late_540x960.png"
 const MIN_UPPER_CLOUD_BRIGHT_SAMPLES := 100
+const MOTION_EARLY_WAIT_SECONDS := 6.5
+const MOTION_MID_WAIT_SECONDS := 0.5
+const MOTION_LATE_WAIT_SECONDS := 0.5
+const MIN_MOTION_HORIZONTAL_DELTA_PIXELS := 80.0
 
 
 func _init() -> void:
@@ -44,12 +50,29 @@ func _capture() -> void:
 		await _cleanup(scene, game_state)
 		return
 	_set_gameplay_ui_visible(scene, false)
-	if not await _save_runtime_image(NORMAL_CAPTURE_FILE, true):
+	await create_timer(MOTION_EARLY_WAIT_SECONDS).timeout
+	var early_motion_image := await _save_runtime_image(MOTION_EARLY_CAPTURE_FILE, true)
+	if early_motion_image == null:
+		await _cleanup(scene, game_state)
+		return
+	await create_timer(MOTION_MID_WAIT_SECONDS).timeout
+	if str(scene.call("get_active_atmosphere_id")) != "bright" or str(scene.call("get_active_season_id")) != "spring":
+		await _cleanup(scene, game_state)
+		_fail("capture must retain the injected bright spring context during the real drift interval")
+		return
+	var normal_image := await _save_runtime_image(NORMAL_CAPTURE_FILE, true)
+	if normal_image == null:
+		await _cleanup(scene, game_state)
+		return
+	await create_timer(MOTION_LATE_WAIT_SECONDS).timeout
+	var late_motion_image := await _save_runtime_image(MOTION_LATE_CAPTURE_FILE, true)
+	if late_motion_image == null or not _assert_visible_island_motion(early_motion_image, late_motion_image):
 		await _cleanup(scene, game_state)
 		return
 	scene.call("_toggle_appreciation_mode")
 	await RenderingServer.frame_post_draw
-	if not await _save_runtime_image(APPRECIATION_CAPTURE_FILE):
+	var appreciation_image := await _save_runtime_image(APPRECIATION_CAPTURE_FILE)
+	if appreciation_image == null:
 		await _cleanup(scene, game_state)
 		return
 	await _cleanup(scene, game_state)
@@ -63,10 +86,6 @@ func _prepare_bright_spring_capture(scene: Node) -> bool:
 		_fail("capture must restore the injected bright spring context after display focus notifications")
 		return false
 	if not _trigger_no_save_seasonal_island(scene):
-		return false
-	await create_timer(7.0).timeout
-	if str(scene.call("get_active_atmosphere_id")) != "bright" or str(scene.call("get_active_season_id")) != "spring":
-		_fail("capture must retain the injected bright spring context during the real drift interval")
 		return false
 	return _assert_seasonal_render_route(scene)
 
@@ -125,28 +144,28 @@ func _set_gameplay_ui_visible(scene: Node, is_visible: bool) -> void:
 			node.visible = is_visible
 
 
-func _save_runtime_image(file_name: String, requires_clear_boat_lane: bool = false) -> bool:
+func _save_runtime_image(file_name: String, requires_clear_boat_lane: bool = false) -> Image:
 	RenderingServer.force_draw(true)
 	await RenderingServer.frame_post_draw
 	var image := root.get_texture().get_image()
 	if image == null or image.is_empty():
 		_fail("empty runtime image for %s" % file_name)
-		return false
+		return null
 	var output_path := "%s/%s" % [EVIDENCE_DIRECTORY, file_name]
 	if image.save_png(output_path) != OK:
 		_fail("could not save %s" % file_name)
-		return false
+		return null
 	if not _has_visible_upper_cloud_mark(image):
 		_fail("seasonal cloud must leave a visible upper-sky mark in %s" % file_name)
-		return false
+		return null
 	if requires_clear_boat_lane and not _has_clear_boat_lane(image):
 		_fail("seasonal island must remain above the boat lane in %s" % file_name)
-		return false
+		return null
 	if requires_clear_boat_lane and not _has_visible_distant_island_mark(image):
 		_fail("seasonal island must remain visibly present in the distant horizon band in %s" % file_name)
-		return false
+		return null
 	print("SAVED: %s (%dx%d)" % [output_path, image.get_width(), image.get_height()])
-	return true
+	return image
 
 
 func _has_visible_upper_cloud_mark(image: Image) -> bool:
@@ -167,10 +186,7 @@ func _has_clear_boat_lane(image: Image) -> bool:
 		for x in range(0, image.get_width(), 2):
 			if x >= 145 and x <= 405:
 				continue
-			var pixel := image.get_pixel(x, y)
-			var grass_like := pixel.g >= 0.45 and pixel.g >= pixel.r * 1.12 and pixel.g >= pixel.b * 1.18
-			var flower_like := pixel.r >= 0.78 and pixel.b >= 0.52 and pixel.g <= 0.70
-			if grass_like or flower_like:
+			if _is_island_like_pixel(image.get_pixel(x, y)):
 				island_like_sample_count += 1
 	return island_like_sample_count <= 12
 
@@ -181,12 +197,43 @@ func _has_visible_distant_island_mark(image: Image) -> bool:
 	var horizon_y_end := int(image.get_height() * 0.63)
 	for y in range(horizon_y_start, horizon_y_end, 2):
 		for x in range(0, image.get_width(), 2):
-			var pixel := image.get_pixel(x, y)
-			var grass_like := pixel.g >= 0.45 and pixel.g >= pixel.r * 1.12 and pixel.g >= pixel.b * 1.18
-			var flower_like := pixel.r >= 0.78 and pixel.b >= 0.52 and pixel.g <= 0.70
-			if grass_like or flower_like:
+			if _is_island_like_pixel(image.get_pixel(x, y)):
 				island_like_sample_count += 1
 	return island_like_sample_count >= 20
+
+
+func _assert_visible_island_motion(early_image: Image, late_image: Image) -> bool:
+	var early_center_x := _get_distant_island_center_x(early_image)
+	var late_center_x := _get_distant_island_center_x(late_image)
+	if early_center_x < 0.0 or late_center_x < 0.0:
+		_fail("seasonal island motion frames must both contain a horizon island silhouette")
+		return false
+	if absf(late_center_x - early_center_x) < MIN_MOTION_HORIZONTAL_DELTA_PIXELS:
+		_fail("seasonal island must visibly traverse the horizon between renderer motion frames")
+		return false
+	print("MOTION_DELTA_PIXELS=%.1f" % absf(late_center_x - early_center_x))
+	return true
+
+
+func _get_distant_island_center_x(image: Image) -> float:
+	var min_x := image.get_width()
+	var max_x := -1
+	var horizon_y_start := int(image.get_height() * 0.40)
+	var horizon_y_end := int(image.get_height() * 0.63)
+	for y in range(horizon_y_start, horizon_y_end, 2):
+		for x in range(0, image.get_width(), 2):
+			if _is_island_like_pixel(image.get_pixel(x, y)):
+				min_x = mini(min_x, x)
+				max_x = maxi(max_x, x)
+	if max_x < 0:
+		return -1.0
+	return (float(min_x) + float(max_x)) * 0.5
+
+
+func _is_island_like_pixel(pixel: Color) -> bool:
+	var grass_like := pixel.g >= 0.45 and pixel.g >= pixel.r * 1.12 and pixel.g >= pixel.b * 1.18
+	var flower_like := pixel.r >= 0.78 and pixel.b >= 0.52 and pixel.g <= 0.70
+	return grass_like or flower_like
 
 
 func _cleanup(scene: Node, game_state: Node) -> void:

@@ -4,6 +4,7 @@ extends SceneTree
 const RESOLVER_PATH := "res://scripts/voyage/real_time_atmosphere_resolver.gd"
 const DIRECTOR_PATH := "res://scripts/voyage/drift_scenery_director.gd"
 const GAME_SCENE_PATH := "res://scenes/game.tscn"
+const CAPTURE_SCRIPT_PATH := "res://tests/capture_bright_spring_seasonal_parallax.gd"
 const SEASONAL_ISLAND_ID := "MLB-AMB-SEASONAL-ISLAND-001"
 const SEASONAL_ISLAND_TEXTURE_PATH := "res://assets/images/runtime/voyage/seasonal_parallax/bright-spring-islet.png"
 const SEASONAL_CLOUD_TEXTURE_PATH := "res://assets/images/runtime/voyage/seasonal_parallax/bright-spring-clouds-chroma.png"
@@ -52,6 +53,7 @@ func _run() -> void:
 
 	await _verify_scene_consumers()
 	await _verify_seasonal_motion_and_progression_boundary()
+	_verify_temporal_renderer_evidence_contract()
 	_finish()
 
 
@@ -148,6 +150,17 @@ func _verify_seasonal_motion_and_progression_boundary() -> void:
 	_expect(game_state.fish.size() == before_fish, "seasonal visuals must not create fish")
 	_expect(game_state.voyage_records.size() == before_records, "seasonal visuals must not create a voyage record")
 	_expect(is_equal_approx(game_state.together_time_seconds, before_together_time), "seasonal visuals must not alter together-time semantics")
+
+
+func _verify_temporal_renderer_evidence_contract() -> void:
+	_expect(ResourceLoader.exists(CAPTURE_SCRIPT_PATH), "seasonal renderer evidence script must exist")
+	if not ResourceLoader.exists(CAPTURE_SCRIPT_PATH):
+		return
+	var source := FileAccess.get_file_as_string(CAPTURE_SCRIPT_PATH)
+	_expect(source.contains("MOTION_EARLY_CAPTURE_FILE"), "renderer evidence must retain an early in-transit island frame")
+	_expect(source.contains("MOTION_LATE_CAPTURE_FILE"), "renderer evidence must retain a late in-transit island frame")
+	_expect(source.contains("MIN_MOTION_HORIZONTAL_DELTA_PIXELS"), "renderer evidence must require a meaningful horizontal island displacement")
+	_expect(source.contains("_get_distant_island_center_x"), "renderer evidence must locate the rendered island rather than infer movement from a timer")
 
 
 func _sample_seasonal_motion(profile: String) -> Dictionary:
