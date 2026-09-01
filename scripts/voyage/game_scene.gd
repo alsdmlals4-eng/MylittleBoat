@@ -21,6 +21,7 @@ const FORWARD_SURGE_FREQUENCY := 0.45
 const LATERAL_CURRENT_FREQUENCY := 0.28
 const TITLE_IDLE_MOTION_MULTIPLIER := 0.42
 const BACKGROUND_FLOW_UNITS_PER_SECOND := 0.012
+const FORWARD_WATER_FLOW_UNITS_PER_SECOND := 0.034
 const MOTION_COMFORT_NAMES := {
 	"standard": "기본",
 	"gentle": "잔잔",
@@ -86,6 +87,7 @@ var _real_time_atmosphere_resolver = REAL_TIME_ATMOSPHERE_RESOLVER_SCRIPT.new()
 var _drift_scenery_director = DRIFT_SCENERY_DIRECTOR_SCRIPT.new()
 var _drift_phase := 0.0
 var _background_flow_offset := 0.0
+var _forward_water_flow_offset := 0.0
 var _diorama_camera_base_position := Vector3.ZERO
 var _look_around_camera_base_position := Vector3.ZERO
 var _appreciation_camera_base_position := Vector3.ZERO
@@ -781,6 +783,11 @@ func get_background_flow_offset() -> float:
 	return _background_flow_offset
 
 
+## Returns the voyage-only near-water travel phase used to reinforce forward motion.
+func get_forward_water_flow_offset() -> float:
+	return _forward_water_flow_offset
+
+
 func _get_sea_backdrops() -> Array[Sprite3D]:
 	return [
 		$VoyageWorld/DioramaCameraRig/DioramaCamera3D/SeaBackdrop as Sprite3D,
@@ -897,6 +904,7 @@ func _apply_background_flow_to_backdrop(backdrop: Sprite3D) -> void:
 		return
 	flow_material.set_shader_parameter("source_texture", backdrop.texture)
 	flow_material.set_shader_parameter("flow_offset", _background_flow_offset)
+	flow_material.set_shader_parameter("forward_flow_offset", _forward_water_flow_offset)
 
 
 func _apply_background_flow() -> void:
@@ -914,6 +922,11 @@ func _apply_drift_motion(delta: float) -> void:
 		_background_flow_offset + safe_delta * BACKGROUND_FLOW_UNITS_PER_SECOND * visual_motion_multiplier,
 		1.0,
 	)
+	if not _title_waiting:
+		_forward_water_flow_offset = fposmod(
+			_forward_water_flow_offset + safe_delta * FORWARD_WATER_FLOW_UNITS_PER_SECOND * visual_motion_multiplier * comfort_scale,
+			1.0,
+		)
 	_apply_background_flow()
 	_apply_seasonal_parallax_motion(safe_delta, visual_motion_multiplier, comfort_scale)
 	$VoyageWorld/DioramaCameraRig.position.y = _diorama_camera_base_position.y + sin(_drift_phase * 1.2) * 0.018 * comfort_scale
@@ -923,16 +936,17 @@ func _apply_drift_motion(delta: float) -> void:
 	var boat_bob := boat_bob_signal * 0.052 * comfort_scale
 	var forward_surge := sin(_drift_phase * FORWARD_SURGE_FREQUENCY) * FORWARD_SURGE_DISTANCE * comfort_scale
 	var lateral_current := sin(_drift_phase * LATERAL_CURRENT_FREQUENCY) * LATERAL_CURRENT_DISTANCE * comfort_scale
+	var travel_wake_signal := (0.5 + sin(_drift_phase * 0.9 - 0.35) * 0.5) * visual_motion_multiplier * comfort_scale
 	$VoyageWorld/BoatSpace.position = _boat_space_base_position + Vector3(lateral_current, boat_bob, forward_surge)
 	$VoyageWorld/BoatSpace.rotation = _boat_space_base_rotation + Vector3(0.0, 0.0, sin(_drift_phase * 0.82 + 0.2) * deg_to_rad(1.15) * comfort_scale)
 	var water_contact := $VoyageWorld/BoatWaterContact as Sprite3D
 	if water_contact != null:
 		var contact_breath := 1.0 + sin(_drift_phase * 1.05 - 0.2) * 0.045 * comfort_scale
-		var surge_emphasis := 1.0 + absf(forward_surge) * 0.72
+		var surge_emphasis := 1.0 + absf(forward_surge) * 0.72 + travel_wake_signal * 0.06
 		water_contact.position = _boat_water_contact_base_position + Vector3(lateral_current, boat_bob * 0.92, forward_surge)
 		water_contact.scale = _boat_water_contact_base_scale * contact_breath * surge_emphasis
 		var contact_modulate := _boat_water_contact_base_modulate
-		contact_modulate.a *= 0.9 + maxf(boat_bob_signal, 0.0) * 0.16
+		contact_modulate.a *= 0.9 + maxf(boat_bob_signal, 0.0) * 0.16 + travel_wake_signal * 0.04
 		water_contact.modulate = contact_modulate
 	var waterline_contact := $VoyageWorld/BoatWaterlineContact as Sprite3D
 	if waterline_contact != null:
