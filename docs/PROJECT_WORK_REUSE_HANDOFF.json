@@ -556,5 +556,46 @@
       "No Base reusable module is currently vendored. A future module requires a named project consumer, Base source/license/maintenance review, adoption lock, regression evidence, and user approval if it changes product meaning or dependency scope.",
       "Human/device first-30-seconds, five-minute calm, touch, motion, readability, audio comfort, remote CI, and release evidence remain separate NOT_RUN gates."
     ]
+  },
+  "scope_and_concept_status_reconciliation_2026_09_01": {
+    "task": "CURRENT_SCOPE_AND_CONCEPT_STATUS_RECONCILIATION",
+    "status": "IMPLEMENTED_DOCUMENT_SYNC_MACHINE_REVALIDATED",
+    "root_cause": "docs/MVP_SCOPE.md and docs/CONCEPT.md retained quick-status wording from the pre-direct-entry implementation baseline while the current GDD and Godot handoff recorded the later implemented state.",
+    "authority": {
+      "human_facing_owner": "docs/design/PROJECT_GDD.md",
+      "runtime_owner": "docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md plus actual scene/script/tests/evidence",
+      "corrected_quick_views": [
+        "docs/MVP_SCOPE.md",
+        "docs/CONCEPT.md"
+      ]
+    },
+    "correction": [
+      "Reclassify the direct-entry package in MVP_SCOPE as completed with machine and renderer evidence while retaining Human/device NOT_RUN.",
+      "Align Concept's title-wait boundary, voyage-start semantics, Floating Rest, Appreciation, customization, photo/fishing/interaction, and Album status with the current GDD and handoff.",
+      "Do not add a prose string-matching regression test because it would be a brittle change detector rather than a consumer behavior test."
+    ],
+    "revalidation": [
+      "Godot 4.7.2 --headless --path . --import passed.",
+      "Project headless quit and main_menu, game, album scene smokes passed.",
+      "57 current Godot contracts were discovered; 56 headless-safe contracts passed in four bounded batches and one display-only material proof remained explicitly excluded.",
+      "Python project suite passed 10 tests; Base v9.4.4 release and corrected reuse-manifest checks passed.",
+      "Current user:// test_* artifact audit found 0 leftovers."
+    ],
+    "adversarial_review": [
+      "Loop 1: fresh-read project branch, remote branch, Base main, adapter, GDD, current handoff, visual inventory, and open PR boundary.",
+      "Loop 2: re-run import, project/three-scene smoke, all current headless-safe Godot contracts, Python suite, Base release/reuse checks, and clean-worktree readback.",
+      "Loop 3: identify the precise stale quick-view strings and compare them with the current GDD/handoff evidence ceiling.",
+      "Loop 4: trace blame to the pre-implementation quick-status baseline and confirm that current code/test evidence, not an asset or product decision, is the source of the mismatch.",
+      "Loop 5: apply only owner-linked prose reconciliation; retain delayed-bottle partial scope, Human/device NOT_RUN, old main-menu supersession, and no new runtime claim."
+    ],
+    "non_changes": [
+      "No GDScript, Godot Scene, Resource, asset, shader, save schema, Base source, open PR, runtime capture, remote CI, or Human/device validation changed.",
+      "No delayed bottle, social capability, payment, public feature, or new gameplay package was started."
+    ],
+    "remaining_risks": [
+      "Human/device first-30-seconds, five-minute calm, touch, motion, readability, audio comfort, remote CI, and release remain separate NOT_RUN gates.",
+      "Album remains partial only for delayed-bottle letters and broader memory persistence, which require the separately approved social/safety lifecycle."
+    ],
+    "rollback": "Revert the single document-sync commit. Current GDD and Godot handoff remain the owners; no runtime artifact or save is coupled to this reconciliation."
   }
 }
