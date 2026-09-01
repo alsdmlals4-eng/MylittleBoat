@@ -10,6 +10,8 @@
 | 이전 AI specification 안내 | `docs/design/PROJECT_AI_PRODUCTION_SPEC.md` — `SUPERSEDED_POINTER_NOT_EDITING_MASTER` |
 | 실제 Godot 구현·test·runtime evidence ceiling | `docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md` + actual code/Scene/tests/evidence |
 | visual consumer·provenance·capture/Human boundary | `docs/visual/CURRENT_SCREEN_SURFACE_INVENTORY_AND_VISUAL_ASSET_COVERAGE.md` |
+| Base 적용 순서·project-local 변형·release identity | `docs/operations/MY_LITTLE_BOAT_BASE_ADAPTER.json` |
+| 실제 Base reusable module 선택 상태 | `docs/base-reuse-adoption.json` + actual consumer/lock/read-only Base check |
 
 `HUMAN_GAME_BLUEPRINT_GDD_LAYERED_PROFILE`
 
@@ -54,3 +56,20 @@ PDF binary는 source owner가 아니며 이번 profile adoption에서 수정하�
 - exact diagram은 `TEXT_NATIVE_EXACT_DIAGRAMS` 및 `STRUCTURED_INFORMATION_ARTIFACTS_REMAIN_TEXT_NATIVE`에 따라 Mermaid/Flow/table로 유지합니다.
 
 PR #19의 README/workflow/social paths는 `READ_ONLY_NO_ABSORPTION`이며 이 profile이 authority를 추가하지 않습니다.
+
+## Base adaptation route
+
+`docs/operations/MY_LITTLE_BOAT_BASE_ADAPTER.json`은 Base v9.4.4의 공용 preflight·증거·검토 원칙을 프로젝트에 맞춰 적용하는 정본입니다. 기존 GDD, Godot handoff, visual inventory, asset provenance, Scene, script, save, test, runtime evidence를 새 Base template로 옮기지 않습니다.
+
+```text
+latest user direction
+-> project AGENTS / GDD / handoff / visual inventory / actual consumer
+-> MY_LITTLE_BOAT_BASE_ADAPTER
+-> current Base release and targeted reuse evidence
+-> reuse and three-alternative decision
+-> bounded project owner change
+-> machine/runtime evidence as applicable
+-> five-loop review, handoff, remaining-work recalculation
+```
+
+`docs/base-reuse-adoption.json`은 모듈 vendoring manifest이며 운영 adapter가 아닙니다. 실제 destination과 adoption lock이 없는 module을 `enabled`로 표시하지 않습니다. Base open PR, current main, optional directory scaffold, Notion, HiGodot, GUT, Hera, and shared helper code are automatic adoption targets가 아닙니다.

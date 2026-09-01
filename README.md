@@ -9,6 +9,7 @@
 - 현재 사람용 정본은 [프로젝트 GDD](docs/design/PROJECT_GDD.md)입니다.
 - 사람용 PDF의 source binding 재검증·재발행은 현재 보류되어 있습니다. 지금의 읽기 기준은 프로젝트 GDD와 [문서 지도](docs/DOCUMENTATION_MAP.md)입니다.
 - 실제 코드·Scene·테스트·캡처의 사실은 [현재 Godot handoff](docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md)가 소유합니다.
+- Base를 적용한 작업 순서, 프로젝트 전용 변형, v9.4.4 identity와 재사용 module 상태는 [My Little Boat Base adapter](docs/operations/MY_LITTLE_BOAT_BASE_ADAPTER.json)가 소유합니다. Base template·open PR·optional tool은 자동으로 프로젝트 정본이나 runtime dependency가 되지 않습니다.
 - 이전 Notion은 이관이 끝난 historical archive이며 새 작업의 정본이나 동기화 대상이 아닙니다.
 - 실행은 `scenes/game.tscn`의 **타이틀 대기**로 바로 들어갑니다. 실제 보트·동반자·바다가 잔잔히 움직이는 상태에서 확정 로고와 `항해 시작`만 보이며, 누르기 전에는 항해 시간·기억·보상이 시작되지 않습니다. 이전 `main_menu.tscn`은 시작 경로가 아닌 legacy 자료입니다.
 - `MLB-BRAND-TITLE-001`은 “MY LITTLE BOAT / 파도 위에서, 함께 쉬는 시간”의 확정 브랜드 자산입니다. store·splash·GDD 표지와 `GameScene/TitleOverlay/BrandLogo`에만 쓰며, 첫 보트 장면의 플레이어 외형·동반자 선택·save·reward를 고정하거나 가리지 않습니다.

@@ -478,5 +478,83 @@
       ],
       "rollback": "Restore only the behavior-contract workflow step and delete tests/test_ci_contract_coverage.py plus its plan/document record. No runtime scene, save schema, asset, Base lock, or open PR is coupled to this change."
     }
+  },
+  "base_adapter_refresh_2026_09_01": {
+    "task": "BASE_DETAILED_FRESH_READ_AND_PROJECT_ADAPTER_REFRESH",
+    "status": "IMPLEMENTED_DOCUMENT_AND_CONTRACT_LAYER_MACHINE_VALIDATED",
+    "project_revision": {
+      "pre_change_head": "2ceef1541c2ff84f6609b20f17a6250ddad17d84",
+      "origin_main": "7181d5e6845e75107eade8c4d2e62e10334ab54b",
+      "branch_relation": "AHEAD_6_BEHIND_0",
+      "open_pr": "#19 READ_ONLY_NO_ABSORPTION"
+    },
+    "base_revision": {
+      "main": "19355b7ef065a21d0f2b685c7d9be64a4a3970f8",
+      "release": "v9.4.4",
+      "release_commit": "210ec78292fa12ed7563ba743b322dd36103ae4a",
+      "release_evidence_commit": "bb61e68dc3028421b60c11b87ba2abd297ee6f78",
+      "finalization_commit": "5adc196c0185951f50e49ab5e51586eff8d60886",
+      "base_mutation": "NOT_REQUESTED_NOT_PERFORMED",
+      "preexisting_untracked_path": "Base-worktrees/ PRESERVED_UNTOUCHED"
+    },
+    "selected_modules": [],
+    "reuse_mode": [
+      "ADOPT_BASE_V9_4_4_REUSE_FIRST_AND_EVIDENCE_BOUNDARIES",
+      "ADAPT_PROJECT_LOCAL_OWNER_ROUTING_AND_WORK_SEQUENCE",
+      "REJECT_WHOLESALE_BASE_TEMPLATE_AND_OPTIONAL_TOOL_INSTALLATION",
+      "CORRECT_STALE_REUSE_MANIFEST_ENABLED_STATE"
+    ],
+    "project_paths_changed": [
+      "AGENTS.md",
+      "README.md",
+      "docs/DOCUMENTATION_MAP.md",
+      "docs/base-reuse-adoption.json",
+      "docs/operations/MY_LITTLE_BOAT_BASE_ADAPTER.json",
+      "docs/research/2026-09-01-base-adapter-refresh.md",
+      "docs/design/PROJECT_GDD.md",
+      "docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md",
+      "docs/PROJECT_WORK_REUSE_HANDOFF.json",
+      "tests/test_base_adapter_contract.py"
+    ],
+    "validated_finding": {
+      "id": "MLB-BASE-20260901-REUSE-MANIFEST-DRIFT",
+      "before": "RM-VIS-001 and RM-VIS-002 were marked enabled although both project destinations were missing.",
+      "reproduction": "Base reuse_adoption.py check returned two DESTINATION_MISSING violations.",
+      "correction": "Pin the manifest to Base v9.4.4 payload and defer the two modules until a named consumer, vendor destination, and adoption lock exist.",
+      "after": "Corrected read-only Base reuse check reports ok=true with checked_modules=[]."
+    },
+    "verification_evidence": [
+      "Base v9.4.4 release checker passed before project adapter adoption.",
+      "tests/test_base_adapter_contract.py failed first for missing adapter, missing route propagation, and false enabled module destinations, then passed 3/3 after the bounded correction.",
+      "Base reuse_adoption.py check passed after correction with no enabled module claims.",
+      "Project and Base fetch/readback confirmed exact revisions and open PR boundaries before mutation."
+    ],
+    "evidence_ceiling": {
+      "project_adapter_and_manifest": "MACHINE_VALIDATED",
+      "godot_runtime": "NOT_RUN_NOT_APPLICABLE_NO_RUNTIME_CONSUMER_CHANGE",
+      "remote_ci": "NOT_RUN_NO_PR_OR_MAIN_PUSH",
+      "human_device_ux": "NOT_RUN_USER_GATED",
+      "base_project_operating_contract_validator": "NOT_CLAIMED_PROJECT_USES_A_LOCAL_ADAPTER_NOT_BASE_TEMPLATE_SCHEMA"
+    },
+    "adversarial_review": [
+      "Loop 1: Base newest main and release contract were compared against the project authority; automatic Base canon replacement was rejected.",
+      "Loop 2: Base reuse profile and project manifest were compared with actual project destinations; two false enabled claims were reproduced.",
+      "Loop 3: a project adapter contract test was added before the adapter and failed for the expected missing adapter/routes/destinations.",
+      "Loop 4: minimum manifest and project-local adapter corrections made the focused test and Base reuse checker pass without vendoring a module.",
+      "Loop 5: routing references, historical GDD wording, owner paths, Base release triplet, rollback boundary, and untouched runtime/Human ceilings were rechecked through the project Python suite and final static readback."
+    ],
+    "rollback": "Revert this one project documentation/configuration/test commit. No Base source, Godot scene/script/resource, approved asset, save key, existing PR, or Base-worktrees path was changed.",
+    "project_only_lessons": [
+      "A Base reuse manifest is not a project operating adapter. Keep module installation state separate from project work-order and authority routing.",
+      "Enabled must mean an actual vendored destination, adoption lock, named consumer, and verification; a profile blob or historical readiness state is not enough.",
+      "The Base release identity can be adopted while the project retains its own stable GDD, handoff, visual inventory, Godot test, and runtime evidence owners."
+    ],
+    "base_promotion_candidates": [],
+    "base_learning_disposition": "NO_NEW_REUSE_LEARNING_EXISTING_BASE_REUSE_SEMANTICS_APPLIED",
+    "remaining_known_risks": [
+      "Base current main can change after this observation; future material work must fresh-read it rather than updating this adapter automatically.",
+      "No Base reusable module is currently vendored. A future module requires a named project consumer, Base source/license/maintenance review, adoption lock, regression evidence, and user approval if it changes product meaning or dependency scope.",
+      "Human/device first-30-seconds, five-minute calm, touch, motion, readability, audio comfort, remote CI, and release evidence remain separate NOT_RUN gates."
+    ]
   }
 }

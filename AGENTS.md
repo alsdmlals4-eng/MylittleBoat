@@ -24,7 +24,7 @@ Do not infer current project status from memory or past chats. Resolve current a
 1. Latest user instruction.
 2. This `AGENTS.md` and project engine/data/safety constraints.
 3. Current repository human-facing GDD, approved decisions, handoffs, planning/data/code/scenes/resources/tests, and actual runtime evidence.
-4. Current adopted Base contract and routing needed for the task.
+4. [My Little Boat Base adapter](docs/operations/MY_LITTLE_BOAT_BASE_ADAPTER.json) and only the selected Base contract/routing needed for the task.
 5. External references, past conversations, and inference.
 
 ### DOMAIN_SPLIT_CANON
@@ -38,6 +38,13 @@ Do not infer current project status from memory or past chats. Resolve current a
 Repository 문서 승인이나 정적 이미지가 runtime 구현 성공을 의미하지 않는다. 사람용 결정이 구조화 데이터나 구현 의미를 바꾸면 repository owner에 동기화한 뒤 구현·완료를 주장한다.
 
 현재 `open/draft/ready` PR은 작업 시작 시 실제 GitHub 상태를 조회한다. 다른 workstream의 PR을 명시적 권한 없이 수정·흡수·종료·병합하지 않는다.
+
+### Base adaptation boundary
+
+- Base는 공용 작업 순서·재사용 preflight·증거 분리·review/rollback 원칙을 제공하고, 이 프로젝트의 player meaning, GDD, scene, save, asset, runtime evidence owner를 대체하지 않는다.
+- `docs/operations/MY_LITTLE_BOAT_BASE_ADAPTER.json`은 v9.4.4 release payload/evidence/finalization identity, project-local work sequence, adopted/changed/rejected Base rules를 하나의 project adapter로 소유한다.
+- `docs/base-reuse-adoption.json`은 Base reusable-module manifest만 소유한다. `enabled`는 실제 project destination, adoption lock, named consumer와 verification이 함께 존재할 때만 허용하며, 후보·미사용 module은 `planned`, `deferred`, 또는 `not_applicable`으로 유지한다.
+- Base의 newest main, open Base PR, template, optional editor/test tool은 drift·reuse 조사 입력일 뿐 automatic project adoption, vendor sync, runtime proof, or canon replacement 권한이 아니다.
 
 ## Core Game Direction
 

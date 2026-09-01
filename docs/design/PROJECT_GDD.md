@@ -342,9 +342,9 @@ Godot `Time`은 현지 시스템 시간을 읽을 수 있으므로 현실 시간
 
 main scene을 direct boat route로 바꾸고 optional customization을 같은 게임 내 surface로 연결하는 것은 Godot 표준 SceneTree 전환의 범위입니다. 이 가능성은 아직 전환 구현이나 mobile performance 검증을 뜻하지 않습니다. [Godot Scene 전환 공식 문서](https://docs.godotengine.org/en/stable/tutorials/scripting/change_scenes_manually.html)
 
-### 다음 Phase 2 구현 계약
+### 완료된 Direct Boat Entry package의 역사적 구현 계약
 
-다음 구현은 아래를 하나의 작고 검증 가능한 contract로 다룹니다.
+아래 항목은 2026-08-30부터 2026-09-01까지 구현·기계/runtime 검증으로 이어진 Direct Boat Entry package의 당시 contract입니다.
 
 1. main scene이 현지 현실 시간에 맞는 normal boat diorama로 바로 시작한다.
 2. 새벽 `05:00–08:59`, 밝음 `09:00–16:59`, 해질녘 `17:00–20:59`, 밤 `21:00–04:59`를 첫 구현의 local-time mapping으로 사용한다. 수동 selector와 saved atmosphere는 retire한다.
@@ -354,7 +354,7 @@ main scene을 direct boat route로 바꾸고 optional customization을 같은 �
 6. direct-entry diorama가 540 x 960에서 float-contact 기준을 충족하는 runtime capture를 만든다.
 7. 자동 route/time-mapping/foreground-progress tests, targeted scene smoke, runtime capture, Human 30초·5분 검증을 서로 구분해 기록한다.
 
-이 GDD는 위 구현을 시작하거나 완료했다고 주장하지 않습니다.
+위 contract의 scene, state, scenery, customization entry, water-contact, test, GPU capture 경로는 현재 receipt에 따라 구현되었습니다. 이 문단은 현재 작업 순서를 정하는 새 구현 queue가 아닙니다. 이후 작업은 `docs/operations/MY_LITTLE_BOAT_BASE_ADAPTER.json`의 fresh-read → reuse/benchmark → bounded owner change → evidence → review 순서를 따르며, Human/device evidence는 계속 별도 gate입니다.
 
 ### Blueprint evidence ceiling
 

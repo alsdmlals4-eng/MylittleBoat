@@ -1,19 +1,20 @@
 {
   "schema_version": 1,
-  "base_source_commit": "8553678f70e22f193a2336b591f677dcfa5a8965",
+  "base_source_commit": "210ec78292fa12ed7563ba743b322dd36103ae4a",
   "modules": {
-    "RM-TOOL-001": {"state": "planned"},
+    "RM-TOOL-001": {
+      "state": "deferred",
+      "reason": "No current approved schema-crossref consumer exists in this rest-first Godot task."
+    },
     "RM-SYS-001": {"state": "not_applicable"},
     "RM-SYS-003": {"state": "not_applicable"},
     "RM-VIS-001": {
-      "state": "enabled",
-      "source": "templates/reuse-modules/godot/semantic_ui_skin_kit.gd",
-      "destination": "scripts/base_reuse/semantic_ui_skin_kit.gd"
+      "state": "deferred",
+      "reason": "No vendored file, adoption lock, or named Semantic UI Skin consumer exists in the current project."
     },
     "RM-VIS-002": {
-      "state": "enabled",
-      "source": "templates/reuse-modules/godot/gameplay_symbol_atlas.gd",
-      "destination": "scripts/base_reuse/gameplay_symbol_atlas.gd"
+      "state": "deferred",
+      "reason": "No vendored file, adoption lock, or named Gameplay Symbol Atlas consumer exists in the current project."
     }
   }
 }
