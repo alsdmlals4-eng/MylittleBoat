@@ -12,6 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 GDD = ROOT / "docs/design/PROJECT_GDD.md"
 POINTER = ROOT / "docs/design/PROJECT_AI_PRODUCTION_SPEC.md"
 MAP = ROOT / "docs/DOCUMENTATION_MAP.md"
+HANDOFF = ROOT / "docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md"
 BLUEPRINT_BUILDER = ROOT / "tools/build_human_blueprint_pdf.py"
 
 STALE_PDF = "exports/my-little-boat_MASTER_PRODUCTION_GDD_20260829.pdf"
@@ -62,6 +63,9 @@ class HumanGameBlueprintProfileTests(unittest.TestCase):
         self.assertIn("CURRENT_BLUEPRINT_PLAYER_FACING_SELECTION", self.gdd)
         self.assertIn("CURRENT_SOURCE_BOUND_DERIVED_PUBLICATION", self.doc_map)
         self.assertNotIn("PDF_REISSUE_DEFERRED", self.gdd)
+        handoff = read(HANDOFF)
+        self.assertIn("BLUEPRINT_PUBLICATION_RECOVERY_20260902", handoff)
+        self.assertIn("five complete review loops", handoff)
 
     def test_publication_receipt_binds_current_gdd_and_exact_visual_inputs(self) -> None:
         receipt_path = ROOT / CURRENT_BLUEPRINT_RECEIPT

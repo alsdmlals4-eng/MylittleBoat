@@ -5,6 +5,20 @@
 **현재 사람용 정본:** [프로젝트 GDD](../design/PROJECT_GDD.md)
 **현재 작업:** 2026-08-31 user direction에 따른 title boat waiting, explicit voyage start boundary, time-paired static sky + independently flowing sea, 하단 boat framing과 승인된 narrow waterline contact motion reconciliation을 구현하고 current machine/runtime verification을 완료했다. 2026-09-01 Look Around는 whole-composite art 대신 angle-specific foreground를 shared static sky + flowing sea 위에 합성하도록 교정했고, Bright/spring에는 기존 정적 하늘과 흐르는 바다를 유지한 별도 구름·꽃섬 parallax slice를 연결했다. Base 적용 순서와 운영 contract는 `docs/operations/MY_LITTLE_BOAT_BASE_ADAPTER.json`이 project-local로 소유한다. 기존 사용자 승인 후면 3/4 normal foreground, local motion comfort, actual voyage postcard와 fish/completed-voyage local ledger, saved floral cushion/main-postcard-omission evidence는 유지한다. Human/device comfort는 별도 요청 전까지 `NOT_RUN`이다.
 
+### 2026-09-02 Blueprint publication recovery receipt
+
+`BLUEPRINT_PUBLICATION_RECOVERY_20260902`는 사용자 보고인 “블루프린트가 이전 버전보다 퇴행”을 정본·실제 화면·기존 PDF까지 다시 대조해 복구한 기록이다. 이 기록은 **five complete review loops**를 보존한다. 새 PDF는 사람이 빠르게 읽는 current derived publication일 뿐이며, 의미·승인·증거의 원본은 계속 `docs/design/PROJECT_GDD.md`다.
+
+| Loop | 실제 재확인 | 검증된 finding | 적용 또는 보존한 경계 | 재검증 |
+| --- | --- | --- | --- | --- |
+| 1 | 최신 user direction, `AGENTS.md`, GDD, 문서 map, runtime capture, 구형 20260828/20260829 PDF와 미발행 20260830 visual PDF를 대조 | 구형 PDF는 현 치비·타이틀 대기·항해 시작·분리된 하늘/바다 흐름과 다르거나 `구현 전` 흐름을 말해 current publication이 될 수 없었다 | GDD를 유일 human-facing canon으로 유지하고, 구형 PDF는 historical로 명시했다 | stale/current source 경계와 실제 title/voyage capture를 다시 읽었다 |
+| 2 | GDD-only로 유지, 구형 visual PDF 재사용, source-bound 새 derived PDF의 세 대안을 비교하고 ReportLab font guidance와 현재 한글 font availability를 확인 | GDD-only는 사람이 보는 발행물 공백을 남기고, 구형 재사용은 퇴행을 되살린다 | current GDD·실제 capture·정확 SHA-256 receipt를 묶는 10쪽 derived PDF를 `ADOPT`했다 | PDF가 technical receipt detail 대신 player/system/screen route만 선택하도록 GDD publication boundary를 읽었다 |
+| 3 | source-bound publication contract를 먼저 추가한 뒤 builder·receipt·문서 map을 생성 | 첫 builder 호출은 wrapped-text font positional argument 오류로 실패해 출력이 만들어지지 않았다 | font argument를 명시 호출로 교정하고, GDD/builder/이미지/output hash와 content-bound revision을 receipt에 기록했다 | profile contract가 current file 존재·hash binding·current route를 검사하도록 확장했다 |
+| 4 | Poppler로 10쪽 전체를 render하고 cover, title, normal, camera, time, scenery, action, rest, evidence page를 실제 열어 비교 | cover 인용문이 잘렸고 portrait capture의 crop이 의도를 잃었다 | GDD 인용 regex와 containment layout을 교정했다 | 재렌더 뒤 title wait·항해 시작·current chibi image가 잘리지 않음을 확인했다 |
+| 5 | 재렌더한 dense rest page, PDF text extraction, focused/profile suite, Godot import·game smoke, diff check, remote exact-head를 다시 비교 | rest page의 중복 인용문이 card와 겹쳤다. runtime source는 이 publication change로 변하지 않았다 | 중복 인용문을 제거했다. runtime 구현·기존 evidence·Human/device `NOT_RUN` 경계는 보존했다 | 10쪽 visual readback, current-route structural check, Python 12 tests, headless import/game smoke, binary-aware diff check와 push readback을 통과했다 |
+
+현재 output은 `output/pdf/MY_LITTLE_BOAT_HUMAN_GAME_BLUEPRINT_20260902.pdf`이고 source/asset receipt는 같은 경로의 `.receipt.json`이다. 사용자·기기·접근성·오디오·출시 판정은 이 기계적 publication recovery의 범위가 아니며 계속 `NOT_RUN`이다.
+
 ## 0. 2026-08-30 현재 runtime receipt
 
 아래 표가 현재 runtime truth다. 이후의 `Issue #99`/`Phase 2` 절은 구현 전 기록이므로 historical context로만 읽고, 이 receipt를 덮어쓰지 않는다.
