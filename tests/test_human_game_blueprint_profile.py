@@ -1,17 +1,28 @@
 from __future__ import annotations
 
+import hashlib
+import json
 import re
 import unittest
 from pathlib import Path
 
+from pypdf import PdfReader
 
 ROOT = Path(__file__).resolve().parents[1]
 GDD = ROOT / "docs/design/PROJECT_GDD.md"
 POINTER = ROOT / "docs/design/PROJECT_AI_PRODUCTION_SPEC.md"
 MAP = ROOT / "docs/DOCUMENTATION_MAP.md"
+BLUEPRINT_BUILDER = ROOT / "tools/build_human_blueprint_pdf.py"
 
-CURRENT_PDF = "exports/my-little-boat_MASTER_PRODUCTION_GDD_20260829.pdf"
+STALE_PDF = "exports/my-little-boat_MASTER_PRODUCTION_GDD_20260829.pdf"
 HISTORICAL_PDF = "exports/my-little-boat_MASTER_PRODUCTION_GDD_20260828.pdf"
+CURRENT_BLUEPRINT_PDF = "output/pdf/MY_LITTLE_BOAT_HUMAN_GAME_BLUEPRINT_20260902.pdf"
+CURRENT_BLUEPRINT_RECEIPT = "output/pdf/MY_LITTLE_BOAT_HUMAN_GAME_BLUEPRINT_20260902.receipt.json"
+TITLE_IDLE_CAPTURE = "docs/evidence/2026-08-31-title-boat-flow/bright_title_idle_00_540x960.png"
+
+
+def sha256_file(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 def read(path: Path) -> str:
@@ -25,23 +36,57 @@ class HumanGameBlueprintProfileTests(unittest.TestCase):
         cls.pointer = read(POINTER)
         cls.doc_map = read(MAP)
 
-    def test_current_master_and_publication_boundaries(self) -> None:
+    def test_current_master_and_source_bound_publication_boundaries(self) -> None:
         self.assertIn("CURRENT_HUMAN_FACING_GDD", self.gdd)
         self.assertIn("SUPERSEDED_AS_CURRENT_GDD", self.pointer)
         self.assertIn("PROJECT_GDD.md", self.doc_map)
         self.assertIn("PROJECT_AI_PRODUCTION_SPEC.md", self.doc_map)
         self.assertIn("SUPERSEDED_POINTER_NOT_EDITING_MASTER", self.doc_map)
-        self.assertTrue((ROOT / CURRENT_PDF).is_file())
+        self.assertTrue((ROOT / STALE_PDF).is_file())
         self.assertTrue((ROOT / HISTORICAL_PDF).is_file())
+        self.assertTrue((ROOT / CURRENT_BLUEPRINT_PDF).is_file())
+        self.assertTrue((ROOT / CURRENT_BLUEPRINT_RECEIPT).is_file())
+        self.assertTrue(BLUEPRINT_BUILDER.is_file())
         self.assertIn(
-            f"`{CURRENT_PDF}` = `TRACKED_LATEST_PUBLICATION_SOURCE_BINDING_UNVERIFIED`",
+            f"`{CURRENT_BLUEPRINT_PDF}` = `CURRENT_SOURCE_BOUND_DERIVED_PUBLICATION`",
             self.gdd,
         )
         self.assertIn(
             f"`{HISTORICAL_PDF}` = `HISTORICAL_DERIVED_NOT_CURRENT_SOURCE`",
             self.gdd,
         )
-        self.assertIn("PDF_REISSUE_DEFERRED", self.gdd)
+        self.assertIn(
+            f"`{STALE_PDF}` = `HISTORICAL_STALE_PUBLICATION_NOT_CURRENT_SOURCE`",
+            self.gdd,
+        )
+        self.assertIn("CURRENT_BLUEPRINT_PLAYER_FACING_SELECTION", self.gdd)
+        self.assertIn("CURRENT_SOURCE_BOUND_DERIVED_PUBLICATION", self.doc_map)
+        self.assertNotIn("PDF_REISSUE_DEFERRED", self.gdd)
+
+    def test_publication_receipt_binds_current_gdd_and_exact_visual_inputs(self) -> None:
+        receipt_path = ROOT / CURRENT_BLUEPRINT_RECEIPT
+        self.assertTrue(receipt_path.is_file())
+        if not receipt_path.is_file():
+            return
+        receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+        self.assertEqual(receipt["gdd_sha256"], sha256_file(GDD))
+        self.assertEqual(receipt["generator_sha256"], sha256_file(BLUEPRINT_BUILDER))
+        self.assertEqual(receipt["page_count"], 10)
+        self.assertIn(TITLE_IDLE_CAPTURE, receipt["images"])
+        self.assertEqual(receipt["images"][TITLE_IDLE_CAPTURE], sha256_file(ROOT / TITLE_IDLE_CAPTURE))
+        self.assertEqual(receipt["output_sha256"], sha256_file(ROOT / CURRENT_BLUEPRINT_PDF))
+        self.assertTrue(receipt["source_revision"].startswith("content-bound:"))
+
+    def test_published_blueprint_selects_current_player_facing_route(self) -> None:
+        pdf_path = ROOT / CURRENT_BLUEPRINT_PDF
+        self.assertTrue(pdf_path.is_file())
+        if not pdf_path.is_file():
+            return
+        publication_text = "\n".join((page.extract_text() or "") for page in PdfReader(str(pdf_path)).pages)
+        for token in ("타이틀 대기", "항해 시작", "하늘은 고정", "바다만 흐름", "Human / Device NOT_RUN"):
+            self.assertIn(token, publication_text)
+        self.assertNotIn("구현 전", publication_text)
+        self.assertNotIn("8.1.1 Preimplementation", publication_text)
 
     def test_layered_route_status_and_cards(self) -> None:
         tokens = (

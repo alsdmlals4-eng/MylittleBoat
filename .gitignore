@@ -20,6 +20,10 @@ export_credentials.cfg
 Thumbs.db
 desktop.ini
 
+# Python document and publication check cache
+__pycache__/
+*.py[cod]
+
 # Builds and exported packages
 build/
 builds/

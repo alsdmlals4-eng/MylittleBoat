@@ -1,0 +1,28 @@
+{
+  "artifact": "output/pdf/MY_LITTLE_BOAT_HUMAN_GAME_BLUEPRINT_20260902.pdf",
+  "status": "CURRENT_SOURCE_BOUND_DERIVED_PUBLICATION",
+  "source_gdd": "docs/design/PROJECT_GDD.md",
+  "gdd_sha256": "0023018190c4f41fcd5ee88c25d3f05f948af1a17d4bcf05a4cf5a3e0c7a6a10",
+  "generator": "tools/build_human_blueprint_pdf.py",
+  "generator_sha256": "6a08db7d4b68df3033ff604d7f166e641af64d6f34b8c6af53665efd51449d94",
+  "source_revision": "content-bound:0023018190c4f41f:6a08db7d4b68df30",
+  "page_count": 10,
+  "images": {
+    "assets/images/brand/my_little_boat_title_lockup_v1.png": "6a0511b1c2b74b742e250d556dd15d9f76a484da5f2d8de4d41025279c68dafb",
+    "docs/evidence/2026-08-31-title-boat-flow/bright_title_idle_00_540x960.png": "d5c3da26a73bbaf3262e2e782bdd808a0fe8ce5f6062ff3bc40edcf24eab22b8",
+    "docs/evidence/2026-08-31-title-boat-flow/bright_voyage_started_02_540x960.png": "ea956b7930331f7ca55ff45671781e1927dd74f885612afb7dd95d4a896d083c",
+    "docs/evidence/2026-09-02-forward-voyage-flow/bright_voyage_forward_flow_start_540x960.png": "efaa3450c098a0decb8015443de4d35a9f62d6d6feea1b4e89f065f66e756151",
+    "docs/evidence/2026-09-02-forward-voyage-flow/bright_voyage_forward_flow_after_540x960.png": "f22d51eaa45ef76c1d2942f8f74a39efc0504f0e6f98a612c7abf65500dd78e4",
+    "docs/evidence/2026-09-01-look-around-foreground-split/port_flow_1800ms_540x960.png": "d0e0cec95e5c245caf0fcaa70c8a1f9c5b25e2f553ed6a70f25d4b9bbe0e81f4",
+    "docs/evidence/2026-08-31-split-sky-sea-background/dawn_normal_540x960.png": "8140bd259b9ace031d684ee831f755b6a3d97ec47cbc85e3bf377227fc6257bd",
+    "docs/evidence/2026-08-31-split-sky-sea-background/bright_normal_540x960.png": "f5ce71b0743152ea3b9be43042aeda17f2136d45a62f0a73d0bcb19a4c9b16a6",
+    "docs/evidence/2026-08-31-split-sky-sea-background/sunset_normal_540x960.png": "5a97b99c9475a55353a4d5c80b0a526b1e1dd24e4f9a2533ef8e50ab4b55c796",
+    "docs/evidence/2026-08-31-split-sky-sea-background/night_normal_540x960.png": "dca2a7898157df25bfa8990821a53a369706b9b4b4f82b4e1f0074344d0b1816",
+    "docs/evidence/2026-09-01-bright-spring-seasonal-parallax/bright_spring_normal_540x960.png": "5a48536cdbedae201c44fb17197dab472b5319d8f1857d88ea5ac28209cb0612",
+    "docs/evidence/2026-08-31-calm-fishing-interactions/pet_rest_together_540x960.png": "ea4ab0f9de483695f5b40bec97d4154a9888a7932bccd389472f9c2c9eb20c1c",
+    "docs/evidence/2026-08-30-comfort-postcards/album_recent_postcards_540x960.png": "f04dadaabe035925fd3930300693ca20253fa77226e47582052d59d2bbdba60e"
+  },
+  "output_sha256": "ad1c1d9c1c21fa02213ce54d2518d89eaaad634042c06993a1fa56bc029a1c17",
+  "publication_scope": "PROJECT_PLAYER_LAYER + SYSTEM_LAYER + CONTENT_UX_PRESENTATION_LAYER + concise current status; excludes technical receipt detail",
+  "evidence_ceiling": "Machine/runtime evidence only. Human, device, accessibility, audio comfort, and release remain NOT_RUN."
+}

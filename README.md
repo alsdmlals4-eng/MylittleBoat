@@ -7,7 +7,7 @@
 ## 먼저 알아둘 것
 
 - 현재 사람용 정본은 [프로젝트 GDD](docs/design/PROJECT_GDD.md)입니다.
-- 사람용 PDF의 source binding 재검증·재발행은 현재 보류되어 있습니다. 지금의 읽기 기준은 프로젝트 GDD와 [문서 지도](docs/DOCUMENTATION_MAP.md)입니다.
+- 현재 사람용 빠른 읽기본은 [Human Game Blueprint PDF](output/pdf/MY_LITTLE_BOAT_HUMAN_GAME_BLUEPRINT_20260902.pdf)입니다. 이 파일은 [프로젝트 GDD](docs/design/PROJECT_GDD.md)에서 파생되며, source·generator·사용 이미지 hash는 같은 위치의 receipt로 검증합니다. PDF 자체는 정본이 아니므로, 바뀐 결정은 언제나 GDD와 [문서 지도](docs/DOCUMENTATION_MAP.md)를 우선합니다.
 - 실제 코드·Scene·테스트·캡처의 사실은 [현재 Godot handoff](docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md)가 소유합니다.
 - Base를 적용한 작업 순서, 프로젝트 전용 변형, v9.4.4 identity와 재사용 module 상태는 [My Little Boat Base adapter](docs/operations/MY_LITTLE_BOAT_BASE_ADAPTER.json)가 소유합니다. Base template·open PR·optional tool은 자동으로 프로젝트 정본이나 runtime dependency가 되지 않습니다.
 - 이전 Notion은 이관이 끝난 historical archive이며 새 작업의 정본이나 동기화 대상이 아닙니다.

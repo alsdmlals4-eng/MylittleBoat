@@ -1,7 +1,7 @@
 # 마이 리틀 보트 기획서
 
 **현재 상태:** `CURRENT_HUMAN_FACING_GDD`
-**갱신일:** 2026-08-30
+**갱신일:** 2026-09-02
 **읽는 법:** 이 문서는 사람이 게임의 경험과 결정 상태를 이해하기 위한 정본입니다. 실제 코드·Scene·테스트·캡처는 [현재 Godot handoff](../handoffs/CURRENT_GODOT_IMPLEMENTATION.md)가, visual consumer와 provenance는 [visual inventory](../visual/CURRENT_SCREEN_SURFACE_INVENTORY_AND_VISUAL_ASSET_COVERAGE.md)가 소유합니다.
 
 ## 0. Human Game Blueprint 읽기 profile
@@ -10,14 +10,16 @@
 
 `NO_SEPARATE_BLUEPRINT_ARTIFACT`
 
-이 GDD는 별도 Blueprint 문서·보드·부록을 만들지 않고, 현재 플레이 경험·시스템 카드·화면 흐름·증거 한계를 한 곳에서 계층적으로 읽게 합니다. 이전 AI specification은 `SUPERSEDED_AS_CURRENT_GDD` 역사 포인터이며 현재 편집 정본이 아닙니다.
+이 GDD는 별도 Blueprint 문서·보드·부록을 **정본으로 만들지 않고**, 현재 플레이 경험·시스템 카드·화면 흐름·증거 한계를 한 곳에서 계층적으로 읽게 합니다. 사람이 빠르게 보는 PDF는 이 정본에서 파생될 수 있지만 별도 결정 owner가 아니며, 이전 AI specification은 `SUPERSEDED_AS_CURRENT_GDD` 역사 포인터입니다.
 
 ### 산출물과 publication 경계
 
-`exports/my-little-boat_MASTER_PRODUCTION_GDD_20260829.pdf` = `TRACKED_LATEST_PUBLICATION_SOURCE_BINDING_UNVERIFIED`.
+`output/pdf/MY_LITTLE_BOAT_HUMAN_GAME_BLUEPRINT_20260902.pdf` = `CURRENT_SOURCE_BOUND_DERIVED_PUBLICATION`.
+`output/pdf/MY_LITTLE_BOAT_HUMAN_GAME_BLUEPRINT_20260902.receipt.json` = `CURRENT_PUBLICATION_SOURCE_AND_ASSET_RECEIPT`.
+`exports/my-little-boat_MASTER_PRODUCTION_GDD_20260829.pdf` = `HISTORICAL_STALE_PUBLICATION_NOT_CURRENT_SOURCE`.
 `exports/my-little-boat_MASTER_PRODUCTION_GDD_20260828.pdf` = `HISTORICAL_DERIVED_NOT_CURRENT_SOURCE`.
 
-`PDF_REISSUE_DEFERRED`: source SHA와 generator receipt가 없으므로 이번 정본 복구에서는 PDF binary를 수정하거나 새로 만들지 않습니다. 재발행은 source-bound publication package에서만 수행합니다.
+`CURRENT_BLUEPRINT_PLAYER_FACING_SELECTION`: 현재 PDF는 이 GDD의 §1–§6, §7의 concise status와 실제 runtime capture를 읽습니다. §8의 다섯-loop 기술 영수증은 정본 evidence layer로 보존하되, 플레이어용 첫 읽기 PDF에 반복하지 않습니다. receipt는 exact GDD·generator·이미지 SHA-256과 source revision을 기록합니다. PDF binary는 source owner가 아니며 GDD와 receipt가 일치할 때만 current publication으로 읽습니다.
 
 ### Layered reader route
 

@@ -38,10 +38,12 @@ Blueprint는 별도 artifact가 아니라 current `PROJECT_GDD.md`의 reading/co
 
 | artifact | route status |
 | --- | --- |
-| `exports/my-little-boat_MASTER_PRODUCTION_GDD_20260829.pdf` | `TRACKED_LATEST_PUBLICATION_SOURCE_BINDING_UNVERIFIED`; generator/source-SHA receipt 없음; reissue deferred |
+| `output/pdf/MY_LITTLE_BOAT_HUMAN_GAME_BLUEPRINT_20260902.pdf` | `CURRENT_SOURCE_BOUND_DERIVED_PUBLICATION`; source는 `PROJECT_GDD.md`, exact GDD·generator·runtime image hash는 함께 둔 receipt가 소유 |
+| `output/pdf/MY_LITTLE_BOAT_HUMAN_GAME_BLUEPRINT_20260902.receipt.json` | `CURRENT_PUBLICATION_SOURCE_AND_ASSET_RECEIPT`; PDF가 별도 정본이 되지 않도록 source binding을 검증 |
+| `exports/my-little-boat_MASTER_PRODUCTION_GDD_20260829.pdf` | `HISTORICAL_STALE_PUBLICATION_NOT_CURRENT_SOURCE`; 이전 그림체·구현 전 상태·이전 시작 흐름을 current 안내로 쓰지 않음 |
 | `exports/my-little-boat_MASTER_PRODUCTION_GDD_20260828.pdf` | `HISTORICAL_DERIVED_NOT_CURRENT_SOURCE` |
 
-PDF binary는 source owner가 아니며 이번 profile adoption에서 수정하지 않습니다.
+`CURRENT_BLUEPRINT_PLAYER_FACING_SELECTION`은 current GDD의 §1–§6과 concise §7, 실제 runtime capture만 선택합니다. GDD §8의 기술 receipt는 evidence layer에 보존하되 player-facing PDF에 반복하지 않습니다. PDF binary는 source owner가 아닙니다.
 
 ## Prospective future-package route
 
