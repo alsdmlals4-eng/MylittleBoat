@@ -106,6 +106,8 @@ Base v9.4.4 lock은 유지한다. 사용자 요청에 따라 최신 Base의 `ART
 
 ### 현재 증거와 남은 검증
 
+**최신 사용자 확정.** `stern-staging-review-v2.png`의 후면 좌석·옆 동반자·난간 가림 구도를 승인했다. 동시에 새 디자인에서 노를 제외하도록 변경했다. 따라서 새 기본 항해 장면에는 노 이미지·노 젓기 모션·노 끝 splash를 제작하지 않는다. 노 없는 자연스러운 표류를 수면 흐름·선체 접점·미세 부유로 표현하며, 엔진·돛·마법 추진 같은 새 요소를 추가하지 않는다. 기존 runtime 노 포함 자산은 교체 검증 전 역사적 원본으로 보존한다. 이 확정은 구도와 노 제외 결정이며 전체 Blueprint·모션·게임/Human 승인이 아니다. 아래 후보 당시의 `NOT_USER_LOCKED` 기록보다 이 결정이 우선한다.
+
 후속 `MLB-REDESIGN-STAGING-002`는 뒤쪽 쿠션에 기대는 player, 옆 companion, 가까운 stern rim의 가림과 하단 배치를 검토하는 새 합성 후보다. 이미지 모델 재구성이므로 기존 독립 레이어의 exact 합성·모션·게임 구현 증거가 아니다. 원본 분리 요소는 유지하고, final visual lock 전 이 합성본을 production 카드로 연결하지 않는다. 현재 후보·findings·재현 prompt는 visual inventory와 구도 receipt가 소유한다.
 
 2026-09-10 후속 준비에서 **빈 선체·돌산·구름·player·companion은 실제 RGBA 후보**, **하늘·바다는 별도 opaque 배경 후보**로 제작됐다. 선체는 Aseprite 왕복 픽셀 보존도 검증했다. 이는 분리 제작 경로의 기술 검증이며, 새 visual lock·캐릭터/동반자 조합·전진 흐름·게임 구현·Human 승인은 아니다. 재현 경로와 해시는 visual inventory 및 `separated-layers-v1.receipt.json`이 소유한다. 다음 준비는 가림용 전면 난간·소품·접점과 좌석/pivot 맞춤, 바다 반복 경계·가장자리·실제 크기 합성 검토다. 새 player의 하반신은 기존 그림에서 가려진 영역을 복원한 후보이며 의상 identity 확정이 아니다.

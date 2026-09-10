@@ -1,5 +1,5 @@
 {
-  "status": "GENERATED_CANDIDATE_REVIEWED_WITH_FINDINGS_NOT_USER_LOCKED",
+  "status": "USER_LOCKED_STAGING_WITH_OARS_EXCLUDED",
   "source_revision": "627bce0e688935bd1f808f37bda6c5963a9ff10f",
   "base_observed": "2f93e872d9ed4fa18018ac759b01acd7d34e9b58",
   "scope": "후면 좌석 지지, 옆 동반자 가독성, stern rim 가림과 하단 배치의 구도 후보",
@@ -32,5 +32,25 @@
     "수면 무늬·wake 밀도와 반복 흐름은 미검증",
     "자산 13개 hash 보존; production consumer 무변경"
   ],
-  "review_status": "CANDIDATE_CHECKPOINT_NOT_FULL_SCOPE_CLEAN_EXIT"
+  "review_status": "CANDIDATE_CHECKPOINT_NOT_FULL_SCOPE_CLEAN_EXIT",
+  "approval": {
+    "user_instruction": "확정해,노는 없어도 될거같다",
+    "scope": "v2 좌석·동반자·가림 구도 확정, 새 기본 디자인의 노 제외",
+    "excludes": "전체 Blueprint, animation, runtime, Human 승인"
+  },
+  "no_oars_derivative": {
+    "file": "stern-staging-no-oars-v3.png",
+    "sha256": "4f33cad8273699cb84eb19c875c3a0521adc79e49c283e80d802d716c0ddd3c5",
+    "bytes": 2085609,
+    "size": [
+      941,
+      1672
+    ],
+    "mode": "RGB",
+    "status": "EDITED_DERIVATIVE_REVIEWED_NOT_RUNTIME_ASSET",
+    "prompt": "Use case: precise-object-edit. This exact portrait image is the USER-LOCKED composition. Remove ONLY the two wooden rowing oars completely, both left and right, including their shafts and paddle blades. Remove ONLY the tiny circular ripples at the former paddle tips. Fill these narrow removed areas with seamlessly matching clear turquoise water. Preserve boat outline, ivory hull, empty oarlock fittings, rear-facing dark-haired pale-blue hoodie character reclining on cream cushion, cream sleeping puppy, every pose and placement, stern rail occlusion, camera, boat scale/position, sky, clouds, distant coastline, horizon and all other water texture. Keep the narrow hull contact and faint trailing wake under the stern. No replacement paddles, motor, sail, magical effects, new objects, text, UI or zoom. Do not repaint or redesign the rest of the scene. Same dimensions and crop. The boat drifts peacefully without oars.",
+    "source": "stern-staging-review-v2.png",
+    "tool": "built-in image_gen",
+    "review": "양쪽 노와 노 끝 잔물결 제거 확인. 구도 시각 유지, 픽셀 동일성 아님. production 미연결."
+  }
 }

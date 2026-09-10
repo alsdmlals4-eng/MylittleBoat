@@ -6,6 +6,8 @@
 
 ### 2026-09-10 active context — 코어 유지, 화면·아트·모션 재기획
 
+**최신 결정.** 사용자가 `MLB-REDESIGN-STAGING-002`의 구도를 확정하고 노를 제외했다. 구도는 `USER_LOCKED_STAGING`; 새 기본 장면의 oars/rowing/paddle-tip splash는 제작 범위에서 제외한다. 노 제거 파생본 `stern-staging-no-oars-v3.png`를 이미지 모델로 준비했으며 기존 분리 자산의 exact 합성이나 게임 연결은 아니다. 아래 이전 후보 상태는 당시 기록이다. 후속은 player·쿠션·front rail·접점 정렬과 바다 흐름이며 노 준비는 더 이상 잔여 작업이 아니다.
+
 최신 추가 준비는 `MLB-REDESIGN-STAGING-002 / GENERATED_CANDIDATE / NOT_USER_LOCKED`다. 독립 선체/player/pet을 참조해 좌석·난간 가림을 교정한 후 배 크기·하단 위치를 한 번 더 수정했다. 저장소의 `stern-staging-review-v2.png`는 이미지 모델 합성 후보이며 exact-layer composite/540×960 runtime 검증이 아니다. 기존 독립 PNG의 fringe, front rail/쿠션/노/접점 제작, 정확한 좌석 pivot·전진 흐름은 아직 남아 있다. 기존 consumer와 13개 source/derived 파일은 무변경이다.
 
 임시 정리 상태는 `BLOCKED_BY_EXECUTION_POLICY`다. 왕복 검증 후 `C:/Users/user/.local/share/aseprite-local/candidates/mlb-separated-74a89c2`의 3개 staging 파일과 `C:/Users/user/AppData/Local/Temp/mlb-matte-probe-74a89c2/project.godot`의 exact-path 삭제를 요청했으나 실행 전에 정책 차단됐다. 우회·재시도하지 않았고 삭제 완료로 기록하지 않는다. 원본 PNG·Aseprite 후보·receipt는 저장소에 보존했다.

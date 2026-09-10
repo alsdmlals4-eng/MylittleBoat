@@ -106,6 +106,8 @@ Aseprite native MCP `get_sprite_info`를 task-scoped staged copy에 실제 호�
 
 ### 2026-09-10 후면 좌석·가림 구도 교정 후보
 
+**현재 승인·변경.** 사용자의 “확정해, 노는 없어도 될 것 같다”에 따라 `MLB-REDESIGN-STAGING-002`의 좌석·동반자·가림 구도는 `USER_LOCKED_STAGING`으로 확정했다. 노는 새 기본 시각·모션 제작 범위에서 제외하며 아래 노 관련 prompt와 후보 상태는 승인 전 역사적 기록이다. 새 노 없는 [v3 파생본](candidates/2026-09-10-intimate-diorama/stern-staging-no-oars-v3.png)은 image model의 요청 편집 결과로, 양쪽 노와 노 끝 잔물결이 제거된 것을 직접 확인했다. 캐릭터·동반자·선체 구도는 시각적으로 유지되나 원본 픽셀 동일성을 의미하지 않는다. 이 파생 이미지의 개별 최종 승인·production 등록·runtime 적용은 별도이며 `EDITED_DERIVATIVE / REVIEWED / NOT_RUNTIME_ASSET`로 둔다. 전체 이미지이므로 실제 하늘·바다·돌산·구름 분리 납품을 대체하지 않는다. 기존 이미지·분리 파일·모션 증거는 변경하지 않는다.
+
 `MLB-REDESIGN-STAGING-002`는 [stern-staging-review-v2.png](candidates/2026-09-10-intimate-diorama/stern-staging-review-v2.png), `941×1672 RGB`, SHA-256 `21c379dffac5580a03eee84d0d6e2b2e61a706967507881ca94a486900813954`다. 상태는 `GENERATED_CANDIDATE / REVIEWED_WITH_FINDINGS / NOT_USER_LOCKED`다. approved voyage direction과 독립 선체·player·companion을 참조한 built-in image model 합성 구도 후보이며, 실제 분리 PNG의 deterministic 합성이나 Godot 캡처가 아니다. 기존 7개 독립 요소와 13개 source/derived 파일의 해시는 그대로다.
 
 이번 범위는 후면 player의 좌석 지지, 옆 companion 가독성, stern rim의 가림, 하단 구도를 교정하는 한 후보다. 최초 합성은 배가 너무 크고 높아 동일 그림을 한 번만 축소·하단 이동하도록 수정했다. 수정 전 생성물은 host generated_images에만 보존하고 저장소에는 선택한 v2만 저장했다. [구도 receipt](candidates/2026-09-10-intimate-diorama/stern-staging-review-v2.receipt.json)에 exact prompt와 입력·출력 provenance를 기록한다.
