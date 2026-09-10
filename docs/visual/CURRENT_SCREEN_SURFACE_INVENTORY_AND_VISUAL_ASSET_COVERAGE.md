@@ -54,6 +54,18 @@ Use case: stylized-concept. Input image is the USER-APPROVED VISUAL AND IDENTITY
 
 </details>
 
+### 2026-09-10 빈 선체 분리 후보 — alpha 미해결
+
+`MLB-REDESIGN-HULL-001`은 [empty-hull-v1-alpha-blocked.png](candidates/2026-09-10-intimate-diorama/empty-hull-v1-alpha-blocked.png)에 보존한다. 상태 `GENERATED_CANDIDATE / BLOCKED_ALPHA / NOT_ASSET_READY / NOT_IMPLEMENTED`. approved voyage direction을 built-in image model의 참조로 넣고 사람·동반자·쿠션·가방·노·바다를 제거한 빈 선체를 요청했다. 가려졌던 좌석과 내부가 드러나는 후보는 만들어졌지만, 최초 생성과 한 번의 alpha 교정 모두 회색 checkerboard가 실제 RGB 픽셀로 포함됐다. transparent PNG 요청을 성공으로 처리하지 않는다.
+
+보존 후보는 두 번째 출력 `941×1672 RGB`, SHA-256 `59C023C29B1517739D1E5F605D0488F1BAD6CBCF51B936062BF143A3EC3347F3`다. 첫 출력과 교정 출력은 host generated_images에 남아 있으며 production 자산으로 등록하지 않았다. 원본 대비 선체 크기/투영도 완전히 동일하지 않으므로 alpha 해결 후에도 승인 구도 및 분리 캐릭터와 overlay 검증이 필요하다. 이 그림에서 노·쿠션이 없는 것은 제거/폐기 결정이 아니라 독립 자산 제작을 위한 clean plate 범위다.
+
+Aseprite native MCP `get_sprite_info`를 task-scoped staged copy에 실제 호출했다. 반환값은 `width=941,height=1672,color_mode=rgb,frames=1,layers=[Background],tags=[]`였다. 독립 Pillow readback도 `RGB`와 모서리 픽셀 `(202,202,203)`을 확인했다. Aseprite 상태는 이 read-only 작업에 한해 `CALL_VERIFIED`; 레이어 분리/export/animation/runtime 성공은 아니다. 도구가 보고한 기본 duration 100ms는 한 장 파일의 기본 메타데이터이며 모션 타이밍으로 채택하지 않는다.
+
+현재 native 후보 도구에는 선택영역/마스크/배경 삭제 기능이 없어 자동 alpha 교정 소비처가 없다. Aseprite에 저장만 하거나 단순 시트 export로 alpha 해결을 가장하지 않는다. 외부 유료 도구·새 브리지·임의 스크립트 편집으로 우회하지 않았다. 다음 조건은 실제 alpha가 있는 출력 또는 허용된 마스크 편집 경로의 확보다. 실패 상태를 유지한 채 다른 방향·시간대 이미지를 대량 생성하지 않는다.
+
+필수 readback 기준은 `RGBA 또는 유효 transparency metadata`, 외곽 alpha=0, 선체 내부 alpha 보존, checkerboard 잔존 없음, 좌석 복원과 silhouette 여백, source hash 및 원본 보존이다. 이미지 생성 요청 자체와 화면의 체크무늬만으로 투명도를 판정하지 않는 것을 제작 교훈으로 기록한다.
+
 ### 기존 runtime family의 visual grammar
 
 새 production family는 GDD의 필수 layer 분리 계약을 따른다. 바다·돌산·하늘 등을 독립 제작하라는 2026-09-10 사용자 재확인에 따라, 아래 기존 composite 자산을 새 분리 납품의 대체품으로 사용하지 않는다.
