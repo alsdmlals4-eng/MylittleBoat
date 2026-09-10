@@ -6,6 +6,8 @@
 
 ### 2026-09-10 active context — 코어 유지, 화면·아트·모션 재기획
 
+후속 상태는 승인 방향 이미지 `MLB-REDESIGN-VOYAGE-CANDIDATE-001`을 기준으로 `MLB-REDESIGN-POSE-001` 정적 키포즈 후보를 준비한 단계다. 사용자가 바다·돌산·하늘 등의 독립 제작을 재확인하여 GDD에 필수 납품 layer 계약을 명시했다. 키포즈 보드는 분리 production asset/animation/runtime이 아니다. 다음 자산 제작은 별도 하늘·바다·투명 오브젝트·선체·player/pet·접점으로 이어져야 하며 합성 보드를 잘라 production으로 올리지 않는다. 자세한 승인·후보·시각 findings와 prompt는 visual inventory가 소유한다.
+
 현재 사용자 승인은 GDD 첫 절의 **떠다니는 친밀 디오라마** 방향 구체화와 후보 준비다. 새 시각·모션은 `DESIGN_IN_REVIEW`, 새 runtime은 `NOT_IMPLEMENTED`다. 아래 기존 작업 기록은 구현 기준선으로 보존한다. 기존 asset은 새 제작에서 reference-only지만 실제 consumer가 있으므로 삭제·교체하지 않았다. 새 영구 데이터나 social 기능을 추가하지 않았다.
 
 다음 검증 패키지는 title→start→rest→감상→복귀를 실제 시간·실제 입력 흐름으로 캡처한다. `tests/capture_voyage_forward_flow.gd`의 기존 2초 비교는 `set_process(false)` 뒤 `_apply_drift_motion(2.0)`을 호출하는 staged renderer evidence이므로 연속 실제 플레이·이동 방향 지각·Human comfort의 PASS로 올리지 않는다. 이번 문서/후보 준비에서는 해당 캡처를 다시 실행하거나 과거 PNG를 덮어쓰지 않았다.

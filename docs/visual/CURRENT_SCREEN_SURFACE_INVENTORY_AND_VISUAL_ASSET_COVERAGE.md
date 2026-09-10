@@ -25,7 +25,7 @@ Notion은 historical archive이며 이 문서의 current owner가 아닙니다. 
 
 ### 2026-09-10 새 방향 후보
 
-- ID `MLB-REDESIGN-VOYAGE-CANDIDATE-001`, 상태 `GENERATED_CANDIDATE / REVIEWED_WITH_FINDINGS / NOT_USER_LOCKED`.
+- ID `MLB-REDESIGN-VOYAGE-CANDIDATE-001`, 상태 `USER_APPROVED_DIRECTION_REFERENCE / NOT_RUNTIME_ASSET`. 2026-09-10 사용자의 “오 멋지다, 좋아 권장안대로 계속 진행해”를 해당 그림체·분위기 기준 승인으로 기록한다. 전체 Blueprint·애니메이션·runtime 승인은 아니다.
 - 경로 [항해 방향 후보](candidates/2026-09-10-intimate-diorama/voyage-direction-v1.png), 실제 규격 `941×1672 PNG`. 소비 목적은 GDD의 새로운 후면 항해 장면 검토다. production consumer는 없다.
 - provenance는 현재 세션 built-in image model의 신규 생성이며 기존 이미지 파일을 입력하거나 다른 게임의 실제 자산을 복사하지 않았다. 생성 원본은 호스트 generated_images에 보존하고 동일 바이트를 이 후보 경로에 복사했다.
 - SHA-256 `D92FC294C27F83A8CBA9FE6DF5B99ED8B507FA654E82DC785E71B9C27B35A957`.
@@ -35,7 +35,28 @@ Notion은 historical archive이며 이 문서의 current owner가 아닙니다. 
 
 생성 prompt 요약(원문 의미 보존)은 다음과 같다. `stylized-concept; one original portrait 9:16 My Little Boat rest-first voyage; cohesive hand-painted anime picture-book, simple cel shading, friendly chibi; rear elevated 3/4; ivory wooden boat near lower fifth, reclining player in pale blue oversized hooded jacket with soft short dark hair, cream fluffy dog visible beside; transparent turquoise sea, pale sand, soft deeper horizon, narrow hull contact and subtle trailing wake; clear central sea lane, small distant side islands; calm daylight; no UI, text, watermark, destination, glossy doll, neon or named-artist imitation.` 결과는 prompt의 이상적 요구 충족을 자동 보장하지 않으며 위 findings가 우선한다.
 
+### 2026-09-10 동반자 키포즈 후보
+
+`MLB-REDESIGN-POSE-001`은 [companion-keyposes-v1.png](candidates/2026-09-10-intimate-diorama/companion-keyposes-v1.png)에 보존한다. 상태는 `GENERATED_CANDIDATE / REVIEWED_WITH_FINDINGS / NOT_USER_LOCKED`다. 기존 승인 방향 이미지를 참조한 built-in image model 생성이며, consumer는 GDD 모션 검토 보드다. production consumer는 없다. SHA-256은 `29C40AC86354D2BECEB602CC1F6E54A7F29B561B0055EAF9680D12EF85E8BA62`다.
+
+왼쪽→가운데→오른쪽은 휴식·작은 고개 들기·다시 기대기의 정적 키포즈다. 후면 player, pale-blue hoodie, dark hair, cream floppy-eared companion, ivory boat를 유지한다. 얼굴 전체·성별·전신 의상 등 승인 그림에 드러나지 않은 identity는 새로 확정하지 않는다. 몸·발·좌석 접점은 유지하고 머리와 시선만 작게 바꾸는 staging을 선택했다.
+
+연출 근거는 2026-09-10 직접 읽은 [GDC animation 세션 공개 설명](https://www.gdcvault.com/play/1021657/Powerful-and-Effective-Animation-for)과 Base `sprite-pose-sequence-controls.md`다. 공개 설명의 keyframing·anticipation·timing 원칙을 `ADAPT`하되 전체 영상을 시청한 것으로 기록하지 않는다. 세 대안 중 큰 팔 동작/몸 이동은 휴식·접점 위험 때문에 `REJECT`, 무변화 idle만은 기준 포즈로 `ADOPT`, 작은 고개 반응 뒤 복귀는 친밀함 검토용으로 `ADAPT`했다. 새 보상·행동 의무·저장값은 없다.
+
+직접 시각 검토에서 중앙 패널의 눈·머리 반응과 양끝 휴식 복귀가 읽히고 전반적 identity가 유지된다. 그러나 패널 사이 물무늬·노와 선체 세부가 완전히 같지 않고, 노 끝은 패널 경계에서 잘린다. 물은 이전보다 부드럽지만 여전히 무늬 밀도가 있다. 따라서 **잘라 이어 붙여 최종 animation으로 쓰지 않는다**. 배경·선체 고정 layer와 head/eye pose를 분리해 제작할 때 교정한다. duration·중간 프레임·alpha·pivot·실제 재생·Human은 미검증이다. Aseprite에 패널을 단순 프레임으로 포장하는 작업은 현재 보드의 목적과 맞지 않아 수행하지 않았다.
+
+<details>
+<summary>재현용 생성 prompt</summary>
+
+```text
+Use case: stylized-concept. Input image is the USER-APPROVED VISUAL AND IDENTITY REFERENCE, not something to redesign. Create ONE landscape 3-panel key-pose storyboard for My Little Boat using exactly the same cozy hand-painted anime rendering, the same small dark-tousled-haired player in oversized pale-blue hoodie, the same cream floppy-eared fluffy puppy, and same weathered ivory rowboat, cream stern cushion and wooden oars. All three panels same size, camera rear elevated three-quarter, same scale, boat position, rim, oars, cushion and light. Tight but complete view of boat and both occupants, little pale turquoise water around it, no land or sky needed. Preserve approved staging: player reclining against stern nearest viewer facing bow away, dog next to player on viewer right, both clearly visible. Never expose a newly invented frontal player face. Panel 1 resting: puppy head low relaxed, eyes closed, player's shoulders relaxed. Panel 2 small notice: puppy lifts ONLY its head modestly and looks toward the player's shoulder with calm open eyes, body and paws remain resting at same contact positions; player only slightly inclines head toward puppy, no reaching or waving. Panel 3 settling: puppy lowers head back toward cushion beside player's sleeve, eyes softly closing, player relaxed again. Small but clearly readable differences, no dramatic pose jumps, no new anatomy, no costume changes, no standing, no extra pets. Fixed seat/support contacts, consistent boat geometry and front-back orientation across panels. Water must be calmer and MUCH lower-contrast than reference, broad transparent aqua washes and sparse ripples not dense bright caustics. Thin contact at hull, no floating above water, no giant rings. White or pale paper narrow gutters between panels, no labels, no text, no arrows, no title or watermark. This is a visual key-pose study, NOT a final sprite atlas, do not fake an animation sheet with identical repeats. Warm and cute, simple readable silhouette.
+```
+
+</details>
+
 ### 기존 runtime family의 visual grammar
+
+새 production family는 GDD의 필수 layer 분리 계약을 따른다. 바다·돌산·하늘 등을 독립 제작하라는 2026-09-10 사용자 재확인에 따라, 아래 기존 composite 자산을 새 분리 납품의 대체품으로 사용하지 않는다.
 
 | layer | Keep | Avoid |
 | --- | --- | --- |
