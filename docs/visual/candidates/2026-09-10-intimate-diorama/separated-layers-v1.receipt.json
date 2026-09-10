@@ -1,0 +1,103 @@
+{
+  "status": "CANDIDATE_TECHNICAL_PACKAGE_NOT_RUNTIME_APPROVAL",
+  "source_revision": "74a89c2a6599c7414ab011ce9759fc3cb2279c21",
+  "art_origin": "built-in image model; approved voyage-direction-v1 reference",
+  "matte_render": {
+    "tool": "tools/render_candidate_matte.gd",
+    "shader": "shaders/chibi_normal_chroma_key.gdshader",
+    "engine": "Godot 4.7.2",
+    "renderer": "OpenGL Compatibility NVIDIA RTX 3050",
+    "isolated_project": "tools/candidate-render-project",
+    "alpha_validation": "tools/verify_candidate_alpha.py",
+    "warning": "Green key only for subjects without green. RGB source and rendered PNG are different artifacts."
+  },
+  "aseprite": {
+    "version": "1.3.18.5-dev (installed deployment identity)",
+    "transport": "native aseprite-candidates MCP",
+    "operations": [
+      "copy_sprite",
+      "export_frame",
+      "get_sprite_info"
+    ],
+    "verified_file": "empty-hull-v1.aseprite",
+    "roundtrip_rgba_pixels_identical": true,
+    "frames": 1,
+    "duration_ms": 100,
+    "duration_meaning": "file default, not animation timing",
+    "pivot": "UNASSIGNED; camera/character alignment pending",
+    "offset": [
+      0,
+      0
+    ]
+  },
+  "files": {
+    "empty-hull-green-source-v1.png": {
+      "sha256": "ac82fefea46791ff239df160c6596053d739b1a9dd1f99c6cba516520c803c70",
+      "bytes": 1711380
+    },
+    "empty-hull-rgba-v1.png": {
+      "sha256": "38201a66f60567c63ca314a7ef8b7965f32b2f93c8e97eafa01a4656160fc9b2",
+      "bytes": 1418358
+    },
+    "empty-hull-v1.aseprite": {
+      "sha256": "0a62748b5adbe2253695630232850b0edb5d663a3af070e660aad1fa728dbeb2",
+      "bytes": 1991189
+    },
+    "rocks-green-source-v1.png": {
+      "sha256": "b09bb3d6c7ff1cffba6d41914fd66a71e4b59444e5f5beff34ee5c925b0167d2",
+      "bytes": 1233136
+    },
+    "rocks-rgba-v1.png": {
+      "sha256": "38785da79360378ffb99d4031eda13aaef23ed284308ad35279fe81e81dd9b59",
+      "bytes": 494968
+    },
+    "clouds-green-source-v1.png": {
+      "sha256": "aa25a74c12b6f0b7859dbf7623d05de5626e56c4b7ba3f4932ac3205e5ff4136",
+      "bytes": 1411085
+    },
+    "clouds-rgba-v1.png": {
+      "sha256": "b6447ee358885a22774b30d5ae6d6c16d1cec7e64efe8b2b33e80c0046d94f07",
+      "bytes": 653468
+    },
+    "sky-day-v1.png": {
+      "sha256": "f212a4a5eda4e3b58e032dbef778663ca3431081883b4fc49ccaa521fd13714b",
+      "bytes": 1317293
+    },
+    "sea-day-v1.png": {
+      "sha256": "4a6556f1552e822d5380d2e8d147f794d26dc65a12af37e69903de24f2274d49",
+      "bytes": 1968938
+    },
+    "player-green-source-v1.png": {
+      "sha256": "a97c737d4876b218669e2ec5cb213d30e3d003447184bc87564f87a732822d81",
+      "bytes": 1399922
+    },
+    "player-rgba-v1.png": {
+      "sha256": "a217f34fee06329928f525c7cff14d8e148a310d7d77dbe1e45a4afac5d7237b",
+      "bytes": 869858
+    },
+    "companion-green-source-v1.png": {
+      "sha256": "b1dba16f5c9bfd7295230bfaaa7096acb568a3da3ef711af1bbc0dc6a9aabb58",
+      "bytes": 1445154
+    },
+    "companion-rgba-v1.png": {
+      "sha256": "d6cb62eb149198805844f6bba17b9baafd2dad45376f377e79eddd93557046bb",
+      "bytes": 925663
+    }
+  },
+  "prompts": {
+    "hull": "Edit only the BACKGROUND of this empty ivory wooden boat asset. Replace every gray checkerboard pixel outside the hull with perfectly SOLID PURE GREEN RGB(0,255,0) #00FF00. This is an opaque technical chroma-key matte, NOT a transparent background. No checkerboard, no gradient, no texture, no floor shadow, no green reflection onto boat. Keep boat itself exactly the same ivory/brown paint, same shape, interior, benches, scale, stern at bottom, bow at top and camera. Entire background right to all four canvas edges is one uniform pure vivid green. Do not move, resize or redraw the boat. No added objects or text.",
+    "rocks": "Create one isolated distant pale limestone sea-cliff cluster, 3 asymmetrical rounded weathered rock spires with a low connecting rocky base, tranquil hand-painted anime picture-book style matching reference. Intended as a SMALL distant side-of-horizon scenery layer, not a destination. No vegetation, no green pigment on rocks. Soft warm ivory and muted lavender-gray rock faces, broad simple shapes, atmospheric low contrast. Whole cluster in landscape canvas, plenty of padding. BACKGROUND perfectly uniform vivid RGB(0,255,0) #00FF00 technical matte. No sea, waterline foam, reflection, sky, cloud, boats, people, buildings, objects, text or cast shadow outside rocks. All background including gaps between rock shapes must be solid green. Reference is palette/style only, not a composite to copy.",
+    "clouds": "Create one isolated gentle airy cumulus cloud cluster for a hand-painted anime picture-book cozy sea game, warm cream highlights and soft pale lavender-blue underside, low contrast rounded silhouette, calm not dramatic. Landscape canvas with complete cluster and generous margin, no cropped edge. BACKGROUND perfectly uniform vivid RGB(0,255,0) #00FF00 technical matte, including all spaces outside cloud silhouette. No sky gradient, sea, rocks, land, sun, birds, text, extra objects or painted checkerboard. No green tint inside cloud, do not draw a green reflected rim. Reference is approved art style only. This is a single independently movable cloud layer, not a full scene.",
+    "sky_brief": "Opaque standalone cloud-free day sky gradient, no sea/land/objects; approved reference palette.",
+    "sea_brief": "Opaque standalone sea-only perspective plate, no sky/objects/wake; low-contrast broad ripples and clearer near water.",
+    "player": "Create one isolated PLAYER layer from the approved image: same cozy hand-painted anime character viewed from behind and slightly above, short tousled dark-brown hair and oversized pale powder-blue hoodie. Preserve relaxed seated/reclining pose facing away, back toward viewer, left forearm relaxed sideways and right forearm resting beside body. Show the visible whole seated body including simple neutral dark trousers but no newly invented front face, no logos or new accessories. Compact friendly proportions exactly consistent with reference. This is for compositing at the stern of a rowboat: body weight seated, not standing or floating in a new pose. NO boat, seat, cushion, dog, water, shadows outside body or scene objects. Reconstruct only formerly occluded parts enough for a layered seated figure. Whole silhouette with generous margin. Uniform flat PURE GREEN #00FF00 technical background, including outside and gaps, no green pigment in clothing. No white/checkerboard background, labels or text. Reference is identity and pose, not whole scene.",
+    "companion": "Create one isolated COMPANION layer matching the exact cream fluffy floppy-eared puppy in the approved image, cozy hand-painted anime storybook shading. Small compact curled resting body, head gently lowered, relaxed closed eyes, paws together in front, friendly round muzzle and tiny dark nose. Seen slightly from above, three-quarter near-front as in reference, suitable beside rear-view player. Same cream fur, no collar or new accessories. Entire dog and all visible paws contained with generous padding. NO person, boat, seat, cushion, sea, cast shadow, floor or other objects. Background entirely uniform flat PURE GREEN #00FF00 technical matte, including spaces outside dog, no checkerboard or gradient. No green fur or green reflected light. This is an independent resting pet layer, not a full scene, no text."
+  },
+  "evidence_ceiling": "Alpha/padding and Aseprite pixel roundtrip; not game integration, looping sea, motion, Human or final visual lock",
+  "remaining_findings": [
+    "Player hair has small green fringe; alpha gate is not edge-quality approval.",
+    "Player seat/support and pet scale/pivots not aligned; reconstructed trousers not identity lock.",
+    "Cloud opacity and sea looping/projection need composite review.",
+    "Front occlusion rail, props and water contact remain unprepared; no animation or production wiring."
+  ]
+}

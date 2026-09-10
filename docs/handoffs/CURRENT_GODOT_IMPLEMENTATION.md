@@ -6,7 +6,9 @@
 
 ### 2026-09-10 active context — 코어 유지, 화면·아트·모션 재기획
 
-최신 준비 상태는 `MLB-REDESIGN-HULL-001 / BLOCKED_ALPHA`다. 빈 선체 후보의 내부 복원은 준비됐으나 이미지 모델의 생성·교정 2회 모두 RGB checkerboard라 runtime 연결하지 않았다. 실제 Aseprite native read-only 호출과 독립 PNG 검사가 이를 확인했다. 현재 도구에 mask/background deletion 기능이 없어 alpha 복구·정확한 구도 overlay·분리 레이어 납품은 미완료다. production code/save/기존 assets는 무변경이며 새 모션·Human 검증도 미실행이다.
+임시 정리 상태는 `BLOCKED_BY_EXECUTION_POLICY`다. 왕복 검증 후 `C:/Users/user/.local/share/aseprite-local/candidates/mlb-separated-74a89c2`의 3개 staging 파일과 `C:/Users/user/AppData/Local/Temp/mlb-matte-probe-74a89c2/project.godot`의 exact-path 삭제를 요청했으나 실행 전에 정책 차단됐다. 우회·재시도하지 않았고 삭제 완료로 기록하지 않는다. 원본 PNG·Aseprite 후보·receipt는 저장소에 보존했다.
+
+최신 준비 상태는 `SEPARATED_LAYER_CANDIDATES / ALPHA_RECOVERED / NOT_GAME_IMPLEMENTED`다. 2026-09-10 후속 작업에서 이미지 모델의 단색 녹색 원본과 기존 `chibi_normal_chroma_key.gdshader`의 격리 렌더를 조합하여 선체·돌산·구름·player·companion의 RGBA를 확보했다. 하늘·바다도 별도 원본으로 생성했다. 선체 Aseprite 저장/재export는 RGBA 픽셀 동일성 확인까지 완료했다. 이전 `BLOCKED_ALPHA` checkerboard 파일은 실패 검증 기준선으로 보존하며 현재 성공 후보와 혼동하지 않는다. 소품·가림용 난간·수면 접점, 좌석/pivot 맞춤·녹색 fringe·전체 합성·모션 검증은 남아 있다. production code/save/기존 assets는 무변경이며 Human 검증도 미실행이다.
 
 후속 상태는 승인 방향 이미지 `MLB-REDESIGN-VOYAGE-CANDIDATE-001`을 기준으로 `MLB-REDESIGN-POSE-001` 정적 키포즈 후보를 준비한 단계다. 사용자가 바다·돌산·하늘 등의 독립 제작을 재확인하여 GDD에 필수 납품 layer 계약을 명시했다. 키포즈 보드는 분리 production asset/animation/runtime이 아니다. 다음 자산 제작은 별도 하늘·바다·투명 오브젝트·선체·player/pet·접점으로 이어져야 하며 합성 보드를 잘라 production으로 올리지 않는다. 자세한 승인·후보·시각 findings와 prompt는 visual inventory가 소유한다.
 

@@ -106,6 +106,8 @@ Base v9.4.4 lock은 유지한다. 사용자 요청에 따라 최신 Base의 `ART
 
 ### 현재 증거와 남은 검증
 
+2026-09-10 후속 준비에서 **빈 선체·돌산·구름·player·companion은 실제 RGBA 후보**, **하늘·바다는 별도 opaque 배경 후보**로 제작됐다. 선체는 Aseprite 왕복 픽셀 보존도 검증했다. 이는 분리 제작 경로의 기술 검증이며, 새 visual lock·캐릭터/동반자 조합·전진 흐름·게임 구현·Human 승인은 아니다. 재현 경로와 해시는 visual inventory 및 `separated-layers-v1.receipt.json`이 소유한다. 다음 준비는 가림용 전면 난간·소품·접점과 좌석/pivot 맞춤, 바다 반복 경계·가장자리·실제 크기 합성 검토다. 새 player의 하반신은 기존 그림에서 가려진 영역을 복원한 후보이며 의상 identity 확정이 아니다.
+
 2026-09-10 조사 기준 코드 head는 `08637e3f59a9e50b19582eff62080715f8d9ea47`이다. 현재 branch는 `origin/main`보다 15 commits 앞서 있으며 별도 PR #19는 read-only로 유지한다. 이번 준비는 production code·scene·save·기존 이미지·과거 캡처를 변경하지 않는다.
 
 기존 `tests/capture_voyage_forward_flow.gd`는 process를 멈추고 `_apply_drift_motion(2.0)`을 직접 호출한 렌더 비교다. 기록된 픽셀 변화율은 **단계별 렌더 변화**를 증명하며, 자연 시간 재생·정방향 지각·접점 연속성·휴먼 편안함을 증명하지 않는다. 다음 runtime 검증은 사용자 입력 경로의 title→start→rest→감상→복귀를 실제 시간으로 재생하고, 기존 evidence를 덮어쓰지 않는 새 출력 경로·격리 저장으로 실행한다. 현재 새 디자인의 runtime·device·Human은 `NOT_RUN`이다.

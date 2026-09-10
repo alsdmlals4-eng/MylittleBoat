@@ -54,7 +54,7 @@ Use case: stylized-concept. Input image is the USER-APPROVED VISUAL AND IDENTITY
 
 </details>
 
-### 2026-09-10 빈 선체 분리 후보 — alpha 미해결
+### 2026-09-10 빈 선체 첫 분리 후보 — 과거 alpha 실패 기준선
 
 `MLB-REDESIGN-HULL-001`은 [empty-hull-v1-alpha-blocked.png](candidates/2026-09-10-intimate-diorama/empty-hull-v1-alpha-blocked.png)에 보존한다. 상태 `GENERATED_CANDIDATE / BLOCKED_ALPHA / NOT_ASSET_READY / NOT_IMPLEMENTED`. approved voyage direction을 built-in image model의 참조로 넣고 사람·동반자·쿠션·가방·노·바다를 제거한 빈 선체를 요청했다. 가려졌던 좌석과 내부가 드러나는 후보는 만들어졌지만, 최초 생성과 한 번의 alpha 교정 모두 회색 checkerboard가 실제 RGB 픽셀로 포함됐다. transparent PNG 요청을 성공으로 처리하지 않는다.
 
@@ -62,9 +62,47 @@ Use case: stylized-concept. Input image is the USER-APPROVED VISUAL AND IDENTITY
 
 Aseprite native MCP `get_sprite_info`를 task-scoped staged copy에 실제 호출했다. 반환값은 `width=941,height=1672,color_mode=rgb,frames=1,layers=[Background],tags=[]`였다. 독립 Pillow readback도 `RGB`와 모서리 픽셀 `(202,202,203)`을 확인했다. Aseprite 상태는 이 read-only 작업에 한해 `CALL_VERIFIED`; 레이어 분리/export/animation/runtime 성공은 아니다. 도구가 보고한 기본 duration 100ms는 한 장 파일의 기본 메타데이터이며 모션 타이밍으로 채택하지 않는다.
 
-현재 native 후보 도구에는 선택영역/마스크/배경 삭제 기능이 없어 자동 alpha 교정 소비처가 없다. Aseprite에 저장만 하거나 단순 시트 export로 alpha 해결을 가장하지 않는다. 외부 유료 도구·새 브리지·임의 스크립트 편집으로 우회하지 않았다. 다음 조건은 실제 alpha가 있는 출력 또는 허용된 마스크 편집 경로의 확보다. 실패 상태를 유지한 채 다른 방향·시간대 이미지를 대량 생성하지 않는다.
+이 최초 시도 당시 native 후보 도구에는 선택영역/마스크/배경 삭제 기능이 없어 자동 alpha 교정 소비처가 없었다. Aseprite 저장/시트 export만으로 alpha 해결을 가장하지 않았다. 이 파일 자체는 실패 기준선으로 남고, 후속 기존 Godot shader 재사용의 성공은 아래 별도 후보가 소유한다.
 
 필수 readback 기준은 `RGBA 또는 유효 transparency metadata`, 외곽 alpha=0, 선체 내부 alpha 보존, checkerboard 잔존 없음, 좌석 복원과 silhouette 여백, source hash 및 원본 보존이다. 이미지 생성 요청 자체와 화면의 체크무늬만으로 투명도를 판정하지 않는 것을 제작 교훈으로 기록한다.
+
+### 2026-09-10 독립 layer 기술 후보 — alpha 복구
+
+상태는 `GENERATED_CANDIDATE / REVIEWED_WITH_FINDINGS / NOT_USER_LOCKED / NOT_GAME_IMPLEMENTED`다. 승인 방향 이미지를 참조한 이미지 모델로 7개 요소를 독립 제작했다. 현재 consumer는 Blueprint 분리 납품 검토이며 production scene에는 연결하지 않았다. [기술 receipt](candidates/2026-09-10-intimate-diorama/separated-layers-v1.receipt.json)가 원본/파생본 해시·크기·prompt·도구·미해결 사항을 소유한다.
+
+| 요소 | 독립 후보 파일 | 실제 준비 범위 |
+| --- | --- | --- |
+| 하늘 | `sky-day-v1.png` | 구름·바다 없는 opaque 배경 |
+| 바다 | `sea-day-v1.png` | 하늘·배 없는 opaque 수면. 반복 경계/전진 미검증 |
+| 돌산 | `rocks-rgba-v1.png` | 수면 없는 alpha 원경. 중앙 항로 밖 배치 예정 |
+| 구름 | `clouds-rgba-v1.png` | alpha 독립 구름. 실제 배경에서 가장자리·불투명도 검토 필요 |
+| 선체 | `empty-hull-rgba-v1.png`, `empty-hull-v1.aseprite` | 내부 복원, 노·쿠션·인물 없음. Aseprite 한 frame 왕복 검증 |
+| 플레이어 | `player-rgba-v1.png` | 후면 pale-blue hoodie. 하반신 복원은 후보이지 새 의상 확정이 아님 |
+| 동반자 | `companion-rgba-v1.png` | cream 강아지 휴식 기본 pose, 쿠션 없는 독립 후보 |
+
+파일은 모두 `docs/visual/candidates/2026-09-10-intimate-diorama/`에 있다. 오브젝트의 `*-green-source-v1.png`는 재현용 이미지 모델 원본이며 게임에 쓰는 초록 배경이 아니다. 기존 `shaders/chibi_normal_chroma_key.gdshader`를 변경 없이 재사용하여 `tools/render_candidate_matte.gd`의 격리 display renderer로 투명 PNG를 만들었다. 녹색 의상·잎이 있는 대상에는 그대로 적용할 수 없다. 기존 shader 재사용은 `ADAPT`, 같은 alpha 요청 재반복은 두 번 실패해 `REJECT`, Aseprite 저장만으로 해결하는 경로는 배경 삭제 기능이 없어 `REJECT`다. 새로운 유료 도구·브리지 도입보다 현재 검증 가능한 경로를 택했다. [Godot SubViewport](https://docs.godotengine.org/en/stable/classes/class_subviewport.html)와 [Viewport transparent_bg](https://docs.godotengine.org/en/stable/classes/class_viewport.html)의 실제 display render로 확인했으며 headless 캡처로 대체하지 않았다.
+
+재현은 Godot display 실행에 `--path <repo>/tools/candidate-render-project --rendering-method gl_compatibility --audio-driver Dummy --script <repo>/tools/render_candidate_matte.gd -- <source.png> <new-output.png> <repo>/shaders/chibi_normal_chroma_key.gdshader`를 전달한다. 출력 덮어쓰기를 거부한다. `python tools/verify_candidate_alpha.py <candidate.png>...`는 읽기 전용 alpha/여백 검사다. 격리 프로젝트는 autoload·게임 씬·production save가 없고 `.gdignore`로 본 프로젝트 importer와 분리했다. Pillow가 필요하며 새로운 유료 dependency는 없다.
+
+5개 RGBA 모두 네 모서리 alpha=0, 내부 opaque pixel, 외곽 여백을 확인했다. 선체 Aseprite native `copy_sprite → export_frame → get_sprite_info` 및 Pillow decoded RGBA byte 비교가 동일했다. Aseprite `color_mode=rgb`만으로 alpha 부재를 판정하면 안 된다. 이 성공 파일도 rgb로 보고되므로 실제 PNG alpha를 독립 검사한다. 100ms는 파일 기본값이지 모션 타이밍이 아니다.
+
+직접 이미지 검토에서 player 머리 외곽의 미세한 green fringe가 발견됐다. 투명도 PASS는 edge quality PASS가 아니다. player/companion/선체의 camera·크기·pivot·좌석 접점은 아직 맞추지 않았다. 가림용 전면 난간, 노·쿠션 등 소품, 수면 접점도 남아 있다. 바다 gradient를 그대로 수직 wrap하면 수평선/반복 경계가 깨질 수 있으므로 seamless flow 완료로 취급하지 않는다. 독립 기본 pose 한 장은 호흡·고개 반응 animation이 아니다.
+
+공용 개선은 `alpha와 padding readback + 실패 RGB fixture + Aseprite decoded pixel roundtrip`의 Base 승격 후보로만 기록한다. 현재 Base 계약·공용 파일은 변경하지 않았다. 구현 전 최종 visual/Blueprint lock 및 후속 합성 검증을 보존한다.
+
+#### 기술 checkpoint 증거와 clean-exit 경계
+
+아래는 기준 head `74a89c2a6599c7414ab011ce9759fc3cb2279c21` 위 후보 working state에서 수행한 검사다. **다섯 항목을 AGENTS의 5회 full-scope clean-exit review로 바꾸어 세지 않는다.** 가장자리·접점·합성·모션 findings가 남아 있으므로 전체 준비/구현 완료 상태는 아니다.
+
+| 검사 | 실제 명령/도구와 결과 | finding·조치 및 한계 |
+| --- | --- | --- |
+| alpha 회귀 | `verify_candidate_alpha.py` old checker fixture exit 1, RGBA 5개 exit 0 | RGB 체크무늬 오판 차단. 가장자리 품질은 별도 |
+| 격리 render | Godot 4.7.2 OpenGL `render_candidate_matte.gd` 5개 출력 exit 0 | 기존 shader 무변경. 새 reusable isolated project로 player/pet 실제 실행 |
+| 원본 보존 | native Aseprite 저장/재export 후 Pillow RGBA byte 동일 | single frame만 검증. pivot·timing 미설정 |
+| 거부 경로 | headless 및 기존 output 덮어쓰기 각각 engine exit 2, 잘못된 checker matte render exit 1/no output | alpha 없는 이미지를 asset-ready로 승격하지 않음 |
+| 정본/회귀 | receipt 13개 파일 SHA·byte 검증, `python -m unittest discover -s tests -p 'test_*.py' -q` 12 tests OK, production scenes/scripts/shaders/assets/evidence/adapter diff 없음 | 게임 runtime/Human 미실행. README/다른 PR #19 무변경 |
+
+다음 full-scope review는 승인 방향과 독립 후보를 실제 크기로 합성하여 좌석·가림·미세 fringe·바다 반복 경계를 교정하는 단계부터 이어진다. 기존 판넬 시트를 animation으로 사용하거나 이 checkpoint를 runtime PASS로 승격하지 않는다.
 
 ### 기존 runtime family의 visual grammar
 
