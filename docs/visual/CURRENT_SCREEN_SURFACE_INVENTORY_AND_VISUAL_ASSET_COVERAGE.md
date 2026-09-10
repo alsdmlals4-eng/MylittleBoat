@@ -17,6 +17,10 @@ Notion은 historical archive이며 이 문서의 current owner가 아닙니다. 
 
 ### 1.1 2026-09-02 standing image-production authorization
 
+**2026-09-11 최신 override — BLUEPRINT_ASSET_PREPARATION_AUTHORIZED.** 필요한 실제 사용 규격 이미지와 아틀라스를 제작해 전체 Blueprint에 포함하라는 최신 지시가 아래 이미지 보류를 대체한다. 후보 제작·검수·Aseprite 패키징은 가능하지만 production 적용은 전체 Blueprint 최종 승인 후다. 신규 파일·출처·prompt·해시·미준비 항목은 [2026-09-11 candidate manifest](candidates/2026-09-11-blueprint/manifest.json)가 소유한다. 생성 성공을 final visual lock이나 모델/리그 준비로 쓰지 않는다.
+
+신규 수면은 탑뷰 texture, 바위섬은 독립 원거리 RGBA, 밤하늘은 별도 배경 입력으로 준비한다. 바위섬 첫 RGBA는 색 fringe, 두 번째 편집은 실제 RGB checkerboard 실패가 발생했다. 이미지 모델의 magenta 원본을 프로젝트 기존 shader의 격리 렌더로 추출해 alpha/padding을 검사했다. Aseprite native MCP로 1-frame .aseprite 및 PNG+JSON을 왕복 검증했다. 정적인 섬의 100ms metadata는 animation 제작 증거가 아니다. 얇은 edge tint·실제 수면 반복·시간대·각도 적용은 여전히 검토 대상이다.
+
 **2026-09-10 현재 override — IMAGE_PRODUCTION_PAUSED_FOR_PLANNING.** 사용자가 이미지를 바로 작업하지 말고 제작에 필요한 전체 기획부터 조사·정리하도록 지시했다. 아래 standing authorization과 후속 후보 준비 순서는 역사적 기록이며 현재 이미지·모델 생성/편집·runtime 연결을 시작하는 권한이 아니다. 새 계획은 GDD의 통합 제작 기획 P1–P10이 소유한다. 기존 승인/후보/분리 배치 파일은 삭제·재생성·정본 승격 없이 보존한다. 현재 작업은 기획·명세·자료 조사이며 새 최종 visual lock, 3D family, 모션 state는 아직 준비되지 않았다.
 
 사용자는 기존 visual grammar와 실제 consumer 안에서 필요하다고 판단된 이미지를 per-file approval 없이 제작·등록·연결·검증하도록 승인했습니다. 따라서 concrete runtime consumer, current art direction, dimensions, state family와 rollback 계획을 먼저 확인한 뒤 candidate stop 없이 권장 경로를 계속할 수 있습니다. 생성 뒤에는 provenance와 source/canonical SHA-256을 기록하고 runtime consumer와 renderer evidence를 연결합니다. 이 standing authority는 새 게임 의미·새 public surface·새 asset family의 final visual lock·비용·권리 불명 source를 자동 승인하지 않으며, image generation·canonical registration·runtime implementation·Human/device acceptance는 계속 별도 상태로 기록합니다.
@@ -119,6 +123,25 @@ Aseprite native MCP `get_sprite_info`를 task-scoped staged copy에 실제 호�
 세 대안은 `ADAPT` 이미지 모델로 좌석·가림 목표 후보 교정, `TEST` Aseprite에서 exact raster 레이어를 배치하고 검증, `DEFER` final lock 전 production Sprite3D 연결이다. [Aseprite 공식 layers 문서](https://www.aseprite.org/docs/layers/)는 투명 레이어의 독립 이동을 지원하지만, 이번 세션에 노출된 native candidate 도구에는 축소·마스크 편집이 없어 서로 다른 원본 크기의 정확한 축소 합성을 수행하지 않았다. 다른 프로젝트의 opt-in 설정을 가져오거나 새로운 bridge를 만들지 않았다. [Godot Sprite3D](https://docs.godotengine.org/en/stable/classes/class_sprite3d.html)는 기존 consumer를 재사용하는 후속 경로이며, 2D 전용 [Parallax2D](https://docs.godotengine.org/en/stable/classes/class_parallax2d.html)를 현 3D camera에 바로 대입하지 않는다.
 
 다음 순서는 이 구도의 최종 시각 판단 → 독립 player 자세와 front rail/쿠션/노/접점 정렬 → 540×960 exact-layer 합성 → 바다 반복 경계·실제 시간 흐름 → Blueprint 확정 범위의 production 연결이다. sky/sea/rocks/clouds를 하나의 배경으로 되돌리지 않고, 이 새 합성본도 production 카드로 연결하지 않는다. 후보 기록은 전체 5회 full-scope clean exit나 모션/Human 승인으로 보고하지 않는다.
+
+### 2026-09-10 실제 분리 PNG 배치 검토
+
+`tools/render_candidate_layout.gd`는 기존 격리 `tools/candidate-render-project`에서 7개 독립 PNG를 Sprite2D로 표시하고 **540×960 SubViewport**를 캡처한다. 이는 이미지 모델 재합성이 아닌 실제 파일의 정적 레이어 렌더다. 소스 PNG를 수정하지 않으며 game scene·save·production 자산에는 연결하지 않았다. Godot 4.7.2 Compatibility/NVIDIA RTX 3050으로 실행했다. 현재 Hera editor는 다른 프로젝트였으므로 제어하지 않았다.
+
+| 검토 출력 | 확인된 문제와 교정 |
+| --- | --- |
+| [첫 배치 v1](candidates/2026-09-10-intimate-diorama/exact-layer-layout-v1.png) | player hoodie가 가까운 난간 앞을 덮음. 테스트 접점 `(250,858)`에서 R=131, B=184로 의도한 난간 가림 검사 실패 |
+| [가림 교정 v2](candidates/2026-09-10-intimate-diorama/exact-layer-layout-v2.png) | 선체 원본의 `Rect2(38,1130,871,372)`를 같은 좌표·축척으로 승객 앞에 표시. 난간 검사가 통과함. 새 난간 그림을 그리거나 원본을 자르지 않음 |
+
+레이어 배치의 단일 owner는 렌더 스크립트의 `entries`다. 하늘과 바다 경계는 y=270, 원경 돌산은 x=15의 작은 좌측 요소이며 중앙 바닷길을 비웠다. 선체의 보이는 bbox는 x=160..380, y=596..941.03으로 중심 y=768.51, **화면 높이의 80.05%**다. 이는 정적 검토 화면 수치이며 실제 모바일 safe area·UI·boat bob까지 검증한 값은 아니다. 노 layer는 없다. 투명 여백은 source `get_used_rect()`로 제외하고 오브젝트 종횡비는 보존한다. sky/sea는 고정 직사각형으로 맞췄으며 원근 흐름이나 seamless texture 검증은 아니다.
+
+재현 명령은 `Godot --path <repo>/tools/candidate-render-project --rendering-method gl_compatibility --audio-driver Dummy --script <repo>/tools/render_candidate_layout.gd -- <repo> <new-output.png>`다. display renderer가 필요하며 기존 출력은 거부한다. `python -m unittest tests.test_candidate_layout_render -v`가 실제 PNG 크기·유효 색상·난간 가림·출력 덮어쓰기 방지를 검사한다. `GODOT_BIN`을 지정할 수 있고 실행 파일이 없으면 SKIP이지 PASS가 아니다. 테스트 임시 출력은 OS task-scoped TemporaryDirectory에서 종료 시 정리한다.
+
+대안 비교는 **ADOPT** 기존 Godot 격리 viewport에서 원본 직접 배치, **DEFER** Aseprite native 축소·마스크 도구가 노출된 후 편집 패키징, **REJECT** 새 모델 합성본을 exact-layer 증거로 사용하는 방식이다. [Godot Sprite2D region](https://docs.godotengine.org/en/stable/classes/class_sprite2d.html)과 [SubViewport](https://docs.godotengine.org/en/stable/classes/class_subviewport.html)의 공식 기능을 현재 파일로 검증했다. 이 2D 검사로 기존 3D 카메라 전환을 대체하지 않는다. rollback은 이 검토 도구·테스트·캡처만 제거하면 되며 기존 consumer에 영향이 없다.
+
+**남은 시각 findings.** 독립 player v1은 승인 구도보다 머리 대비 몸이 길고, 쿠션에 기대는 자세가 아니다. 강아지의 앞발이 난간에 너무 가까우며 cushion asset은 없다. 물에 닿는 얇은 접점·후류가 없어 선체가 떠 보인다. 구름/돌산의 밀도와 대기감도 승인 원화 수준으로 맞추지 않았다. 이 캡처는 문제를 숨기지 않는 조립 검사이므로 확정 그림체의 퇴행이나 final visual lock으로 해석하지 않는다. 다음 제작은 player 자세·쿠션·수면 접점에 한정하며 노는 계속 제외한다. 전체 재기획 5회 full-scope clean exit, motion·Human·release는 미완료다.
+
+새 도구가 필요한 이유는 모델이 다시 그린 합성 이미지로는 실제 자산의 좌석·가림 문제를 검출할 수 없기 때문이다. 현재 project-only 검토 도구로 두고 Base 승격은 하지 않았다. 해시·실행 증거는 [배치 receipt](candidates/2026-09-10-intimate-diorama/exact-layer-layout.receipt.json)가 소유한다.
 
 ### 기존 runtime family의 visual grammar
 

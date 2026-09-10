@@ -4,6 +4,32 @@
 **역할:** 실제 코드·Scene·test·runtime evidence와 현재 제품 정본의 차이를 기록하는 기술 router
 **현재 사람용 정본:** [프로젝트 GDD](../design/PROJECT_GDD.md)
 
+### 2026-09-11 current authority — 사람용 Blueprint·필수 후보 제작
+
+최신 사용자는 십보강호 PDF를 구조 참고로만 사용하고 상세 SWOT·시스템·데이터·화면/자산 아틀라스·실제 사용 규격 이미지를 준비하도록 승인했다. 이미지 제작 보류는 해제됐다. 아래 2026-09-10 active context의 제작 중단 문구는 역사적 상태다. 새 계획 상세 owner는 GDD B1–B12, 기존 경험 계약은 P1–P10이다. 이번에는 문서·후보·후보 검수/출판 도구만 변경하며 production 게임 적용은 전체 Blueprint 최종 승인 후다.
+
+현재 main은 `7181d5e6845e75107eade8c4d2e62e10334ab54b`, 작업 기준은 `7b2c8f2f4e4a146a28f5aa862d78910bc2ab3e52`다. 다른 social workstream PR #19는 read-only로 보존했다. Base remote `2f93e872d9ed4fa18018ac759b01acd7d34e9b58`의 조건부 Aseprite 지침을 읽었고 adapter v9.4.4는 변경하지 않았다.
+
+최종 준비 blocker는 승인 외형의 실제 근거리 3D 모델·리그·3상태 clip이다. 새 PNG·Aseprite export·격리 alpha 렌더로 이 항목을 완료 처리하지 않는다. IMP-01 연속성은 기획 승인 후 별도 이미지 없이 착수 가능하지만, 이번에는 실행하지 않는다. Blueprint는 `REVIEW_DRAFT_NOT_FULL_ASSET_READY`, Human/신규 game runtime/출시는 NOT_RUN이다.
+
+#### Blueprint 준비 검토·readback
+
+기준 HEAD는 위 `7b2c8f2`이며 전체 요청은 문서·실사용 자산·구현 인계 준비다. 다음은 실제 준비/교정 checkpoint이지 전체 요청의 five-loop clean exit 또는 전체 자산 납품 PASS가 아니다. 모델·리그·모션·새 화면별 시각 시안·전체 시간대 family가 남아 있어 전체 범위는 열려 있다.
+
+| checkpoint | 실제 읽기·검사 | 발견·교정·대안 | 결과·남은 경계 |
+| --- | --- | --- | --- |
+| 1 · 정본/범위 | AGENTS·adapter·GDD·handoff·inventory·main/PR·실제 catalog/resolver/persistence, 예시 PDF 92쪽의 구조와 대표 페이지 | 이미지 보류가 최신 지시와 충돌 → 세 owner에 명시적 최신 override. 예시 게임 규칙 복사 대신 B1–B12 보완 | Base lock·PR #19·production 보존. SWOT와 제작 세부의 GDD owner 유지 |
+| 2 · 실제 이미지/패키징 | imagegen 결과의 RGB/RGBA·corner alpha·bounds, 기존 matte renderer/shader, Aseprite native calls | 직접 투명 편집이 RGB checkerboard로 실패 → 이미지 모델의 magenta 원본 + 기존 GPU matte 추출. 새 pixel drawing/bridge는 배제 | alpha PASS, Aseprite 1frame·100ms·no tags·RGBA pixel identical. 얇은 edge tint와 게임 적용은 미검증 |
+| 3 · 전체 문서/회귀 | GDD 전체 신규 절과 실제 기존 P 계약, PDF 36쪽 텍스트·렌더, 기존 Blueprint/Base/CI 계약 12 tests | 꼬리 한 행·문단만 다음 쪽에 남음 → 행 여백과 제한된 본문 fitting 조정. 더 작은 글자 일괄 강제 대신 읽기 단위 분리 | 33→29쪽, 새 publication 검사 5 PASS. 원본 PDF 무변경 |
+| 4 · 관계/레이아웃 | PDF 전체 30쪽 렌더 contact sheets, 필수 B/P 항목·21개 링크·30개 책갈피, 전체 Python 18 tests | flow map 복귀 선이 Start로 읽힐 수 있음 → Rest 공통 분기로 교정. P2/B7 이어진 장에 별도 제목 부여 | 변경된 11/14/15쪽 full-size 재검토, 겹침·잘림 검출 없음. 화면 아틀라스는 구조도이며 완성 화면 시안 아님 |
+| 5 · 원본/도구 호환 | GDD·manifest·PDF·snapshot hash, 전체 Python 18 tests, green matte GPU 재실행, untouched consumer diff·worktree 목록 | magenta 지원이 기존 green sampler와 충돌하지 않는지 검증. 넓은 worktree 삭제·자동 canon 승격 배제 | 기존 green 1774×887 alpha PASS, source/render output 보호. 최종 준비 blocker는 유지 |
+
+최종 PDF는 `output/pdf/MY_LITTLE_BOAT_HUMAN_BLUEPRINT_20260911_REVIEW.pdf`, 30쪽/이미지 7개/책갈피 30개/링크 21개다. 원문 snapshot·manifest·generator·PDF hash는 같은 이름의 receipt가 소유한다. `python -m unittest discover -s tests -p 'test_*.py' -q`에서 **18 tests PASS**를 확인했다. 이 중 기존 분리 배치 테스트는 display renderer이며 game runtime 통합 검사가 아니다. `git diff --check` 오류 없음, scenes/scripts/assets/project.godot·기존 20260902 PDF diff 없음이다.
+
+재사용 교훈은 ‘투명 배경 생성 요청과 실제 alpha는 다르며 export 왕복도 motion 증거는 아니다’, ‘짧은 꼬리 문단은 내용 삭제가 아니라 장별 레이아웃으로 해결’이다. 기존 renderer와 Aseprite를 재사용했고 별도 유료 도구·새 bridge·Base 공용 skill은 추가하지 않았다. PDF 검사에 로컬 PyMuPDF를 추가했다. 공용 승격은 다른 프로젝트 consumer 검증 전 후보로만 둔다.
+
+추가 readback에서 Aseprite JSON의 CRLF(22개)와 Git 자동 정규화가 hash 결속을 깨뜨릴 수 있음을 확인했다. 새 native sheet JSON만 원본 byte 보존, GDD·신규 manifest·generator·snapshot은 LF로 지정했다. publication 테스트에 manifest의 모든 보존 파일 hash 검사를 추가하고 전체 18 tests를 재실행했다. 의미 있는 문서/자산 버전을 보존하되 이번 task staging과 PDF QA 임시는 검수 후 정리한다. 다른 worktree와 과거 cleanup-blocked 경로는 건드리지 않는다.
+
 ### 2026-09-10 active context — 코어 유지, 화면·아트·모션 재기획
 
 **현재 작업 지시 — 전체 제작 기획 우선.** 사용자는 부분 검토 뒤 반복 질문하는 대신 게임 제작에 필요한 기획 전체를 조사·권장안으로 구체화하도록 지시했다. [GDD의 통합 제작 기획 P1–P10](../design/PROJECT_GDD.md#통합-제작-기획--전체-경험시스템제작-계약)이 최신 계획 owner다. 이미지·모델 제작과 production 구현은 보류이며 아래 ‘후속 제작’ 문장은 자동 실행 queue가 아니다. 기존 미커밋 배치 도구·이미지 증거는 보존하고 이번 기획 변경과 별도 취급한다.
@@ -35,6 +61,8 @@
 남은 것은 C안의 승인 외형 제작·변형/기기 증거와 각 production package의 구현/검증이다. 이는 문서 검사로 닫히지 않는다. Base 공용 승격은 연속성 검증의 후보만 기록하고 공용 코드·skill은 만들지 않았다.
 
 최종 문서 검사 readback은 P1–P10 존재·필수 경계·15개 실제 consumer 경로 확인, Blueprint 7 + Base adapter 3 + CI coverage 2 = **12 tests PASS**, `git diff --check` 오류 없음, scripts/scenes/assets/project.godot/기존 PDF diff 없음이다. 후보 이미지 렌더 테스트는 이미지 작업 보류에 맞춰 이번에 실행하지 않았다. 이 결과는 문서·기존 계약 회귀 검사이지 새 gameplay/runtime/Human PASS가 아니다. 이전 이미지 검토의 미커밋 파일/문서 hunk는 별도로 보존하고 통합 기획 delivery에 포함하지 않는다.
+
+**최신 실행 증거.** `tools/render_candidate_layout.gd`로 기존 분리 PNG 7종을 540×960 격리 viewport에 실제 렌더했다. 첫 배치에서 옷이 난간을 덮는 문제를 확인하고 source hull region overlay로 교정했다. `exact-layer-layout-v2.png`는 `ISOLATED_STATIC_LAYER_RENDER / REVIEWED_WITH_FINDINGS`이며 게임 통합·모션/Human PASS가 아니다. 선체 중심 80.05%를 확인했고 player 기대기 자세·쿠션·접점은 아직 미완료다. `tests/test_candidate_layout_render.py`는 실제 렌더/덮어쓰기 거부를 검증한다. source PNG와 production scene/script/save는 무변경이다. 아래 이전 합성 후보/alpha 준비 기록은 역사적 단계로 읽는다.
 
 **최신 결정.** 사용자가 `MLB-REDESIGN-STAGING-002`의 구도를 확정하고 노를 제외했다. 구도는 `USER_LOCKED_STAGING`; 새 기본 장면의 oars/rowing/paddle-tip splash는 제작 범위에서 제외한다. 노 제거 파생본 `stern-staging-no-oars-v3.png`를 이미지 모델로 준비했으며 기존 분리 자산의 exact 합성이나 게임 연결은 아니다. 아래 이전 후보 상태는 당시 기록이다. 후속은 player·쿠션·front rail·접점 정렬과 바다 흐름이며 노 준비는 더 이상 잔여 작업이 아니다.
 

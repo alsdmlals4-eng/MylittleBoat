@@ -1,0 +1,22 @@
+{ "frames": [
+   {
+    "filename": "island.aseprite",
+    "frame": { "x": 0, "y": 0, "w": 1774, "h": 887 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 1774, "h": 887 },
+    "sourceSize": { "w": 1774, "h": 887 },
+    "duration": 100
+   }
+ ],
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.3.18.5-dev",
+  "image": "island-sheet.png",
+  "format": "RGBA8888",
+  "size": { "w": 1774, "h": 887 },
+  "scale": "1",
+  "frameTags": [
+  ]
+ }
+}

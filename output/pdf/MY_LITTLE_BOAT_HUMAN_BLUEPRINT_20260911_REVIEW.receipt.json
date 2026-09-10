@@ -1,0 +1,23 @@
+{
+  "status": "REVIEW_DRAFT_NOT_FULL_ASSET_READY",
+  "artifact": "output/pdf/MY_LITTLE_BOAT_HUMAN_BLUEPRINT_20260911_REVIEW.pdf",
+  "source_snapshot": "output/pdf/MY_LITTLE_BOAT_HUMAN_BLUEPRINT_20260911_REVIEW.source.md",
+  "gdd_sha256": "6cba0842fae92825038fe70c4ba8370b2604040d7ec4008f5305b587866b1cbb",
+  "snapshot_sha256": "6cba0842fae92825038fe70c4ba8370b2604040d7ec4008f5305b587866b1cbb",
+  "generator_sha256": "863db63ac400db9214c2704496ff4414a4fc9dcc316f5d09f42024176d98646d",
+  "manifest_sha256": "0ca2ce94ac61c48921a422b612393a79f1739eda9c15c0c603bfebba9037883e",
+  "images": {
+    "docs/visual/candidates/2026-09-10-intimate-diorama/stern-staging-no-oars-v3.png": "4f33cad8273699cb84eb19c875c3a0521adc79e49c283e80d802d716c0ddd3c5",
+    "docs/visual/candidates/2026-09-11-blueprint/sea-surface-v1.png": "79cdbff43b18920412894a41e4eea0490cb7f99092a8a7b00e8c4ff00cd0f07e",
+    "docs/visual/candidates/2026-09-11-blueprint/island-rgba-v1.png": "d7be0b8ad755e9b734c19622a6edabbb972ef435de2e5fdb237e8c85fe652b84",
+    "docs/visual/candidates/2026-09-11-blueprint/sky-night-v1.png": "8f844dd5863254f86891c91176d124db537365f9f3afa38c98f521ba9b13babe",
+    "docs/visual/candidates/2026-09-10-intimate-diorama/sky-day-v1.png": "f212a4a5eda4e3b58e032dbef778663ca3431081883b4fc49ccaa521fd13714b",
+    "docs/visual/candidates/2026-09-10-intimate-diorama/clouds-rgba-v1.png": "b6447ee358885a22774b30d5ae6d6c16d1cec7e64efe8b2b33e80c0046d94f07",
+    "docs/visual/candidates/2026-09-10-intimate-diorama/rocks-rgba-v1.png": "38785da79360378ffb99d4031eda13aaef23ed284308ad35279fe81e81dd9b59"
+  },
+  "page_count": 30,
+  "output_sha256": "992cb94edc0a620e1a84e74b07193a2704b23d4f7c138a6c87e53fe7bdb4b590",
+  "runtime": "NOT_RUN_NO_PRODUCTION_CHANGE",
+  "human": "NOT_RUN",
+  "final_approval": "PENDING"
+}

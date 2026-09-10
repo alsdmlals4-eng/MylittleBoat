@@ -1,0 +1,238 @@
+{
+  "schema_version": 1,
+  "scope": "BLUEPRINT_CANDIDATE_PREPARATION_NOT_PRODUCTION",
+  "assets": [
+    {
+      "asset_id": "MLB-NEW-SEA-001",
+      "path": "docs/visual/candidates/2026-09-11-blueprint/sea-surface-v1.png",
+      "label": "수면 texture",
+      "purpose": "세계 기준 수면 albedo. 바다 깊이·투명도는 엔진 material 책임.",
+      "state": "TILE_CANDIDATE",
+      "finding": "경계 MAE X=3.93/Y=3.58; 실제 반복 렌더는 미검증.",
+      "prompt": "Use case: stylized-concept. Asset type: actual game water surface albedo texture for My Little Boat, NOT a scene illustration. Create one square seamless repeatable texture, orthographic straight overhead view of very calm clear pale turquoise shallow sea surface. Cohesive soft hand-painted anime picture-book shading. Uniform scale throughout, broad translucent aqua washes, extremely sparse very low contrast soft sunlight ripples, no sharp bright caustic net. All four edges visually tile with no border or framing. Uniform illumination, no perspective, no horizon, no sky, no land, no rocks, no creatures, no boat, no people, no foam, no lettering, no checkerboard, no watermark. Opaque RGB texture occupying full canvas. This will map to a moving world-space plane; preserve quiet low-frequency surface so movement is not dazzling.",
+      "approval": "FINAL_PENDING",
+      "runtime": "NOT_IMPLEMENTED_IN_NEW_FAMILY",
+      "sha256": "79cdbff43b18920412894a41e4eea0490cb7f99092a8a7b00e8c4ff00cd0f07e",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "mode": "RGB"
+    },
+    {
+      "asset_id": "MLB-NEW-ROCK-001",
+      "path": "docs/visual/candidates/2026-09-11-blueprint/island-rgba-v1.png",
+      "label": "흰 바위 아치",
+      "purpose": "먼 측면 scenery object. 중심 항로에 배치하지 않음.",
+      "state": "ALPHA_PACKAGING_VERIFIED",
+      "finding": "실제 alpha·여백·Aseprite 픽셀 왕복 PASS. 얇은 edge tint와 각도 적용 미검증.",
+      "prompt": "Use case: stylized-concept. Asset type: isolated distant scenery PNG for My Little Boat 3D sea diorama. One single small picturesque white limestone coastal rock island with softly rounded arch on its left and sparse sage-green shrubs on top, warm pale ivory rock in friendly hand-painted anime picture-book style, very simple soft shadows, moderately distant front three-quarter view almost horizon eye height, wide low silhouette. Whole island visible with generous blank margins, base flat at waterline. True transparent background alpha, no ocean, no reflection, no sky, no clouds, no boat, no characters, no buildings, no text, no cast shadow underneath, no ground plate, no checkerboard. Soft atmospheric blue-gray shading suitable for placing far to side of central sea lane, no dramatic sharp peaks. This is one usable independent environment object texture, not an infographic or multi-panel sheet. Corrections: clean alpha request failed with RGB checkerboard; replace backing with flat #FF00FF; extract using existing look_around_foreground_chroma_key.gdshader in isolated Godot.",
+      "approval": "FINAL_PENDING",
+      "runtime": "NOT_IMPLEMENTED_IN_NEW_FAMILY",
+      "sha256": "d7be0b8ad755e9b734c19622a6edabbb972ef435de2e5fdb237e8c85fe652b84",
+      "dimensions": [
+        1774,
+        887
+      ],
+      "mode": "RGBA"
+    },
+    {
+      "asset_id": "MLB-NEW-SKY-001",
+      "path": "docs/visual/candidates/2026-09-11-blueprint/sky-night-v1.png",
+      "label": "구름 없는 밤하늘",
+      "purpose": "밤 sky 입력. 바다·구름·섬과 독립.",
+      "state": "GENERATED_CANDIDATE",
+      "finding": "panorama 좌우 이음새·카메라 coverage와 다른 시간대 전환은 미검증.",
+      "prompt": "Use case: stylized-concept. Asset type: one wide cloud-free night sky background texture for an actual cozy game My Little Boat. Wide panoramic aspect 3:1. Soft hand-painted anime sky, quiet desaturated midnight blue at top blending to gentle muted indigo blue at bottom. Very few tiny dim stars scattered only in upper half, no star streaks and no sparkling dense pattern. Full canvas is sky only, no clouds, no moon or sun, no land, no water, no horizon line, no objects, no text, no borders. Broad subtle color washes, no photographic noise, no banding. Low contrast with gently brighter bottom. All sky features remain independent of water and islands so they can be composited and lit separately. Opaque RGB.",
+      "approval": "FINAL_PENDING",
+      "runtime": "NOT_IMPLEMENTED_IN_NEW_FAMILY",
+      "sha256": "8f844dd5863254f86891c91176d124db537365f9f3afa38c98f521ba9b13babe",
+      "dimensions": [
+        2172,
+        724
+      ],
+      "mode": "RGB"
+    },
+    {
+      "asset_id": "MLB-REF-SKY-DAY",
+      "path": "docs/visual/candidates/2026-09-10-intimate-diorama/sky-day-v1.png",
+      "label": "낮 sky 후보",
+      "purpose": "기존 분리 sky 후보를 제작 기준으로 검토.",
+      "state": "EXISTING_CANDIDATE_REFERENCE",
+      "finding": "기존 원본 보존. 새 panorama family 확정이 아님.",
+      "prompt": "Existing candidate; original provenance in visual inventory.",
+      "approval": "FINAL_PENDING",
+      "runtime": "NOT_IMPLEMENTED_IN_NEW_FAMILY",
+      "sha256": "f212a4a5eda4e3b58e032dbef778663ca3431081883b4fc49ccaa521fd13714b",
+      "dimensions": [
+        941,
+        1672
+      ],
+      "mode": "RGB"
+    },
+    {
+      "asset_id": "MLB-REF-CLOUD",
+      "path": "docs/visual/candidates/2026-09-10-intimate-diorama/clouds-rgba-v1.png",
+      "label": "독립 구름 후보",
+      "purpose": "sky와 별도인 원경 cloud texture.",
+      "state": "EXISTING_CANDIDATE_REFERENCE",
+      "finding": "기존 원본 보존. 새 family의 경계·구도 검증 필요.",
+      "prompt": "Existing candidate; original provenance in visual inventory.",
+      "approval": "FINAL_PENDING",
+      "runtime": "NOT_IMPLEMENTED_IN_NEW_FAMILY",
+      "sha256": "b6447ee358885a22774b30d5ae6d6c16d1cec7e64efe8b2b33e80c0046d94f07",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA"
+    },
+    {
+      "asset_id": "MLB-REF-ROCK",
+      "path": "docs/visual/candidates/2026-09-10-intimate-diorama/rocks-rgba-v1.png",
+      "label": "기존 돌산 후보",
+      "purpose": "기존 분리 object와 새 아치의 역할 비교.",
+      "state": "EXISTING_CANDIDATE_REFERENCE",
+      "finding": "원본 보존. 최종 모델·회전 가능한 육지가 아님.",
+      "prompt": "Existing candidate; original provenance in visual inventory.",
+      "approval": "FINAL_PENDING",
+      "runtime": "NOT_IMPLEMENTED_IN_NEW_FAMILY",
+      "sha256": "38785da79360378ffb99d4031eda13aaef23ed284308ad35279fe81e81dd9b59",
+      "dimensions": [
+        1774,
+        887
+      ],
+      "mode": "RGBA"
+    }
+  ],
+  "files": {
+    "docs/visual/candidates/2026-09-11-blueprint/island-magenta-source-v1.png": {
+      "sha256": "ffcec8fc84d068825dc35b5887721a7f982504c3aea1623cf734a90fc06e0bf0",
+      "dimensions": [
+        1774,
+        887
+      ],
+      "mode": "RGB"
+    },
+    "docs/visual/candidates/2026-09-11-blueprint/island-rgba-v1.png": {
+      "sha256": "d7be0b8ad755e9b734c19622a6edabbb972ef435de2e5fdb237e8c85fe652b84",
+      "dimensions": [
+        1774,
+        887
+      ],
+      "mode": "RGBA"
+    },
+    "docs/visual/candidates/2026-09-11-blueprint/island-sheet.json": {
+      "sha256": "22d2e6f421b2d9af806f2229d73f91148e5e3ded4b841301b7421e3b69025fbf",
+      "dimensions": null,
+      "mode": null
+    },
+    "docs/visual/candidates/2026-09-11-blueprint/island-sheet.png": {
+      "sha256": "120aee43ccf804bbc40fa06822da44961a87bf86a4c1b97c97f15d491693c319",
+      "dimensions": [
+        1774,
+        887
+      ],
+      "mode": "RGBA"
+    },
+    "docs/visual/candidates/2026-09-11-blueprint/island.aseprite": {
+      "sha256": "2b56db4b3039db7f39c0a1e08b897cde3c7abd4fcea662146b5ec05e353adbd1",
+      "dimensions": null,
+      "mode": null
+    },
+    "docs/visual/candidates/2026-09-11-blueprint/sea-surface-v1.png": {
+      "sha256": "79cdbff43b18920412894a41e4eea0490cb7f99092a8a7b00e8c4ff00cd0f07e",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "mode": "RGB"
+    },
+    "docs/visual/candidates/2026-09-11-blueprint/sky-night-v1.png": {
+      "sha256": "8f844dd5863254f86891c91176d124db537365f9f3afa38c98f521ba9b13babe",
+      "dimensions": [
+        2172,
+        724
+      ],
+      "mode": "RGB"
+    },
+    "docs/visual/candidates/2026-09-10-intimate-diorama/sky-day-v1.png": {
+      "sha256": "f212a4a5eda4e3b58e032dbef778663ca3431081883b4fc49ccaa521fd13714b",
+      "dimensions": [
+        941,
+        1672
+      ],
+      "mode": "RGB"
+    },
+    "docs/visual/candidates/2026-09-10-intimate-diorama/clouds-rgba-v1.png": {
+      "sha256": "b6447ee358885a22774b30d5ae6d6c16d1cec7e64efe8b2b33e80c0046d94f07",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA"
+    },
+    "docs/visual/candidates/2026-09-10-intimate-diorama/rocks-rgba-v1.png": {
+      "sha256": "38785da79360378ffb99d4031eda13aaef23ed284308ad35279fe81e81dd9b59",
+      "dimensions": [
+        1774,
+        887
+      ],
+      "mode": "RGBA"
+    }
+  },
+  "atlas_groups": [
+    {
+      "title": "자산 아틀라스 · 물과 먼 바위",
+      "asset_ids": [
+        "MLB-NEW-SEA-001",
+        "MLB-NEW-ROCK-001"
+      ]
+    },
+    {
+      "title": "자산 아틀라스 · 낮과 밤의 독립 하늘",
+      "asset_ids": [
+        "MLB-REF-SKY-DAY",
+        "MLB-NEW-SKY-001"
+      ]
+    },
+    {
+      "title": "자산 아틀라스 · 기존 분리 요소의 재사용 검토",
+      "asset_ids": [
+        "MLB-REF-CLOUD",
+        "MLB-REF-ROCK"
+      ]
+    }
+  ],
+  "aseprite": {
+    "transport": "native MCP aseprite-candidates",
+    "version": "1.3.18.5-dev",
+    "frames": 1,
+    "duration_ms": 100,
+    "tags": [],
+    "pixel_roundtrip": "PASS",
+    "pivot_normalized": [
+      0.5,
+      0.7812852311161218
+    ],
+    "pivot_role": "waterline center suggested, not runtime verified",
+    "animation": "NOT_APPLICABLE_STATIC_OBJECT"
+  },
+  "missing": [
+    "approved player/boat/dog 3D models and rigs",
+    "rest_loop/notice/settle actual clips",
+    "all new time-of-day production families",
+    "all legacy cosmetic mappings to new assets",
+    "new waterline/wake family verification"
+  ],
+  "failed_attempts": [
+    {
+      "source": "C:/Users/user/.codex/generated_images/01a04af3-d9a2-7c92-be5c-ce99e4d55cdc/exec-a47b1b8b-85ff-46b3-871e-5170b8d8f11b.png",
+      "finding": "RGBA with colored edge fringe; not promoted"
+    },
+    {
+      "source": "C:/Users/user/.codex/generated_images/01a04af3-d9a2-7c92-be5c-ce99e4d55cdc/exec-4618c6ed-4c91-4bf2-accc-785be4187401.png",
+      "finding": "RGB baked checkerboard; not promoted"
+    }
+  ]
+}

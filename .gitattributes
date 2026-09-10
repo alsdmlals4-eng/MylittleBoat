@@ -1,3 +1,9 @@
 # 생성·검수 PDF는 텍스트 diff나 whitespace 검사 대상이 아닌 바이너리다.
 *.pdf binary
 output/pdf/MY_LITTLE_BOAT_HUMAN_GAME_BLUEPRINT_20260902.source.md text eol=lf
+# 새 Blueprint 해시 결속 입력은 다른 체크아웃에서도 동일한 바이트를 유지한다.
+docs/design/PROJECT_GDD.md text eol=lf
+tools/build_review_blueprint_pdf.py text eol=lf
+docs/visual/candidates/2026-09-11-blueprint/manifest.json text eol=lf
+docs/visual/candidates/2026-09-11-blueprint/island-sheet.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+output/pdf/MY_LITTLE_BOAT_HUMAN_BLUEPRINT_20260911_REVIEW.source.md text eol=lf

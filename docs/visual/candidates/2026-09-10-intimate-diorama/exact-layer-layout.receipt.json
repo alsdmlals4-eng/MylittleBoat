@@ -1,0 +1,32 @@
+{
+  "status": "ISOLATED_STATIC_LAYER_RENDER_REVIEWED_WITH_FINDINGS",
+  "source_revision": "7ba087ead251b99ac8cd01f414550f6d4f461f5b",
+  "engine": "4.7.2 OpenGL Compatibility NVIDIA RTX 3050",
+  "tool": "tools/render_candidate_layout.gd",
+  "test": "tests/test_candidate_layout_render.py",
+  "scene": "tools/candidate-render-project/project.godot",
+  "size": [
+    540,
+    960
+  ],
+  "source_assets": "separated-layers-v1.receipt.json; all 13 file hashes unchanged",
+  "outputs": {
+    "exact-layer-layout-v1.png": "390b84a8de90cc61aa15c9cf2906d4ffb72ba65addbfdb23d15924904d3956f4",
+    "exact-layer-layout-v2.png": "c6590df70a2c4dc6699e978addaf2266c37e156475f4145f28069233fcf92073"
+  },
+  "evidence": [
+    "RED: missing renderer returns 1; GREEN: actual PNG 540x960 created",
+    "RED: stern occlusion sample R131 B184 fails; GREEN: source hull near-region overlay passes",
+    "Existing output refused exit2, bytes unchanged",
+    "Full unittest discovery 13 pass",
+    "No production consumers changed; no new test temp directories remain"
+  ],
+  "unresolved": [
+    "player pose/proportions mismatch locked staging",
+    "cushion and water contact absent",
+    "pet paws too close to rail",
+    "cloud/rock atmospheric integration pending",
+    "motion, safe area and gameplay integration not verified"
+  ],
+  "ceiling": "not final visuals, game runtime, full-scope five-loop clean exit, Human or release"
+}

@@ -23,7 +23,9 @@ func _render() -> void:
 	var texture := ImageTexture.create_from_image(source)
 	var material := ShaderMaterial.new()
 	material.shader = shader
-	material.set_shader_parameter("matte_texture", texture)
+	# 기존 녹색/마젠타 셰이더의 실제 sampler 이름을 선택한다.
+	var sampler_name := "source_texture" if shader.code.contains("uniform sampler2D source_texture") else "matte_texture"
+	material.set_shader_parameter(sampler_name, texture)
 	var viewport := SubViewport.new()
 	viewport.size = source.get_size()
 	viewport.transparent_bg = true
