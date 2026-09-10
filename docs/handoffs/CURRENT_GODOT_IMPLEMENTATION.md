@@ -6,6 +6,8 @@
 
 ### 2026-09-10 active context — 코어 유지, 화면·아트·모션 재기획
 
+최신 추가 준비는 `MLB-REDESIGN-STAGING-002 / GENERATED_CANDIDATE / NOT_USER_LOCKED`다. 독립 선체/player/pet을 참조해 좌석·난간 가림을 교정한 후 배 크기·하단 위치를 한 번 더 수정했다. 저장소의 `stern-staging-review-v2.png`는 이미지 모델 합성 후보이며 exact-layer composite/540×960 runtime 검증이 아니다. 기존 독립 PNG의 fringe, front rail/쿠션/노/접점 제작, 정확한 좌석 pivot·전진 흐름은 아직 남아 있다. 기존 consumer와 13개 source/derived 파일은 무변경이다.
+
 임시 정리 상태는 `BLOCKED_BY_EXECUTION_POLICY`다. 왕복 검증 후 `C:/Users/user/.local/share/aseprite-local/candidates/mlb-separated-74a89c2`의 3개 staging 파일과 `C:/Users/user/AppData/Local/Temp/mlb-matte-probe-74a89c2/project.godot`의 exact-path 삭제를 요청했으나 실행 전에 정책 차단됐다. 우회·재시도하지 않았고 삭제 완료로 기록하지 않는다. 원본 PNG·Aseprite 후보·receipt는 저장소에 보존했다.
 
 최신 준비 상태는 `SEPARATED_LAYER_CANDIDATES / ALPHA_RECOVERED / NOT_GAME_IMPLEMENTED`다. 2026-09-10 후속 작업에서 이미지 모델의 단색 녹색 원본과 기존 `chibi_normal_chroma_key.gdshader`의 격리 렌더를 조합하여 선체·돌산·구름·player·companion의 RGBA를 확보했다. 하늘·바다도 별도 원본으로 생성했다. 선체 Aseprite 저장/재export는 RGBA 픽셀 동일성 확인까지 완료했다. 이전 `BLOCKED_ALPHA` checkerboard 파일은 실패 검증 기준선으로 보존하며 현재 성공 후보와 혼동하지 않는다. 소품·가림용 난간·수면 접점, 좌석/pivot 맞춤·녹색 fringe·전체 합성·모션 검증은 남아 있다. production code/save/기존 assets는 무변경이며 Human 검증도 미실행이다.

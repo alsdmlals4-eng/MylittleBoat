@@ -104,6 +104,18 @@ Aseprite native MCP `get_sprite_info`를 task-scoped staged copy에 실제 호�
 
 다음 full-scope review는 승인 방향과 독립 후보를 실제 크기로 합성하여 좌석·가림·미세 fringe·바다 반복 경계를 교정하는 단계부터 이어진다. 기존 판넬 시트를 animation으로 사용하거나 이 checkpoint를 runtime PASS로 승격하지 않는다.
 
+### 2026-09-10 후면 좌석·가림 구도 교정 후보
+
+`MLB-REDESIGN-STAGING-002`는 [stern-staging-review-v2.png](candidates/2026-09-10-intimate-diorama/stern-staging-review-v2.png), `941×1672 RGB`, SHA-256 `21c379dffac5580a03eee84d0d6e2b2e61a706967507881ca94a486900813954`다. 상태는 `GENERATED_CANDIDATE / REVIEWED_WITH_FINDINGS / NOT_USER_LOCKED`다. approved voyage direction과 독립 선체·player·companion을 참조한 built-in image model 합성 구도 후보이며, 실제 분리 PNG의 deterministic 합성이나 Godot 캡처가 아니다. 기존 7개 독립 요소와 13개 source/derived 파일의 해시는 그대로다.
+
+이번 범위는 후면 player의 좌석 지지, 옆 companion 가독성, stern rim의 가림, 하단 구도를 교정하는 한 후보다. 최초 합성은 배가 너무 크고 높아 동일 그림을 한 번만 축소·하단 이동하도록 수정했다. 수정 전 생성물은 host generated_images에만 보존하고 저장소에는 선택한 v2만 저장했다. [구도 receipt](candidates/2026-09-10-intimate-diorama/stern-staging-review-v2.receipt.json)에 exact prompt와 입력·출력 provenance를 기록한다.
+
+직접 검토에서 player의 하반신이 보트 안으로 향하고, 뒤쪽 쿠션이 등을 지지하며, 강아지의 머리·앞발이 오른쪽 옆에서 보인다. 가까운 stern rim이 쿠션과 하반신 앞을 가린다. 수정 후 배의 중심은 대략 세로 75% 부근으로 내려왔지만 목표 80%와 정확히 일치하지 않으며, 게임의 540×960 안전영역에서 정량 배치한 증거는 없다. 양쪽 노 끝은 잘리지 않고 중앙 항로도 비어 있다. 물의 밝은 무늬와 wake는 여전히 촘촘하여 motion 단계에서 대비·밀도를 낮출 필요가 있다. 초록 테두리가 이 합성본에서 눈에 띄지 않는 것은 기존 독립 player PNG의 fringe가 고쳐졌다는 뜻이 아니다.
+
+세 대안은 `ADAPT` 이미지 모델로 좌석·가림 목표 후보 교정, `TEST` Aseprite에서 exact raster 레이어를 배치하고 검증, `DEFER` final lock 전 production Sprite3D 연결이다. [Aseprite 공식 layers 문서](https://www.aseprite.org/docs/layers/)는 투명 레이어의 독립 이동을 지원하지만, 이번 세션에 노출된 native candidate 도구에는 축소·마스크 편집이 없어 서로 다른 원본 크기의 정확한 축소 합성을 수행하지 않았다. 다른 프로젝트의 opt-in 설정을 가져오거나 새로운 bridge를 만들지 않았다. [Godot Sprite3D](https://docs.godotengine.org/en/stable/classes/class_sprite3d.html)는 기존 consumer를 재사용하는 후속 경로이며, 2D 전용 [Parallax2D](https://docs.godotengine.org/en/stable/classes/class_parallax2d.html)를 현 3D camera에 바로 대입하지 않는다.
+
+다음 순서는 이 구도의 최종 시각 판단 → 독립 player 자세와 front rail/쿠션/노/접점 정렬 → 540×960 exact-layer 합성 → 바다 반복 경계·실제 시간 흐름 → Blueprint 확정 범위의 production 연결이다. sky/sea/rocks/clouds를 하나의 배경으로 되돌리지 않고, 이 새 합성본도 production 카드로 연결하지 않는다. 후보 기록은 전체 5회 full-scope clean exit나 모션/Human 승인으로 보고하지 않는다.
+
 ### 기존 runtime family의 visual grammar
 
 새 production family는 GDD의 필수 layer 분리 계약을 따른다. 바다·돌산·하늘 등을 독립 제작하라는 2026-09-10 사용자 재확인에 따라, 아래 기존 composite 자산을 새 분리 납품의 대체품으로 사용하지 않는다.

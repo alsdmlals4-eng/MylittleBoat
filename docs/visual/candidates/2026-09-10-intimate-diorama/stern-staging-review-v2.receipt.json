@@ -1,0 +1,36 @@
+{
+  "status": "GENERATED_CANDIDATE_REVIEWED_WITH_FINDINGS_NOT_USER_LOCKED",
+  "source_revision": "627bce0e688935bd1f808f37bda6c5963a9ff10f",
+  "base_observed": "2f93e872d9ed4fa18018ac759b01acd7d34e9b58",
+  "scope": "후면 좌석 지지, 옆 동반자 가독성, stern rim 가림과 하단 배치의 구도 후보",
+  "output": {
+    "file": "stern-staging-review-v2.png",
+    "sha256": "21c379dffac5580a03eee84d0d6e2b2e61a706967507881ca94a486900813954",
+    "bytes": 2091412,
+    "size": [
+      941,
+      1672
+    ],
+    "mode": "RGB"
+  },
+  "inputs": [
+    "voyage-direction-v1.png",
+    "empty-hull-rgba-v1.png",
+    "player-rgba-v1.png",
+    "companion-rgba-v1.png"
+  ],
+  "tool": "built-in image_gen; no CLI/API fallback",
+  "first_output": "C:/Users/user/.codex/generated_images/01a04af3-d9a2-7c92-be5c-ce99e4d55cdc/exec-5f9a9637-3a2f-4657-9b3d-ec6639e0d10f.png",
+  "selected_output": "C:/Users/user/.codex/generated_images/01a04af3-d9a2-7c92-be5c-ce99e4d55cdc/exec-24dac257-9816-43ac-9e8f-4de384186b4d.png",
+  "prompt": "Use case: compositing. Asset type: ONE portrait 9:16 staging-review illustration for My Little Boat, NOT a sprite sheet and NOT a replacement for independent layers. Image 1 is the approved overall direction, lighting and rear elevated camera; image 2 is the ivory empty hull geometry; images 3 and 4 are player and pet identity references. Compose one coherent calm voyage view. Keep the exact dark tousled hair, pale blue oversized hoodie and cream floppy-eared puppy. Correct the awkward spread seated pose: player sits supported on the stern bench, reclines back against a soft cream cushion at the near stern, shoulders relaxed and arms naturally supported on the inside side rims; legs go forward INSIDE boat and are not splayed across it. The sleeping puppy sits immediately beside the player on viewer right, full head and front paws clearly readable, lightly near the blue sleeve, not hidden behind the person. Near stern rim is in FRONT of lower torso/cushion, clearly readable occlusion; no body parts through planks, no dangling unsupported hand. Keep ivory weathered boat, wooden oars resting outside along sides, no new decor, bag, clothes, faces, collars or accessories. Boat+occupants complete silhouette centered horizontally, visual center around y=80 percent, bottom of boat near y=94 percent; generous open sea above, nothing cropped. Small pale distant rocks only at left/right horizon, central sea lane clear, fixed level horizon around upper 28 percent. Huge soft clear blue sky with a few quiet clouds. Water is clear turquoise, broad low-contrast soft ripples, far fewer bright caustic details than reference. Narrow contact shadow/ripple hugs bottom of hull, tiny calm trailing wake, boat touching water, not hovering, no white high-speed spray. Cohesive hand-painted anime picture-book shading, very friendly calm mood, matched sun direction. Remove green fringe from hair/fur. No UI, logo, arrows, text, frames, annotations or panels. This image is a visual target to judge sitting and overlap; do not show exploded layers.",
+  "revision_prompt": "Edit this exact image with ONLY ONE layout correction. Keep the sky, coastline, level horizon, ocean color, character identity, dog, reclining pose, cushion, boat geometry, oars, lighting and painting style unchanged. Treat boat+person+puppy+cushion+both oars as ONE rigid foreground group. Scale this foreground group down to 75% of its current size, and move the entire group downward: top of boat bow at approximately 63% of canvas height, bottom of stern at approximately 94%, horizontal center at50%. Overall group centered near80% height. All oar tips remain visible. Fill the previously covered area with matching quiet water, reconnect the very narrow waterline and tiny trailing wake at the moved boat. Do not move the horizon. Do not zoom the image. Do not change any pose or add any object. No text. This is still a single portrait staging review image, not a production layer.",
+  "evidence_ceiling": "Model-generated staging illustration only; not deterministic layered composite, exact pixel identity, animation, game runtime, Human, or production approval.",
+  "findings": [
+    "좌석·등받이·난간 가림과 옆 강아지가 읽힘",
+    "배 중심은 대략 75% 부근; 80% exact 배치 미검증",
+    "기존 독립 player alpha fringe는 미교정",
+    "수면 무늬·wake 밀도와 반복 흐름은 미검증",
+    "자산 13개 hash 보존; production consumer 무변경"
+  ],
+  "review_status": "CANDIDATE_CHECKPOINT_NOT_FULL_SCOPE_CLEAN_EXIT"
+}
