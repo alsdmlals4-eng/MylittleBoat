@@ -21,6 +21,22 @@ Notion은 historical archive이며 이 문서의 current owner가 아닙니다. 
 
 ## 2. 확정 visual grammar
 
+2026-09-10 최신 사용자 지시에 따라 이 절의 확정 grammar는 **기존 runtime family의 역사적 승인과 현 consumer**를 설명한다. 새 재기획의 최종 visual lock은 아니다. 새 제품 방향은 [GDD 첫 절](../design/PROJECT_GDD.md)이 소유하며, 기존 이미지를 참고자료로만 삼아 새 후보를 제작한다. 구형 자산은 소비처 교체·검증 전까지 보존한다.
+
+### 2026-09-10 새 방향 후보
+
+- ID `MLB-REDESIGN-VOYAGE-CANDIDATE-001`, 상태 `GENERATED_CANDIDATE / REVIEWED_WITH_FINDINGS / NOT_USER_LOCKED`.
+- 경로 [항해 방향 후보](candidates/2026-09-10-intimate-diorama/voyage-direction-v1.png), 실제 규격 `941×1672 PNG`. 소비 목적은 GDD의 새로운 후면 항해 장면 검토다. production consumer는 없다.
+- provenance는 현재 세션 built-in image model의 신규 생성이며 기존 이미지 파일을 입력하거나 다른 게임의 실제 자산을 복사하지 않았다. 생성 원본은 호스트 generated_images에 보존하고 동일 바이트를 이 후보 경로에 복사했다.
+- SHA-256 `D92FC294C27F83A8CBA9FE6DF5B99ED8B507FA654E82DC785E71B9C27B35A957`.
+- 검토 결과는 후면 플레이어·옆 동반자·열린 중앙 항로·선체 접점이 읽힘. 수면의 작은 밝은 무늬는 모션에서 과밀할 위험이 있고, 배의 크기·중심은 최종 540×960 UI와 함께 다시 맞춰야 함. 정적 후보이므로 전진·편안함·키포즈 일관성은 미검증.
+- Aseprite는 현재 세션의 native candidate 도구가 `CLIENT_DISCOVERED`다. 이 한 장의 opaque 구성 검토 이미지에는 frame/layer packaging consumer가 없어 호출하지 않았다. `CALL_VERIFIED`, `TASK_VERIFIED`, animation/runtime/Human PASS를 주장하지 않는다.
+- 다음 생성은 이 방향 검토 결과를 반영한 일관된 캐릭터/동반자 식별 및 키포즈 준비다. 이 이미지의 물을 그대로 잘라 움직이는 production 배경으로 사용하지 않는다.
+
+생성 prompt 요약(원문 의미 보존)은 다음과 같다. `stylized-concept; one original portrait 9:16 My Little Boat rest-first voyage; cohesive hand-painted anime picture-book, simple cel shading, friendly chibi; rear elevated 3/4; ivory wooden boat near lower fifth, reclining player in pale blue oversized hooded jacket with soft short dark hair, cream fluffy dog visible beside; transparent turquoise sea, pale sand, soft deeper horizon, narrow hull contact and subtle trailing wake; clear central sea lane, small distant side islands; calm daylight; no UI, text, watermark, destination, glossy doll, neon or named-artist imitation.` 결과는 prompt의 이상적 요구 충족을 자동 보장하지 않으며 위 findings가 우선한다.
+
+### 기존 runtime family의 visual grammar
+
 | layer | Keep | Avoid |
 | --- | --- | --- |
 | 전체 | `HANDPAINTED_STORYBOOK_3D_DIORAMA`, 넓은 바다·하늘, 안정된 수평선, soft-matte painterly material | glossy photoreal CG, noisy micro-detail, 다른 게임의 trade dress |

@@ -19,6 +19,7 @@ STALE_PDF = "exports/my-little-boat_MASTER_PRODUCTION_GDD_20260829.pdf"
 HISTORICAL_PDF = "exports/my-little-boat_MASTER_PRODUCTION_GDD_20260828.pdf"
 CURRENT_BLUEPRINT_PDF = "output/pdf/MY_LITTLE_BOAT_HUMAN_GAME_BLUEPRINT_20260902.pdf"
 CURRENT_BLUEPRINT_RECEIPT = "output/pdf/MY_LITTLE_BOAT_HUMAN_GAME_BLUEPRINT_20260902.receipt.json"
+HISTORICAL_BLUEPRINT_SOURCE = "output/pdf/MY_LITTLE_BOAT_HUMAN_GAME_BLUEPRINT_20260902.source.md"
 TITLE_IDLE_CAPTURE = "docs/evidence/2026-08-31-title-boat-flow/bright_title_idle_00_540x960.png"
 
 
@@ -49,7 +50,7 @@ class HumanGameBlueprintProfileTests(unittest.TestCase):
         self.assertTrue((ROOT / CURRENT_BLUEPRINT_RECEIPT).is_file())
         self.assertTrue(BLUEPRINT_BUILDER.is_file())
         self.assertIn(
-            f"`{CURRENT_BLUEPRINT_PDF}` = `CURRENT_SOURCE_BOUND_DERIVED_PUBLICATION`",
+            f"`{CURRENT_BLUEPRINT_PDF}` = `HISTORICAL_SOURCE_BOUND_PUBLICATION`",
             self.gdd,
         )
         self.assertIn(
@@ -61,19 +62,20 @@ class HumanGameBlueprintProfileTests(unittest.TestCase):
             self.gdd,
         )
         self.assertIn("CURRENT_BLUEPRINT_PLAYER_FACING_SELECTION", self.gdd)
-        self.assertIn("CURRENT_SOURCE_BOUND_DERIVED_PUBLICATION", self.doc_map)
+        self.assertIn("HISTORICAL_SOURCE_BOUND_PUBLICATION", self.doc_map)
         self.assertNotIn("PDF_REISSUE_DEFERRED", self.gdd)
         handoff = read(HANDOFF)
         self.assertIn("BLUEPRINT_PUBLICATION_RECOVERY_20260902", handoff)
         self.assertIn("five complete review loops", handoff)
 
-    def test_publication_receipt_binds_current_gdd_and_exact_visual_inputs(self) -> None:
+    def test_historical_receipt_preserves_exact_source_and_visual_inputs(self) -> None:
         receipt_path = ROOT / CURRENT_BLUEPRINT_RECEIPT
         self.assertTrue(receipt_path.is_file())
         if not receipt_path.is_file():
             return
         receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
-        self.assertEqual(receipt["gdd_sha256"], sha256_file(GDD))
+        self.assertEqual(receipt["gdd_sha256"], sha256_file(ROOT / HISTORICAL_BLUEPRINT_SOURCE))
+        self.assertNotEqual(receipt["gdd_sha256"], sha256_file(GDD))
         self.assertEqual(receipt["generator_sha256"], sha256_file(BLUEPRINT_BUILDER))
         self.assertEqual(receipt["page_count"], 10)
         self.assertIn(TITLE_IDLE_CAPTURE, receipt["images"])

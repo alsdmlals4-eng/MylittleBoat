@@ -4,6 +4,8 @@
 
 ## Current owner route
 
+2026-09-10 현재 작업은 `PROJECT_GDD.md` 첫 절의 **승인된 재기획 방향과 현재 작업**이다. 코어는 유지하며 화면·아트·모션을 재검토한다. 기존 구현은 보존된 기준선이고 새 후보는 구현/최종 승인과 구분한다. 아래 2026-09-02 PDF의 current 표기는 당시 publication receipt에 한정하며, 새 재기획 내용을 포함하지 않는 역사적 source-bound 스냅샷이다. 새 PDF publication은 준비 중이다.
+
 | 질문 | current owner |
 | --- | --- |
 | 사람용 프로젝트 경험·결정·layered Blueprint | `docs/design/PROJECT_GDD.md` — `CURRENT_HUMAN_FACING_GDD` |
@@ -38,8 +40,9 @@ Blueprint는 별도 artifact가 아니라 current `PROJECT_GDD.md`의 reading/co
 
 | artifact | route status |
 | --- | --- |
-| `output/pdf/MY_LITTLE_BOAT_HUMAN_GAME_BLUEPRINT_20260902.pdf` | `CURRENT_SOURCE_BOUND_DERIVED_PUBLICATION`; source는 `PROJECT_GDD.md`, exact GDD·generator·runtime image hash는 함께 둔 receipt가 소유 |
-| `output/pdf/MY_LITTLE_BOAT_HUMAN_GAME_BLUEPRINT_20260902.receipt.json` | `CURRENT_PUBLICATION_SOURCE_AND_ASSET_RECEIPT`; PDF가 별도 정본이 되지 않도록 source binding을 검증 |
+| `output/pdf/MY_LITTLE_BOAT_HUMAN_GAME_BLUEPRINT_20260902.pdf` | `HISTORICAL_SOURCE_BOUND_PUBLICATION`; 당시 GDD를 읽는 보존 PDF, 새 재기획 내용 미포함 |
+| `output/pdf/MY_LITTLE_BOAT_HUMAN_GAME_BLUEPRINT_20260902.receipt.json` | `HISTORICAL_PUBLICATION_SOURCE_AND_ASSET_RECEIPT`; 당시 source·generator·image·PDF hash를 변경하지 않음 |
+| `output/pdf/MY_LITTLE_BOAT_HUMAN_GAME_BLUEPRINT_20260902.source.md` | `IMMUTABLE_PUBLICATION_SOURCE_SNAPSHOT`; receipt의 GDD hash와 일치하는 원문, 새 정본/편집 owner 아님 |
 | `exports/my-little-boat_MASTER_PRODUCTION_GDD_20260829.pdf` | `HISTORICAL_STALE_PUBLICATION_NOT_CURRENT_SOURCE`; 이전 그림체·구현 전 상태·이전 시작 흐름을 current 안내로 쓰지 않음 |
 | `exports/my-little-boat_MASTER_PRODUCTION_GDD_20260828.pdf` | `HISTORICAL_DERIVED_NOT_CURRENT_SOURCE` |
 

@@ -1,112 +1,8 @@
 # 마이 리틀 보트 기획서
 
 **현재 상태:** `CURRENT_HUMAN_FACING_GDD`
-**갱신일:** 2026-09-10
+**갱신일:** 2026-09-02
 **읽는 법:** 이 문서는 사람이 게임의 경험과 결정 상태를 이해하기 위한 정본입니다. 실제 코드·Scene·테스트·캡처는 [현재 Godot handoff](../handoffs/CURRENT_GODOT_IMPLEMENTATION.md)가, visual consumer와 provenance는 [visual inventory](../visual/CURRENT_SCREEN_SURFACE_INVENTORY_AND_VISUAL_ASSET_COVERAGE.md)가 소유합니다.
-
-## 2026-09-10 승인된 재기획 방향과 현재 작업
-
-`CORE_DIRECTION_USER_APPROVED / VISUAL_MOTION_DESIGN_IN_REVIEW / NEW_RUNTIME_NOT_IMPLEMENTED`
-
-사용자는 목적지 없이 동반자와 보트에서 쉬는 코어 판타지를 유지하고, **떠다니는 친밀 디오라마** 방향으로 화면 흐름·아트·모션을 다시 설계하도록 승인했다. 아래 과거 구현표는 현재 실행 상태를 설명하는 기준선이며, 새 디자인의 확정 이미지나 구현 완료 증거가 아니다. 기존 이미지는 새 디자인의 참고자료로만 사용한다. 아직 실제 consumer가 있으므로 원본·승인 기록·runtime 파일을 삭제하지 않는다.
-
-### 플레이 경험과 화면 흐름
-
-새 방향의 중심은 콘텐츠를 더 많이 수행하는 것이 아니라, **내가 아무것도 하지 않아도 곁에 누군가 있고 작은 배가 물 위를 지나간다고 느끼는 것**이다. 친밀함은 호감도 알림 대신 자세·시선·간격으로 전달한다. 다음 흐름은 승인 방향을 구체화한 설계안이며, 수치·새 캐릭터·새 시각 표현은 검토 중이다.
-
-```text
-타이틀 대기 — 같은 바다·보트 + 제목 + 항해 시작
-  → 시작 — 화면 컷 없이 제목/UI만 사라지고 항해 시간 시작
-  → 나란히 쉬기 — 플레이어는 뒤에 기대고 동반자는 옆에 보임
-  → 풍경이 지나감 — 중앙 바닷길은 비우고 먼 곳만 변화
-  → 선택적 감상 / 사진 / 쉬는 메뉴
-  → 돌아오면 같은 항해의 시간·소리·편안함 설정을 유지
-  → 종료하거나 계속 쉬기 — 강제 결산·미완료 경고 없음
-```
-
-메인 화면에는 엽서·보상 추적·할 일 목록을 넣지 않는다. Album을 열었을 때만 사진과 개인 기록을 읽는다. 동반자가 고개를 들거나 다시 기대는 짧은 동작은 시각 후보이며 보상·퀘스트·새 저장 상태를 만들지 않는다. 놓쳐도 손해가 없는 주변 반응으로 설계한다.
-
-### 10개 벤치마크의 채택·변형·제외
-
-2026-09-10 공식 소개와 제작자 글을 직접 조회했다. 아래 관찰은 해당 1차 자료에 한정한다. 실제 게임을 모두 플레이했거나 내부 제작 공정을 역공학한 결과, 상업적 성공 원인, 의학적 힐링 효과를 검증한 것이 아니다. 오른쪽의 적용 판단은 본 프로젝트에 대한 설계 추론이다.
-
-| 사례·1차 자료 | 확인한 특성 | 프로젝트 판단 |
-| --- | --- | --- |
-| [A Short Hike](https://ashorthike.com/) | 평화로운 자연 탐색, 정상이라는 목적지 | `ADAPT` 작은 자연 발견과 자유로운 속도. 정상·경로 목표는 제외 |
-| [Tiny Glade](https://store.steampowered.com/app/2198150/Tiny_Glade/) | 관리·전투·목표 없는 디오라마, 실패 없는 수정 | `ADOPT` 부담 없는 꾸미기 원칙. 건축 편집기 전체는 제외 |
-| [Townscaper](https://store.steampowered.com/app/1291340/Townscaper/) | 목표 없는 건축 장난감과 즉각적인 형태 반응 | `ADAPT` 선택 즉시 preview. 거대한 배치 알고리즘 도입은 제외 |
-| [SUMMERHOUSE](https://store.steampowered.com/app/2533960/SUMMERHOUSE/) | 생활감 있는 작은 집, 승패 없는 창작 | `ADAPT` 사용 흔적이 느껴지는 작은 소품. 장식 물량 경쟁은 제외 |
-| [Spiritfarer](https://thunderlotusgames.com/games/spiritfarer/) | 배를 만들고 동료를 돌보는 관리 게임, 이별 주제 | `ADAPT` 배가 함께 사는 장소라는 관계. 돌봄 의무·죽음 서사는 제외 |
-| [ABZÛ](https://abzugame.com/) | 수중 환경과 생물과의 만남, 유영 탐색 | `ADAPT` 맑은 물의 깊이와 먼 생물. 잠수·서사 목적지는 제외 |
-| [Journey](https://thatgamecompany.com/journey/) | 여행 중 동행, 먼 산이라는 목표 | `ADAPT` 말보다 함께 있는 구도. 종착점·익명 실시간 만남은 제외 |
-| [Flower](https://thatgamecompany.com/flower/) | 단순한 방향 입력으로 자연을 통과 | `ADAPT` 움직임과 환경의 일관된 관계. 기울이기 필수 조작은 제외 |
-| [Lil Gator Game](https://store.steampowered.com/app/1586800/Lil_Gator_Game/) | 친근한 캐릭터와 이동 중심 탐색, 퀘스트·제작 | `ADAPT` 읽기 쉬운 귀여움과 놀이 분위기. 퀘스트·전투 흉내·재료 수집은 제외 |
-| [Kind Words](https://store.steampowered.com/app/1070710/Kind_Words_lo_fi_chill_beats_to_write_to/) | 아늑한 방에서 실제 사람에게 편지 | `ADAPT` 낮은 자극의 개인 공간. 온라인 확장·공개 상담 기능은 이번 범위에서 제외 |
-
-[A Short Hike 제작자 회고](https://blog.playstation.com/2021/08/05/crafting-a-tiny-open-world-a-look-behind-the-scenes-at-the-creation-of-a-short-hike/)는 제한된 개인 제작 범위에서 일관된 셰이딩과 가독성을 연결하고, 장소·행동에 따른 음악 변화를 설명한다. 여기서는 **그림체를 하나로 맞추고 작은 장면부터 검증하는 제작 원칙**을 변형 채택한다. 해당 게임의 픽셀 스타일을 복사하거나 동적 음악을 이미 구현했다고 해석하지 않는다. Bondee는 사용자가 제공한 구성 참고이며, 이번 10개 조사와 별도로 내부 구현·권리·모델 구조를 확인한 자료는 아니다.
-
-### SWOT와 독창성 검토
-
-| 구분 | 현재 판단 | 대응 |
-| --- | --- | --- |
-| 강점 S | 목적지 없는 휴식, 보트·동반자라는 명확한 중심, local-first 구현 | 게임 약속을 유지하고 첫 장면에서 둘의 관계를 읽히게 한다 |
-| 약점 W | 실제 consumer가 정적 카드 중심. 각도 전환에서 다른 그림이 보이며, 수면 변화량 검사는 전진 지각을 증명하지 못함 | 자세의 접점과 시간 연속성, 각도별 silhouette를 별도로 검증 |
-| 기회 O | 과업 없는 창작·감상 사례에서 작은 공간 자체의 가치를 확인 | 배 위 작은 생활감과 나란히 쉬는 모션을 차별화 후보로 시험 |
-| 위협 T | 유사한 cozy 외형, 물량 증가에 따른 상태×각도×외형 자산 폭증, 과한 흐름의 멀미 가능성 | 시각·모션 한 가족부터 시험하고 편안함 설정 유지. 독창성·편안함은 사용자 검증 전 단정하지 않음 |
-
-독창성 가설은 **목적지나 보상을 따라 움직이는 배가 아니라, 서로 기대어 쉬는 둘을 중심으로 세상이 조용히 지나가는 배**이다. 친밀함을 수치 상승 대신 보트 흔들림에 함께 반응하는 자세와 잠깐의 시선으로 표현한다. 세계 최초나 시장 검증으로 주장하지 않는다.
-
-### 기존 요소의 유지·수정·추가·보류
-
-| 현재 상태 | 권장 조치 | 이유 | 기대효과 |
-| --- | --- | --- | --- |
-| 타이틀 대기와 시작 분리 | 유지, 같은 장면 위 제목의 시각 통합 개선 | 시작 전 시간 누적을 피하면서 진입 맥락 유지 | 끊기지 않는 첫 경험 |
-| 후면 3/4와 하단 20% 부근 보트 | 유지, 캐릭터·동반자 겹침과 하단 안전영역 재검증 | 작은 화면에서 관계와 전진 방향을 동시에 읽혀야 함 | 넓은 바다와 친근한 동행 |
-| 기존 승인 그림체와 합성 카드 | 새 후보 제작. 이전 자산은 교체 검증 전 보존 | 사용자 최신 지시와 새 모션의 분리 제작 필요 | 인물·배·배경 이질감 완화 |
-| 하늘·바다 및 계절 layer 분리 구현 | 유지, 원경·중경·근경의 속도와 접점 재설계 | 단순 픽셀 변화만으로 진행 방향이 보장되지 않음 | 앞으로 나아가는 공간적 일관성 |
-| 정적 player/pet 그림 | 휴식→작은 반응→휴식 복귀의 모션 후보 추가 | 전체 카드를 흔들어서는 생명감이 제한됨 | 과업 없는 존재감 |
-| LookAround의 방향별 카드 | 제한된 시점과 실제 3D 대안 비교 후 결정 | 자유 회전을 약속하려면 새 제작 구조가 필요 | 전환 파열·자산 폭증 방지 |
-| 사진·Album·꾸미기·감상·편안함 설정 | 유지, 기존 저장 ID와 입력 경로 보존 | 이미 있는 선택적 가치와 회귀 위험 | 기능 손실 없는 재기획 |
-| 신규 수집 체계·상시 알림·일일 과업 | 이번 재기획에서 제외 | 쉬는 의미를 과업으로 바꿈 | 부담과 구현 범위 억제 |
-| 기존 낚시·병편지 | 현 구현 보존, 신규 확대 보류 | 핵심 시각·모션 검증과 독립된 범위 | 안전 경계와 작업 집중 유지 |
-
-### 제작 구조의 세 대안
-
-| 대안 | 장점 | 한계 | 현재 판단 |
-| --- | --- | --- | --- |
-| A. 방향별 손그림 프레임 + AnimatedSprite3D | 그림체 통제, 현재 카드 소비처와 가까움 | 각도×의상×동작으로 물량 증가, 연속 자유 회전 불가 | `TEST` 작은 표정·귀·시선 시퀀스 |
-| B. 분리형 2D 레이어 + 제한된 리깅/키포즈 | 기존 Sprite3D·접점 구조 재사용, 호흡·기대기 분리 | 큰 회전과 몸의 가림 해결이 어려움 | `ADAPT` 첫 rear 3/4 검증 슬라이스 권장. 전체 회전 해법으로 확정하지 않음 |
-| C. 실제 3D 모델·리그 + 일관된 스타일 재질 | 연속 회전, 동일 모델의 조명·관절·접점 | 신규 모델링·리깅·변형 QA와 모바일 성능 검증 필요 | `TEST` 자유 회전 유지 여부 판단용 비교. 즉시 전면 전환은 미확정 |
-
-[Godot AnimatedSprite3D](https://docs.godotengine.org/en/stable/classes/class_animatedsprite3d.html)는 SpriteFrames 기반 시퀀스의 엔진 경로를 제공한다. 이는 API 가능성이지 현재 자산의 일관성·성능 증거가 아니다. **첫 장면 B는 `FEASIBLE`(구조 수준), 각도 연속성·새 motion family는 `PARTIAL`**로 둔다. Aseprite를 쓴다는 이유로 픽셀 아트나 4×4 고정 프레임 수를 선택하지 않는다.
-
-### 모션·합성 계약 초안
-
-| 대상 | 독립적으로 제작할 것 | 시간·접점 규칙 | 완료 증거 |
-| --- | --- | --- | --- |
-| 하늘 / 구름 | 기본 하늘과 투명 구름 분리 | 수평선·카메라 자동 회전 금지, 구름만 약하게 변화 | 고정 하늘과 구름 영역별 연속 캡처 |
-| 섬 / 해상 명소 | 투명 원경·중경, 바다를 포함하지 않는 silhouette | 중앙 항로 밖, 가까워지며 배를 관통하지 않음 | 전체 통과 구간 lane 검사 |
-| 바다 | 근경 흐름과 원경의 낮은 대비 표현 분리 | 수평선에서 하단으로 흐름, 반복 경계 숨김, 편안함 설정 준수 | 실제 시간 진행의 방향·연속성·주기 경계 검사 |
-| 선체 / 접점 / 잔물결 | 수면을 굽지 않은 선체, 별도 접점과 약한 후류 | 선체 pivot 공유, 수면 아래 접점 유지 | 흔들림 전 주기에서 틈·중복 그림자 검사 |
-| 플레이어 / 동반자 | idle, notice, settle 키포즈와 필요한 가림 layer | 엉덩이·기댄 등·발 접점 고정. 둘을 같은 위상으로 기계적으로 흔들지 않음 | 같은 크기 overlay, silhouette·접점·복귀 검사 |
-
-모션 서사는 `idle → notice 준비 → 작은 시선/귀 반응 → settle → idle`로 정의한다. 휴식은 반복 루프, 반응은 비반복, 종료 후 같은 휴식 상태로 돌아간다. 움직임 크기·프레임 수·duration은 실제 크기 키포즈 검토 후 정한다. 소리·배경 이동·동반자 반응을 모두 동일한 주기로 반복하지 않는다. 저감 설정에서 필수 조작이나 정보를 잃지 않도록 한다.
-
-### Aseprite 자동 선택과 구현 패키지 경계
-
-Base v9.4.4 lock은 유지한다. 사용자 요청에 따라 최신 Base의 `ART_DIRECTION_AND_ASSET_PLANNING_GUIDE.md` §11 조건부 선택만 이번 제작 판단에 적용한다. 새 그림은 이미지 모델로 만들고, **실제 레이어·프레임 정리 또는 PNG+JSON 시트가 필요한 시점**에 연결된 Aseprite MCP를 우선 평가한다. 한 장짜리 컨셉을 억지로 Aseprite에 넣거나 같은 그림 복제로 모션 완료를 만들지 않는다. [Aseprite 공식 export 문서](https://www.aseprite.org/docs/cli/)의 프레임·메타데이터 구조를 참고하되 current tool의 실제 지원 범위로 검증한다.
-
-첫 구현 패키지는 `scenes/game.tscn`의 기존 배경·접점, `scenes/boat_space.tscn`의 `FinalDioramaCard` 대체 후보와 player/pet 분리, `scripts/voyage/game_scene.gd`의 visual update 경로에 한정한다. 필요할 때만 별도 visual controller를 둔다. 사진·Album·꾸미기·soundscape·save ID와 social 경계는 유지한다. 새 영구 데이터 스키마나 저장 마이그레이션은 현재 필요 없다.
-
-준비 순서는 **단일 항해 장면 후보 → 동일 캐릭터/동반자 식별 카드와 키포즈 → 실제 규격·분리 레이어 → 필요 시 Aseprite 포장 → 검토용 Blueprint 파생본 → 확정 범위 구현**이다. 새 시각 후보는 사용자 확정 전 production 자산으로 연결하지 않는다. rollback은 기존 consumer·원본을 그대로 보존한 채 새 visual family 연결만 되돌릴 수 있어야 한다. 그림체 확정 전 네 시간대·모든 각도·모든 꾸미기 조합을 대량 제작하지 않는다.
-
-### 현재 증거와 남은 검증
-
-2026-09-10 조사 기준 코드 head는 `08637e3f59a9e50b19582eff62080715f8d9ea47`이다. 현재 branch는 `origin/main`보다 15 commits 앞서 있으며 별도 PR #19는 read-only로 유지한다. 이번 준비는 production code·scene·save·기존 이미지·과거 캡처를 변경하지 않는다.
-
-기존 `tests/capture_voyage_forward_flow.gd`는 process를 멈추고 `_apply_drift_motion(2.0)`을 직접 호출한 렌더 비교다. 기록된 픽셀 변화율은 **단계별 렌더 변화**를 증명하며, 자연 시간 재생·정방향 지각·접점 연속성·휴먼 편안함을 증명하지 않는다. 다음 runtime 검증은 사용자 입력 경로의 title→start→rest→감상→복귀를 실제 시간으로 재생하고, 기존 evidence를 덮어쓰지 않는 새 출력 경로·격리 저장으로 실행한다. 현재 새 디자인의 runtime·device·Human은 `NOT_RUN`이다.
-
-이하 2026-09-02 PDF는 당시 정본에 source-bound된 **역사적 스냅샷**으로 보존한다. 새 재기획 내용을 포함한 current publication은 아직 만들지 않았다. 과거 `CURRENT_SOURCE_BOUND_DERIVED_PUBLICATION` 표기는 해당 receipt 당시 상태이며 현재 재기획 전달본으로 사용하지 않는다.
 
 ## 0. Human Game Blueprint 읽기 profile
 
@@ -118,9 +14,8 @@ Base v9.4.4 lock은 유지한다. 사용자 요청에 따라 최신 Base의 `ART
 
 ### 산출물과 publication 경계
 
-`output/pdf/MY_LITTLE_BOAT_HUMAN_GAME_BLUEPRINT_20260902.pdf` = `HISTORICAL_SOURCE_BOUND_PUBLICATION`.
-`output/pdf/MY_LITTLE_BOAT_HUMAN_GAME_BLUEPRINT_20260902.receipt.json` = `HISTORICAL_PUBLICATION_SOURCE_AND_ASSET_RECEIPT`.
-`output/pdf/MY_LITTLE_BOAT_HUMAN_GAME_BLUEPRINT_20260902.source.md`는 당시 GDD의 byte-exact 보존본이다. 새 편집 owner가 아니며 기존 receipt의 source hash 검증에만 사용한다.
+`output/pdf/MY_LITTLE_BOAT_HUMAN_GAME_BLUEPRINT_20260902.pdf` = `CURRENT_SOURCE_BOUND_DERIVED_PUBLICATION`.
+`output/pdf/MY_LITTLE_BOAT_HUMAN_GAME_BLUEPRINT_20260902.receipt.json` = `CURRENT_PUBLICATION_SOURCE_AND_ASSET_RECEIPT`.
 `exports/my-little-boat_MASTER_PRODUCTION_GDD_20260829.pdf` = `HISTORICAL_STALE_PUBLICATION_NOT_CURRENT_SOURCE`.
 `exports/my-little-boat_MASTER_PRODUCTION_GDD_20260828.pdf` = `HISTORICAL_DERIVED_NOT_CURRENT_SOURCE`.
 

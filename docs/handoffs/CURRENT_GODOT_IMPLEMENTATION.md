@@ -3,6 +3,27 @@
 **프로젝트:** `MY_LITTLE_BOAT`
 **역할:** 실제 코드·Scene·test·runtime evidence와 현재 제품 정본의 차이를 기록하는 기술 router
 **현재 사람용 정본:** [프로젝트 GDD](../design/PROJECT_GDD.md)
+
+### 2026-09-10 active context — 코어 유지, 화면·아트·모션 재기획
+
+현재 사용자 승인은 GDD 첫 절의 **떠다니는 친밀 디오라마** 방향 구체화와 후보 준비다. 새 시각·모션은 `DESIGN_IN_REVIEW`, 새 runtime은 `NOT_IMPLEMENTED`다. 아래 기존 작업 기록은 구현 기준선으로 보존한다. 기존 asset은 새 제작에서 reference-only지만 실제 consumer가 있으므로 삭제·교체하지 않았다. 새 영구 데이터나 social 기능을 추가하지 않았다.
+
+다음 검증 패키지는 title→start→rest→감상→복귀를 실제 시간·실제 입력 흐름으로 캡처한다. `tests/capture_voyage_forward_flow.gd`의 기존 2초 비교는 `set_process(false)` 뒤 `_apply_drift_motion(2.0)`을 호출하는 staged renderer evidence이므로 연속 실제 플레이·이동 방향 지각·Human comfort의 PASS로 올리지 않는다. 이번 문서/후보 준비에서는 해당 캡처를 다시 실행하거나 과거 PNG를 덮어쓰지 않았다.
+
+현재 변경은 GDD·문서 router·visual 후보/receipt 및 기존 PDF 원문 보존·관련 검증에 한정한다. Base v9.4.4 lock, production code/scene/save/기존 assets, PR #19는 변경하지 않는다. 새 그림의 최종 확정과 Blueprint 검토 이후 exact 시각 패키지를 구현한다.
+
+검토·교정 기록은 코드 기준 `08637e3f59a9e50b19582eff62080715f8d9ea47` 위의 이번 documentation/candidate patch를 대상으로 한다. 새 게임 구현의 five-loop clean exit가 아니라 **준비물 검토 기록**이다.
+
+| 검토 | 실제 확인·발견 | 교정·증거 한계 |
+| --- | --- | --- |
+| authority/범위 | AGENTS·GDD·handoff·inventory·adapter·실제 scene/script·open PR 조회, Base remote `2f93e872d9ed4fa18018ac759b01acd7d34e9b58`의 Aseprite 절 | 기존 이미지의 과거 승인과 새 재기획을 분리. lock·다른 PR 유지 |
+| 조사/실현성 | 공식 10개 게임 소개·제작자 회고·Godot/Aseprite 문서, 세 제작 방식과 실제 Sprite3D 소비처 대조 | 2D가 연속 회전을 해결한다는 과장 배제. 각도 연속성 `PARTIAL` |
+| publication 회귀 | 관련 unittest 10개 실행 중 old receipt와 새 GDD hash 비교 1개 실패 | 원래 GDD를 62,180-byte immutable source snapshot으로 보존. receipt hash `0023018190c4f41fcd5ee88c25d3f05f948af1a17d4bcf05a4cf5a3e0c7a6a10` 일치 확인, snapshot LF 고정. PDF/receipt byte 변경 없음. 10개 재실행 PASS |
+| 후보/증거 | 생성 이미지 직접 시각 확인·규격·SHA readback, 기존 capture source의 직접 delta 호출 재확인 | 수면 과밀·최종 배치 재검증 findings 기록. 정적 후보·staged capture를 motion/Human PASS로 올리지 않음 |
+| 회귀/장기 적합성 | 전체 Python suite `python -m unittest discover -s tests -p 'test_*.py' -q` 12개 PASS, diff whitespace 검사, production/scenes/assets/old evidence/adapter/PDF/receipt의 무변경 readback | 공용 신규 도구·bridge·대량 변형·새 저장 체계를 만들지 않음. 새 게임 실행·모션·모바일/Human 검증은 NOT_RUN |
+
+자동화 교훈은 기존 publication 테스트에 반영했다. **새 기획을 쓰기 위해 과거 승인 PDF를 덮어쓰지 않고, 그 PDF의 정확한 source snapshot을 검증한다.** Base 승격은 공용 후보이며 이번 턴 Base 파일 변경·채택 lock 교체는 하지 않았다. 임시 branch/worktree는 만들지 않았고 기존 타 작업 worktree는 보존했다.
+
 **현재 작업:** 2026-08-31 user direction에 따른 title boat waiting, explicit voyage start boundary, time-paired static sky + independently flowing sea, 하단 boat framing과 승인된 narrow waterline contact motion reconciliation을 구현하고 current machine/runtime verification을 완료했다. 2026-09-01 Look Around는 whole-composite art 대신 angle-specific foreground를 shared static sky + flowing sea 위에 합성하도록 교정했고, Bright/spring에는 기존 정적 하늘과 흐르는 바다를 유지한 별도 구름·꽃섬 parallax slice를 연결했다. Base 적용 순서와 운영 contract는 `docs/operations/MY_LITTLE_BOAT_BASE_ADAPTER.json`이 project-local로 소유한다. 기존 사용자 승인 후면 3/4 normal foreground, local motion comfort, actual voyage postcard와 fish/completed-voyage local ledger, saved floral cushion/main-postcard-omission evidence는 유지한다. Human/device comfort는 별도 요청 전까지 `NOT_RUN`이다.
 
 ### 2026-09-02 Blueprint publication recovery receipt
