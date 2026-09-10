@@ -59,7 +59,7 @@ Core controls:
 - Speed Control
 
 Core loop:
-- Launch directly into the normal 3/4 boat diorama. The device's local clock automatically chooses dawn, bright, sunset, or night; there is no startup selector and no saved atmosphere preference.
+- Launch directly into the 3/4 boat diorama in title-waiting state with the logo and Start button. Only Start begins voyage progression. The device's local clock automatically chooses dawn, bright, sunset, or night; there is no startup selector and no saved atmosphere preference.
 - Rest with the visible avatar and pet. Simply staying is complete play.
 - Let low-density scenery pass naturally as active foreground time progresses. It is visual context, not a reward track or a task.
 - Optionally use low-pressure interactions, photography, decoration, fishing, ambient discoveries, and delayed bottle letters as each slice is implemented.

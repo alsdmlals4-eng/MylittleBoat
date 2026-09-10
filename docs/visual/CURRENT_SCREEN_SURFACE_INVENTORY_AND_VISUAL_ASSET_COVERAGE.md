@@ -17,6 +17,8 @@ Notion은 historical archive이며 이 문서의 current owner가 아닙니다. 
 
 ### 1.1 2026-09-02 standing image-production authorization
 
+**2026-09-10 현재 override — IMAGE_PRODUCTION_PAUSED_FOR_PLANNING.** 사용자가 이미지를 바로 작업하지 말고 제작에 필요한 전체 기획부터 조사·정리하도록 지시했다. 아래 standing authorization과 후속 후보 준비 순서는 역사적 기록이며 현재 이미지·모델 생성/편집·runtime 연결을 시작하는 권한이 아니다. 새 계획은 GDD의 통합 제작 기획 P1–P10이 소유한다. 기존 승인/후보/분리 배치 파일은 삭제·재생성·정본 승격 없이 보존한다. 현재 작업은 기획·명세·자료 조사이며 새 최종 visual lock, 3D family, 모션 state는 아직 준비되지 않았다.
+
 사용자는 기존 visual grammar와 실제 consumer 안에서 필요하다고 판단된 이미지를 per-file approval 없이 제작·등록·연결·검증하도록 승인했습니다. 따라서 concrete runtime consumer, current art direction, dimensions, state family와 rollback 계획을 먼저 확인한 뒤 candidate stop 없이 권장 경로를 계속할 수 있습니다. 생성 뒤에는 provenance와 source/canonical SHA-256을 기록하고 runtime consumer와 renderer evidence를 연결합니다. 이 standing authority는 새 게임 의미·새 public surface·새 asset family의 final visual lock·비용·권리 불명 source를 자동 승인하지 않으며, image generation·canonical registration·runtime implementation·Human/device acceptance는 계속 별도 상태로 기록합니다.
 
 ## 2. 확정 visual grammar

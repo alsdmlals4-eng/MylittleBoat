@@ -6,6 +6,36 @@
 
 ### 2026-09-10 active context — 코어 유지, 화면·아트·모션 재기획
 
+**현재 작업 지시 — 전체 제작 기획 우선.** 사용자는 부분 검토 뒤 반복 질문하는 대신 게임 제작에 필요한 기획 전체를 조사·권장안으로 구체화하도록 지시했다. [GDD의 통합 제작 기획 P1–P10](../design/PROJECT_GDD.md#통합-제작-기획--전체-경험시스템제작-계약)이 최신 계획 owner다. 이미지·모델 제작과 production 구현은 보류이며 아래 ‘후속 제작’ 문장은 자동 실행 queue가 아니다. 기존 미커밋 배치 도구·이미지 증거는 보존하고 이번 기획 변경과 별도 취급한다.
+
+계획은 `RECOMMENDED_PRODUCTION_BASELINE`, C안은 엔진 경로 `PARTIAL` / 승인 외형 모델·리그 제작 `BLOCKED_UNVERIFIED`다. 전체 기획을 수행하라는 승인은 연구·명세화를 포함하지만, 실제 없는 모델·리그를 ASSET_READY로 올리거나 Human/Blueprint final approval을 추정하는 권한은 아니다. 기술 선택은 계속 구체화하되 새 자산 생산 gate는 유지한다.
+
+| bounded package | 기존 consumer / 재사용 검증 | 새 작업에서 증명할 차이 |
+| --- | --- | --- |
+| continuity | `scripts/voyage/game_scene.gd`, `scripts/ui/album_view.gd`, `scripts/core/game_state.gd`; `tests/test_together_time_game_scene_contract.gd` | full overlay·focus 동결, 같은 시각 위상 복귀, 사진 저장 중 입력 중복, 300초 1회 기록과 무한 휴식. 현재 state-only 보존을 전체 연속성 PASS로 해석하지 않음 |
+| camera/art/sea | `scenes/boat_space.tscn`, `scenes/game.tscn`, `scripts/voyage/look_around_camera_controller.gd`; `tests/test_voyage_forward_drift_contract.gd` | 실제 3D family 왕복, world-space 흐름, 전체 각도/부유 주기 접점, 낮 한 family 후 시간대 확대. 기존 direction card와 primitive는 새 asset proof가 아님 |
+| cosmetic/content | `scripts/identity/identity_visual_catalog.gd`, `scripts/decor/boat_decor_catalog.gd`, `scripts/voyage/drift_scenery_director.gd` | 기존 3 style/4 species/8 slot/6 item ID 보존과 점유 가림, 6 motif/봄 layer의 항로 비침범. 실제 존재한 consumer를 무단 삭제하지 않음 |
+| memory/actions/audio | `scripts/core/photo_memory_persistence.gd`, `scripts/core/memory_ledger_persistence.gd`, `scripts/voyage/fishing_session.gd`, `scripts/audio/resting_soundscape.gd` | write failure/누락/손상/취소/중복 저장, 음량·음소거·복귀·loop 경계. 실제 청취와 device comfort는 NOT_RUN |
+| production/release | 기존 export/test/publication owner | 대표 기기 성능·export·권리·Human·social gate 분리. 새 PDF·이미지 생성 또는 출시를 이번 문서 작업의 PASS로 만들지 않음 |
+
+소리의 실제 구현은 autoload ocean bed이고 다른 layer는 우선순위 선언이다. API·상수·파일명만 보고 전체 authored sound library가 준비됐다고 주장하지 않는다. 현 배치 PNG 원본·기존 PDF·save·production code는 이번 통합 기획에서 무변경이다.
+
+#### 통합 기획 검토 기록
+
+대상은 `7ba087ead251b99ac8cd01f414550f6d4f461f5b` 위의 P1–P10 통합 문서 변경이며 게임 구현의 clean exit가 아니다. 아래 회차마다 전체 권장 범위·금지 범위와 기존 consumer 보존을 재대조했다. 이미지 중단 전 미커밋 렌더 증거는 이 검토의 변경 범위에서 제외한다.
+
+| 회차 | 전체 범위 대조와 실제 검사 | finding / 교정 / 더 나은 대안 | 회귀·장기 적합성 |
+| --- | --- | --- | --- |
+| 1 | AGENTS·GDD·handoff·adapter·code/catalog/persistence/audio·원격 PR, 10개 공식 benchmark와 엔진 문서 | 카메라만 검토하는 불완전 범위 → P1–P10 전체 경험·시스템·제작 명세. 새 문서 정본 대신 GDD 통합 | Blueprint 7 + Base 3 + CI coverage 2 tests PASS. 원본 scene/script/save/asset/PDF 무변경 |
+| 2 | P1–P10 본문 전체 읽기·실제 save 경로/기록 로직 대조·15개 consumer path 검사 | 속도 메뉴 누락과 production 전 Blueprint gate의 순서 혼동 → 메뉴 복원, P9의 1a gate 추가. 보상/새 save 대신 표현·overlay 개선 | consumer 누락 0, fenced block 검사, Blueprint 7 PASS. GDD readback SHA ad52f0788b4fcdf464be9fb93b4e5e53e8099f5f2d914176f2d48ddb05d80c4d 당시 상태 |
+| 3 | 전체 P1–P10의 진입/취소/복귀/저장/자산/성능/Human 경계, 실제 scenery Tween/Timer·comfort source와 공식 pause 문서 | delta만 차단하면 Tween·Timer가 따로 움직일 수 있음 → pause domain과 UI/audio 분리, still 큐 규칙 명시. 전역 pause 대안 제외 | Base 3 PASS, production 무변경, full section check. 로컬 검사 명령의 PowerShell backtick 손실은 chr(96)로 교정해 재실행 성공; 제품 결함으로 오기하지 않음 |
+| 4 | 전체 계획과 visual inventory의 standing authorization·구형 GDD 준비 순서·기존 3 style/4 species 재대조 | 과거 이미지 자동 제작 안내가 최신 중단과 충돌 → inventory override와 구형 준비 queue 라벨. 자산 삭제 대신 승인 이력 보존 | 3 owner 경계 검사, Blueprint 7 + CI coverage 2 PASS, production 무변경. P1–P10 normalized section SHA 810ce6c71eb6d9b2d1a8f62daa6a6462e2dff295e8d0bd978e5fc0fff7c9d5a5 |
+| 5 | 최종 전체 계획·handoff·AGENTS·실제 title/start 코드·소스 경로·저장 보호·남은 C안 위험·diff 재대조 | AGENTS direct-entry 문장의 title/start 경계가 불명확 → 기존 승인·실제 코드에 맞춰 명료화. C안은 PARTIAL 유지, 제작 불가능성을 2D 카드 성공으로 대체하지 않음 | 최종 검사 결과는 아래 delivery readback으로 남김. 추가 기능/서비스/데이터 migration 없이 현 기획 범위를 유지 |
+
+남은 것은 C안의 승인 외형 제작·변형/기기 증거와 각 production package의 구현/검증이다. 이는 문서 검사로 닫히지 않는다. Base 공용 승격은 연속성 검증의 후보만 기록하고 공용 코드·skill은 만들지 않았다.
+
+최종 문서 검사 readback은 P1–P10 존재·필수 경계·15개 실제 consumer 경로 확인, Blueprint 7 + Base adapter 3 + CI coverage 2 = **12 tests PASS**, `git diff --check` 오류 없음, scripts/scenes/assets/project.godot/기존 PDF diff 없음이다. 후보 이미지 렌더 테스트는 이미지 작업 보류에 맞춰 이번에 실행하지 않았다. 이 결과는 문서·기존 계약 회귀 검사이지 새 gameplay/runtime/Human PASS가 아니다. 이전 이미지 검토의 미커밋 파일/문서 hunk는 별도로 보존하고 통합 기획 delivery에 포함하지 않는다.
+
 **최신 결정.** 사용자가 `MLB-REDESIGN-STAGING-002`의 구도를 확정하고 노를 제외했다. 구도는 `USER_LOCKED_STAGING`; 새 기본 장면의 oars/rowing/paddle-tip splash는 제작 범위에서 제외한다. 노 제거 파생본 `stern-staging-no-oars-v3.png`를 이미지 모델로 준비했으며 기존 분리 자산의 exact 합성이나 게임 연결은 아니다. 아래 이전 후보 상태는 당시 기록이다. 후속은 player·쿠션·front rail·접점 정렬과 바다 흐름이며 노 준비는 더 이상 잔여 작업이 아니다.
 
 최신 추가 준비는 `MLB-REDESIGN-STAGING-002 / GENERATED_CANDIDATE / NOT_USER_LOCKED`다. 독립 선체/player/pet을 참조해 좌석·난간 가림을 교정한 후 배 크기·하단 위치를 한 번 더 수정했다. 저장소의 `stern-staging-review-v2.png`는 이미지 모델 합성 후보이며 exact-layer composite/540×960 runtime 검증이 아니다. 기존 독립 PNG의 fringe, front rail/쿠션/노/접점 제작, 정확한 좌석 pivot·전진 흐름은 아직 남아 있다. 기존 consumer와 13개 source/derived 파일은 무변경이다.
