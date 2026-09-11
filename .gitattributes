@@ -1,5 +1,9 @@
 # 생성·검수 PDF는 텍스트 diff나 whitespace 검사 대상이 아닌 바이너리다.
 *.pdf binary
+scripts/voyage/game_scene.gd text eol=lf
+assets/shaders/voyage_split_sea_flow.gdshader text eol=lf
+tests/capture_voyage_realtime_motion.gd text eol=lf
+tools/analyze_voyage_motion_capture.py text eol=lf
 output/pdf/MY_LITTLE_BOAT_HUMAN_GAME_BLUEPRINT_20260902.source.md text eol=lf
 # 새 Blueprint 해시 결속 입력은 다른 체크아웃에서도 동일한 바이트를 유지한다.
 docs/design/PROJECT_GDD.md text eol=lf

@@ -17,7 +17,8 @@ class ReviewBlueprintTests(unittest.TestCase):
         r=json.loads(PDF.with_suffix('.receipt.json').read_text(encoding='utf-8'))
         self.assertEqual(r['output_sha256'],sha(PDF))
         self.assertEqual(r['snapshot_sha256'],sha(ROOT/r['source_snapshot']))
-        self.assertEqual(r['gdd_sha256'],sha(ROOT/'docs/design/PROJECT_GDD.md'))
+        # Historical publication binds its immutable GDD snapshot, not later gameplay edits.
+        self.assertEqual(r['gdd_sha256'],sha(ROOT/r['source_snapshot']))
         self.assertEqual(r['manifest_sha256'],sha(MANIFEST))
         for path,digest in r['images'].items():self.assertEqual(digest,sha(ROOT/path))
 

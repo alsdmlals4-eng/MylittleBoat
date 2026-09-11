@@ -6,6 +6,8 @@
 
 ## 1. authority와 evidence를 구분하는 법
 
+**2026-09-11 후속 이동 구현 승인.** 기존 runtime 수면·선체·접점 consumer의 이동 연출 개선은 최신 사용자가 직접 승인했다. 새 candidate art 등록 없이 기존 승인 texture를 재사용한다. 수면 shader의 원근/두 위상 교차/시선 상대 흐름은 [이동 검증](../evidence/2026-09-11-voyage-motion/REVIEW.md)이 소유한다. 새로운 3D 모델·전체 Blueprint·Human 승인은 여전히 별도다.
+
 | 구분 | owner | 뜻 |
 | --- | --- | --- |
 | 제품 방향 | `PROJECT_GDD.md`, 사용자가 승인한 visual decision | 플레이어가 실제로 보게 되어야 하는 것 |

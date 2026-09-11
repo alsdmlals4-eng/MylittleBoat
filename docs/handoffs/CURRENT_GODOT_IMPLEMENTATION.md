@@ -4,6 +4,16 @@
 **역할:** 실제 코드·Scene·test·runtime evidence와 현재 제품 정본의 차이를 기록하는 기술 router
 **현재 사람용 정본:** [프로젝트 GDD](../design/PROJECT_GDD.md)
 
+### 2026-09-11 후속 current authority — 전진 이동 연출 구현
+
+최신 사용자 지시가 이동 연출의 조사 후 실제 구현을 승인했다. 아래 Blueprint 전체 production 보류는 새 모델/아트/전체 계획에는 유효하지만, 이번 기존 수면·부유·비활성 시간 개선은 명시적 예외다. 기준 HEAD `590b5dacfefefd529f29527f8c43df38176578cd`, main `7181d5e6845e75107eade8c4d2e62e10334ab54b`. 다른 PR #19와 Base adapter v9.4.4는 그대로 유지했다.
+
+구현은 기존 SeaBackdrop material의 원근·시선 상대 방향·두 위상 연속 흐름, still 정지, 선체 접점 유지, inactive process 정지다. [실무 조사·5회 검토·검증 경계](../evidence/2026-09-11-voyage-motion/REVIEW.md), [실제 30초 재생](../evidence/2026-09-11-voyage-motion/runtime/voyage-30s.webp), [측정/소스 hash](../evidence/2026-09-11-voyage-motion/runtime/motion-analysis.json)를 함께 읽는다. runtime art는 기존 승인 family를 재사용했으며 새 모델·rig·후보를 적용하지 않았다.
+
+전체 58개 headless 계약 재실행 실패 0, Python 18 tests PASS. 새 GPU 연속성 계약은 OpenGL와 Forward Mobile Vulkan 모두 통과했다. 최종 Vulkan 실제 process 촬영은 152프레임/30.203초, 근수면 6.924px/s·원수면 1.003px/s 중앙값이다. 명시적 foreground fixture이므로 OS focus 전달 검증은 아니다. 원본 캡처를 생성 이미지/보간으로 교체하지 않았다.
+
+첫 Vulkan 촬영 종료의 ObjectDB 2개 경고는 verbose 재촬영에서 재현되지 않았다. RGB8→RGBA8 하드웨어 변환 경고와 격리 candidate project 발견 경고는 남은 진단 정보로 기록하며 무경고 PASS를 주장하지 않는다. Blueprint PDF는 구현 전 보존 snapshot으로 유지한다. 전체 3D 공간의 전진·island depth, 별도 Tween/Timer/album continuity, Human/device 검증은 남아 있다.
+
 ### 2026-09-11 current authority — 사람용 Blueprint·필수 후보 제작
 
 최신 사용자는 십보강호 PDF를 구조 참고로만 사용하고 상세 SWOT·시스템·데이터·화면/자산 아틀라스·실제 사용 규격 이미지를 준비하도록 승인했다. 이미지 제작 보류는 해제됐다. 아래 2026-09-10 active context의 제작 중단 문구는 역사적 상태다. 새 계획 상세 owner는 GDD B1–B12, 기존 경험 계약은 P1–P10이다. 이번에는 문서·후보·후보 검수/출판 도구만 변경하며 production 게임 적용은 전체 Blueprint 최종 승인 후다.

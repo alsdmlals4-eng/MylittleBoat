@@ -171,7 +171,10 @@ func _sample_seasonal_motion(profile: String) -> Dictionary:
 	var scene := (load(GAME_SCENE_PATH) as PackedScene).instantiate()
 	root.add_child(scene)
 	await process_frame
-	scene.set_application_foreground(false)
+	# Freeze automatic callbacks, not foreground ownership: explicit motion steps
+	# now correctly refuse to advance a genuinely inactive application.
+	scene.set_process(false)
+	scene.set_application_foreground(true)
 	scene.call("apply_real_time_visual_context_for_tests", 12, 4)
 	var director = scene.get("_drift_scenery_director")
 	var event_seed := _find_no_save_seasonal_bright_seed()

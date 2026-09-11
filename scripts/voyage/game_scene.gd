@@ -192,6 +192,8 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	if not _application_in_foreground:
+		return
 	_apply_drift_motion(delta)
 	if _title_waiting:
 		return
@@ -854,10 +856,15 @@ func _apply_split_backdrop_textures(time_of_day_id: String, backdrop_modulate: C
 func _ensure_sea_flow_material(backdrop: Sprite3D) -> void:
 	var flow_material := backdrop.material_override as ShaderMaterial
 	if flow_material != null and flow_material.shader == SEA_FLOW_SHADER:
+		# Each camera owns its vector; scene subresources may otherwise be shared.
+		if not backdrop.has_meta("unique_sea_flow_material"):
+			backdrop.material_override = flow_material.duplicate()
+			backdrop.set_meta("unique_sea_flow_material", true)
 		return
 	flow_material = ShaderMaterial.new()
 	flow_material.shader = SEA_FLOW_SHADER
 	backdrop.material_override = flow_material
+	backdrop.set_meta("unique_sea_flow_material", true)
 
 
 func _ensure_look_around_foreground_material(foreground: Sprite3D) -> void:
@@ -905,6 +912,11 @@ func _apply_background_flow_to_backdrop(backdrop: Sprite3D) -> void:
 	flow_material.set_shader_parameter("source_texture", backdrop.texture)
 	flow_material.set_shader_parameter("flow_offset", _background_flow_offset)
 	flow_material.set_shader_parameter("forward_flow_offset", _forward_water_flow_offset)
+	var travel_direction := Vector2(0.0, 1.0)
+	if backdrop.get_parent() == $VoyageWorld/LookAroundCameraRig/LookAroundCamera3D:
+		var yaw: float = $VoyageWorld/LookAroundCameraRig.rotation.y
+		travel_direction = Vector2(-sin(yaw), cos(yaw))
+	flow_material.set_shader_parameter("travel_direction", travel_direction)
 
 
 func _apply_background_flow() -> void:
@@ -916,10 +928,11 @@ func _apply_drift_motion(delta: float) -> void:
 	var speed_index := clampi(GameState.speed_index, 0, SPEED_MULTIPLIERS.size() - 1)
 	var comfort_scale := GameState.get_motion_comfort_scale()
 	var visual_motion_multiplier := SPEED_MULTIPLIERS[speed_index] if not _title_waiting else TITLE_IDLE_MOTION_MULTIPLIER
-	var safe_delta := maxf(delta, 0.0)
-	_drift_phase += safe_delta * visual_motion_multiplier
+	var safe_delta := maxf(delta, 0.0) if _application_in_foreground else 0.0
+	if comfort_scale > 0.0:
+		_drift_phase += safe_delta * visual_motion_multiplier
 	_background_flow_offset = fposmod(
-		_background_flow_offset + safe_delta * BACKGROUND_FLOW_UNITS_PER_SECOND * visual_motion_multiplier,
+		_background_flow_offset + safe_delta * BACKGROUND_FLOW_UNITS_PER_SECOND * visual_motion_multiplier * comfort_scale,
 		1.0,
 	)
 	if not _title_waiting:
@@ -946,7 +959,7 @@ func _apply_drift_motion(delta: float) -> void:
 		water_contact.position = _boat_water_contact_base_position + Vector3(lateral_current, boat_bob * 0.92, forward_surge)
 		water_contact.scale = _boat_water_contact_base_scale * contact_breath * surge_emphasis
 		var contact_modulate := _boat_water_contact_base_modulate
-		contact_modulate.a *= 0.9 + maxf(boat_bob_signal, 0.0) * 0.16 + travel_wake_signal * 0.04
+		contact_modulate.a *= 0.9 + maxf(boat_bob_signal, 0.0) * 0.16 * comfort_scale + travel_wake_signal * 0.04
 		water_contact.modulate = contact_modulate
 	var waterline_contact := $VoyageWorld/BoatWaterlineContact as Sprite3D
 	if waterline_contact != null:
@@ -954,7 +967,7 @@ func _apply_drift_motion(delta: float) -> void:
 		waterline_contact.position = _boat_waterline_contact_base_position + Vector3(lateral_current, boat_bob * 0.96, forward_surge)
 		waterline_contact.scale = _boat_waterline_contact_base_scale * waterline_breath
 		var waterline_modulate := _boat_waterline_contact_base_modulate
-		waterline_modulate.a *= 0.92 + maxf(boat_bob_signal, 0.0) * 0.12
+		waterline_modulate.a *= 0.92 + maxf(boat_bob_signal, 0.0) * 0.12 * comfort_scale
 		waterline_contact.modulate = waterline_modulate
 
 

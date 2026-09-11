@@ -16,6 +16,10 @@
 
 ## 플레이 경험
 
+2026-09-11 이동 연출은 수평선에서 느리고 가까이에서 빠른 수면 흐름, 둘러보기 시선 상대 방향, 반복 경계 교차, 고요/비활성 정지를 적용합니다. [30초 실제 재생·조사·검증](docs/evidence/2026-09-11-voyage-motion/REVIEW.md)을 참고하세요. 전체 **59개 계약 중 58개**가 headless 집합이며 새 수면 shader의 GPU 검사는 Windows display renderer에서 별도로 실행합니다. 아래 58/57개 검증 문단은 이전 회차의 이력입니다. 새 재기획 아트·모델은 아직 적용하지 않았습니다.
+
+이동 회귀 검사는 `godot --path . --script tests/test_voyage_motion_continuity.gd`로 실행합니다. 30초 촬영은 `godot --path . --script tests/capture_voyage_realtime_motion.gd -- <존재하지_않는_절대_출력_폴더>`입니다. 촬영은 테스트 저장 경로와 명시적인 foreground 조건을 사용하므로 실제 OS focus 전달/휴대기기 편안함의 증거는 아닙니다.
+
 ```text
 실행
 → 로고와 실제 보트가 잔잔히 떠 있는 타이틀 대기
