@@ -52,3 +52,10 @@ func refresh_from_state() -> void:
 			)
 	if identity_visual_router != null and identity_visual_router.has_method("sync_decor_from_state"):
 		identity_visual_router.call("sync_decor_from_state")
+	var final_card := _boat_space.get_node_or_null("FinalDioramaCard") as Sprite3D
+	if final_card != null and final_card.visible and final_card.has_method("apply_motion"):
+		_preview_camera.look_at(final_card.global_position, Vector3.UP)
+		_preview_camera.fov = 24.0
+	else:
+		_preview_camera.rotation = Vector3.ZERO
+		_preview_camera.fov = 48.0

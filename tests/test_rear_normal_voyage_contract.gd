@@ -5,7 +5,7 @@ const GAME_SCENE_PATH := "res://scenes/game.tscn"
 const BOAT_SPACE_SCENE_PATH := "res://scenes/boat_space.tscn"
 const REAR_APPROVED_SOURCE_PATH := "res://docs/visual/approved/2026-08-30-chibi-normal-rear/chibi-normal-rear-3-4-approved-source.png"
 const REAR_CHROMA_MATTE_PATH := "res://assets/images/runtime/voyage/normal_chibi/chibi-normal-rear-chroma-key.png"
-const REAR_CARD_PIXEL_SIZE := 0.0037
+const REAR_CARD_PIXEL_SIZE := 0.0038
 
 var _failures := 0
 
@@ -25,10 +25,11 @@ func _run() -> void:
 		root.add_child(boat_space)
 		await process_frame
 		var final_card := boat_space.get_node_or_null("FinalDioramaCard") as Sprite3D
-		_expect(final_card != null and final_card.texture != null and final_card.texture.resource_path == REAR_CHROMA_MATTE_PATH, "normal final card must consume the approved rear three-quarter matte")
+		_expect(final_card != null and final_card.texture is ViewportTexture, "normal final card must consume the approved rear parts composition")
 		_expect(final_card != null and is_equal_approx(final_card.pixel_size, REAR_CARD_PIXEL_SIZE), "rear card must compensate for its quieter source framing with a readable normal-play size")
-		var material := final_card.material_override as ShaderMaterial if final_card != null else null
-		_expect(material != null and material.get_shader_parameter("matte_texture") != null and (material.get_shader_parameter("matte_texture") as Texture2D).resource_path == REAR_CHROMA_MATTE_PATH, "normal material must bind the rear matte explicitly")
+		var player := final_card.get_node_or_null("PartsViewport/Player") as Sprite2D
+		var atlas := player.texture as AtlasTexture if player != null else null
+		_expect(atlas != null and atlas.atlas.resource_path == "res://assets/images/runtime/voyage/stern_parts/stern-motion-parts-rgba-v1.png", "normal composition must bind the newly approved art, not old rear art")
 		boat_space.queue_free()
 		await process_frame
 

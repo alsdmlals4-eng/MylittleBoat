@@ -48,6 +48,7 @@ func _run() -> void:
 			absf(water_base_position.y - boat_base_position.y) <= MAX_WATER_CONTACT_BASE_OFFSET_FROM_BOAT,
 			"water-contact base must remain attached to the lowered boat instead of retaining a fixed world height",
 		)
+		water_base_position.y -= 2.25 # 새 후면 선체의 수면 접점.
 		_expect(scene.has_method("get_background_flow_offset"), "game scene must expose the continuously advancing visual water-flow state")
 		_expect(scene.has_method("get_forward_water_flow_offset"), "game scene must expose the voyage-only forward water-flow state")
 		var background_flow_before: float = float(scene.call("get_background_flow_offset")) if scene.has_method("get_background_flow_offset") else 0.0
@@ -99,8 +100,11 @@ func _run() -> void:
 		var still_forward_flow_before: float = float(scene.call("get_forward_water_flow_offset")) if scene.has_method("get_forward_water_flow_offset") else 0.0
 		scene.call("_apply_drift_motion", 1.0)
 		var still_forward_flow_after: float = float(scene.call("get_forward_water_flow_offset")) if scene.has_method("get_forward_water_flow_offset") else still_forward_flow_before
-		_expect(boat_space.position.is_equal_approx(boat_base_position), "still comfort must remove automatic forward and lateral boat drift")
-		_expect(water_contact.position.is_equal_approx(water_base_position), "still comfort must keep water contact at its base position")
+		var frozen_boat := boat_space.position
+		var frozen_contact := water_contact.position
+		scene.call("_apply_drift_motion", 2.0)
+		_expect(boat_space.position.is_equal_approx(frozen_boat), "still comfort must freeze at the reached voyage position")
+		_expect(water_contact.position.is_equal_approx(frozen_contact), "still comfort must keep water contact at the reached position")
 		_expect(is_equal_approx(still_forward_flow_after, still_forward_flow_before), "still comfort must stop the voyage-only forward water flow")
 
 	scene.queue_free()

@@ -35,7 +35,7 @@ func _run() -> void:
 		var final_card := scene.get_node_or_null("FinalDioramaCard") as Sprite3D
 		var pet_corner := scene.get_node_or_null("BoatDecorSlots/PetCorner") as Node3D
 		var rail_accent := scene.get_node_or_null("BoatDecorSlots/RailAccent") as Node3D
-		var cushion_surface := scene.get_node_or_null("StorybookPetCushionSurface") as Sprite3D
+		var cushion_surface := scene.get_node_or_null("FinalDioramaCard/PartsViewport/Cushion") as Sprite2D
 		var postcard_surface := scene.get_node_or_null("StorybookPostcardSurface") as Sprite3D
 		_expect(final_card != null, "C + dog final composite card must exist")
 		_expect(pet_corner != null, "PetCorner decor slot must exist")
@@ -43,8 +43,10 @@ func _run() -> void:
 		_expect(rail_accent != null and not rail_accent.visible, "final composite must hide detached postcard technical mesh")
 		_expect(cushion_surface != null and cushion_surface.visible, "final composite must show a pet cushion surface overlay")
 		_expect(cushion_surface != null and cushion_surface.texture != null and cushion_surface.texture.resource_path == CUSHION_TEXTURE_PATH, "surface overlay must use selected approved cushion texture")
-		_expect(cushion_surface != null and cushion_surface.material_override is ShaderMaterial, "cushion surface overlay must mask the opaque texture to a soft cushion shape")
-		_expect(cushion_surface != null and cushion_surface.position.x >= 0.7 and cushion_surface.pixel_size <= 0.00024, "floral cushion must stay small at the bow-side clear space instead of covering the companion")
+		_expect(cushion_surface != null and cushion_surface.material is ShaderMaterial, "cushion surface overlay must mask the opaque texture to a soft cushion shape")
+		var pet := scene.get_node_or_null("FinalDioramaCard/PartsViewport/Pet") as Sprite2D
+		_expect(cushion_surface != null and pet != null and cushion_surface.get_index() < pet.get_index() and cushion_surface.position.distance_to(pet.position) < 50.0, "selected cushion must remain beneath the pet in the assembled boat")
+		_expect(not scene.get_node("StorybookPetCushionSurface").visible, "legacy detached cushion must not float outside the newly positioned boat")
 		_expect(postcard_surface == null, "main final composite must not include a postcard overlay node because Album and decor preview remain its consumer surfaces")
 		scene.queue_free()
 		await process_frame

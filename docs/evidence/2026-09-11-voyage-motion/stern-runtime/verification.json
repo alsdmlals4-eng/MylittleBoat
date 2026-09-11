@@ -1,0 +1,563 @@
+{
+  "base_head": "b2b0e427c9c33a867281bea3e3abdaf1a021aa08",
+  "code_git_blobs": {
+    "scripts/visual/stern_motion_card.gd": "61d4a774a2a9318e3275802050743d4c0890606a",
+    "scripts/voyage/game_scene.gd": "415e2bee156947cfce88503c61fa5d68fafd65e6",
+    "scripts/identity/identity_visual_router.gd": "1ec378828ec5a5938272f777b54f01dfbe589cf4",
+    "scripts/decor/decor_preview.gd": "4faae233a79ddb31b0a3513f35f3f1534d48702d",
+    "scenes/boat_space.tscn": "8f5ac92324d54f27ef45895a3c4777079c0a26dc",
+    "assets/shaders/stern_parts_despill.gdshader": "dfc96af762d5d75a2a35656a65cd5481a88a260a",
+    "assets/shaders/stern_cushion_surface.gdshader": "1c96411a34018a5de4c22adfec2a94970e601407",
+    "tests/capture_voyage_realtime_motion.gd": "2a069c83cd3d30b920224a73b712c5ee806912bf",
+    "assets/shaders/voyage_split_sea_flow.gdshader": "f596da6c623229e28a68e7d6ced7c1a061feccca",
+    "tests/test_album_composition_contract.gd": "e49b3396dc843f58ee3616780aa0612ec68c9840",
+    "tests/test_album_memory_contract.gd": "937e0324f6f2e67990c73e012226f99a61bd77b1",
+    "tests/test_ambient_memory_game_scene_contract.gd": "d3274a2991dba6468dd4720349fb3773383b7c5c",
+    "tests/test_ambient_memory_persistence.gd": "849bf49cd153a54daaa2cd4876325bb6978cbd0a",
+    "tests/test_ambient_memory_state_contract.gd": "9f805d89552a1ee2ed9f8475c47e606ab6c35f71",
+    "tests/test_ambient_motif_asset_contract.gd": "b08507e8f0c038e83542198af4fc297b2187d7b7",
+    "tests/test_ambient_motif_game_scene_contract.gd": "29789d73175fbd52d09fd95fec62399ef176d04a",
+    "tests/test_boat_decor_persistence.gd": "53234003ca6583d9cb9a021fc85d8bf2a7d5347c",
+    "tests/test_boat_decoration_contract.gd": "fe46ca321912d143dab9a53c815887f8ca96c3e6",
+    "tests/test_boat_life_scene_contract.gd": "a5084627af0f2dc7448e1a1ebaf29bd66efbd88b",
+    "tests/test_boat_life_ui_contract.gd": "196a8500c21b383626c9f4860b94ca7c034e4f2e",
+    "tests/test_calm_voyage_state.gd": "471bae2446901f2c48aa9b2d2047f22a574b6860",
+    "tests/test_camera_input_contract.gd": "b26ecd75ab00880566edb0c52ddd1eac295fca82",
+    "tests/test_chibi_normal_chroma_material_proof.gd": "782723bc2dfc97eba07b027f92e0208ed6007a3e",
+    "tests/test_chibi_normal_final_card_contract.gd": "2e32395f61c75c11068bd12290ee85d73f2bda3e",
+    "tests/test_comfort_preferences.gd": "db19636ee75f8d9a3afd2e22f3e6b7e0fb68e2ef",
+    "tests/test_cosmetic_identity_profile.gd": "5a7b1cf5da40441dae30d33296e2abe6d8966d41",
+    "tests/test_decor_preview_contract.gd": "b4b22f1140fe9326d58e2f909a2e8a7a6f339324",
+    "tests/test_diorama_avatar_camera_contract.gd": "ec4ec9a1fe1e8e419442878d92a17aac2af9044d",
+    "tests/test_direct_boat_entry_contract.gd": "4f74082c259ae9a169e3b63b5d870667d9ccbbfc",
+    "tests/test_drift_scenery_director.gd": "d8046498b0a88a906715822c30feb4e72a21066b",
+    "tests/test_final_composite_decor_contract.gd": "55c87f3673808329c1c564c3bd48bc02e9df996e",
+    "tests/test_final_composite_decor_visibility_contract.gd": "c2ad52f12d6d8c2955e8173f5ff978674cf7bc5e",
+    "tests/test_fishing_outcome_contract.gd": "c8daf8ef7474ccb8f5164dad786c0c89853b210e",
+    "tests/test_fishing_session.gd": "7e5d4dd78f45b30d2050073c434c6f6686fb5075",
+    "tests/test_game_scene_contract.gd": "8155e30b7347a18bfb6b626d90199f1cc2c3b8a0",
+    "tests/test_game_scene_time_of_day_contract.gd": "331388ee32615a97d7212b951f4852e1f43e17a2",
+    "tests/test_handpainted_visual_slice_contract.gd": "4bda1391278e1129d37e52109c2ea65cbd840fe1",
+    "tests/test_headless_editor_plugin_guard_contract.gd": "c64f3547bb9726b79a958fda091260e2d2b6aa00",
+    "tests/test_identity_visual_contract.gd": "48444e75925671d709026491968509ebc4aa4ebc",
+    "tests/test_interaction_content_contract.gd": "e22b2911ae9dae21602b64566bb5815bed5fda00",
+    "tests/test_look_around_camera_input_contract.gd": "71273adb24364c615a08e1d8c7e874790bcf3530",
+    "tests/test_look_around_foreground_split_contract.gd": "cb5e92d71be32101d08ec90b82e51444417944ab",
+    "tests/test_look_around_game_scene_contract.gd": "d1453d1e04728139baee6ebf561001372aeaaebd",
+    "tests/test_look_around_presentation_router.gd": "acb506f58cf805a67876e29804427fe3ebc7b787",
+    "tests/test_low_pressure_interaction_contract.gd": "b94d6bb61f95aae0e8be0a1565a3418b417ab978",
+    "tests/test_main_menu_atmosphere_background_contract.gd": "481c1de67cb8c4903cea962dfec22390c4815e3a",
+    "tests/test_main_menu_identity_contract.gd": "e813a95c4b456585bdf9f6500f30e4a78475eefd",
+    "tests/test_main_menu_time_of_day_contract.gd": "268df462dd8d2f617f5845f850cc5096c320152c",
+    "tests/test_memory_ledger_persistence.gd": "13f9c7eaa514945784904831ef81ffba6f4d20d7",
+    "tests/test_memory_ledger_state_contract.gd": "cdfaf0d665f9717817f90ce01a19a784f0186dca",
+    "tests/test_photo_memory_persistence.gd": "3991111def37ccf3169af628837b92746b62bb86",
+    "tests/test_photo_memory_state_contract.gd": "ff8540a981eb5ad0c10e10ba008e256d1fd4760f",
+    "tests/test_rear_normal_voyage_contract.gd": "d1ba3876f1460dd370b6a6713cad099912fd339a",
+    "tests/test_resting_core_contract.gd": "fb864abf7aaad7dcd0b6192e22bed5797f2d9ec5",
+    "tests/test_runtime_capture_guard_contract.gd": "4d7902f1851d7acf104323ccd3dd28041de90854",
+    "tests/test_runtime_image_asset_contract.gd": "4d8a46e9ee3e715bc93d1fc327a0c5c5abc2a8a0",
+    "tests/test_seasonal_parallax_contract.gd": "9d365472b8b422a69c43f73a451690d440041935",
+    "tests/test_split_sky_sea_background_contract.gd": "7e5de026ef19ea663898026d6711d83d8e920ea6",
+    "tests/test_stern_motion_integration.gd": "2cfe5630e959212460d3a6c0c359a6cca515ff0a",
+    "tests/test_storybook_art_card_contract.gd": "5a7b1588315929aca6918926112a6ce4d2e5fa41",
+    "tests/test_time_of_day_contract.gd": "80d73426d1b5f56acaf94b7a6fa44a80573e79d1",
+    "tests/test_title_brand_asset_contract.gd": "821122ec4de6e3db8d658bb8e2396b86ff4c0653",
+    "tests/test_together_time_game_scene_contract.gd": "eefb47a7428ec5a6af771eae864de2f9a33af496",
+    "tests/test_together_time_persistence.gd": "85ac1ce0ac5a82c53c47c73e16b517215d81fd88",
+    "tests/test_together_time_state_contract.gd": "cb6c5b081c9812e6fda6e3e31ed56472fd005ea4",
+    "tests/test_voyage_forward_drift_contract.gd": "897f4a639ee27faee1ae2e519c5171ccf3dc8a2f",
+    "tests/test_voyage_motion_continuity.gd": "c898b6ec2eba15e876aac12f2147d81879700b33",
+    "tests/test_waterline_contact_v2_contract.gd": "609ed167b67ce51f9d0ff4706c22a0febdf481a5",
+    "tests/test_windows_export_contract.gd": "71116578589aae5f3b6c3ff80b7ee85486614d1d"
+  },
+  "evidence_sha256": {
+    "decor-preview.png": "65989cb4a6a690d9c3ee7631343c6bb5145da8bafff4ae6095921947090fdbfe",
+    "telemetry.json": "d50180acd48c57af31ef5d439691c9408ce43b40574ebfa15a95b7e59efc3ce9",
+    "title.png": "6ac2bfd723923889a84b94f235e7275bfb088fab31bb67606d516ad85a52e9f4",
+    "voyage-30s.webp": "3e9470a0dad65482cf01626d566a5de4229e1051ba8f8bcb1613ed29068c5b47",
+    "voyage.png": "d589001b8a5e7e9790e4199ffd74de902857c8c0d02040706b3cf85204a1cfde"
+  },
+  "raw_frame_sha256": {
+    "frame_000.png": "fd8d0b41c1464492e8ab364560a423ed57badf26ece47b0ee18db98ee7f848b2",
+    "frame_001.png": "a55258bf0676a212d56d99f96bbcf1d2f138c393edb7fcdf64dd7bfad4e52aae",
+    "frame_002.png": "bb3ee3c2e143ff2d0a789d392e677af7a6f9cb4bfad06f6d164876cabfa1e17e",
+    "frame_003.png": "b4585f37a57d2156e742f08c72a28ce579549f5918d9fd5b6989a475eb47aab2",
+    "frame_004.png": "337aae967119b8af89f90c70a0854adac9067abdc0728f1251bf8433ad071bf3",
+    "frame_005.png": "ac7a7a9b4345e802e846e240618555d64c0f09170a573541e60ecb8c1db4647e",
+    "frame_006.png": "eb27c514f3d0da09c74aca70b9c6d84aa385f56d312c84b4eb72c0829f7026f2",
+    "frame_007.png": "1663e472698389836c84f230718f19b9cb32c13d579d464da786d34be9542296",
+    "frame_008.png": "847ea5259a014ba86f3277dad1f81169fc342f183240f128c380a282b44fd19f",
+    "frame_009.png": "a7955285d2986acbdc34bb0fa7641975c153871c55d2b5ce3082afac4c11de55",
+    "frame_010.png": "6ccb49620a8b57f8277d484954352c3ac0b29c673cc4090f2b94cd39beb91740",
+    "frame_011.png": "871be73ca99617127580a9cf247ae7c93fe5eff5591e07cd3c40052bbdcbf170",
+    "frame_012.png": "9210db85ea585e804032c68b7358afc7507ee7a2f07743067ac5611cdb0c32f2",
+    "frame_013.png": "d2adc82d2fdeed3847fbee5694f5471c265e14727d1f2c7b46860d482da2c90d",
+    "frame_014.png": "d0cc869b873ed000e58c53925122bbfeb12452c87187e74c7b1be8de2c57f544",
+    "frame_015.png": "4488f4a95a9ddad72e95eb293408638f63ee8bfb1913fe6b005fa957a4658353",
+    "frame_016.png": "a22c91e642c0060bd9fb93a43092d39bed44405f79c8b2b7cc4085b845c50eb9",
+    "frame_017.png": "d63e319084cce26650526a5a4287a96f3d74f32fa33bcb725911c63bf403da32",
+    "frame_018.png": "8ee22c955d3678623aff85d215dc767718c8548cf4f7854fb24909f98af2704f",
+    "frame_019.png": "94bf5c8082dec45d067b21772b26ca52507ffa2de2cb7fef383b3a70500be7a1",
+    "frame_020.png": "281781f39cbccb83c6986709b22bc8f0f8b789ea86c499172de04d329d08c567",
+    "frame_021.png": "7c7f721be8fcb9854dfda6b3d285d0f7d8573f738d4442dcf5653215e2d76543",
+    "frame_022.png": "638e2725f947b9c65289f734d528740741ac3c44e6406bbc943353d27d5a3e35",
+    "frame_023.png": "1fca462e02114939a6fd29b56bce29688e8e019c26894624bf6f0b19759d856b",
+    "frame_024.png": "157068653da6c2d8f8caa347f6bb0664efb0719fc29bb3a2dbc920b5c8f08cb4",
+    "frame_025.png": "a485247faa84ae412e04fd59d26ba7fe2c617b515f12d1401f3192a76b8295d9",
+    "frame_026.png": "095be001e4818a86ad090e901f59d85afaefd5096606e00a404b5df96b83f14d",
+    "frame_027.png": "5b6a6114b9204cdf41d35811ff616e1b5de52fd3305e217a892ffee62c44d6e7",
+    "frame_028.png": "7d8dafec4513226a06c8148dbf6353f5b5ff146f1da08d7dfd48c715d08f6786",
+    "frame_029.png": "51cca525185ac1796fd3fa23c367ca388e7e69beb04e9356d7ae04aa5a1346f0",
+    "frame_030.png": "4ccfc442c01a7851a2ad09f4359dc90f20020da9fa12ad6abf0c6eaedcb45531",
+    "frame_031.png": "080016d465f885f992ec211d411bddf85a27a49e53af5ebf45229aa49743fbe7",
+    "frame_032.png": "83e8854c3a732d6e477ab02701247ff515c44ce87612271f3155f54bbf122562",
+    "frame_033.png": "b71e81376bf735abbcf281cfd881b9733aa3a84d9004fcd836c6419915a59c76",
+    "frame_034.png": "2b6f703f306222895f8a74eda9252261eb87b22274eadab1c32e09734df5cc93",
+    "frame_035.png": "4c021ec955f0493ef3cc76b02e4689cffcf15ce5b73825d5634108a209a33ba5",
+    "frame_036.png": "1566fdcd302a1518179445b3819340d15325e4dbfe1de09fdf35c31ddfe605e6",
+    "frame_037.png": "d9d28773da14d5237a17863ef84a3fb0ab6f9fe1bc86d1035ee12fe10ad63202",
+    "frame_038.png": "3931ba76c48292c1b8d3fb6fbf90c30fe5e1e6f55db059abf211127069640261",
+    "frame_039.png": "abb222529e829e845417378c52d4457d09be344a58289e99b82e472199f8946b",
+    "frame_040.png": "8a110c61dc80517b7716c60c1ccceb49baf1f0c8d5389e2c67ef6e09e6ec38eb",
+    "frame_041.png": "dbd0c97aee836c7cd254208c86f0697b157f09b78f45f25ab5209701488a2d12",
+    "frame_042.png": "a4ecf8dabf52dfab021f2e9b16da17920985e0bdad8e5f02859085b5903fa411",
+    "frame_043.png": "103d3164fc574dddd0fef3ec01b01c2480daf4dbc74837e99fbcada52a0378b0",
+    "frame_044.png": "d85df27607e1e9b09fdbfeaa40932b1e90aa1fcf95249554ace376b0a37ecdc0",
+    "frame_045.png": "f7754559a0783c2245c0225cb31f61d25b333d76f9950dfc8f31f9a71b8364f6",
+    "frame_046.png": "46d7c32ad0ea84b2ba99c2876dfe78c5e1ce7dc0c3a3db359ea59b132778e7b4",
+    "frame_047.png": "b70e4866c5842e8e38ea001985e1103c8ebccd312bbf47636514bca817590ce3",
+    "frame_048.png": "5073919587e483d1d2f33e16a9e857efa056f7bbbb507f684ad19521435dc89a",
+    "frame_049.png": "c44cb4d9eb6c0c7a0a52483de4a368c1459507a0e74624c045a7cb8c4f52407c",
+    "frame_050.png": "d589001b8a5e7e9790e4199ffd74de902857c8c0d02040706b3cf85204a1cfde",
+    "frame_051.png": "874ed1f60720f14c2c6b30cd91c68277419d46dde74165370fa7a9fe8daf9065",
+    "frame_052.png": "d577a3f16cd2a63cad39bd2c89f240d7baae8d5248461430c3a0131981e99f39",
+    "frame_053.png": "04ec69073b573d5dd6c18fa275df53b455f0aade22d68f92712cf710ee5a548c",
+    "frame_054.png": "c9ad15a24faf888033f756a5ebb720e3d13039ce9e92f30ff97489ed9f1d5f42",
+    "frame_055.png": "c372ff1991c726071a61805d119e1a269be7a911eef5cac171471d2104c84aca",
+    "frame_056.png": "e238998cb9ce6cc3ed6803a7e5eb9415a098c5b30da4b57673bb0d7b053fa492",
+    "frame_057.png": "55f3cdc346ad78e9ce6200551fbd05c5736b83a677a7256a3a1563c1381bca22",
+    "frame_058.png": "4188da487d4e0f3348823ef464be21172c821c81767a26a95f0136e785295f69",
+    "frame_059.png": "7b7c38884a8ceb9cd89b1379ed036b5f68551f9752e610a842cb352a0ac81a8e",
+    "frame_060.png": "5208bdc1567fe7be4abde188a96186a5dc3bd2f76c0d063048a6f459cb7b2081",
+    "frame_061.png": "2e67d26ea609e07044e1faf4b84f29bb184adda338d3ccb538541b7292bddb41",
+    "frame_062.png": "61d58228f609bd738667db340810392fce66b98821d3272c9e7c6709bf183eb6",
+    "frame_063.png": "be2c907848ef728fe86e71f5cbbd16bc2141e26beb2e7c240b9d92ed3295db26",
+    "frame_064.png": "15e9564c9a83f541e5e9b6aeadccb30192d30a68fbf93ae5f35cf9c600f92228",
+    "frame_065.png": "4ea1ff239d933f010d68845ab3dc296175432517e25f0773826a22f3fa1c58c1",
+    "frame_066.png": "e7940db7d53e51663e5ed5827b5b5ac1ef96bd19e8a1234fee7b9d9d3b529371",
+    "frame_067.png": "6dd79afb2e2b7b34f6916e82082a0305aa3c46325ef94b667343e96088c12646",
+    "frame_068.png": "159db0d04afd864156aa0ca80626224d31e6cf3a51ecf30ed6787b459e57f154",
+    "frame_069.png": "9bc0b9b4a0e371010af36a038bc56e5c732e9ee9593ff41c521e8f4f96b723c7",
+    "frame_070.png": "18fbed328610e1c53693ca0d023aea08206fdf1a63fe5fef1e11cb6c22d74916",
+    "frame_071.png": "2d41372621f994783cfadec4954245771cada59af1ffdc38c9d90c04a7b66789",
+    "frame_072.png": "e3076150f5ec6ee0c59c81f0cc28b783741efb1582ea280004df6e7fa86cf386",
+    "frame_073.png": "dc9124a203666630821db3efffe44c0beff88c71a39648bf7bd642017f0b678f",
+    "frame_074.png": "4c792bfb5069e8e2a9c3d21e7376b49b1b4c51dbc0a907e18119bb91f7290c31",
+    "frame_075.png": "2b0e237c205ef20db134a87cacc2487d67b504157a64032c166b7151e9e081eb",
+    "frame_076.png": "4052a309f4c9c5dfa27c1fd95264d3b9039629eae0746f12148b6001e152edf4",
+    "frame_077.png": "803d746c23e44a62832b4e2b98062866285c5d3d0373b172e716e1638eafdde3",
+    "frame_078.png": "89ec7dba972e092db7a757a160df7af818d932a911838758f90d038544896319",
+    "frame_079.png": "45186deb142227cb3e76cdb08cf7c830909dd06f02a1ecfdc089c7fc63c69180",
+    "frame_080.png": "91f563633b42a38ea05f8289c9cd2adf0547c08aef529e01da1bccabc5e232bc",
+    "frame_081.png": "f2906443409f6ef4cfb80a0b85accd26ab1ecc22a8f4f9780eddc9632f8f2990",
+    "frame_082.png": "4e7051e770078bf7080f9131f9de09afb9c2ce3e6824324eaf16ff527e27ed87",
+    "frame_083.png": "96546945fec5f6ead44c3f2f231131e632e0d4c6c56047539036188067c585d0",
+    "frame_084.png": "105547c11b703f0f14ba328076005181c6c2bf19c9ec42f30d96dc423cac0c28",
+    "frame_085.png": "dec4fa7159cd2a8a1c602106a62bbae9136a2eb2f7d4954448cd915a618012a7",
+    "frame_086.png": "a545fc51d263702138ac75e4383581f6376eeabdb46b8e03a1549ece79e48d6b",
+    "frame_087.png": "9c9b0eb088fbad7c53ab0d9a64eadcbc6b9b36acc3ee10d83908683b719fffdd",
+    "frame_088.png": "d258854ec4aff737404893ce92a013b25d2c2e0bc52e5fe659b78afbe366210e",
+    "frame_089.png": "6aa4b15fcf2a8997b8ffd3691202cdfe7d1188888dfd879684750e8ae4ec6be2",
+    "frame_090.png": "5b4d1264d06feaff6970f185fe89ceb9a66ffdde8ed87d2ff43727f1c11e449d",
+    "frame_091.png": "3ce4e3ee86759f84bb4ee662728a71b10439d510ffadb72513b46529786e7db5",
+    "frame_092.png": "9f64b608802b63a91994877a7738c3ad480669de925734e77d99564f0c9e4a26",
+    "frame_093.png": "b78b7e4768b85fd15c6616bdbf1e182f6f48184fee81191920d528e6cecdc63d",
+    "frame_094.png": "e81a082e0f95badacca36264587dd2551331f787a3cc3d1cc01bc2c8e33c757c",
+    "frame_095.png": "f7fb3d07fc1ff4761070bf6c600c01f3799d94e5a9b1dcf818529a26ce5c6aa8",
+    "frame_096.png": "d13599fde61b1d07c2d4cd97885c3f1bdc3fec076b41cc314b62c60aca59f44f",
+    "frame_097.png": "ad694977ebc3ff0f4630b54b13c048e13a70d498eb340aced1f11c592e9d0f8e",
+    "frame_098.png": "7c78a7e2e93f161b0717a0c9beb7bc22f4e4ad0f0a3c8adcdc1d15b76ee0ac7e",
+    "frame_099.png": "a302ca378426a165a72b5c000597015ad573eb01496dbf8b93b1b0d925dc875f",
+    "frame_100.png": "5000e02f088050b3a1204cc7d028afee5121b2046e727f78ecd57aa8d43d7080",
+    "frame_101.png": "63ebe10560e69a135285aae51521514c4432bd04a431d8ab6771c01ad5a370ac",
+    "frame_102.png": "619255cc9e1ea5906313b5bef0170f2dac290785311a6aaa8ae21dcfbf30f736",
+    "frame_103.png": "e6d7d2ae56b76628996afea8c2da2aed5a973f293a5f52954d73c7ecad15815b",
+    "frame_104.png": "10808cf79b0d9a05999ec55b5d6e67c64091d11c1831481dea7b79031c0f41a0",
+    "frame_105.png": "c9e61b462812b00df355357d7d94fae7d7c4698159fc2393fa508d512826aa77",
+    "frame_106.png": "9ddfd7f1bf775b9927966430134130dca3a317620398f8b04fdc40bd1ad8b1c0",
+    "frame_107.png": "803be3ab7e04b0594f06de88d9c9730b3f3e3958bcee1efb78aad175cb159f10",
+    "frame_108.png": "c33a8bbf002b09bb1ef542b1bdd0584a9b7c4cb92dd50b484bb8b4caccd8411e",
+    "frame_109.png": "9e8a70a5221044511c1810d3d30b55fc00ab0c8d140eb8c0c618fc81533369f1",
+    "frame_110.png": "71aa7908400b02874685bdb936bd8f480c0057506b5b28ab55e626796ee6d150",
+    "frame_111.png": "341379d146587ae25b313647ff09038c7ae40cbcd4de636bd7f3747a6c3e737c",
+    "frame_112.png": "018e18f91d6c34fd8401c95d52c46860ef7833bf69002592bb925f59de4651aa",
+    "frame_113.png": "cb4cc15acb2b8693c16d5259b9e37e5240033ed59d6e3325f20a6db8fb84a2ff",
+    "frame_114.png": "15549146199504ffc02459e565ab7f4f681f09099fc2aecce412c77ee0595199",
+    "frame_115.png": "571e41e7282a9963e427497552b70cf84148b370a8d2d19891fc0984d09769cb",
+    "frame_116.png": "68b8e0523441ab57f0356ea87453221dd234e3bff7d6a5e803aaa63f22c9f283",
+    "frame_117.png": "01bf1ae768b4388a22b202045d0385d76f9cae773a571bee8c6566eb7309846f",
+    "frame_118.png": "38c9657340625feacf7af50e12dd21e0096bc047f64393212b63be0d0cc65732",
+    "frame_119.png": "e3167a6127e8126d960cdee230f41c0e3a0ab2d29f1b9875f80e2d8a713b37f5",
+    "frame_120.png": "4e3b340f2358fab399578c73851fd427cddd22295d0bc9ff887215515e0c1e06",
+    "frame_121.png": "4f5697e614a92c7fa0beb530fc922985757cd043c0777f92df18165cca843583",
+    "frame_122.png": "ca158ff624bd292443721e5ca3cc8f676a9a67162cc2dc8db42b3391af1ec4fc",
+    "frame_123.png": "9a806cb49cf91d643e3f15ec18cd925114fd7e9ca867eb88d7be8a7d6738dab9",
+    "frame_124.png": "888543a265636a4cb7d41c8099446b274d196d15cd6f1152ee4586d84f8b7b92",
+    "frame_125.png": "c1982732a7fce60747f161cb1464ea84c9a93ea9bf5f538e0545e5e5c8b89b75",
+    "frame_126.png": "d8054cc49730085ce5dd2412878c491bae245b32c7afab808cebaa39242a5b03",
+    "frame_127.png": "a391a13ba44083d269f69d8067a00fa5cd79f12a3945752df8903009119e780b",
+    "frame_128.png": "1a96acc7066cd991ff19e04ef5891c24a76077af0534dfe8646d9622c189c570",
+    "frame_129.png": "3cf5cc632098aa1abf1391c759ae7098cbc699ef139d613593d043e10b1a36c9",
+    "frame_130.png": "2505ee1a3908cbb15a1bfd5b54333a0bc9408bd06bacf9b7c5e742fe9cab5005",
+    "frame_131.png": "abac9140188fcac9ba91751bffdbb77e63f33f6caf2e17caa80826c66e229846",
+    "frame_132.png": "28608624eef7fe9d131f453d2582e67cf4bd4c655c0ad68a893fcec26a7b2dfc",
+    "frame_133.png": "68bca0471192b86911a190d0093931a4a4d79bcb6a8eb057c5eeaf38dd1ac027",
+    "frame_134.png": "51645fa4fa78b8381791daa8dbffba5eff7e863a89f7033c5961ddbbd6849c16",
+    "frame_135.png": "23c23bfa7af46990b86bb78e7d978bab404da9bcbdd0f77ee0b59b329bad4c2a",
+    "frame_136.png": "00a7da53d0be7b80dd20024691461184f65febbc78a45d04b8046e88716b636f",
+    "frame_137.png": "3995474058f35caa0577ca95bb364bb85c374bb276e381ef060cb1738f363bb0",
+    "frame_138.png": "fb08a7352020f47a9548393e21c924f1bacae736ecfd65c3ebc7b354a69e2b02",
+    "frame_139.png": "a71767fccb6a3326a4f18928ed6be7356b20a3c09650612235f52fb3098d7864",
+    "frame_140.png": "1a35b48462b4836d039ed059f7a5eb5458bf0e6a8a3e9b9195b69d27e42eb12b",
+    "frame_141.png": "b15a57e09a0a46f5799676e8805bba23a645ea029eb77e25e193a533a0fecb49",
+    "frame_142.png": "043dc9e4a3ffc77629f7cd00537b807214de009a22cc44e01f35249a5688d6a8",
+    "frame_143.png": "abfcce9e3fcb58af7657d6234d7f9f091ebc4eef660e8eed992fd4d742910134",
+    "frame_144.png": "e1edef3b3cb3117e3db385bfce1c21ce1f040164117432d619e90a752bfb20f8",
+    "frame_145.png": "cf0fd145b4fe79a81ccaa3f6f5a2d1bf1391d918b6f89d191604a7a90e7713b1",
+    "frame_146.png": "a4fef2afac29a055bfb6a1e3cf17c62860b215c1a4962fa9a3c4be743a03c0c1",
+    "frame_147.png": "8bb22dc5204e5400fff3a94837a7c8ab5716eb81e7634bcbf11d85e8811fba5f",
+    "frame_148.png": "bef9c531835428136f0850f56e81be841502e6b1fb7e000d61b557c40c61f244",
+    "frame_149.png": "612b88e1608447a1915c9c0d5ca01693149e9053c0c8a22843f0635a753f1cb7"
+  },
+  "capture": {
+    "engine": "4.7.2-stable",
+    "renderer": "Vulkan Forward Mobile / NVIDIA RTX 3050",
+    "viewport": [
+      540,
+      960
+    ],
+    "frame_count": 150,
+    "webp_frame_count": 150,
+    "elapsed_between_first_and_last_seconds": 30.134,
+    "foreground_frame_count": 150,
+    "camera_z_delta_world_units": 6.548140525817868,
+    "player_rotation_range_radians": 0.01799951121211052,
+    "pet_rotation_range_radians": 0.0139972404576838,
+    "mode": "real process delta; explicit foreground; input disabled; isolated identity/decor/ambient saves",
+    "evidence_ceiling": "default rear runtime presentation only; common boat/camera translation is NOT proof of world-depth optical flow or Human comfort"
+  },
+  "verification": {
+    "headless_contracts": [
+      {
+        "path": "tests\\test_album_composition_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: album composition contract\r\n"
+      },
+      {
+        "path": "tests\\test_album_memory_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: album memory contract\r\n"
+      },
+      {
+        "path": "tests\\test_ambient_memory_game_scene_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: ambient-memory game scene contract\r\n"
+      },
+      {
+        "path": "tests\\test_ambient_memory_persistence.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: ambient-memory persistence contract\r\n"
+      },
+      {
+        "path": "tests\\test_ambient_memory_state_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: ambient-memory state contract\r\n"
+      },
+      {
+        "path": "tests\\test_ambient_motif_asset_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: ambient motif asset contract\r\n"
+      },
+      {
+        "path": "tests\\test_ambient_motif_game_scene_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: ambient motif game scene contract\r\n"
+      },
+      {
+        "path": "tests\\test_boat_decor_persistence.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: boat decor persistence contract\r\n"
+      },
+      {
+        "path": "tests\\test_boat_decoration_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: boat decoration contract\r\n"
+      },
+      {
+        "path": "tests\\test_boat_life_scene_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: boat life scene contract\r\n"
+      },
+      {
+        "path": "tests\\test_boat_life_ui_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: boat life UI contract\r\n"
+      },
+      {
+        "path": "tests\\test_calm_voyage_state.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: calm voyage state contract\r\n"
+      },
+      {
+        "path": "tests\\test_camera_input_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: appreciation camera input contract\r\n"
+      },
+      {
+        "path": "tests\\test_chibi_normal_final_card_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: chibi normal final card contract\r\n"
+      },
+      {
+        "path": "tests\\test_comfort_preferences.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: comfort-preferences persistence contract\r\n"
+      },
+      {
+        "path": "tests\\test_cosmetic_identity_profile.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: cosmetic identity profile contract\r\n"
+      },
+      {
+        "path": "tests\\test_decor_preview_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: decor preview contract\r\n"
+      },
+      {
+        "path": "tests\\test_diorama_avatar_camera_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: diorama avatar camera contract\r\n"
+      },
+      {
+        "path": "tests\\test_direct_boat_entry_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: direct boat entry contract\r\n"
+      },
+      {
+        "path": "tests\\test_drift_scenery_director.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: drift scenery director contract\r\n"
+      },
+      {
+        "path": "tests\\test_final_composite_decor_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: final composite decor contract\r\n"
+      },
+      {
+        "path": "tests\\test_final_composite_decor_visibility_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: final composite decor visibility contract\r\n"
+      },
+      {
+        "path": "tests\\test_fishing_outcome_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: fishing outcome contract\r\n"
+      },
+      {
+        "path": "tests\\test_fishing_session.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\nPASS: fishing session contract\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\n"
+      },
+      {
+        "path": "tests\\test_game_scene_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nSKIP: headless renderer does not support viewport postcard capture\r\nPASS: calm voyage game scene contract\r\n"
+      },
+      {
+        "path": "tests\\test_game_scene_time_of_day_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: game scene real-time atmosphere contract\r\n"
+      },
+      {
+        "path": "tests\\test_handpainted_visual_slice_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: handpainted visual slice contract\r\n"
+      },
+      {
+        "path": "tests\\test_headless_editor_plugin_guard_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: headless editor plugin guard contract\r\n"
+      },
+      {
+        "path": "tests\\test_identity_visual_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: identity visual contract\r\n"
+      },
+      {
+        "path": "tests\\test_interaction_content_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: interaction content contract\r\n"
+      },
+      {
+        "path": "tests\\test_look_around_camera_input_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: look around camera input contract\r\n"
+      },
+      {
+        "path": "tests\\test_look_around_foreground_split_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: Look Around foreground split contract\r\n"
+      },
+      {
+        "path": "tests\\test_look_around_game_scene_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: look around game scene contract\r\n"
+      },
+      {
+        "path": "tests\\test_look_around_presentation_router.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: look around presentation router contract\r\n"
+      },
+      {
+        "path": "tests\\test_low_pressure_interaction_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: low-pressure interaction contract\r\n"
+      },
+      {
+        "path": "tests\\test_main_menu_atmosphere_background_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: direct entry atmosphere owner contract\r\n"
+      },
+      {
+        "path": "tests\\test_main_menu_identity_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: direct entry identity contract\r\n"
+      },
+      {
+        "path": "tests\\test_main_menu_time_of_day_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: direct entry real-time contract\r\n"
+      },
+      {
+        "path": "tests\\test_memory_ledger_persistence.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: memory-ledger persistence contract\r\n"
+      },
+      {
+        "path": "tests\\test_memory_ledger_state_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: memory-ledger state contract\r\n"
+      },
+      {
+        "path": "tests\\test_photo_memory_persistence.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: photo-memory persistence contract\r\n"
+      },
+      {
+        "path": "tests\\test_photo_memory_state_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: photo-memory state contract\r\n"
+      },
+      {
+        "path": "tests\\test_rear_normal_voyage_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: rear normal voyage contract\r\n"
+      },
+      {
+        "path": "tests\\test_resting_core_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: resting core authored ocean contract\r\n"
+      },
+      {
+        "path": "tests\\test_runtime_capture_guard_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: runtime capture guard contract\r\n"
+      },
+      {
+        "path": "tests\\test_runtime_image_asset_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: runtime image asset contract\r\n"
+      },
+      {
+        "path": "tests\\test_seasonal_parallax_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: seasonal parallax contract\r\n"
+      },
+      {
+        "path": "tests\\test_split_sky_sea_background_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: split sky sea background contract\r\n"
+      },
+      {
+        "path": "tests\\test_stern_motion_integration.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nSTERN_MOTION_FAILURES=0\r\n"
+      },
+      {
+        "path": "tests\\test_storybook_art_card_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: storybook art card contract\r\n"
+      },
+      {
+        "path": "tests\\test_time_of_day_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: time-of-day contract\r\n"
+      },
+      {
+        "path": "tests\\test_title_brand_asset_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: title brand asset contract\r\n"
+      },
+      {
+        "path": "tests\\test_together_time_game_scene_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: together time game scene contract\r\n"
+      },
+      {
+        "path": "tests\\test_together_time_persistence.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: together time persistence contract\r\n"
+      },
+      {
+        "path": "tests\\test_together_time_state_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: together time state contract\r\n"
+      },
+      {
+        "path": "tests\\test_voyage_forward_drift_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: voyage forward drift contract\r\n"
+      },
+      {
+        "path": "tests\\test_voyage_motion_continuity.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nSKIP: GPU shader assertions require display renderer\r\nMOTION_CONTINUITY_FAILURES=0\r\n"
+      },
+      {
+        "path": "tests\\test_waterline_contact_v2_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: waterline contact v2 contract\r\n"
+      },
+      {
+        "path": "tests\\test_windows_export_contract.gd",
+        "exit_code": 0,
+        "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\nWindows export contract passed\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\n"
+      }
+    ],
+    "python_unittest": {
+      "command": "python -m unittest discover -s tests -p \"test_*.py\" -q",
+      "tests": 18,
+      "failures": 0
+    },
+    "gpu_integration": {
+      "command": "Godot 4.7.2 --path . --script res://tests/test_stern_motion_integration.gd",
+      "failures": 0,
+      "final_exit_warnings": []
+    },
+    "legacy_display_material": {"command": "Godot 4.7.2 --path . --script res://tests/test_chibi_normal_chroma_material_proof.gd", "exit_code": 0},
+    "human": "NOT_RUN",
+    "device_matrix": "NOT_RUN",
+    "whole_blueprint": "NOT_COMPLETE"
+  }
+}

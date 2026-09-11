@@ -77,6 +77,11 @@ func _sync_final_composite_decor(is_default: bool) -> void:
 	if _rail_accent_slot != null:
 		_rail_accent_slot.visible = not is_default
 	var cushion_active := is_default and GameState.get_boat_decor("pet_corner") == "pet_cushion"
+	if _final_diorama_card != null and _final_diorama_card.has_method("apply_cushion"):
+		_final_diorama_card.apply_cushion(_decor_visual_assets.load_texture_if_available(_decor_visual_assets.get_cushion_texture_path(GameState.get_boat_decor_appearance("pet_corner"))) if cushion_active else null)
+		if _storybook_pet_cushion_surface != null:
+			_storybook_pet_cushion_surface.visible = false
+		return
 	if _storybook_pet_cushion_surface != null:
 		_storybook_pet_cushion_surface.visible = cushion_active
 		_set_cushion_surface_texture(_decor_visual_assets.load_texture_if_available(_decor_visual_assets.get_cushion_texture_path(GameState.get_boat_decor_appearance("pet_corner"))) if cushion_active else null)

@@ -53,6 +53,7 @@ func _run() -> void:
 
 		var boat_base_position: Vector3 = scene.get("_boat_space_base_position")
 		var waterline_base_position: Vector3 = scene.get("_boat_waterline_contact_base_position")
+		waterline_base_position.y -= 2.25 # 승인된 새 선체의 후면 접점 보정.
 		_expect(
 			boat_base_position.y <= MAX_BOAT_BASE_HEIGHT_FOR_LOWERED_FRAME,
 			"portrait framing must keep the resting boat lower than the screen midpoint",

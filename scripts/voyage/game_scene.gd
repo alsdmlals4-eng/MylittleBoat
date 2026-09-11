@@ -88,6 +88,7 @@ var _drift_scenery_director = DRIFT_SCENERY_DIRECTOR_SCRIPT.new()
 var _drift_phase := 0.0
 var _background_flow_offset := 0.0
 var _forward_water_flow_offset := 0.0
+var _voyage_visual_distance := 0.0
 var _diorama_camera_base_position := Vector3.ZERO
 var _look_around_camera_base_position := Vector3.ZERO
 var _appreciation_camera_base_position := Vector3.ZERO
@@ -137,6 +138,8 @@ func _ready() -> void:
 	for island_layer in _get_seasonal_island_layers():
 		_seasonal_island_layer_base_positions.append(island_layer.position)
 	_boat_space_base_position = $VoyageWorld/BoatSpace.position
+	# 기본 게임의 하단 구도만 변경하고 독립 꾸미기 미리보기의 위치는 보존한다.
+	$VoyageWorld/BoatSpace/FinalDioramaCard.position.y = -0.5
 	_boat_space_base_rotation = $VoyageWorld/BoatSpace.rotation
 	_boat_water_contact_base_position = $VoyageWorld/BoatWaterContact.position
 	_boat_water_contact_base_scale = $VoyageWorld/BoatWaterContact.scale
@@ -392,6 +395,7 @@ func _apply_camera_mode() -> void:
 
 ## Applies approved angle art without mutating voyage or local cosmetic state.
 func _apply_look_around_presentation() -> void:
+	var use_default_card: bool = GameState.get_selected_player_style() == _identity_visual_catalog.DEFAULT_PLAYER_STYLE and GameState.get_selected_pet_type() == _identity_visual_catalog.DEFAULT_PET_TYPE
 	var look_around_backdrop := $VoyageWorld/LookAroundCameraRig/LookAroundCamera3D/SeaBackdrop as Sprite3D
 	var look_around_sky := $VoyageWorld/LookAroundCameraRig/LookAroundCamera3D/SkyBackdrop as Sprite3D
 	var look_around_foreground := $VoyageWorld/LookAroundCameraRig/LookAroundCamera3D/LookAroundForeground as Sprite3D
@@ -401,7 +405,7 @@ func _apply_look_around_presentation() -> void:
 		_apply_split_backdrop_textures(_active_atmosphere_id, inactive_tone["backdrop_modulate"] as Color)
 		if look_around_foreground != null:
 			look_around_foreground.visible = false
-		final_diorama_card.visible = true
+		final_diorama_card.visible = use_default_card
 		return
 
 	var display_angle_id := get_look_around_display_angle_id()
@@ -412,13 +416,13 @@ func _apply_look_around_presentation() -> void:
 		look_around_backdrop.visible = true
 		if look_around_foreground != null:
 			look_around_foreground.visible = false
-		final_diorama_card.visible = true
+		final_diorama_card.visible = use_default_card
 		return
 
 	var asset_path := _look_around_presentation_router.get_runtime_angle_asset_path(display_angle_id)
 	var angle_texture := load(asset_path) as Texture2D
 	if angle_texture == null or look_around_foreground == null:
-		final_diorama_card.visible = true
+		final_diorama_card.visible = use_default_card
 		return
 	var tone := _time_of_day_catalog.get_visual_tone(_active_atmosphere_id)
 	_apply_split_backdrop_textures(_active_atmosphere_id, tone["backdrop_modulate"] as Color)
@@ -942,6 +946,13 @@ func _apply_drift_motion(delta: float) -> void:
 		)
 	_apply_background_flow()
 	_apply_seasonal_parallax_motion(safe_delta, visual_motion_multiplier, comfort_scale)
+	if not _title_waiting:
+		# 배·카메라·접점이 공유하는 표시 좌표만 재중심화한다. 저장/보상 거리가 아니다.
+		_voyage_visual_distance = fposmod(_voyage_visual_distance + safe_delta * 0.32 * visual_motion_multiplier * comfort_scale, 512.0)
+	var travel := Vector3(0.0, 0.0, _voyage_visual_distance)
+	$VoyageWorld/DioramaCameraRig.position = _diorama_camera_base_position + travel
+	$VoyageWorld/LookAroundCameraRig.position = _look_around_camera_base_position + travel
+	$VoyageWorld/AppreciationCameraRig.position = _appreciation_camera_base_position + travel
 	$VoyageWorld/DioramaCameraRig.position.y = _diorama_camera_base_position.y + sin(_drift_phase * 1.2) * 0.018 * comfort_scale
 	$VoyageWorld/LookAroundCameraRig.position.y = _look_around_camera_base_position.y + sin(_drift_phase * 1.2) * 0.018 * comfort_scale
 	$VoyageWorld/AppreciationCameraRig.position.y = _appreciation_camera_base_position.y + sin(_drift_phase * 1.2) * 0.025 * comfort_scale
@@ -950,21 +961,26 @@ func _apply_drift_motion(delta: float) -> void:
 	var forward_surge := sin(_drift_phase * FORWARD_SURGE_FREQUENCY) * FORWARD_SURGE_DISTANCE * comfort_scale
 	var lateral_current := sin(_drift_phase * LATERAL_CURRENT_FREQUENCY) * LATERAL_CURRENT_DISTANCE * comfort_scale
 	var travel_wake_signal := (0.5 + sin(_drift_phase * 0.9 - 0.35) * 0.5) * visual_motion_multiplier * comfort_scale
-	$VoyageWorld/BoatSpace.position = _boat_space_base_position + Vector3(lateral_current, boat_bob, forward_surge)
+	$VoyageWorld/BoatSpace.position = _boat_space_base_position + travel + Vector3(lateral_current, boat_bob, forward_surge)
+	$VoyageWorld/BoatSpace/FinalDioramaCard.apply_motion(_drift_phase, comfort_scale)
+	var stern_parts_visible: bool = $VoyageWorld/BoatSpace/FinalDioramaCard.visible
+	var stern_contact_offset := Vector3(0.0, -2.25, 0.0) if stern_parts_visible else Vector3.ZERO
 	$VoyageWorld/BoatSpace.rotation = _boat_space_base_rotation + Vector3(0.0, 0.0, sin(_drift_phase * 0.82 + 0.2) * deg_to_rad(1.15) * comfort_scale)
 	var water_contact := $VoyageWorld/BoatWaterContact as Sprite3D
 	if water_contact != null:
 		var contact_breath := 1.0 + sin(_drift_phase * 1.05 - 0.2) * 0.045 * comfort_scale
 		var surge_emphasis := 1.0 + absf(forward_surge) * 0.72 + travel_wake_signal * 0.06
-		water_contact.position = _boat_water_contact_base_position + Vector3(lateral_current, boat_bob * 0.92, forward_surge)
+		water_contact.position = _boat_water_contact_base_position + stern_contact_offset + travel + Vector3(lateral_current, boat_bob * 0.92, forward_surge)
 		water_contact.scale = _boat_water_contact_base_scale * contact_breath * surge_emphasis
+		if stern_parts_visible:
+			water_contact.scale *= Vector3(0.65, 0.22, 1.0)
 		var contact_modulate := _boat_water_contact_base_modulate
 		contact_modulate.a *= 0.9 + maxf(boat_bob_signal, 0.0) * 0.16 * comfort_scale + travel_wake_signal * 0.04
 		water_contact.modulate = contact_modulate
 	var waterline_contact := $VoyageWorld/BoatWaterlineContact as Sprite3D
 	if waterline_contact != null:
 		var waterline_breath := 1.0 + sin(_drift_phase * 1.05 - 0.15) * 0.022 * comfort_scale
-		waterline_contact.position = _boat_waterline_contact_base_position + Vector3(lateral_current, boat_bob * 0.96, forward_surge)
+		waterline_contact.position = _boat_waterline_contact_base_position + stern_contact_offset + travel + Vector3(lateral_current, boat_bob * 0.96, forward_surge)
 		waterline_contact.scale = _boat_waterline_contact_base_scale * waterline_breath
 		var waterline_modulate := _boat_waterline_contact_base_modulate
 		waterline_modulate.a *= 0.92 + maxf(boat_bob_signal, 0.0) * 0.12 * comfort_scale

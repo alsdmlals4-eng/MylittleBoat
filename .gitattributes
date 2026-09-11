@@ -11,3 +11,5 @@ tools/build_review_blueprint_pdf.py text eol=lf
 docs/visual/candidates/2026-09-11-blueprint/manifest.json text eol=lf
 docs/visual/candidates/2026-09-11-blueprint/island-sheet.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 output/pdf/MY_LITTLE_BOAT_HUMAN_BLUEPRINT_20260911_REVIEW.source.md text eol=lf
+# 실제 실행 telemetry는 촬영 원본의 byte hash를 보존한다.
+docs/evidence/2026-09-11-voyage-motion/stern-runtime/telemetry.json -text

@@ -24,13 +24,9 @@ func _run() -> void:
 	var final_card := boat_space.get_node_or_null("FinalDioramaCard") as Sprite3D
 	_expect(final_card != null, "boat space must expose the normal final diorama card")
 	if final_card != null:
-		_expect(final_card.texture != null and final_card.texture.resource_path == CHROMA_MATTE_TEXTURE_PATH, "normal final diorama card must use the approved chibi chroma foreground")
-		var material := final_card.material_override as ShaderMaterial
-		_expect(material != null, "normal final diorama card must use the chibi chroma material")
-		if material != null:
-			_expect(material.shader != null and material.shader.resource_path == CHROMA_SHADER_PATH, "normal final diorama material must use the chibi chroma shader")
-			var bound_texture := material.get_shader_parameter("matte_texture") as Texture2D
-			_expect(bound_texture != null and bound_texture.resource_path == CHROMA_MATTE_TEXTURE_PATH, "normal final diorama material must bind the chibi matte texture explicitly")
+		_expect(final_card.texture is ViewportTexture, "normal final diorama card must use the newly approved layered foreground")
+		_expect(final_card.material_override == null, "RGBA viewport output must not use the legacy chroma material")
+		_expect(final_card.get_node_or_null("PartsViewport/SternRail") != null, "new composition must keep the stern rail in front of the occupants")
 	boat_space.queue_free()
 	await process_frame
 	_finish()

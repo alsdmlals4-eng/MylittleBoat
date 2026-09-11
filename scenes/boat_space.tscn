@@ -1,6 +1,7 @@
-[gd_scene load_steps=26 format=3]
+[gd_scene load_steps=27 format=3]
 
 [ext_resource type="Script" path="res://scripts/voyage/resting_pet_placeholder.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/visual/stern_motion_card.gd" id="18_stern_motion"]
 [ext_resource type="Script" path="res://scripts/avatar/player_avatar_placeholder.gd" id="2"]
 [ext_resource type="Script" path="res://scripts/voyage/boat_rail_interactable.gd" id="3"]
 [ext_resource type="Script" path="res://scripts/decor/boat_decor_slot.gd" id="4"]
@@ -475,6 +476,7 @@ script = ExtResource("8")
 fallback_nodes = [NodePath("../HullMass"), NodePath("../DeckMass"), NodePath("../LeftRailMass"), NodePath("../RightRailMass")]
 
 [node name="FinalDioramaCard" type="Sprite3D" parent="."]
+script = ExtResource("18_stern_motion")
 position = Vector3(0, 0.8, 0.4)
 pixel_size = 0.0037
 billboard = 1

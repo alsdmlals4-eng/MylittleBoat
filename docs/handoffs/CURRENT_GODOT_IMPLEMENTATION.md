@@ -4,7 +4,17 @@
 **역할:** 실제 코드·Scene·test·runtime evidence와 현재 제품 정본의 차이를 기록하는 기술 router
 **현재 사람용 정본:** [프로젝트 GDD](../design/PROJECT_GDD.md)
 
+### 2026-09-11 최신 실행 결과 — 승인 후면 자산·연동 모션
+
+사용자 `확정하고 진행해`에 따라 승인된 분리 RGBA를 기본 player/dog 조합에 실제 연결했다. `FinalDioramaCard → PartsViewport`에서 선체·인물·강아지·쿠션·앞 난간을 조립하고, 기존 항해 위상으로 선체/접점/탑승자 반응을 연결했다. 카메라와 선체의 공통 진행 좌표는 512 단위로 제한한다. 이 좌표 변화 자체는 전진감 증명이 아니며 실제 깊이를 가진 새 풍경이나 연속 회전 구현도 아니다. 후면 slice는 `IMPLEMENTED / MACHINE_VERIFIED / RUNTIME_VERIFIED_BOUNDED`, 전체 사용자 이동 경험은 `PARTIAL / HUMAN_NOT_RUN`이다.
+
+[현재 실제 재생](../evidence/2026-09-11-voyage-motion/stern-runtime/voyage-30s.webp), [검증·소스 결속](../evidence/2026-09-11-voyage-motion/stern-runtime/verification.json), [발견·교정 기록](../evidence/2026-09-11-voyage-motion/REVIEW.md)을 우선한다. 아래 옛 runtime 링크는 이전 그림 증거다. 최신 전체 headless 계약은 **59/59**, Python은 **18/18**, 새 GPU 통합 검사는 **실패 0**이다. 촬영은 실제 process 시간·명시 foreground·입력 차단·격리 저장 fixture이며 사람 입력/OS focus/Human/device 검증이 아니다.
+
+적용 중 색 보정의 이중 곱셈, 분리된 옛 쿠션, 미리보기 구도, 카메라 갱신의 기본 개 카드 강제 표시를 실패 테스트로 찾고 교정했다. 다른 외형·동반자와 기존 시점은 보존하며 새 외형으로 모두 바뀌었다고 보고하지 않는다. 보상·save schema·병 편지·앨범 의미는 변경하지 않았다. Base adapter v9.4.4와 다른 PR #19도 유지한다. 다음 남은 패키지는 P5 실제 근거리 모델/리그와 세계 깊이, 전체 각도/시간대/상태 family이며 기존 PDF는 구현 전 review snapshot으로 보존한다.
+
 ### 2026-09-11 후속 current authority — 전진 이동 연출 구현
+
+**후속 사용자 피드백 반영 — OPEN / EXPERIENCE_ACCEPTANCE_NOT_MET.** `b2b0e427c9c33a867281bea3e3abdaf1a021aa08`의 수면 연속성 개선은 기술적 부분 구현이다. 수정된 v3 그림은 production consumer에 연결되지 않았고 카메라/탑승자 연동 이동도 완료되지 않았다. 현재 새 작업은 올바른 아트 연결과 통합 이동 연출이다. v3는 합성 RGB 한 장이며 기존 독립 player/hull/dog는 이전 구도다. 실제 3D 모델·리그 파일은 확인되지 않았다. 카메라 미세 진동이나 수면 추적 수치만으로 이 피드백을 해결 처리하지 않는다. 최종 선택 구조는 GDD P5의 실제 3D 근거리 원칙을 유지하며, 2D 분리 후보는 후면 모션 준비/비교 자료이지 연속 회전의 대체 구현이 아니다.
 
 최신 사용자 지시가 이동 연출의 조사 후 실제 구현을 승인했다. 아래 Blueprint 전체 production 보류는 새 모델/아트/전체 계획에는 유효하지만, 이번 기존 수면·부유·비활성 시간 개선은 명시적 예외다. 기준 HEAD `590b5dacfefefd529f29527f8c43df38176578cd`, main `7181d5e6845e75107eade8c4d2e62e10334ab54b`. 다른 PR #19와 Base adapter v9.4.4는 그대로 유지했다.
 
