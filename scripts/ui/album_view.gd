@@ -1,6 +1,8 @@
 # 항해에서 쌓인 사진·풍경·편지·물고기·항해 기록을 보여준다.
 extends Control
 
+signal return_requested
+
 const TIME_OF_DAY_CATALOG_SCRIPT = preload("res://scripts/voyage/time_of_day_catalog.gd")
 const REAL_TIME_ATMOSPHERE_RESOLVER_SCRIPT = preload("res://scripts/voyage/real_time_atmosphere_resolver.gd")
 const TOGETHER_TIME_PRESENTATION_SCRIPT = preload("res://scripts/companion/together_time_presentation.gd")
@@ -17,6 +19,12 @@ var _together_time_presentation = TOGETHER_TIME_PRESENTATION_SCRIPT.new()
 
 
 func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	var back_key := InputEventKey.new()
+	back_key.keycode = KEY_ESCAPE
+	var back_shortcut := Shortcut.new()
+	back_shortcut.events = [back_key]
+	%BackButton.shortcut = back_shortcut
 	%BackButton.pressed.connect(_back_to_sea)
 	refresh_album()
 
@@ -113,4 +121,7 @@ func _last_or_empty(items: Array[String]) -> String:
 
 
 func _back_to_sea() -> void:
+	if return_requested.has_connections():
+		return_requested.emit()
+		return
 	get_tree().change_scene_to_file("res://scenes/game.tscn")

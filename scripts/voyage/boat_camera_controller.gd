@@ -23,6 +23,10 @@ func _is_input_active() -> bool:
 	return _controlled_camera != null and _controlled_camera.current
 
 
+func cancel_drag() -> void:
+	_dragging = false
+
+
 func _unhandled_input(event: InputEvent) -> void:
 	if not _is_input_active():
 		_dragging = false

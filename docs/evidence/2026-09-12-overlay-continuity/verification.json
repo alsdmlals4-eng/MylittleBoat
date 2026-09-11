@@ -1,0 +1,382 @@
+{
+  "base_head": "87350d96ed52cdfec405901ac375f5d61a2bf26f",
+  "sources": {
+    "scripts/voyage/boat_camera_controller.gd": "b997a5eadee5a03165cbfcd131400663088c4078",
+    "tests/test_voyage_overlay_continuity.gd": "df3a1275ac0ed01163f704ab9b4990f357b85e20",
+    "scripts/ui/album_view.gd": "7db6eececfdf71cb77c0bc844ebfbefc2e9e7198",
+    "tests/test_ambient_motif_game_scene_contract.gd": "31760250448ec74ea4efb470f3b458fff5b5e329",
+    "scripts/voyage/look_around_camera_controller.gd": "88bb8b2ebf6a63974d06b374b8e731ad284f60af",
+    "tests/test_stern_motion_integration.gd": "a441f3f8ad00062e13c19ecf0c61f0374e892482",
+    "scripts/voyage/game_scene.gd": "0dfb8e1c7b64a8d54e50c7939c943e390649f72b"
+  },
+  "captures": [
+    {
+      "path": "after-album.png",
+      "sha256": "C27B9B1042518AA9572A344CD4D8AF7D3F7366C11367FC8591BCFFD00C7351FC"
+    },
+    {
+      "path": "album.png",
+      "sha256": "565E3BEAC58C767AA3D23E81C965F7E31E0A31CF7394B654E155DC98BB9FE5B7"
+    },
+    {
+      "path": "before-album.png",
+      "sha256": "7B0EACF9ABC73C814B1CA699D236746D2CABCFFADBA96F774DDF944C24AB6377"
+    },
+    {
+      "path": "decor.png",
+      "sha256": "4B4572F92BA234F36268F6381DF399623DFA81223D57BF4564B90997F9CC5136"
+    }
+  ],
+  "headless_suite": [
+    {
+      "path": "tests\\test_album_composition_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: album composition contract\r\n"
+    },
+    {
+      "path": "tests\\test_album_memory_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: album memory contract\r\n"
+    },
+    {
+      "path": "tests\\test_ambient_memory_game_scene_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: ambient-memory game scene contract\r\n"
+    },
+    {
+      "path": "tests\\test_ambient_memory_persistence.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: ambient-memory persistence contract\r\n"
+    },
+    {
+      "path": "tests\\test_ambient_memory_state_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: ambient-memory state contract\r\n"
+    },
+    {
+      "path": "tests\\test_ambient_motif_asset_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: ambient motif asset contract\r\n"
+    },
+    {
+      "path": "tests\\test_ambient_motif_game_scene_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: ambient motif game scene contract\r\n"
+    },
+    {
+      "path": "tests\\test_boat_decor_persistence.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: boat decor persistence contract\r\n"
+    },
+    {
+      "path": "tests\\test_boat_decoration_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: boat decoration contract\r\n"
+    },
+    {
+      "path": "tests\\test_boat_life_scene_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: boat life scene contract\r\n"
+    },
+    {
+      "path": "tests\\test_boat_life_ui_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: boat life UI contract\r\n"
+    },
+    {
+      "path": "tests\\test_calm_voyage_state.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: calm voyage state contract\r\n"
+    },
+    {
+      "path": "tests\\test_camera_input_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: appreciation camera input contract\r\n"
+    },
+    {
+      "path": "tests\\test_chibi_normal_final_card_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: chibi normal final card contract\r\n"
+    },
+    {
+      "path": "tests\\test_comfort_preferences.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: comfort-preferences persistence contract\r\n"
+    },
+    {
+      "path": "tests\\test_cosmetic_identity_profile.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: cosmetic identity profile contract\r\n"
+    },
+    {
+      "path": "tests\\test_decor_preview_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: decor preview contract\r\n"
+    },
+    {
+      "path": "tests\\test_diorama_avatar_camera_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: diorama avatar camera contract\r\n"
+    },
+    {
+      "path": "tests\\test_direct_boat_entry_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: direct boat entry contract\r\n"
+    },
+    {
+      "path": "tests\\test_drift_scenery_director.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: drift scenery director contract\r\n"
+    },
+    {
+      "path": "tests\\test_final_composite_decor_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: final composite decor contract\r\n"
+    },
+    {
+      "path": "tests\\test_final_composite_decor_visibility_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: final composite decor visibility contract\r\n"
+    },
+    {
+      "path": "tests\\test_fishing_outcome_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: fishing outcome contract\r\n"
+    },
+    {
+      "path": "tests\\test_fishing_session.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\nPASS: fishing session contract\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\n"
+    },
+    {
+      "path": "tests\\test_game_scene_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nSKIP: headless renderer does not support viewport postcard capture\r\nPASS: calm voyage game scene contract\r\n"
+    },
+    {
+      "path": "tests\\test_game_scene_time_of_day_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: game scene real-time atmosphere contract\r\n"
+    },
+    {
+      "path": "tests\\test_handpainted_visual_slice_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: handpainted visual slice contract\r\n"
+    },
+    {
+      "path": "tests\\test_headless_editor_plugin_guard_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: headless editor plugin guard contract\r\n"
+    },
+    {
+      "path": "tests\\test_identity_visual_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: identity visual contract\r\n"
+    },
+    {
+      "path": "tests\\test_interaction_content_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: interaction content contract\r\n"
+    },
+    {
+      "path": "tests\\test_look_around_camera_input_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: look around camera input contract\r\n"
+    },
+    {
+      "path": "tests\\test_look_around_foreground_split_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: Look Around foreground split contract\r\n"
+    },
+    {
+      "path": "tests\\test_look_around_game_scene_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: look around game scene contract\r\n"
+    },
+    {
+      "path": "tests\\test_look_around_presentation_router.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: look around presentation router contract\r\n"
+    },
+    {
+      "path": "tests\\test_low_pressure_interaction_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: low-pressure interaction contract\r\n"
+    },
+    {
+      "path": "tests\\test_main_menu_atmosphere_background_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: direct entry atmosphere owner contract\r\n"
+    },
+    {
+      "path": "tests\\test_main_menu_identity_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: direct entry identity contract\r\n"
+    },
+    {
+      "path": "tests\\test_main_menu_time_of_day_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: direct entry real-time contract\r\n"
+    },
+    {
+      "path": "tests\\test_memory_ledger_persistence.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: memory-ledger persistence contract\r\n"
+    },
+    {
+      "path": "tests\\test_memory_ledger_state_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: memory-ledger state contract\r\n"
+    },
+    {
+      "path": "tests\\test_photo_memory_persistence.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: photo-memory persistence contract\r\n"
+    },
+    {
+      "path": "tests\\test_photo_memory_state_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: photo-memory state contract\r\n"
+    },
+    {
+      "path": "tests\\test_rear_normal_voyage_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: rear normal voyage contract\r\n"
+    },
+    {
+      "path": "tests\\test_resting_core_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: resting core authored ocean contract\r\n"
+    },
+    {
+      "path": "tests\\test_runtime_capture_guard_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: runtime capture guard contract\r\n"
+    },
+    {
+      "path": "tests\\test_runtime_image_asset_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: runtime image asset contract\r\n"
+    },
+    {
+      "path": "tests\\test_seasonal_parallax_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: seasonal parallax contract\r\n"
+    },
+    {
+      "path": "tests\\test_split_sky_sea_background_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: split sky sea background contract\r\n"
+    },
+    {
+      "path": "tests\\test_stern_motion_integration.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nSTERN_MOTION_FAILURES=0\r\n"
+    },
+    {
+      "path": "tests\\test_storybook_art_card_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: storybook art card contract\r\n"
+    },
+    {
+      "path": "tests\\test_time_of_day_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: time-of-day contract\r\n"
+    },
+    {
+      "path": "tests\\test_title_brand_asset_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: title brand asset contract\r\n"
+    },
+    {
+      "path": "tests\\test_together_time_game_scene_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: together time game scene contract\r\n"
+    },
+    {
+      "path": "tests\\test_together_time_persistence.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: together time persistence contract\r\n"
+    },
+    {
+      "path": "tests\\test_together_time_state_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: together time state contract\r\n"
+    },
+    {
+      "path": "tests\\test_voyage_forward_drift_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: voyage forward drift contract\r\n"
+    },
+    {
+      "path": "tests\\test_voyage_motion_continuity.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nSKIP: GPU shader assertions require display renderer\r\nMOTION_CONTINUITY_FAILURES=0\r\n"
+    },
+    {
+      "path": "tests\\test_voyage_overlay_continuity.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nOVERLAY_CONTINUITY_FAILURES=0\r\n"
+    },
+    {
+      "path": "tests\\test_waterline_contact_v2_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nPASS: waterline contact v2 contract\r\n"
+    },
+    {
+      "path": "tests\\test_windows_export_contract.gd",
+      "exit_code": 0,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\nWindows export contract passed\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\n"
+    }
+  ],
+  "post_suite_fixture_rechecks": [
+    {
+      "args": "--script res://tests/test_stern_motion_integration.gd",
+      "chunk_id": "6293e6",
+      "wall_time_seconds": 4.8733727,
+      "exit_code": 0,
+      "original_token_count": 68,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\nVulkan 1.4.303 - Forward Mobile - Using Device #0: NVIDIA - NVIDIA GeForce RTX 3050\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nSTERN_MOTION_FAILURES=0\r\n"
+    },
+    {
+      "args": "--headless --script res://tests/test_stern_motion_integration.gd",
+      "chunk_id": "855c2d",
+      "wall_time_seconds": 2.103284,
+      "exit_code": 0,
+      "original_token_count": 46,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nSTERN_MOTION_FAILURES=0\r\n"
+    },
+    {
+      "args": "--script res://tests/test_stern_motion_integration.gd",
+      "chunk_id": "b848f1",
+      "wall_time_seconds": 4.6659301,
+      "exit_code": 0,
+      "original_token_count": 68,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\r\nVulkan 1.4.303 - Forward Mobile - Using Device #0: NVIDIA - NVIDIA GeForce RTX 3050\r\n\r\n[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)\r\nSTERN_MOTION_FAILURES=0\r\n"
+    }
+  ],
+  "gpu_overlay": {
+    "exit_code": 0,
+    "result": "OVERLAY_CONTINUITY_FAILURES=0",
+    "renderer": "Vulkan Forward Mobile RTX 3050",
+    "size": [
+      540,
+      960
+    ],
+    "test": "tests/test_voyage_overlay_continuity.gd"
+  },
+  "python": {
+    "command": "python -B -m unittest discover -s tests -p 'test_*.py' -q",
+    "count": 18,
+    "exit_code": 0
+  },
+  "scope": "Retained voyage album/decor continuity only",
+  "human": "NOT_RUN",
+  "device": "NOT_RUN",
+  "release": "NOT_COMPLETE",
+  "remote_ci": "NOT_RUN",
+  "notes": [
+    "Full suite ran before the final stern fixture-only foreground reset; that fixture was retested separately. Production source unchanged after full suite.",
+    "Initial stern GPU motion failure retained in REVIEW.md; exact failed foreground not collected."
+  ]
+}

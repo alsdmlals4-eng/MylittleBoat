@@ -50,6 +50,8 @@ func run_checks() -> void:
 		for shader_path in ["res://assets/shaders/stern_parts_despill.gdshader", "res://assets/shaders/stern_cushion_surface.gdshader"]:
 			await check_neutral_color(shader_path)
 	var camera := game.get_node("VoyageWorld/DioramaCameraRig") as Node3D
+	# GPU await 중 OS focus가 바뀔 수 있으므로 수동 모션 표본의 활성 조건을 다시 지정한다.
+	game.set_application_foreground(true)
 	var initial_camera := camera.position
 	game._apply_drift_motion(1.0)
 	expect(absf(camera.position.z - initial_camera.z) < 0.001, "title must not start forward travel")

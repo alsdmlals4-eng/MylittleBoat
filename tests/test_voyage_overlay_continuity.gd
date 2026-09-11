@@ -1,0 +1,164 @@
+# 앨범·꾸미기를 왕복해도 같은 항해와 동결된 풍경이 이어지는지 검증한다.
+extends SceneTree
+
+var failures := 0
+var paths: Array[String] = []
+var capture_directory := ""
+
+func _init() -> void:
+	call_deferred("run")
+
+func expect(ok: bool, reason: String) -> void:
+	if not ok:
+		failures += 1
+		printerr("FAIL: " + reason)
+
+func run() -> void:
+	var args := OS.get_cmdline_user_args()
+	if args.size() == 1 and args[0].is_absolute_path() and DisplayServer.get_name() != "headless":
+		if DirAccess.dir_exists_absolute(args[0]):
+			printerr("Capture directory must not already exist")
+			quit(2)
+			return
+		capture_directory = args[0]
+		DirAccess.make_dir_recursive_absolute(capture_directory)
+	root.size = Vector2i(540, 960)
+	var state := root.get_node("GameState")
+	for kind in ["comfort", "together_time", "memory_ledger", "identity", "boat_decor", "ambient_memory"]:
+		var path := "user://test_overlay_%s.cfg" % kind
+		paths.append(path)
+		state.call("set_%s_storage_path" % kind, path)
+	state.begin_voyage()
+	state.set_photo_memory_storage("user://test_overlay_photos.cfg", "user://test_overlay_photos")
+	paths.append("user://test_overlay_photos.cfg")
+	var game := load("res://scenes/game.tscn").instantiate() as Control
+	var clock = load("res://scripts/voyage/real_time_atmosphere_resolver.gd").new()
+	# 같은 ID로 초기화된 경우에도 최초 조명이 적용돼야 한다.
+	game.set("_active_atmosphere_id", clock.resolve_system_time())
+	game.set("_active_season_id", clock.resolve_system_season())
+	game.get_node("VoyageWorld/SunLight").light_energy = 0.0
+	root.add_child(game)
+	current_scene = game
+	await process_frame
+	expect(game.get_node("VoyageWorld/SunLight").light_energy > 0.0, "initial equal atmosphere IDs must still initialize lighting")
+	game.set_application_foreground(true)
+	var fishing_label: String = game.get_node("%FishingButton").text
+	for fixture in [{"delay": 0.0, "outcome": "catch"}, {"delay": 1.0, "outcome": "catch"}, {"delay": 1.0, "outcome": "quiet"}]:
+		game._handle_fishing_action()
+		if fixture.delay > 0.0:
+			game.get("_fishing_session").cast_line(1.0, fixture.outcome)
+			game._advance_fishing(1.0)
+		game._open_decor_panel()
+		game._close_decor_panel()
+		expect(game.get_node("%FishingButton").text == fishing_label, "cancelled fishing must restore idle button after decor")
+	game._show_temporary_ambient_scenery_backdrop("res://assets/images/runtime/voyage/ambient_motifs/bright-seagrass-sandbar.png", 1.0)
+	await create_timer(0.04).timeout
+	var active_tween: Tween = game.get("_ambient_scenery_pass_tween")
+	game._notification(Node.NOTIFICATION_APPLICATION_FOCUS_IN)
+	expect(active_tween.is_valid(), "same-hour focus refresh must not discard passing scenery")
+	game._open_decor_panel()
+	var phase: float = game.get_forward_water_flow_offset()
+	var remaining: float = state.remaining_seconds
+	var timer := game.get_node("AmbientSceneryReturnTimer") as Timer
+	var time_left := timer.time_left
+	var tween_time := active_tween.get_total_elapsed_time()
+	await create_timer(0.12).timeout
+	expect(is_equal_approx(game.get_forward_water_flow_offset(), phase), "full decor must freeze water phase")
+	expect(is_equal_approx(state.remaining_seconds, remaining), "full decor must freeze voyage time")
+	expect(is_equal_approx(timer.time_left, time_left), "full decor must freeze scenery return timer")
+	expect(is_equal_approx(active_tween.get_total_elapsed_time(), tween_time), "full decor must freeze scenery tween")
+	game._close_decor_panel()
+	await capture("before-album")
+	game._open_album()
+	await process_frame
+	await process_frame
+	expect(is_instance_valid(game) and current_scene == game, "opening album must retain the original voyage scene")
+	if is_instance_valid(game) and current_scene == game:
+		var album := game.get_node_or_null("AlbumOverlay")
+		expect(album != null, "album must open above the retained voyage")
+		if album != null:
+			await capture("album")
+			phase = game.get_forward_water_flow_offset()
+			var sound := root.get_node("RestingSoundscape/OceanBed") as AudioStreamPlayer
+			expect(sound.can_process(), "album must leave soundscape processing enabled")
+			if DisplayServer.get_name() != "headless":
+				expect(sound.playing, "album must preserve the playing soundscape")
+			for i in 20:
+				album.get_node("%BackButton").pressed.emit()
+				expect(is_equal_approx(game.get_forward_water_flow_offset(), phase), "back must preserve exact phase before the next tick")
+				game._open_album()
+				album = game.get_node("AlbumOverlay")
+			await create_timer(0.12).timeout
+			expect(is_equal_approx(game.get_forward_water_flow_offset(), phase), "album must freeze water phase")
+			game.set_application_foreground(false)
+			album.get_node("%BackButton").pressed.emit()
+			await create_timer(0.12).timeout
+			expect(is_equal_approx(game.get_forward_water_flow_offset(), phase), "closing album while inactive must not resume voyage")
+			game.set_application_foreground(true)
+			await create_timer(0.12).timeout
+			expect(game.get_forward_water_flow_offset() > phase, "foreground return must resume retained voyage")
+			game.set_look_around_mode(true)
+			var camera_rig := game.get_node("VoyageWorld/LookAroundCameraRig") as Node3D
+			var press := InputEventMouseButton.new()
+			press.button_index = MOUSE_BUTTON_LEFT
+			press.position = Vector2(400, 300)
+			press.pressed = true
+			root.push_input(press)
+			game._open_album()
+			press.pressed = false
+			root.push_input(press)
+			game._close_album()
+			var held_rotation := camera_rig.rotation
+			var motion := InputEventMouseMotion.new()
+			motion.position = Vector2(430, 300)
+			motion.relative = Vector2(30, 0)
+			root.push_input(motion)
+			expect(camera_rig.rotation.is_equal_approx(held_rotation), "release during album must not leave a stuck camera drag")
+			game.set_look_around_mode(false)
+			if DisplayServer.get_name() != "headless":
+				var photo_count: int = state.photo_memories.size()
+				game._take_photo()
+				game._take_photo()
+				game._open_album()
+				expect(not album.visible, "album request must wait for photo UI restoration")
+				for i in 4:
+					await process_frame
+				expect(album.visible, "deferred album request must open after capture")
+				expect(state.photo_memories.size() == photo_count + 1, "repeated photo press must save once")
+				var escape := InputEventKey.new()
+				escape.keycode = KEY_ESCAPE
+				escape.pressed = true
+				root.push_input(escape)
+				await process_frame
+				expect(not album.visible, "Escape input must close the album without replacing voyage")
+				await capture("after-album")
+				game._open_decor_panel()
+				await capture("decor")
+				escape.pressed = false
+				root.push_input(escape)
+				escape.pressed = true
+				root.push_input(escape)
+				await process_frame
+				expect(not game.get_node("DecorPanel").visible, "Escape must close decor while voyage is paused")
+	if is_instance_valid(current_scene):
+		current_scene.queue_free()
+	await process_frame
+	root.get_node("RestingSoundscape").release_ocean_bed_for_shutdown()
+	for i in 4:
+		await process_frame
+	for path in paths:
+		if FileAccess.file_exists(path):
+			DirAccess.remove_absolute(ProjectSettings.globalize_path(path))
+	if DirAccess.dir_exists_absolute("user://test_overlay_photos"):
+		for file_name in DirAccess.get_files_at("user://test_overlay_photos"):
+			DirAccess.remove_absolute(ProjectSettings.globalize_path("user://test_overlay_photos/" + file_name))
+		DirAccess.remove_absolute(ProjectSettings.globalize_path("user://test_overlay_photos"))
+	print("OVERLAY_CONTINUITY_FAILURES=%d" % failures)
+	quit(1 if failures else 0)
+
+func capture(label: String) -> void:
+	if capture_directory.is_empty():
+		return
+	await process_frame
+	await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(capture_directory.path_join(label + ".png"))

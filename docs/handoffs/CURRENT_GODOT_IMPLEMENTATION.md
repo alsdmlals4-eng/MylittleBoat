@@ -4,6 +4,12 @@
 **역할:** 실제 코드·Scene·test·runtime evidence와 현재 제품 정본의 차이를 기록하는 기술 router
 **현재 사람용 정본:** [프로젝트 GDD](../design/PROJECT_GDD.md)
 
+### 2026-09-12 최신 구현 — IMP-01 앨범·전체 꾸미기 연속성
+
+`game_scene.gd`의 앨범 진입은 Scene 교체 대신 기존 AlbumView를 자식 overlay로 유지한다. AlbumView의 복귀 signal이 있으면 감추고, 독립 album scene으로 연 경우의 기존 복귀는 보존한다. full overlay/비활성에서는 game process domain을 DISABLED로 두어 자식 Timer·카메라·bound Tween까지 동결한다. 두 overlay UI는 ALWAYS, soundscape는 기존 autoload다. 같은 시간대 재진입은 풍경을 지우지 않지만 최초 tone 설정은 강제한다. 사진 중 요청한 overlay는 UI 복원 후 한 번 열고, P2에 따라 낚시는 무손실 취소/버튼 복구한다. 두 camera controller는 pause 시 drag latch를 취소한다.
+
+검증 owner는 [IMP-01 REVIEW](../evidence/2026-09-12-overlay-continuity/REVIEW.md)와 같은 폴더의 verification.json이며, 새 `test_voyage_overlay_continuity.gd`가 20회 왕복·위상/Timer/Tween·비활성·같은 시각 context·최초 초기화·낚시·실제 viewport 입력·GPU 사진을 검사한다. CI 집합은 61개/60 headless로 갱신했다. actual OS focus 전달·모바일 suspend·사용자 청취/편안함·Release는 별도다. 새 3D/세계 깊이/전체 아트는 아직 남았으며 이 작업에서 건드리지 않았다. 검증 전 실패를 숨기거나 기존 9/11 증거를 새 소스 검증으로 재사용하지 않는다.
+
 ### 2026-09-12 사용자 수동 삭제 대기 정리
 
 최신 사용자는 삭제 가능한 파일을 별도 폴더에 모으고 직접 삭제하도록 요청했다. 기존 차단된 자동 삭제를 재시도하지 않고 새로 승인된 가역 이동을 수행했다. 위치는 `C:/Users/user/Desktop/MyLittleBoat_삭제대기_20260912`이며 `삭제안내.md`와 `이동목록.json`에 원래/이동 경로와 검증 정보가 있다. 최근 후면 촬영 8개, 이전 수면 촬영·분석 7개, matte probe 1개, 과거 격리 촬영 캐시 1개, Aseprite 작업용 사본 1개, Python 캐시 3개로 총 21개 폴더·1,764개 파일·852,829,063 bytes다. 파일은 삭제하지 않았다. 이동 전후 모든 파일의 상대 경로/SHA-256 집계·개수·용량과 원래 위치 부재를 확인했다.

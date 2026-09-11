@@ -47,7 +47,8 @@ func _run() -> void:
 		director.set_next_event_seconds_for_tests(0.0)
 		seed(motif_seed)
 		scene.call("_advance_drift_scenery", 0.1)
-		scene.set_application_foreground(false)
+		# 표시 Tween만 관찰하는 fixture. 실제 비활성은 이제 Tween도 동결한다.
+		scene.set_process(false)
 		var normal_backdrop := scene.get_node_or_null("VoyageWorld/DioramaCameraRig/DioramaCamera3D/SeaBackdrop") as Sprite3D
 		var appreciation_backdrop := scene.get_node_or_null("VoyageWorld/AppreciationCameraRig/AppreciationCamera3D/SeaBackdrop") as Sprite3D
 		var normal_sky := scene.get_node_or_null("VoyageWorld/DioramaCameraRig/DioramaCamera3D/SkyBackdrop") as Sprite3D

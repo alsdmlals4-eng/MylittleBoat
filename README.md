@@ -16,6 +16,8 @@
 
 ## 플레이 경험
 
+2026-09-12에는 앨범을 기존 항해 위에서 열도록 연결했습니다. 앨범·전체 꾸미기를 여는 동안 물·시간·풍경 Timer/Tween이 동결되고, 닫으면 같은 장면에서 이어집니다. UI와 바다 소리는 유지합니다. `Escape`로 앨범·꾸미기를 닫을 수 있고 사진 촬영 중 화면 열기는 촬영/UI 복원 뒤 처리합니다. 현재 계약 집합은 **61개 중 60개 headless**이며 새 overlay 검사의 사진·입력·소리 검증은 display renderer에서도 실행합니다. 아래 이전 날짜의 검사 수는 당시 이력입니다. [현재 검증 기록](docs/evidence/2026-09-12-overlay-continuity/REVIEW.md)을 참고합니다.
+
 2026-09-11 후속 작업은 승인된 후면 분리 보트·파란 후드 캐릭터·강아지를 기본 화면에 연결합니다. 탑승자 반응과 카메라의 항해 이동, 하단 선체 접점은 같은 시각 시간으로 제어합니다. 전체 **60개 계약 중 59개**가 headless 집합이며 `test_stern_motion_integration.gd`의 색 번짐 검사는 display renderer에서 별도 실행합니다. 아래 수면·58/57개 검증 문단은 이전 회차 이력입니다. 새 후면 자산 적용과 실제 3D 모델·연속 회전·전체 새 배경 적용은 별개이며 후자는 미완료입니다.
 
 이동 회귀 검사는 `godot --path . --script tests/test_voyage_motion_continuity.gd`로 실행합니다. 30초 촬영은 `godot --path . --script tests/capture_voyage_realtime_motion.gd -- <존재하지_않는_절대_출력_폴더>`입니다. 촬영은 테스트 저장 경로와 명시적인 foreground 조건을 사용하므로 실제 OS focus 전달/휴대기기 편안함의 증거는 아닙니다.

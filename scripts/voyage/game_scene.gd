@@ -116,6 +116,8 @@ var _rest_menu_open := false
 var _active_atmosphere_id := "bright"
 var _active_season_id := ""
 var _application_in_foreground := true
+var _album_overlay: Control
+var _pending_full_overlay := ""
 var _look_around_mode := false
 var _look_around_angle_id := "front"
 var _look_around_presentation_router = LOOK_AROUND_PRESENTATION_ROUTER_SCRIPT.new()
@@ -124,6 +126,12 @@ var _title_waiting := false
 
 
 func _ready() -> void:
+	$DecorPanel.process_mode = Node.PROCESS_MODE_ALWAYS
+	var back_key := InputEventKey.new()
+	back_key.keycode = KEY_ESCAPE
+	var back_shortcut := Shortcut.new()
+	back_shortcut.events = [back_key]
+	%DecorCloseButton.shortcut = back_shortcut
 	randomize()
 	_title_waiting = not GameState.voyage_active
 	if _title_waiting:
@@ -195,7 +203,7 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	if not _application_in_foreground:
+	if not _application_in_foreground or _has_full_overlay():
 		return
 	_apply_drift_motion(delta)
 	if _title_waiting:
@@ -226,9 +234,25 @@ func _notification(what: int) -> void:
 ## Keeps foreground lifecycle ownership local to the voyage scene.
 func set_application_foreground(is_foreground: bool) -> void:
 	_application_in_foreground = is_foreground
-	_drift_scenery_director.set_foreground(is_foreground)
+	_sync_voyage_pause()
 	if not is_foreground:
 		GameState.flush_together_time()
+
+
+func _has_full_overlay() -> bool:
+	return $DecorPanel.visible or (is_instance_valid(_album_overlay) and _album_overlay.visible)
+
+
+func _sync_voyage_pause() -> void:
+	var active := _application_in_foreground and not _has_full_overlay()
+	# 항해의 자식 Timer·Animation·bound Tween도 함께 멈춘다. UI와 autoload 소리는 별도다.
+	process_mode = Node.PROCESS_MODE_INHERIT if active else Node.PROCESS_MODE_DISABLED
+	_drift_scenery_director.set_foreground(active)
+	if not active:
+		$VoyageWorld/LookAroundCameraRig.cancel_drag()
+		$VoyageWorld/AppreciationCameraRig.cancel_drag()
+	if active and is_node_ready():
+		refresh_real_time_atmosphere()
 
 
 func _exit_tree() -> void:
@@ -236,7 +260,8 @@ func _exit_tree() -> void:
 
 
 func _apply_time_of_day_tone() -> String:
-	return refresh_real_time_atmosphere()
+	# 최초 실행은 기본 ID가 같은 경우에도 재질·광원·접점을 반드시 초기화한다.
+	return _apply_visual_context(_real_time_atmosphere_resolver.resolve_system_time(), _real_time_atmosphere_resolver.resolve_system_season())
 
 
 ## Applies a deterministic local-hour atmosphere for automated capture and contracts.
@@ -246,7 +271,11 @@ func apply_real_time_atmosphere_for_hour(hour: int) -> String:
 
 ## Refreshes the visual-only atmosphere from the device's current local time.
 func refresh_real_time_atmosphere() -> String:
-	return _apply_visual_context(_real_time_atmosphere_resolver.resolve_system_time(), _real_time_atmosphere_resolver.resolve_system_season())
+	var atmosphere: String = _real_time_atmosphere_resolver.resolve_system_time()
+	var season: String = _real_time_atmosphere_resolver.resolve_system_season()
+	if _has_full_overlay() or (atmosphere == _active_atmosphere_id and season == _active_season_id):
+		return _active_atmosphere_id
+	return _apply_visual_context(atmosphere, season)
 
 
 func get_active_atmosphere_id() -> String:
@@ -301,7 +330,7 @@ func _apply_visual_context(time_of_day_id: String, season_id: String) -> String:
 
 
 func _take_photo() -> void:
-	if _photo_capture_in_progress:
+	if _photo_capture_in_progress or _has_full_overlay():
 		return
 	set_look_around_mode(false)
 	_capture_voyage_postcard()
@@ -324,6 +353,10 @@ func _capture_voyage_postcard() -> void:
 	for index in capture_nodes.size():
 		capture_nodes[index].visible = previous_visibility[index]
 	_photo_capture_in_progress = false
+	if not _pending_full_overlay.is_empty():
+		var requested := _pending_full_overlay
+		_pending_full_overlay = ""
+		call_deferred("_open_album" if requested == "album" else "_open_decor_panel")
 	if image == null or image.is_empty():
 		_update_ui("사진을 남기지 못했어요. 바다를 계속 바라봐도 좋아요.")
 		return
@@ -626,6 +659,11 @@ func _clear_selected_decor() -> void:
 
 
 func _open_decor_panel() -> void:
+	if _photo_capture_in_progress:
+		_pending_full_overlay = "decor"
+		return
+	if is_instance_valid(_album_overlay) and _album_overlay.visible:
+		return
 	set_look_around_mode(false)
 	if GameState.appreciation_mode:
 		return
@@ -635,12 +673,18 @@ func _open_decor_panel() -> void:
 	$DecorPanel.visible = true
 	_populate_identity_options()
 	_refresh_decor_item_options()
+	if _fishing_session.is_waiting() or _fishing_session.is_bite_ready() or _fishing_session.is_quiet_ready():
+		_fishing_session.cancel()
+		%FishingButton.text = "낚시"
+		_set_fishing_status("")
+	_sync_voyage_pause()
 
 
 func _close_decor_panel() -> void:
 	if %DecorPreview.has_method("hide_preview"):
 		%DecorPreview.call("hide_preview")
 	$DecorPanel.visible = false
+	_sync_voyage_pause()
 
 
 func _open_interaction_panel() -> void:
@@ -1251,11 +1295,32 @@ func _sync_next_voyage_button() -> void:
 
 
 func _open_album() -> void:
-	set_look_around_mode(false)
+	if _photo_capture_in_progress:
+		_pending_full_overlay = "album"
+		return
+	if _has_full_overlay():
+		return
 	if _fishing_session.is_waiting() or _fishing_session.is_bite_ready() or _fishing_session.is_quiet_ready():
 		_fishing_session.cancel()
+		%FishingButton.text = "낚시"
+		_set_fishing_status("")
 	GameState.flush_together_time()
-	get_tree().change_scene_to_file("res://scenes/album.tscn")
+	if not is_instance_valid(_album_overlay):
+		_album_overlay = load("res://scenes/album.tscn").instantiate() as Control
+		_album_overlay.name = "AlbumOverlay"
+		_album_overlay.return_requested.connect(_close_album)
+		add_child(_album_overlay)
+	else:
+		_album_overlay.refresh_album()
+	_album_overlay.show()
+	_sync_voyage_pause()
+	_album_overlay.get_node("%BackButton").grab_focus()
+
+
+func _close_album() -> void:
+	if is_instance_valid(_album_overlay):
+		_album_overlay.hide()
+	_sync_voyage_pause()
 
 
 func _start_next_voyage() -> void:
