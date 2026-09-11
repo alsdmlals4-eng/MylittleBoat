@@ -4,6 +4,12 @@
 **역할:** 실제 코드·Scene·test·runtime evidence와 현재 제품 정본의 차이를 기록하는 기술 router
 **현재 사람용 정본:** [프로젝트 GDD](../design/PROJECT_GDD.md)
 
+### 2026-09-12 사용자 수동 삭제 대기 정리
+
+최신 사용자는 삭제 가능한 파일을 별도 폴더에 모으고 직접 삭제하도록 요청했다. 기존 차단된 자동 삭제를 재시도하지 않고 새로 승인된 가역 이동을 수행했다. 위치는 `C:/Users/user/Desktop/MyLittleBoat_삭제대기_20260912`이며 `삭제안내.md`와 `이동목록.json`에 원래/이동 경로와 검증 정보가 있다. 최근 후면 촬영 8개, 이전 수면 촬영·분석 7개, matte probe 1개, 과거 격리 촬영 캐시 1개, Aseprite 작업용 사본 1개, Python 캐시 3개로 총 21개 폴더·1,764개 파일·852,829,063 bytes다. 파일은 삭제하지 않았다. 이동 전후 모든 파일의 상대 경로/SHA-256 집계·개수·용량과 원래 위치 부재를 확인했다.
+
+승인/후보 원본·runtime 자산·repository 검증 증거·PDF·save·`.asset-vault`·Godot import cache·다른 worktree는 그대로다. 과거 기록의 cleanup-blocked 15개 촬영 폴더 및 Aseprite/matte staging은 이제 위 사용자 수동 삭제 대기 위치를 따른다. 다른 프로젝트나 PC 전체의 모든 미사용 파일을 판정한 것이 아니다. AGENTS의 정리 방침도 같은 요청에 맞춰 갱신했다. 게임 코드/씬 변경이 없어 새 gameplay 검증은 수행하지 않는다.
+
 ### 2026-09-11 최신 실행 결과 — 승인 후면 자산·연동 모션
 
 사용자 `확정하고 진행해`에 따라 승인된 분리 RGBA를 기본 player/dog 조합에 실제 연결했다. `FinalDioramaCard → PartsViewport`에서 선체·인물·강아지·쿠션·앞 난간을 조립하고, 기존 항해 위상으로 선체/접점/탑승자 반응을 연결했다. 카메라와 선체의 공통 진행 좌표는 512 단위로 제한한다. 이 좌표 변화 자체는 전진감 증명이 아니며 실제 깊이를 가진 새 풍경이나 연속 회전 구현도 아니다. 후면 slice는 `IMPLEMENTED / MACHINE_VERIFIED / RUNTIME_VERIFIED_BOUNDED`, 전체 사용자 이동 경험은 `PARTIAL / HUMAN_NOT_RUN`이다.

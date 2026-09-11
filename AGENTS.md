@@ -163,6 +163,7 @@ Every material retained change requires at least five actual full-scope loops be
 
 ### Temporary Artifact Hygiene
 
+- 사용자 작업 산출물 정리 방침(2026-09-12): 사용이 끝난 것으로 확인한 임시 산출물은 직접 삭제하지 않고 프로젝트 밖의 날짜별 `MyLittleBoat_삭제대기_YYYYMMDD` 폴더로 모아 링크를 제공한다. 사용자가 직접 삭제한다. 원래 경로·이동 사유·파일 수/용량·이동 전후 해시를 기록하고, 승인 원본·현재 consumer·검증 정본·출처 불명 파일·다른 workstream은 제외한다. 이후 아래 자동 정리 규칙은 이 사용자 방침과 충돌하지 않는 테스트 자체 teardown 등에 한해 적용한다.
 - Create temporary files only in an ignored, task-scoped location and remove them as soon as their consumer or verification use is complete.
 - A Git-ignored folder is still visible to Godot's importer. Keep temporary rendered rasters, PDF page previews, and build probes outside the project root. Use a narrowly scoped `.gdignore` only when a project-internal temporary folder is unavoidable and has no Godot consumer.
 - Every test that writes an isolated `user://test_*` file or directory must remove that exact path during teardown. After a suite, audit and remove only any remaining `user://test_*` artifacts; never delete production saves by pattern.
