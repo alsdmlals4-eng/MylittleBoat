@@ -816,11 +816,13 @@ func _get_selected_metadata(option: OptionButton) -> String:
 
 func _cycle_speed() -> void:
 	GameState.speed_index = (GameState.speed_index + 1) % SPEED_NAMES.size()
+	_sync_scenery_motion_clock()
 	_update_ui("표류 리듬을 %s으로 바꿨습니다." % SPEED_NAMES[GameState.speed_index])
 
 
 func _cycle_motion_comfort() -> void:
 	GameState.cycle_motion_comfort_profile()
+	_sync_scenery_motion_clock()
 	_update_ui("파도를 %s하게 조절했습니다." % _get_motion_comfort_name())
 
 
@@ -973,6 +975,7 @@ func _apply_background_flow() -> void:
 
 
 func _apply_drift_motion(delta: float) -> void:
+	_sync_scenery_motion_clock()
 	var speed_index := clampi(GameState.speed_index, 0, SPEED_MULTIPLIERS.size() - 1)
 	var comfort_scale := GameState.get_motion_comfort_scale()
 	var visual_motion_multiplier := SPEED_MULTIPLIERS[speed_index] if not _title_waiting else TITLE_IDLE_MOTION_MULTIPLIER
@@ -1046,6 +1049,8 @@ func _apply_seasonal_parallax_motion(safe_delta: float, visual_motion_multiplier
 			_seasonal_island_progress + seasonal_motion_delta / AMBIENT_SCENERY_PASS_DURATION_SECONDS,
 		)
 		_apply_seasonal_island_progress(_seasonal_island_progress)
+		if _seasonal_island_progress >= 1.0:
+			_restore_active_atmosphere_backdrop()
 
 
 ## Starts persistent voyage state only after the player leaves the title boat view.
@@ -1086,6 +1091,9 @@ func _advance_drift_scenery(delta: float) -> void:
 	%DistantSceneryFadeTimer.start()
 	if bool(event.get("save_memory", false)):
 		GameState.record_ambient_memory(label)
+	# 발견/기록 주기는 유지하되 still 중 새 이동을 쌓거나 동결된 풍경을 교체하지 않는다.
+	if is_zero_approx(GameState.get_motion_comfort_scale()):
+		return
 	_show_temporary_ambient_scenery_backdrop(
 		str(event.get("backdrop_texture_path", "")),
 		float(event.get("backdrop_offset_x", 0.0)),
@@ -1114,7 +1122,9 @@ func _show_temporary_ambient_scenery_backdrop(texture_path: String, backdrop_off
 	_ambient_scenery_pass_tween = create_tween().bind_node(self)
 	_ambient_scenery_pass_tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	_ambient_scenery_pass_tween.tween_method(_apply_ambient_scenery_pass_progress, 0.0, 1.0, AMBIENT_SCENERY_PASS_DURATION_SECONDS)
+	_ambient_scenery_pass_tween.finished.connect(_restore_active_atmosphere_backdrop)
 	%AmbientSceneryReturnTimer.start()
+	_sync_scenery_motion_clock()
 
 
 func _show_seasonal_island_layer(scenery_texture: Texture2D, backdrop_offset_x: float) -> void:
@@ -1134,6 +1144,16 @@ func _show_seasonal_island_layer(scenery_texture: Texture2D, backdrop_offset_x: 
 		island_layer.modulate = Color(1.0, 1.0, 1.0, 0.0)
 		island_layer.visible = true
 	%AmbientSceneryReturnTimer.start()
+	_sync_scenery_motion_clock()
+
+
+func _sync_scenery_motion_clock() -> void:
+	# 표류의 시각 시간으로 끝낸다. 벽시계 Timer가 느린/정지 풍경을 먼저 지우지 않는다.
+	var tween_active := _ambient_scenery_pass_tween != null and _ambient_scenery_pass_tween.is_valid()
+	%AmbientSceneryReturnTimer.paused = tween_active or _seasonal_island_active
+	if tween_active:
+		var speed_index := clampi(GameState.speed_index, 0, SPEED_MULTIPLIERS.size() - 1)
+		_ambient_scenery_pass_tween.set_speed_scale(SPEED_MULTIPLIERS[speed_index] * GameState.get_motion_comfort_scale())
 
 
 func _restore_active_atmosphere_backdrop() -> void:

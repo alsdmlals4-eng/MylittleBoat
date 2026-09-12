@@ -1,0 +1,39 @@
+{
+  "date": "2026-09-12",
+  "base_head": "be4f6dfe09b011456be1eac804f6a0fe61729646",
+  "base_remote_inspected": "d830c0f6967678eed3c208ac6b24f9cd1b262ec3",
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "source_sha256": {
+    "scripts/voyage/game_scene.gd": "441FCFE8639A4990300588D395C68B0B3E9E560CDBE67087D1E7E1393A536221",
+    "tests/test_voyage_overlay_continuity.gd": "EE142E37AB70035ED68D7B6A6E0B17091D40A122E5ADBF02AB778483E49A2D08"
+  },
+  "red_before_fix": {"still_tween_freeze": "FAIL", "still_timer_freeze": "FAIL"},
+  "headless_suite": {"status": "PASS_AFTER_FOLLOWUP_FIX", "count": 60, "failures": 0},
+  "followup_event_red_green": {"before": "FAIL: new discoveries must not replace frozen scenery", "after_failures": 0},
+  "python_unittest": {"count": 20, "failures": 0},
+  "pre_followup_targeted_regression": {
+    "repetitions": 5,
+    "failures": 0,
+    "contracts": ["test_voyage_overlay_continuity.gd", "test_seasonal_parallax_contract.gd", "test_ambient_motif_game_scene_contract.gd", "test_voyage_forward_drift_contract.gd", "test_direct_boat_entry_contract.gd"],
+    "full_scope_adversarial_review_equivalence": false
+  },
+  "display_runtime": {
+    "renderer": "OpenGL 3.3 Compatibility NVIDIA RTX 3050",
+    "test": "test_voyage_overlay_continuity.gd",
+    "failures": 0,
+    "captures": ["runtime/before-album.png", "runtime/album.png", "runtime/after-album.png", "runtime/decor.png"],
+    "capture_sha256": {
+      "runtime/before-album.png": "02A6A0298C5ABE4C8CC7CBB010D35FB59BDA5688A319333F56318432357016C8",
+      "runtime/album.png": "AE2E446638CDAC6C047B9ABB57968D617A515AFEAE152F81503E1EE331C41BE7",
+      "runtime/after-album.png": "DDCE636A2A1147759B0627A6BDCD4F1E39B274F87DF951DE4013E40B5A1116F7",
+      "runtime/decor.png": "59887DFBF8DAACFFFD7E00D48B50664D971C44F2D2573BEBBAD113654064DB30"
+    },
+    "ceiling": "BOUNDED_RUNTIME_VERIFIED_AFTER_FOLLOWUP_FIX"
+  },
+  "independent_read_only_review": "FOLLOWUP_REPLACEMENT_FINDING_CORRECTED_NO_NEW_VALIDATED_FINDING",
+  "human": "NOT_RUN",
+  "mobile_device": "NOT_RUN",
+  "full_scope_five_review_gate": "PASS_BOUNDED_SCENERY_CLOCK_PACKAGE",
+  "whole_game": "PARTIAL",
+  "release": "NOT_VERIFIED"
+}

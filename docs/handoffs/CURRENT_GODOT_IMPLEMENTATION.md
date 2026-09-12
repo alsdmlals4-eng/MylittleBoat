@@ -4,6 +4,10 @@
 **역할:** 실제 코드·Scene·test·runtime evidence와 현재 제품 정본의 차이를 기록하는 기술 router
 **현재 사람용 정본:** [프로젝트 GDD](../design/PROJECT_GDD.md)
 
+### 2026-09-12 후속 구현 — 풍경 이동 시간 일치
+
+일반 풍경 Tween은 보트의 speed/comfort 배율을 따르며 still에서 멈춘다. 일반·계절 풍경은 벽시계 Timer가 아니라 실제 시각 진행 완료 시 정리한다. 느린 풍경의 조기 만료와 still 중 후속 이벤트에 의한 갑작스러운 교체를 수정했다. 발견/저장/보상 시간은 변경하지 않았고 이동 큐도 없다. [조사·구현·검증 경계](../evidence/2026-09-12-scenery-clock/REVIEW.md)를 따른다. Base remote는 다시 조사했지만 v9.4.4 lock은 유지했다. 자동 회귀 5회는 전체 적대적 검토 5회의 대체 증거가 아니다.
+
 ### 2026-09-12 후속 구현 — 같은 쪽 섬 통과와 제한된 깊이
 
 `game_scene.gd`의 승인 봄섬 전용 경로가 중앙을 가로지르는 좌우 슬라이드에서 같은 쪽 접근으로 바뀌었다. normal/Appreciation의 기존 Sprite3D를 유지하며 camera-relative 깊이 변화로 크기·바깥 방향 투영을 만든다. 0 offset은 오른쪽으로 처리하고 진행은 기존 speed/comfort 위상을 사용한다. 실제 world-space 섬·Look Around 연속 투영·전체 시간대 적용은 아직 아니다. 새 이미지·씬·저장·보상 변경은 없다.

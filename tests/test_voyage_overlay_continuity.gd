@@ -52,6 +52,57 @@ func run() -> void:
 		game._close_decor_panel()
 		expect(game.get_node("%FishingButton").text == fishing_label, "cancelled fishing must restore idle button after decor")
 	game._show_temporary_ambient_scenery_backdrop("res://assets/images/runtime/voyage/ambient_motifs/bright-seagrass-sandbar.png", 1.0)
+	state.set_motion_comfort_profile("still")
+	game._apply_drift_motion(0.0)
+	var still_tween: Tween = game.get("_ambient_scenery_pass_tween")
+	var still_elapsed := still_tween.get_total_elapsed_time()
+	var still_timer := game.get_node("AmbientSceneryReturnTimer") as Timer
+	var still_remaining := still_timer.time_left
+	still_timer.start(0.05)
+	still_remaining = still_timer.time_left
+	await create_timer(0.15).timeout
+	expect(is_equal_approx(still_tween.get_total_elapsed_time(), still_elapsed), "still comfort must freeze generic scenery tween")
+	expect(is_equal_approx(still_timer.time_left, still_remaining), "still comfort must not expire frozen scenery")
+	var director = game.get("_drift_scenery_director")
+	var director_elapsed: float = director.get_foreground_elapsed_seconds()
+	var emitted_events := 0
+	for event_seed in range(1, 21):
+		game.get_node("%DistantSceneryLabel").text = ""
+		seed(event_seed)
+		director.set_next_event_seconds_for_tests(0.0)
+		game._advance_drift_scenery(0.1)
+		if not game.get_node("%DistantSceneryLabel").text.is_empty():
+			emitted_events += 1
+	expect(emitted_events > 0, "still fixture must exercise real director events")
+	expect(is_equal_approx(director.get_foreground_elapsed_seconds() - director_elapsed, 2.0), "still must preserve discovery foreground cadence")
+	expect(still_tween.is_valid() and game.get("_ambient_scenery_pass_tween") == still_tween, "new discoveries must not replace frozen scenery")
+	# 실패한 구현에서도 나머지 계약과 격리 저장 teardown을 실행한다.
+	if not still_tween.is_valid():
+		game._show_temporary_ambient_scenery_backdrop("res://assets/images/runtime/voyage/ambient_motifs/bright-seagrass-sandbar.png", 1.0)
+		still_tween = game.get("_ambient_scenery_pass_tween")
+	state.set_motion_comfort_profile("standard")
+	game._apply_drift_motion(0.0)
+	var original_speed: int = state.speed_index
+	for speed in [0, 1, 2]:
+		state.speed_index = speed
+		game._apply_drift_motion(0.0)
+		var before_step := still_tween.get_total_elapsed_time()
+		still_tween.custom_step(0.1)
+		expect(is_equal_approx(still_tween.get_total_elapsed_time() - before_step, 0.1 * game.SPEED_MULTIPLIERS[speed]), "scenery must share selected voyage speed")
+	state.speed_index = original_speed
+	game._apply_drift_motion(0.0)
+	still_tween.custom_step(100.0)
+	expect(not game.get_node("VoyageWorld/DioramaCameraRig/DioramaCamera3D/AmbientSceneryPass").visible, "generic scenery must clear after visual completion")
+	game._show_seasonal_island_layer(load("res://assets/images/runtime/voyage/seasonal_parallax/bright-spring-islet.png"), 1.0)
+	state.set_motion_comfort_profile("still")
+	game._apply_drift_motion(0.0)
+	still_timer.start(0.05)
+	await create_timer(0.15).timeout
+	expect(game.get_node("VoyageWorld/DioramaCameraRig/DioramaCamera3D/SeasonalIslandLayer").visible, "frozen seasonal island must survive wall-clock expiry")
+	state.set_motion_comfort_profile("standard")
+	game._apply_drift_motion(100.0)
+	expect(not game.get_node("VoyageWorld/DioramaCameraRig/DioramaCamera3D/SeasonalIslandLayer").visible, "seasonal island must clear after visual completion")
+	game._show_temporary_ambient_scenery_backdrop("res://assets/images/runtime/voyage/ambient_motifs/bright-seagrass-sandbar.png", 1.0)
 	await create_timer(0.04).timeout
 	var active_tween: Tween = game.get("_ambient_scenery_pass_tween")
 	game._notification(Node.NOTIFICATION_APPLICATION_FOCUS_IN)
