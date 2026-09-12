@@ -1,0 +1,32 @@
+{
+  "source_sha256": {
+    "tests/probe_world_space_island.gd": "D367C6B24E35C212DB7BA03DC6C303D4FBB5514733B7455D6A4BD42D7559EF22",
+    "assets/images/runtime/voyage/seasonal_parallax/bright-spring-islet.png": "22E9AE8B74B331F7147936B780823D81EA59DD407837BF4ACBC9F82FFC046987",
+    "scenes/game.tscn": "CE2266EDCB6FF697900BB42C4D79ECC20B32F635C409EA1E2E764F0F5ED9FC89",
+    "tests/fixtures/capture_clock_game.gd": "A1CC912FF1E61C99E43274A4940DAB04DC3F4A9E14F6DA20ADDA70E7B2B8FB78",
+    "scripts/voyage/game_scene.gd": "441FCFE8639A4990300588D395C68B0B3E9E560CDBE67087D1E7E1393A536221"
+  },
+  "output_sha256": {
+    "trial-appreciation.png": "FFE6380684AE62EA242F869D2DB9D3F3C256580A0D78CEE241DA58233F9CAB81",
+    "baseline-appreciation.png": "7C7B496A9305C08BA6FA2AB328F51972F703BEFB85D0516F66ABFA9240B52241",
+    "trial-look-around.png": "813BBCE19C831D4B243D534E1A3608DB70E7D6E165607BA3B07CC475DBAEB493",
+    "trial-normal.png": "B77C4B0F28DC821DB96412A8512A3D0EB18E4042304F95D3350C2BEEB9A569A9",
+    "projection.json": "184BB37974E919BA632E41D086456F6AC71C10C5DC4DD5E2A14F00D938EE5F8D",
+    "baseline-normal.png": "B77C4B0F28DC821DB96412A8512A3D0EB18E4042304F95D3350C2BEEB9A569A9"
+  },
+  "date": "2026-09-13",
+  "base_head": "cad196c3900964e1f50fe13a013a770576d677f6",
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "renderer": "OpenGL Compatibility RTX 3050",
+  "exit_code": 0,
+  "ceiling": "STATIC_DIAGNOSTIC_NOT_PRODUCTION",
+  "human": "NOT_RUN",
+  "motion_soak": "NOT_RUN",
+  "model_pipeline": "BLOCKED_UNVERIFIED",
+  "production_changes": false,
+  "python_tests": {"count": 20, "status": "PASS"},
+  "overwrite_guard": {"expected_exit": 2, "actual_exit": 2, "output_hashes_unchanged": true},
+  "diagnostic_full_scope_review_loops": 5,
+  "diagnostic_review": "NO_NEW_BLOCKING_FINDING",
+  "remaining_production_findings": ["camera-local islands are separate world positions", "inactive-camera island visibility", "unverified common world axes and depth", "model pipeline unavailable in checked locations"]
+}

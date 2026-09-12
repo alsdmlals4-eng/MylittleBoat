@@ -4,6 +4,10 @@
 **역할:** 실제 코드·Scene·test·runtime evidence와 현재 제품 정본의 차이를 기록하는 기술 router
 **현재 사람용 정본:** [프로젝트 GDD](../design/PROJECT_GDD.md)
 
+### 2026-09-13 진단 — world-space 단순 전환의 제약
+
+사용자의 계획 후 실행 요청에 따라 기존 낮/봄섬의 카메라별 세계 좌표를 실제 Godot에서 비교했다. 같은 섬의 기본/감상 global 중심은 11.0099 engine units 떨어져 있고 둘러보기에는 같은 섬 레이어가 없다. 단일 world 복제를 유지하면 현재 감상/둘러보기의 투영이 화면 밖으로 크게 벗어난다. 단순 reparent는 production에 적용하지 않았다. [실행 전 계획·측정·다음 선행 조건](../evidence/2026-09-13-world-space-probe/REVIEW.md)을 따른다. 모델 파일·로컬 Blender·연결 rigging 도구는 제한된 조회에서 확인되지 않아 C 제작은 BLOCKED_UNVERIFIED다. 이번은 진단 도구/캡처이며 새 공간 구조·연속 3D 회전·전진감 완성은 아니다.
+
 ### 2026-09-12 후속 구현 — 풍경 이동 시간 일치
 
 일반 풍경 Tween은 보트의 speed/comfort 배율을 따르며 still에서 멈춘다. 일반·계절 풍경은 벽시계 Timer가 아니라 실제 시각 진행 완료 시 정리한다. 느린 풍경의 조기 만료와 still 중 후속 이벤트에 의한 갑작스러운 교체를 수정했다. 발견/저장/보상 시간은 변경하지 않았고 이동 큐도 없다. [조사·구현·검증 경계](../evidence/2026-09-12-scenery-clock/REVIEW.md)를 따른다. Base remote는 다시 조사했지만 v9.4.4 lock은 유지했다. 자동 회귀 5회는 전체 적대적 검토 5회의 대체 증거가 아니다.
