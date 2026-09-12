@@ -1,0 +1,24 @@
+{
+  "role": "CAMERA_SCENERY_ISOLATION_BOUNDED_EVIDENCE",
+  "base_head": "d37b8e3d0081dec8af15952c92a6bce263ed8b08",
+  "engine": "Godot 4.7.2 stable",
+  "red_assertion_failures": 8,
+  "headless_suites": 60,
+  "headless_failures": 0,
+  "python_tests": 20,
+  "gpu_overlay_failures": 0,
+  "gpu_probe_exit": 0,
+  "human": "NOT_RUN",
+  "device": "NOT_RUN",
+  "release": "NOT_RUN",
+  "temporal_capture": "NOT_RUN_STATIC_PROBE_ONLY",
+  "source_sha256": {
+    "scripts/voyage/game_scene.gd": "D36525CA849B902442483EE96B177DF8A5506C5F8AB9F975136011CEC9B563DF",
+    "tests/test_seasonal_parallax_contract.gd": "5003848BFAFE25C5F9CDA31CF2FF4E3AD8F3CB831BAC8AA632F69303CC33C613",
+    "tests/probe_world_space_island.gd": "3F24B5402AC1FD3A4FE0BCD46BCE9FC835F547BB267B1EB135D0BD3EAF2B78D4",
+    "scenes/game.tscn": "CE2266EDCB6FF697900BB42C4D79ECC20B32F635C409EA1E2E764F0F5ED9FC89"
+  },
+  "capture_sha256": {
+    "runtime/baseline-appreciation.png": "5E740E08323A6B29148C9FCE5D4E79C926E1DA9C8AD4AD010AAFC3B4D77CE65A"
+  }
+}

@@ -50,6 +50,8 @@ func run() -> void:
 	# 실행 중 복제만 비교하며 production Scene/asset은 변경하지 않는다.
 	var trial := normal.duplicate() as Sprite3D
 	trial.name = "WorldSpaceIslandProbe"
+	# 공통 공간 실험은 production 카메라 전용 레이어를 상속하지 않는다.
+	trial.layers = 1
 	game.get_node("VoyageWorld").add_child(trial)
 	trial.global_transform = original_world
 	normal.hide()

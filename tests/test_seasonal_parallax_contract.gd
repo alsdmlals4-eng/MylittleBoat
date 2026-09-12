@@ -95,6 +95,19 @@ func _verify_scene_consumers() -> void:
 		if island != null:
 			_expect(island.texture != null and island.texture.resource_path == SEASONAL_ISLAND_TEXTURE_PATH, "%s island layer must use the exact approved island texture" % camera_path)
 	_verify_distant_island_geometry(scene)
+	_verify_camera_scenery_isolation(scene)
+	scene.call("_show_seasonal_island_layer", load(SEASONAL_ISLAND_TEXTURE_PATH), 1.0)
+	scene.call("_apply_seasonal_island_progress", 0.5)
+	var retained_island := scene.get_node("%s/SeasonalIslandLayer" % ISLAND_CAMERA_PATHS[0]) as Sprite3D
+	var retained_position := retained_island.position
+	for transition in range(4):
+		scene.call("_toggle_appreciation_mode")
+		_verify_camera_scenery_isolation(scene)
+		_expect(retained_island.visible and retained_island.position == retained_position, "camera changes must not hide or restart in-progress island scenery")
+	scene.call("set_look_around_mode", true)
+	_verify_camera_scenery_isolation(scene)
+	scene.call("set_look_around_mode", false)
+	_verify_camera_scenery_isolation(scene)
 	_verify_same_side_depth_pass(scene)
 	var look_around_island := scene.get_node_or_null("VoyageWorld/LookAroundCameraRig/LookAroundCamera3D/SeasonalIslandLayer")
 	_expect(look_around_island == null, "Look Around must retain its angle-specific foreground policy without a seasonal island layer")
@@ -108,6 +121,17 @@ func _verify_scene_consumers() -> void:
 		_expect(diorama_cloud != null and not diorama_cloud.visible, "non-spring bright time must hide the seasonal cloud layer")
 	scene.queue_free()
 	await process_frame
+
+
+func _verify_camera_scenery_isolation(scene: Node) -> void:
+	for camera_path in CLOUD_CAMERA_PATHS:
+		var camera := scene.get_node(camera_path) as Camera3D
+		_expect(camera.get_cull_mask_value(1), "camera must retain shared boat and water rendering")
+		for owner_path in ISLAND_CAMERA_PATHS:
+			for node_name in ["SeasonalIslandLayer", "AmbientSceneryPass"]:
+				var scenery := scene.get_node("%s/%s" % [owner_path, node_name]) as Sprite3D
+				var can_render := (camera.cull_mask & scenery.layers) != 0
+				_expect(can_render == (camera_path == owner_path), "%s must render only its own %s, never another camera's scenery" % [camera_path, node_name])
 
 
 func _verify_same_side_depth_pass(scene: Node) -> void:

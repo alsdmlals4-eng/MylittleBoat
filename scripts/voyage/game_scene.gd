@@ -15,6 +15,12 @@ const SEASONAL_CLOUD_TEXTURE = preload("res://assets/images/runtime/voyage/seaso
 
 const SPEED_NAMES: Array[String] = ["느림", "보통", "빠름"]
 const SPEED_MULTIPLIERS: Array[float] = [0.65, 1.0, 1.45]
+# 카메라 전용 풍경은 2·3번 렌더 레이어로 격리하고 공통 보트·바다는 보존한다.
+const CAMERA_SCENERY_LAYERS := {
+	"DioramaCameraRig/DioramaCamera3D": 2,
+	"AppreciationCameraRig/AppreciationCamera3D": 4,
+}
+const CAMERA_SCENERY_MASK := 6
 const FORWARD_SURGE_DISTANCE := 0.16
 const LATERAL_CURRENT_DISTANCE := 0.022
 const FORWARD_SURGE_FREQUENCY := 0.45
@@ -872,6 +878,12 @@ func _set_camera_split_backdrop_visible(camera_path: String, is_visible: bool) -
 	var camera := get_node_or_null("VoyageWorld/%s" % camera_path) as Camera3D
 	if camera == null:
 		return
+	var scenery_layer := int(CAMERA_SCENERY_LAYERS.get(camera_path, 0))
+	camera.cull_mask = (camera.cull_mask & ~CAMERA_SCENERY_MASK) | scenery_layer
+	for node_name in ["SeasonalIslandLayer", "AmbientSceneryPass"]:
+		var scenery := camera.get_node_or_null(node_name) as Sprite3D
+		if scenery != null:
+			scenery.layers = scenery_layer
 	var sky_backdrop := camera.get_node_or_null("SkyBackdrop") as Sprite3D
 	var sea_backdrop := camera.get_node_or_null("SeaBackdrop") as Sprite3D
 	var seasonal_cloud_layer := camera.get_node_or_null("SeasonalCloudLayer") as Sprite3D

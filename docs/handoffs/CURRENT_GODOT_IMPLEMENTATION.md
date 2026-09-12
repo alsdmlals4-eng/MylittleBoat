@@ -4,6 +4,10 @@
 **역할:** 실제 코드·Scene·test·runtime evidence와 현재 제품 정본의 차이를 기록하는 기술 router
 **현재 사람용 정본:** [프로젝트 GDD](../design/PROJECT_GDD.md)
 
+### 2026-09-13 구현 — 카메라 간 풍경 누출 차단
+
+기본/감상 전용 섬과 일반 풍경을 서로 다른 render layer로 분리하고 세 카메라의 cull mask에서 다른 시점의 풍경을 제외했다. visibility·Tween·Timer·진행 상태는 유지하며 공통 보트/수면 layer도 보존한다. 감상 화면 좌하단의 타 카메라 섬 조각이 실제 GPU 캡처에서 제거됐다. [수정 계획·비교·검증](../evidence/2026-09-13-camera-scenery-isolation/REVIEW.md)을 따른다. 이는 누출 수정이지 공통 world-space 전환이나 연속 3D 회전 완성이 아니다.
+
 ### 2026-09-13 진단 — world-space 단순 전환의 제약
 
 사용자의 계획 후 실행 요청에 따라 기존 낮/봄섬의 카메라별 세계 좌표를 실제 Godot에서 비교했다. 같은 섬의 기본/감상 global 중심은 11.0099 engine units 떨어져 있고 둘러보기에는 같은 섬 레이어가 없다. 단일 world 복제를 유지하면 현재 감상/둘러보기의 투영이 화면 밖으로 크게 벗어난다. 단순 reparent는 production에 적용하지 않았다. [실행 전 계획·측정·다음 선행 조건](../evidence/2026-09-13-world-space-probe/REVIEW.md)을 따른다. 모델 파일·로컬 Blender·연결 rigging 도구는 제한된 조회에서 확인되지 않아 C 제작은 BLOCKED_UNVERIFIED다. 이번은 진단 도구/캡처이며 새 공간 구조·연속 3D 회전·전진감 완성은 아니다.
