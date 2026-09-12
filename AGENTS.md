@@ -112,6 +112,8 @@ A link list, design note, static mockup, or passing unit test is not implementat
 
 ### Long-horizon quality and automation
 
+사용자 정의 개선 루프(2026-09-13)는 테스트 반복 자체가 아니다. 유사 장르의 공식 자료·제작 사례를 조사하고, 현재 GDD의 빈틈을 구체화해 기존 시스템에 연결하며, 실행 전 구현/수정 계획을 제시한 뒤 승인 범위의 실제 구현·기계/실행 검증·교정·다음 작업 선정을 이어간다. 아래 5회 적대적 검토는 이 제품 개선 루프의 검증 단계이지 대체물이 아니다. 조사 건수·문서 수·테스트 횟수를 게임 완성 진척으로 보고하지 않는다. 핵심 의미·최종 아트 lock·고위험 작업·Human 선언 경계는 그대로 유지한다.
+
 Prefer the minimum necessary complexity that solves the root cause and lowers total lifecycle cost. Do not choose a quick patch merely because it is faster when it leaves recurring manual work, authority drift, inaccessible recovery, or avoidable technical debt. Also do not create speculative frameworks, abstractions, services, paid dependencies, or future-only data models without a current consumer, test, owner, rollback, and measurable benefit.
 
 Within the already approved scope, continue safe reversible work without routine reapproval:

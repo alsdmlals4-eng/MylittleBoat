@@ -6,6 +6,7 @@ signal return_requested
 const TIME_OF_DAY_CATALOG_SCRIPT = preload("res://scripts/voyage/time_of_day_catalog.gd")
 const REAL_TIME_ATMOSPHERE_RESOLVER_SCRIPT = preload("res://scripts/voyage/real_time_atmosphere_resolver.gd")
 const TOGETHER_TIME_PRESENTATION_SCRIPT = preload("res://scripts/companion/together_time_presentation.gd")
+const POSTCARDS_PER_PAGE := 3
 const ATMOSPHERE_BACKGROUNDS := {
 	"dawn": preload("res://assets/images/ui/main_menu/main_menu_dawn_storybook_v1.png"),
 	"bright": preload("res://assets/images/ui/main_menu/main_menu_bright_storybook_v1.png"),
@@ -16,6 +17,7 @@ const ATMOSPHERE_BACKGROUNDS := {
 var _time_of_day_catalog = TIME_OF_DAY_CATALOG_SCRIPT.new()
 var _real_time_atmosphere_resolver = REAL_TIME_ATMOSPHERE_RESOLVER_SCRIPT.new()
 var _together_time_presentation = TOGETHER_TIME_PRESENTATION_SCRIPT.new()
+var _postcard_page := 0
 
 
 func _ready() -> void:
@@ -26,11 +28,14 @@ func _ready() -> void:
 	back_shortcut.events = [back_key]
 	%BackButton.shortcut = back_shortcut
 	%BackButton.pressed.connect(_back_to_sea)
+	%OlderPostcardsButton.pressed.connect(_change_postcard_page.bind(1))
+	%NewerPostcardsButton.pressed.connect(_change_postcard_page.bind(-1))
 	refresh_album()
 
 
 ## Refreshes the album from the player's actual local voyage memories.
 func refresh_album() -> void:
+	_postcard_page = 0
 	_refresh_atmosphere_background()
 	_refresh_summary()
 	_refresh_recent_memory()
@@ -67,25 +72,34 @@ func _refresh_recent_memory() -> void:
 
 func _refresh_postcards() -> void:
 	for child in %PostcardRow.get_children():
+		%PostcardRow.remove_child(child)
 		child.queue_free()
 	var postcard_entries := GameState.photo_memories
-	var card_count := 0
-	for offset in range(mini(3, postcard_entries.size())):
+	var page_count := maxi(1, ceili(float(postcard_entries.size()) / POSTCARDS_PER_PAGE))
+	_postcard_page = clampi(_postcard_page, 0, page_count - 1)
+	var first := _postcard_page * POSTCARDS_PER_PAGE
+	for offset in range(first, mini(first + POSTCARDS_PER_PAGE, postcard_entries.size())):
 		var entry: Dictionary = postcard_entries[postcard_entries.size() - 1 - offset]
 		var image_path := str(entry.get("image_path", ""))
-		var image := Image.load_from_file(image_path)
-		if image == null or image.is_empty():
-			continue
+		var image: Image = Image.load_from_file(image_path) if FileAccess.file_exists(image_path) else null
 		_add_postcard_card(image, str(entry.get("label", "조용한 항해")))
-		card_count += 1
-	%PostcardRow.visible = card_count > 0
-	%PostcardEmptyLabel.visible = card_count == 0
+	%PostcardRow.visible = not postcard_entries.is_empty()
+	%PostcardEmptyLabel.visible = postcard_entries.is_empty()
+	%OlderPostcardsButton.visible = page_count > 1
+	%NewerPostcardsButton.visible = page_count > 1
+	%OlderPostcardsButton.disabled = _postcard_page >= page_count - 1
+	%NewerPostcardsButton.disabled = _postcard_page <= 0
+
+
+func _change_postcard_page(direction: int) -> void:
+	_postcard_page += direction
+	_refresh_postcards()
 
 
 func _add_postcard_card(image: Image, caption: String) -> void:
 	var card := VBoxContainer.new()
 	card.name = "PostcardCard"
-	card.custom_minimum_size = Vector2(122.0, 150.0)
+	card.custom_minimum_size = Vector2(0.0, 150.0)
 	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	card.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
@@ -93,11 +107,19 @@ func _add_postcard_card(image: Image, caption: String) -> void:
 	image_rect.name = "Image"
 	image_rect.custom_minimum_size = Vector2(0.0, 108.0)
 	image_rect.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	image_rect.texture = ImageTexture.create_from_image(image)
+	if image != null and not image.is_empty():
+		image_rect.texture = ImageTexture.create_from_image(image)
 	image_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	image_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	image_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	image_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	card.add_child(image_rect)
+	if image == null or image.is_empty():
+		var unavailable := Label.new()
+		unavailable.name = "UnavailableLabel"
+		unavailable.text = "사진을 불러올 수 없어요"
+		unavailable.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		unavailable.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		card.add_child(unavailable)
 
 	var caption_label := Label.new()
 	caption_label.name = "Caption"

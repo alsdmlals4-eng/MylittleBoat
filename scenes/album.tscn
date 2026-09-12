@@ -89,9 +89,9 @@ color = Color(0.025, 0.055, 0.08, 0.3)
 [node name="Margin" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
-anchor_top = 0.18
+anchor_top = 0.05
 anchor_right = 1.0
-anchor_bottom = 0.93
+anchor_bottom = 0.98
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 20
@@ -107,56 +107,66 @@ theme_override_styles/panel = SubResource("PanelStyle")
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="TitleLabel" type="Label" parent="Margin/Panel/VBox"]
+[node name="Scroll" type="ScrollContainer" parent="Margin/Panel/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Content" type="VBoxContainer" parent="Margin/Panel/VBox/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="TitleLabel" type="Label" parent="Margin/Panel/VBox/Scroll/Content"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.94, 0.79, 1)
 theme_override_font_sizes/font_size = 25
 text = "오늘의 앨범"
 horizontal_alignment = 1
 
-[node name="SubtitleLabel" type="Label" parent="Margin/Panel/VBox"]
+[node name="SubtitleLabel" type="Label" parent="Margin/Panel/VBox/Scroll/Content"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.84, 0.9, 0.88, 1)
 text = "오늘 보낸 시간을 조용히 모아두는 곳"
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="SummaryHeadingLabel" type="Label" parent="Margin/Panel/VBox"]
+[node name="SummaryHeadingLabel" type="Label" parent="Margin/Panel/VBox/Scroll/Content"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.98, 0.9, 0.73, 1)
 text = "모아 둔 기억"
 
-[node name="SummaryLabel" type="Label" parent="Margin/Panel/VBox"]
+[node name="SummaryLabel" type="Label" parent="Margin/Panel/VBox/Scroll/Content"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.93, 0.95, 0.9, 1)
 text = "기록을 불러오는 중..."
 autowrap_mode = 2
 
-[node name="RecentHeadingLabel" type="Label" parent="Margin/Panel/VBox"]
+[node name="RecentHeadingLabel" type="Label" parent="Margin/Panel/VBox/Scroll/Content"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.98, 0.9, 0.73, 1)
 text = "가장 최근의 흔적"
 
-[node name="RecentMemoryLabel" type="Label" parent="Margin/Panel/VBox"]
+[node name="RecentMemoryLabel" type="Label" parent="Margin/Panel/VBox/Scroll/Content"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.93, 0.95, 0.9, 1)
 text = "기억을 불러오는 중..."
 autowrap_mode = 2
 
-[node name="PostcardHeadingLabel" type="Label" parent="Margin/Panel/VBox"]
+[node name="PostcardHeadingLabel" type="Label" parent="Margin/Panel/VBox/Scroll/Content"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.98, 0.9, 0.73, 1)
-text = "최근 항해 포스트카드"
+text = "항해 포스트카드"
 
-[node name="PostcardRow" type="HBoxContainer" parent="Margin/Panel/VBox"]
+[node name="PostcardRow" type="HBoxContainer" parent="Margin/Panel/VBox/Scroll/Content"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="PostcardEmptyLabel" type="Label" parent="Margin/Panel/VBox"]
+[node name="PostcardEmptyLabel" type="Label" parent="Margin/Panel/VBox/Scroll/Content"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.84, 0.9, 0.88, 1)
@@ -170,3 +180,25 @@ theme_override_colors/font_color = Color(0.96, 0.96, 0.88, 1)
 theme_override_styles/normal = SubResource("ButtonNormalStyle")
 theme_override_styles/hover = SubResource("ButtonHoverStyle")
 text = "바다로 돌아가기"
+
+[node name="PostcardNavigation" type="HBoxContainer" parent="Margin/Panel/VBox/Scroll/Content"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="NewerPostcardsButton" type="Button" parent="Margin/Panel/VBox/Scroll/Content/PostcardNavigation"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("ButtonNormalStyle")
+theme_override_styles/hover = SubResource("ButtonHoverStyle")
+text = "최근 사진"
+
+[node name="OlderPostcardsButton" type="Button" parent="Margin/Panel/VBox/Scroll/Content/PostcardNavigation"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("ButtonNormalStyle")
+theme_override_styles/hover = SubResource("ButtonHoverStyle")
+text = "이전 사진"

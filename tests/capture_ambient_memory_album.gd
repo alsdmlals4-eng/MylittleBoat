@@ -46,8 +46,8 @@ func _capture() -> void:
 	root.add_child(scene)
 	for _frame in 10:
 		await process_frame
-	var summary := scene.get_node_or_null("Margin/Panel/VBox/SummaryLabel") as Label
-	var recent_memory := scene.get_node_or_null("Margin/Panel/VBox/RecentMemoryLabel") as Label
+	var summary := scene.get_node_or_null("%SummaryLabel") as Label
+	var recent_memory := scene.get_node_or_null("%RecentMemoryLabel") as Label
 	if summary == null or recent_memory == null:
 		_fail("Album must expose summary and recent-memory labels")
 		return

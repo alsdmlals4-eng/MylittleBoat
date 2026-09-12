@@ -1,0 +1,88 @@
+{
+  "role": "ALBUM_HISTORY_BOUNDED_RUNTIME_EVIDENCE",
+  "base_head": "dc6570983ed3a834cc91e2a6df91606ada6c0bbf",
+  "engine": "Godot 4.7.2 stable",
+  "headless": {
+    "suites": 60,
+    "failures": 0
+  },
+  "python": {
+    "tests": 20,
+    "failures": 0
+  },
+  "gpu_overlay_failures": 0,
+  "logical_viewports": [
+    [
+      540,
+      960
+    ],
+    [
+      360,
+      640
+    ]
+  ],
+  "legacy_capture_verification": "CHECK_ONLY_NOT_REEXECUTED_HISTORICAL_OUTPUTS",
+  "human": "NOT_RUN",
+  "mobile_device": "NOT_RUN",
+  "release": "NOT_RUN",
+  "source_sha256": [
+    {
+      "path": "scripts/ui/album_view.gd",
+      "sha256": "305E0E916F8D27636F85E834E84BF9D95868B0D7D0DED60F4EC1EE84C3982983"
+    },
+    {
+      "path": "scripts/core/photo_memory_persistence.gd",
+      "sha256": "100CC07505B57E073620F0951541BB34B737938EAC1D39739F4041793BA78B3B"
+    },
+    {
+      "path": "scenes/album.tscn",
+      "sha256": "9D1DAA9E337ECB4C832BA54546033F32FBC84680DA6C8FDB9529F78026579B8A"
+    },
+    {
+      "path": "tests/test_album_memory_contract.gd",
+      "sha256": "B08CEEF766CF9A619B4D9E8A63486F68F8C2C33F1C872F9D4650591A3440F3D7"
+    },
+    {
+      "path": "tests/test_photo_memory_persistence.gd",
+      "sha256": "0A2EFA61ED8961CAE2A209350EFA2E1D06BDCC8775B5AA28AACA2EC81AD89FCC"
+    },
+    {
+      "path": "tests/test_voyage_overlay_continuity.gd",
+      "sha256": "B44E08F4C9D15E65E1B9E4B19399774496895F07F9E63BF1A5CDD79B7DCF6588"
+    }
+  ],
+  "capture_sha256": [
+    {
+      "path": "verified-runtime/after-album.png",
+      "sha256": "8BA3DEC0A8516C7E6713E40C94E278EC04E00ACF9578663462A74159EFD6BD47"
+    },
+    {
+      "path": "verified-runtime/album-history-360x640.png",
+      "sha256": "1B4F419B77923949457FA69D56A2CA3397E105CBB7416BBDB516BC6218D1A353"
+    },
+    {
+      "path": "verified-runtime/album-history-540x960.png",
+      "sha256": "274E86DC0603E0CF8E4EA59FAE44A627F28B31073F35046FB7878B15B61A81C5"
+    },
+    {
+      "path": "verified-runtime/album-history-newest.png",
+      "sha256": "30FF5C2AE476BC7A1661CD81D4C413F67E05B441C6EAA0AB52021EA5F6A0F8C1"
+    },
+    {
+      "path": "verified-runtime/album-history-older.png",
+      "sha256": "274E86DC0603E0CF8E4EA59FAE44A627F28B31073F35046FB7878B15B61A81C5"
+    },
+    {
+      "path": "verified-runtime/album.png",
+      "sha256": "23EF449CF36E95FA8BC645357549E6BB132BBB29E2256D3DE26A154C3CFCBB64"
+    },
+    {
+      "path": "verified-runtime/before-album.png",
+      "sha256": "8A4818EE1F544DA318B289DF814A1D36D6163A132D101B859C0F3109A7982900"
+    },
+    {
+      "path": "verified-runtime/decor.png",
+      "sha256": "EB243182BDA01777D8ADC8356FBB7B3874C011673B4D3673663832DC688CFC59"
+    }
+  ]
+}

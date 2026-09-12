@@ -191,6 +191,40 @@ func run() -> void:
 				root.push_input(escape)
 				await process_frame
 				expect(not game.get_node("DecorPanel").visible, "Escape must close decor while voyage is paused")
+				# 실제 항해 사진 네 장으로 최근/이전 페이지와 같은 바다 복귀를 검증한다.
+				for photo_index in 3:
+					game._take_photo()
+					for frame in 4:
+						await process_frame
+				game._open_album()
+				await process_frame
+				await capture("album-history-newest")
+				var older := album.get_node("%OlderPostcardsButton") as Button
+				expect(not older.disabled, "four actual photos must enable older history")
+				phase = game.get_forward_water_flow_offset()
+				var page_click := InputEventMouseButton.new()
+				page_click.button_index = MOUSE_BUTTON_LEFT
+				page_click.position = older.get_global_rect().get_center()
+				page_click.pressed = true
+				root.push_input(page_click)
+				page_click.pressed = false
+				root.push_input(page_click)
+				await capture("album-history-older")
+				expect(album.get_node("%PostcardRow").get_child_count() == 1, "older page must contain the first actual photo")
+				expect(is_equal_approx(game.get_forward_water_flow_offset(), phase), "photo browsing must leave voyage frozen")
+				for viewport_size in [Vector2i(540, 960), Vector2i(360, 640)]:
+					root.content_scale_size = viewport_size
+					root.size = viewport_size
+					await process_frame
+					await process_frame
+					var back := album.get_node("%BackButton") as Button
+					expect(root.get_visible_rect().size.is_equal_approx(Vector2(viewport_size)), "small layout proof must use logical viewport size, not only physical window size")
+					expect(root.get_visible_rect().encloses(back.get_global_rect()), "album back button must fit the viewport: visible=%s back=%s" % [root.get_visible_rect(), back.get_global_rect()])
+					await capture("album-history-%dx%d" % [viewport_size.x, viewport_size.y])
+				root.content_scale_size = Vector2i(540, 960)
+				root.size = Vector2i(540, 960)
+				album.get_node("%BackButton").pressed.emit()
+				expect(is_equal_approx(game.get_forward_water_flow_offset(), phase), "history back must resume the same phase")
 	if is_instance_valid(current_scene):
 		current_scene.queue_free()
 	await process_frame
@@ -212,4 +246,4 @@ func capture(label: String) -> void:
 		return
 	await process_frame
 	await RenderingServer.frame_post_draw
-	root.get_texture().get_image().save_png(capture_directory.path_join(label + ".png"))
+	expect(root.get_texture().get_image().save_png(capture_directory.path_join(label + ".png")) == OK, "runtime evidence must save successfully")

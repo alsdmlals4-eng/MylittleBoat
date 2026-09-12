@@ -39,7 +39,7 @@ func _capture() -> void:
 	root.add_child(scene)
 	for _frame in 10:
 		await process_frame
-	var summary := scene.get_node_or_null("Margin/Panel/VBox/SummaryLabel") as Label
+	var summary := scene.get_node_or_null("%SummaryLabel") as Label
 	if summary == null:
 		_fail("album summary label must exist")
 		return

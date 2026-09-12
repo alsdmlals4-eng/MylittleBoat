@@ -4,6 +4,10 @@
 **역할:** 실제 코드·Scene·test·runtime evidence와 현재 제품 정본의 차이를 기록하는 기술 router
 **현재 사람용 정본:** [프로젝트 GDD](../design/PROJECT_GDD.md)
 
+### 2026-09-13 구현 — 개인 사진 기억의 탐색 연결
+
+유사 장르 조사와 GDD B5/P4/IMP-05를 연결해 앨범을 3장 단위로 탐색하도록 구현했다. `album_view.gd`는 이전/최근 버튼·page clamp·누락 이미지 안내·전체 사진 비율, `album.tscn`은 스크롤 내용과 고정 Back을 소유한다. `photo_memory_persistence.gd`는 파일 누락을 메타데이터 삭제로 취급하지 않으며 기존 ID를 예약해 재사용하지 않는다. schema/보상/아트는 그대로다. [제품 개선 루프 기록](../evidence/2026-09-13-album-history/REVIEW.md)을 따른다. 검사 5회만을 개선 루프라고 보고하지 않는다. 다음은 공통 공간·카메라 정렬의 연속 이동 slice이며 모델/리그 부족을 사진 기능 완료로 덮지 않는다.
+
 ### 2026-09-13 구현 — 카메라 간 풍경 누출 차단
 
 기본/감상 전용 섬과 일반 풍경을 서로 다른 render layer로 분리하고 세 카메라의 cull mask에서 다른 시점의 풍경을 제외했다. visibility·Tween·Timer·진행 상태는 유지하며 공통 보트/수면 layer도 보존한다. 감상 화면 좌하단의 타 카메라 섬 조각이 실제 GPU 캡처에서 제거됐다. [수정 계획·비교·검증](../evidence/2026-09-13-camera-scenery-isolation/REVIEW.md)을 따른다. 이는 누출 수정이지 공통 world-space 전환이나 연속 3D 회전 완성이 아니다.

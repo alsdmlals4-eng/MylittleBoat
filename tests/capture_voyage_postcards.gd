@@ -126,7 +126,7 @@ func _capture_album() -> bool:
 	var album_scene := packed_scene.instantiate()
 	root.add_child(album_scene)
 	await _wait_for_frames(8)
-	var row := album_scene.get_node_or_null("Margin/Panel/VBox/PostcardRow") as HBoxContainer
+	var row := album_scene.get_node_or_null("%PostcardRow") as HBoxContainer
 	if row == null or row.get_child_count() != 3:
 		album_scene.queue_free()
 		await process_frame

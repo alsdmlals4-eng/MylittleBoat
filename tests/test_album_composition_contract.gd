@@ -30,8 +30,8 @@ func _run() -> void:
 	root.add_child(scene)
 	await process_frame
 	var background := scene.get_node_or_null("AtmosphereBackground") as TextureRect
-	var summary := scene.get_node_or_null("Margin/Panel/VBox/SummaryLabel") as Label
-	var recent_memory := scene.get_node_or_null("Margin/Panel/VBox/RecentMemoryLabel") as Label
+	var summary := scene.get_node_or_null("%SummaryLabel") as Label
+	var recent_memory := scene.get_node_or_null("%RecentMemoryLabel") as Label
 	_expect(background != null, "album must expose the approved atmosphere background surface")
 	_expect(background != null and background.texture != null, "album background must resolve a local-time atmosphere texture")
 	var source := FileAccess.get_file_as_string("res://scripts/ui/album_view.gd")

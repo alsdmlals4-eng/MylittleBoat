@@ -66,8 +66,7 @@ func _normalize_entries(value: Variant) -> Array[Dictionary]:
 		var image_path := str(raw_entry.get("image_path", "")).strip_edges()
 		if id.is_empty() or label.is_empty() or atmosphere_id.is_empty() or image_path.is_empty():
 			continue
-		if not FileAccess.file_exists(image_path):
-			continue
+		# 이미지 누락은 기록 삭제가 아니다. 앨범이 unavailable 상태로 표시한다.
 		entries.append({
 			"id": id,
 			"label": label,
@@ -81,7 +80,10 @@ func _next_id() -> String:
 	var base_id := "postcard_%d" % int(Time.get_unix_time_from_system())
 	var candidate := base_id
 	var suffix := 2
-	while FileAccess.file_exists(_image_directory.path_join("%s.png" % candidate)):
+	var reserved_ids: Array[String] = []
+	for entry in load_entries():
+		reserved_ids.append(str(entry["id"]))
+	while candidate in reserved_ids or FileAccess.file_exists(_image_directory.path_join("%s.png" % candidate)):
 		candidate = "%s_%d" % [base_id, suffix]
 		suffix += 1
 	return candidate

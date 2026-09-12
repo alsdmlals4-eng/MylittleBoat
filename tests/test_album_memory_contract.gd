@@ -46,9 +46,9 @@ func _run() -> void:
 	var scene := packed_scene.instantiate()
 	root.add_child(scene)
 	await process_frame
-	var summary := scene.get_node_or_null("Margin/Panel/VBox/SummaryLabel") as Label
-	var recent_memory := scene.get_node_or_null("Margin/Panel/VBox/RecentMemoryLabel") as Label
-	var postcard_row := scene.get_node_or_null("Margin/Panel/VBox/PostcardRow") as HBoxContainer
+	var summary := scene.get_node_or_null("%SummaryLabel") as Label
+	var recent_memory := scene.get_node_or_null("%RecentMemoryLabel") as Label
+	var postcard_row := scene.get_node_or_null("%PostcardRow") as HBoxContainer
 	_expect(summary != null, "Album must expose SummaryLabel")
 	_expect(recent_memory != null, "Album must expose recent voyage memories")
 	_expect(postcard_row != null, "Album must expose a recent postcard row")
@@ -69,9 +69,36 @@ func _run() -> void:
 			var newest_caption := newest_card.get_node_or_null("Caption") as Label
 			var oldest_caption := oldest_visible_card.get_node_or_null("Caption") as Label
 			_expect(newest_image != null and newest_image.texture != null, "Album postcard card must use the saved PNG image")
+			_expect(newest_image != null and newest_image.stretch_mode == TextureRect.STRETCH_KEEP_ASPECT_CENTERED, "album must preserve the whole photograph instead of cropping away the boat")
 			_expect(newest_caption != null and newest_caption.text == "밤 물결", "Album must show the newest postcard first")
 			_expect(oldest_caption != null and oldest_caption.text == "밝은 물결", "Album must retain only the three newest postcard captions")
 			_expect("점수" not in newest_caption.text and "희귀" not in newest_caption.text and "연속" not in newest_caption.text and "보상" not in newest_caption.text, "Album postcards must remain free of score or reward language")
+
+	var older := scene.get_node_or_null("%OlderPostcardsButton") as Button
+	var newer := scene.get_node_or_null("%NewerPostcardsButton") as Button
+	_expect(older != null and newer != null, "album must let the player browse photos older than the newest three")
+	if older != null and newer != null:
+		var saved_entries: Array = game_state.photo_memories.duplicate(true)
+		_expect(newer.disabled and not older.disabled, "newest page must allow only older navigation")
+		older.pressed.emit()
+		_expect(postcard_row.get_child_count() == 1, "last page must release previous cards and show the remaining photo")
+		_expect(postcard_row.get_child(0).get_node("Caption").text == "새벽 물결", "fourth photo must remain reachable")
+		_expect(older.disabled and not newer.disabled, "oldest page must allow only newer navigation")
+		older.pressed.emit()
+		_expect(postcard_row.get_child_count() == 1, "out-of-range navigation must not make a blank page")
+		newer.pressed.emit()
+		_expect(postcard_row.get_child_count() == 3, "returning newer must restore three cards without duplicates")
+		_expect(game_state.photo_memories == saved_entries, "browsing must not mutate or delete saved memories")
+		game_state.photo_memories[0]["image_path"] = "user://test_album_missing_photo.png"
+		older.pressed.emit()
+		_expect(postcard_row.get_child_count() == 1, "missing photo must retain its place and caption")
+		_expect(postcard_row.get_child(0).has_node("UnavailableLabel"), "missing photo must have an explicit unavailable state")
+		game_state.photo_memories.clear()
+		scene.refresh_album()
+		_expect(postcard_row.get_child_count() == 0 and not older.visible and not newer.visible, "empty album must reset paging and hide navigation")
+		game_state.photo_memories.assign(saved_entries)
+		scene.refresh_album()
+		_expect(postcard_row.get_child(0).get_node("Caption").text == "밤 물결", "reopening must begin with newest memories")
 
 	scene.queue_free()
 	await process_frame
