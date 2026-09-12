@@ -4,12 +4,13 @@ extends SceneTree
 var output := ""
 var paths: Array[String] = []
 
+
 func _init() -> void:
 	call_deferred("capture")
 
 func capture() -> void:
 	var args := OS.get_cmdline_user_args()
-	if args.size() != 1 or not args[0].is_absolute_path() or DisplayServer.get_name() == "headless":
+	if args.size() < 1 or args.size() > 2 or not args[0].is_absolute_path() or DisplayServer.get_name() == "headless":
 		printerr("Requires display renderer and one absolute, empty output directory")
 		quit(2)
 		return
@@ -37,6 +38,8 @@ func capture() -> void:
 	state.set_motion_comfort_profile("standard")
 	state.speed_index = 1
 	var game := load("res://scenes/game.tscn").instantiate() as Control
+	# autoload 초기화 뒤 fixture를 로드한다. --script의 정적 preload는 GameState보다 빠르다.
+	game.set_script(load("res://tests/fixtures/capture_clock_game.gd"))
 	if not game.has_method("apply_real_time_atmosphere_for_hour"):
 		game.free()
 		_cleanup_storage()
@@ -53,6 +56,10 @@ func capture() -> void:
 	# Start uses the actual title button signal, not a hand-advanced drift phase.
 	game.get_node("%StartVoyageButton").pressed.emit()
 	game.set_application_foreground(true)
+	var seasonal := args.size() == 2 and args[1] == "seasonal"
+	if seasonal:
+		game.apply_real_time_visual_context_for_tests(12, 4)
+		game._show_seasonal_island_layer(load("res://assets/images/runtime/voyage/seasonal_parallax/bright-spring-islet.png"), 1.0)
 	var rows: Array[Dictionary] = []
 	var start := Time.get_ticks_msec()
 	var next_capture := 0.0
@@ -74,6 +81,12 @@ func capture() -> void:
 		var player := game.get_node("VoyageWorld/BoatSpace/FinalDioramaCard/PartsViewport/Player") as Sprite2D
 		var pet := game.get_node("VoyageWorld/BoatSpace/FinalDioramaCard/PartsViewport/Pet") as Sprite2D
 		rows.append({"seconds": elapsed, "phase": game.get_forward_water_flow_offset(), "ambient_phase": game.get_background_flow_offset(), "foreground": game.get("_application_in_foreground"), "boat": [boat.x, boat.y, boat.z], "contact": [contact.x, contact.y, contact.z], "camera": [camera.x, camera.y, camera.z], "player_rotation": player.rotation, "pet_rotation": pet.rotation, "remaining_seconds": state.remaining_seconds})
+		var island := game.get_node("VoyageWorld/DioramaCameraRig/DioramaCamera3D/SeasonalIslandLayer") as Sprite3D
+		rows[-1]["atmosphere"] = game.get_active_atmosphere_id()
+		rows[-1]["season"] = game.get_active_season_id()
+		rows[-1]["island_progress"] = game.get("_seasonal_island_progress")
+		rows[-1]["island_position"] = [island.position.x, island.position.y, island.position.z]
+		rows[-1]["island_visible"] = island.visible
 		frame += 1
 		next_capture += 0.2
 	var file := FileAccess.open(output.path_join("telemetry.json"), FileAccess.WRITE)

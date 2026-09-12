@@ -8,7 +8,11 @@ import numpy as np
 from PIL import Image
 
 
-def analyze(folder):
+def measure_contact_error(frames, expected_offset_y=0.0):
+    return max(abs((f['contact'][1] - f['boat'][1]) - expected_offset_y) for f in frames)
+
+
+def analyze(folder, contact_offset_y=0.0):
     telemetry = json.loads((folder / 'telemetry.json').read_text(encoding='utf-8'))
     frames = telemetry['frames']
     pictures = [np.asarray(Image.open(p).convert('RGB'), dtype=np.float32) / 255
@@ -32,13 +36,14 @@ def analyze(folder):
                            'dx': best[1], 'dy': best[2], 'mse': best[0],
                            'dy_per_second': best[2] / (frames[i + 5]['seconds'] - frames[i]['seconds'])})
     sky_error = max(float(np.abs(p[:360] - pictures[0][:360]).max()) for p in pictures)
-    contact_gap = max(abs((f['boat'][1] + 2.7) - (f['contact'][1] + 2.7)) for f in frames)
+    contact_gap = measure_contact_error(frames, contact_offset_y)
     deltas = [float(np.abs(b[450:850, :120] - a[450:850, :120]).mean())
               for a, b in zip(pictures, pictures[1:])]
     report = {'mode': telemetry['mode'], 'frame_count': len(frames),
               'duration_seconds': frames[-1]['seconds'] - frames[0]['seconds'],
               'foreground_frames': sum(f['foreground'] for f in frames),
               'sky_max_error': sky_error, 'contact_max_gap_delta': contact_gap,
+              'expected_contact_offset_y': contact_offset_y,
               'water_step_mean': float(np.mean(deltas)), 'water_step_max': max(deltas),
               'forward_nonnegative_fraction': sum(s['dy'] >= 0 for s in shifts) / len(shifts),
               'near_median_dy': float(np.median([s['dy_per_second'] for s in shifts if s['y'] == 815])),
@@ -58,9 +63,11 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('capture', type=Path)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--contact-offset-y', type=float, default=0.0,
+                        help='Declared asset anchor offset; legacy=0, approved stern parts=-2.25')
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=False)
-    report = analyze(args.capture)
+    report = analyze(args.capture, args.contact_offset_y)
     root = Path(__file__).resolve().parents[1]
     report['source_sha256'] = {p: hashlib.sha256((root / p).read_bytes()).hexdigest() for p in [
         'scripts/voyage/game_scene.gd', 'assets/shaders/voyage_split_sea_flow.gdshader',

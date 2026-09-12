@@ -1,10 +1,12 @@
 # 마이 리틀 보트 기획서
 
 **현재 상태:** `CURRENT_HUMAN_FACING_GDD`
-**갱신일:** 2026-09-11
+**갱신일:** 2026-09-12
 **읽는 법:** 이 문서는 사람이 게임의 경험과 결정 상태를 이해하기 위한 정본입니다. 실제 코드·Scene·테스트·캡처는 [현재 Godot handoff](../handoffs/CURRENT_GODOT_IMPLEMENTATION.md)가, visual consumer와 provenance는 [visual inventory](../visual/CURRENT_SCREEN_SURFACE_INVENTORY_AND_VISUAL_ASSET_COVERAGE.md)가 소유합니다.
 
 ## 2026-09-10 승인된 재기획 방향과 현재 작업
+
+**2026-09-12 이동 연출 후속.** 승인 봄섬은 중앙 항로를 가로지르지 않고 등장한 쪽에서 거리 변화에 따라 커지며 화면 바깥으로 지나간다. 기존 두 camera의 분리 Sprite3D를 활용한 제한된 camera-relative 깊이이며 실제 world-space 항법·Look Around의 연속 투영을 완성한 것은 아니다. 새 이미지·목적지·보상·저장 변경 없이 P3의 바닷길 비침범을 우선 교정했다. 기존 수면 흐름과 함께 30초 실행·표본 추적으로 검사했으며 Human은 별도다. [현재 이동 검증](../evidence/2026-09-12-same-side-depth/REVIEW.md).
 
 **2026-09-12 IMP-01 연속성 구현.** 최신 사용자 `좋아 진행해`는 앞서 제시한 앨범/전체 꾸미기 연속성 우선 작업을 승인한다. 기존 `game.tscn`을 유지하며 `album.tscn`을 overlay로 재사용한다. full overlay/앱 비활성에서는 항해·물·풍경 Timer/bound Tween과 카메라 입력을 동결하고 UI/기존 autoload 소리는 별도로 둔다. 앨범 닫기는 같은 객체·위상 복귀이며 기존 P2의 무손실 낚시 취소를 적용한다. 사진 중 요청은 UI 복원 이후 열고 중복 저장을 억제한다. 같은 시간대 focus refresh는 풍경을 지우지 않으며 최초 재질·광원 적용은 반드시 실행한다. 이는 IMP-01의 해당 연결 범위 구현이지 세계 공간·3D·기기/Human·전체 Blueprint 완료가 아니다. 정확한 검증은 [현재 인계 문서](../handoffs/CURRENT_GODOT_IMPLEMENTATION.md)와 [IMP-01 기록](../evidence/2026-09-12-overlay-continuity/REVIEW.md)을 따른다.
 

@@ -1121,8 +1121,10 @@ func _show_seasonal_island_layer(scenery_texture: Texture2D, backdrop_offset_x: 
 	_clear_ambient_scenery_passes()
 	_seasonal_island_active = true
 	_seasonal_island_progress = 0.0
-	_seasonal_island_start_offset_x = signf(backdrop_offset_x) * maxf(absf(backdrop_offset_x) * 1.5, AMBIENT_SCENERY_PASS_MIN_TRAVEL_OFFSET_X)
-	_seasonal_island_end_offset_x = -_seasonal_island_start_offset_x
+	# 중앙 바닷길은 비우고 같은 쪽 원경을 지난다. 0 입력도 오른쪽으로 안전하게 배치한다.
+	var side := -1.0 if backdrop_offset_x < 0.0 else 1.0
+	_seasonal_island_start_offset_x = side * 3.7
+	_seasonal_island_end_offset_x = side * 4.5
 	for index in _get_seasonal_island_layers().size():
 		if index >= _seasonal_island_layer_base_positions.size():
 			continue
@@ -1165,6 +1167,7 @@ func _apply_ambient_scenery_pass_progress(progress: float) -> void:
 
 
 func _apply_seasonal_island_progress(progress: float) -> void:
+	progress = clampf(progress, 0.0, 1.0)
 	var pass_alpha := minf(
 		smoothstep(0.0, AMBIENT_SCENERY_PASS_FADE_FRACTION, progress),
 		smoothstep(0.0, AMBIENT_SCENERY_PASS_FADE_FRACTION, 1.0 - progress),
@@ -1174,7 +1177,9 @@ func _apply_seasonal_island_progress(progress: float) -> void:
 		if index >= _seasonal_island_layer_base_positions.size():
 			continue
 		var island_layer := _get_seasonal_island_layers()[index]
-		island_layer.position = _seasonal_island_layer_base_positions[index] + Vector3(offset_x, 0.0, 0.0)
+		# 제한된 camera-relative 깊이: 다가올수록 커지고 바깥으로 투영된다. 실제 월드 항법은 아니다.
+		var approach_z := 7.0 * progress
+		island_layer.position = _seasonal_island_layer_base_positions[index] + Vector3(offset_x, 0.0, approach_z)
 		island_layer.modulate = Color(1.0, 1.0, 1.0, pass_alpha)
 
 

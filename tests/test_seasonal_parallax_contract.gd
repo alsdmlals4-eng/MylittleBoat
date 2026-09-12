@@ -95,6 +95,7 @@ func _verify_scene_consumers() -> void:
 		if island != null:
 			_expect(island.texture != null and island.texture.resource_path == SEASONAL_ISLAND_TEXTURE_PATH, "%s island layer must use the exact approved island texture" % camera_path)
 	_verify_distant_island_geometry(scene)
+	_verify_same_side_depth_pass(scene)
 	var look_around_island := scene.get_node_or_null("VoyageWorld/LookAroundCameraRig/LookAroundCamera3D/SeasonalIslandLayer")
 	_expect(look_around_island == null, "Look Around must retain its angle-specific foreground policy without a seasonal island layer")
 	if scene.has_method("apply_real_time_visual_context_for_tests"):
@@ -107,6 +108,23 @@ func _verify_scene_consumers() -> void:
 		_expect(diorama_cloud != null and not diorama_cloud.visible, "non-spring bright time must hide the seasonal cloud layer")
 	scene.queue_free()
 	await process_frame
+
+
+func _verify_same_side_depth_pass(scene: Node) -> void:
+	for side in [-1.0, 0.0, 1.0]:
+		scene.call("_show_seasonal_island_layer", load(SEASONAL_ISLAND_TEXTURE_PATH), side)
+		var previous_depth := 100.0
+		for step in range(1, 10):
+			scene.call("_apply_seasonal_island_progress", float(step) / 10.0)
+			for camera_path in ISLAND_CAMERA_PATHS:
+				var island := scene.get_node("%s/SeasonalIslandLayer" % camera_path) as Sprite3D
+				var half_width := island.region_rect.size.x * island.pixel_size * 0.5
+				_expect(absf(island.position.x) - half_width > 0.5, "island bounds must leave the central sea lane clear throughout transit")
+				_expect(island.position.x * (side if side != 0.0 else 1.0) > 0.0, "island must stay on its entry side, including zero-offset fallback")
+			var normal := scene.get_node("%s/SeasonalIslandLayer" % ISLAND_CAMERA_PATHS[0]) as Sprite3D
+			_expect(absf(normal.position.z) < previous_depth, "passing scenery must change depth, not only slide sideways")
+			previous_depth = absf(normal.position.z)
+	scene.call("_clear_ambient_scenery_passes")
 
 
 func _verify_distant_island_geometry(scene: Node) -> void:

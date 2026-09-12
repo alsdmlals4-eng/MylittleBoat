@@ -4,6 +4,12 @@
 **역할:** 실제 코드·Scene·test·runtime evidence와 현재 제품 정본의 차이를 기록하는 기술 router
 **현재 사람용 정본:** [프로젝트 GDD](../design/PROJECT_GDD.md)
 
+### 2026-09-12 후속 구현 — 같은 쪽 섬 통과와 제한된 깊이
+
+`game_scene.gd`의 승인 봄섬 전용 경로가 중앙을 가로지르는 좌우 슬라이드에서 같은 쪽 접근으로 바뀌었다. normal/Appreciation의 기존 Sprite3D를 유지하며 camera-relative 깊이 변화로 크기·바깥 방향 투영을 만든다. 0 offset은 오른쪽으로 처리하고 진행은 기존 speed/comfort 위상을 사용한다. 실제 world-space 섬·Look Around 연속 투영·전체 시간대 적용은 아직 아니다. 새 이미지·씬·저장·보상 변경은 없다.
+
+검증은 [같은 쪽 깊이 기록](../evidence/2026-09-12-same-side-depth/REVIEW.md)과 verified-runtime의 실제 30초 재생/수치가 소유한다. headless 60개, Python 20개, GPU 수면 반복 경계 검사가 통과했다. 촬영 전용 clock 상속 fixture는 timer/focus가 지정한 낮·봄을 덮지 않게 하고 원래 lifecycle 함수를 유지한다. 생산 시계는 변경하지 않았다. 이전 분석기의 0 anchor는 후면 보트의 -2.25 배치를 오류로 계산했으므로 명시적 anchor 인자를 추가하고 실제 이탈·잘못된 anchor를 실패시키는 회귀를 남겼다. Human/Device/Release는 NOT_RUN이다.
+
 ### 2026-09-12 최신 구현 — IMP-01 앨범·전체 꾸미기 연속성
 
 `game_scene.gd`의 앨범 진입은 Scene 교체 대신 기존 AlbumView를 자식 overlay로 유지한다. AlbumView의 복귀 signal이 있으면 감추고, 독립 album scene으로 연 경우의 기존 복귀는 보존한다. full overlay/비활성에서는 game process domain을 DISABLED로 두어 자식 Timer·카메라·bound Tween까지 동결한다. 두 overlay UI는 ALWAYS, soundscape는 기존 autoload다. 같은 시간대 재진입은 풍경을 지우지 않지만 최초 tone 설정은 강제한다. 사진 중 요청한 overlay는 UI 복원 후 한 번 열고, P2에 따라 낚시는 무손실 취소/버튼 복구한다. 두 camera controller는 pause 시 drag latch를 취소한다.

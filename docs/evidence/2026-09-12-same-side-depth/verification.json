@@ -1,0 +1,73 @@
+{
+  "base_head": "8dc2d5dcbdb03734afe097a69f4e67660e664b86",
+  "headless_suite_summary": {
+    "count": 60,
+    "nonzero_exit_codes": 0,
+    "collection": "functions cell 143, completed before capture fixture and analyzer follow-up; production source unchanged afterward",
+    "command": "Godot --headless --path . --script res://<each test_*.gd except display-only chroma proof>",
+    "raw_per_test_outputs_in_receipt": false
+  },
+  "source_git_blobs": {
+    "scripts/voyage/game_scene.gd": "62f84de10323dd0ab434075ac0dee2aa40563dd7",
+    "tests/capture_voyage_realtime_motion.gd": "d1b720cb6ce5c6070744c01aa8cfc6864bda80f7",
+    "tools/analyze_voyage_motion_capture.py": "71f2fb8e7620ca397064cd9339adcc644f6e3d15",
+    "tests/fixtures/capture_clock_game.gd": "a3854765e8d3e3cf763570066e5423fcf5588f61",
+    "tests/test_motion_contact_measurement.py": "bc3c339dcc8a7e9d874538ae9f85459e524505bd",
+    "tests/test_seasonal_parallax_contract.gd": "0719006bc2b4178f794193a49a3ea84196139958"
+  },
+  "python": {
+    "count": 20,
+    "exit_code": 0
+  },
+  "gpu_shader": {
+    "exit_code": 0,
+    "wrap_error": 0
+  },
+  "capture": {
+    "frames": 152,
+    "seconds": 30.208,
+    "exit_code": 0,
+    "raw": "C:/Users/user/AppData/Local/Temp/MLB-motion-review-20260912-depth-verified",
+    "fixture": "fixed noon/spring, actual process, explicit foreground, input disabled",
+    "all_contexts": "bright/spring"
+  },
+  "analysis": {
+    "exit_code": 0,
+    "report": "verified-runtime/motion-analysis.json",
+    "expected_anchor_y": -2.25
+  },
+  "cleanup": {
+    "method": "user_manual_deletion_staging",
+    "folder": "C:/Users/user/Desktop/MyLittleBoat_삭제대기_20260912",
+    "batches": [
+      {
+        "name": "motion-obsolete-analysis",
+        "files": 4,
+        "bytes": 4771561,
+        "initial_analysis_retained": "initial-analysis.json"
+      },
+      {
+        "name": "motion-baseline",
+        "files": 154,
+        "bytes": 70427766
+      },
+      {
+        "name": "motion-first-depth",
+        "files": 155,
+        "bytes": 75821064
+      },
+      {
+        "name": "motion-failed-empty",
+        "files": 0,
+        "bytes": 0
+      }
+    ],
+    "before_after_sha256": "all files matched",
+    "raw_verified_preserved": true
+  },
+  "scope": "Existing seasonal island same-side camera-relative depth only",
+  "human": "NOT_RUN",
+  "device": "NOT_RUN",
+  "remote_ci": "NOT_RUN",
+  "release": "NOT_COMPLETE"
+}
