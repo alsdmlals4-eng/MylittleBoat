@@ -453,8 +453,8 @@
       "workflow_owner": ".github/workflows/godot-validation.yml",
       "initial_recovery_contract_count": 52,
       "initial_recovery_headless_contract_count": 51,
-      "current_contract_count": 61,
-      "headless_contract_count": 60,
+      "current_contract_count": 62,
+      "headless_contract_count": 61,
       "display_only_contract": "test_chibi_normal_chroma_material_proof.gd",
       "selected_approach": "SORTED_DISCOVERY_WITH_EXACT_COUNT_AND_EXCLUSION_GUARDS",
       "alternatives": [

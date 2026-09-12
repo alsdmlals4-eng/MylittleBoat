@@ -16,6 +16,8 @@
 
 ## 플레이 경험
 
+2026-09-13 경로 연결 작업은 `VoyageRoute`의 실제 Path3D 위치를 배·세 카메라·두 수면 접점에 공유합니다. 128-unit 직선 구간을 이어 이전 512-unit 경계의 역이동을 없앱니다. 현재 계약 집합은 **62개 중 61개 headless**입니다. 이는 공통 공간의 이동 기반이며, world 섬·연속 3D 모델·새 수면 완성을 뜻하지 않습니다. 구현·검증 단계는 [현재 handoff](docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md)를 따릅니다.
+
 2026-09-12 후속으로 승인 봄섬의 중앙 횡단을 같은 쪽 깊이 통과로 바꿨습니다. [30초 실제 항해 재생](docs/evidence/2026-09-12-same-side-depth/verified-runtime/voyage-30s.webp)과 [검증 범위](docs/evidence/2026-09-12-same-side-depth/REVIEW.md)를 함께 확인합니다. 실제 3D 월드나 전체 각도 구현 완료는 아닙니다.
 
 2026-09-12에는 앨범을 기존 항해 위에서 열도록 연결했습니다. 앨범·전체 꾸미기를 여는 동안 물·시간·풍경 Timer/Tween이 동결되고, 닫으면 같은 장면에서 이어집니다. UI와 바다 소리는 유지합니다. `Escape`로 앨범·꾸미기를 닫을 수 있고 사진 촬영 중 화면 열기는 촬영/UI 복원 뒤 처리합니다. 현재 계약 집합은 **61개 중 60개 headless**이며 새 overlay 검사의 사진·입력·소리 검증은 display renderer에서도 실행합니다. 아래 이전 날짜의 검사 수는 당시 이력입니다. [현재 검증 기록](docs/evidence/2026-09-12-overlay-continuity/REVIEW.md)을 참고합니다.

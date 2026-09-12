@@ -4,6 +4,16 @@
 **역할:** 실제 코드·Scene·test·runtime evidence와 현재 제품 정본의 차이를 기록하는 기술 router
 **현재 사람용 정본:** [프로젝트 GDD](../design/PROJECT_GDD.md)
 
+### 2026-09-13 진행 계획 — 실제 항해 경로와 구간 연속성
+
+사용자가 승인한 실제 3D 항해 권장안의 첫 단위다. `game_scene.gd`의 512-unit modulo 이동은 공통 world 물체 도입 시 뒤로 튀므로 `VoyageRoute` Path3D와 BoatProgress가 이동 위치를 소유하게 한다. 초기 해역은 기존 +Z 직선 방향을 보존하며 128-unit 구간의 초과 거리를 다음 구간으로 전달한다. 카메라·보트·접점은 같은 경로 위치를 소비하고 title/still/background/overlay·저장·보상은 유지한다. curved route·단일 world 섬·수면·모델 제작 완료를 이 단위로 주장하지 않는다.
+
+- [x] `test_voyage_route_continuity.gd`에서 512 경계 역이동과 Path3D 부재를 RED로 확인.
+- [x] `scripts/voyage/voyage_route.gd`, `scenes/game.tscn`, `game_scene.gd`에 경로 consumer 구현. 128-unit 경계 carry와 512 경계 회귀 GREEN 확인.
+- [x] 61 headless·Python20·Mobile30초/overlay 실행, 5회 read-only scope 검토. [증거와 검토 한계](../evidence/2026-09-13-voyage-route/REVIEW.md)를 따른다. 원격 동기화는 commit 뒤 별도 readback한다.
+
+기술 근거는 [Godot PathFollow3D](https://docs.godotengine.org/en/stable/classes/class_pathfollow3d.html)와 [DREDGE 제작진의 파도/이동 분리 사례](https://www.gamedeveloper.com/design/trawling-in-the-deep-how-black-salt-games-made-spooky-fishing-rpg-i-dredge-i-)다. 기존 modulo는 REJECT, 실제 경로 ADOPT, 매 프레임 전체 world 역이동은 DEFER. 새 Base module·save schema·art는 필요 없다. 실패 시 이 단위만 rollback하고 기존 승인 자산과 다른 작업은 보존한다.
+
 ### 2026-09-13 구현 — 개인 사진 기억의 탐색 연결
 
 유사 장르 조사와 GDD B5/P4/IMP-05를 연결해 앨범을 3장 단위로 탐색하도록 구현했다. `album_view.gd`는 이전/최근 버튼·page clamp·누락 이미지 안내·전체 사진 비율, `album.tscn`은 스크롤 내용과 고정 Back을 소유한다. `photo_memory_persistence.gd`는 파일 누락을 메타데이터 삭제로 취급하지 않으며 기존 ID를 예약해 재사용하지 않는다. schema/보상/아트는 그대로다. [제품 개선 루프 기록](../evidence/2026-09-13-album-history/REVIEW.md)을 따른다. 검사 5회만을 개선 루프라고 보고하지 않는다. 다음은 공통 공간·카메라 정렬의 연속 이동 slice이며 모델/리그 부족을 사진 기능 완료로 덮지 않는다.

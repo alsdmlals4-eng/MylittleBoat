@@ -1006,9 +1006,10 @@ func _apply_drift_motion(delta: float) -> void:
 	_apply_background_flow()
 	_apply_seasonal_parallax_motion(safe_delta, visual_motion_multiplier, comfort_scale)
 	if not _title_waiting:
-		# 배·카메라·접점이 공유하는 표시 좌표만 재중심화한다. 저장/보상 거리가 아니다.
-		_voyage_visual_distance = fposmod(_voyage_visual_distance + safe_delta * 0.32 * visual_motion_multiplier * comfort_scale, 512.0)
-	var travel := Vector3(0.0, 0.0, _voyage_visual_distance)
+		# 실제 경로 위치를 배·카메라·접점이 함께 소비한다. 저장/보상 거리가 아니다.
+		$VoyageWorld/VoyageRoute.advance_distance(safe_delta * 0.32 * visual_motion_multiplier * comfort_scale)
+	var travel: Vector3 = $VoyageWorld.to_local($VoyageWorld/VoyageRoute/BoatProgress.global_position)
+	_voyage_visual_distance = travel.z
 	$VoyageWorld/DioramaCameraRig.position = _diorama_camera_base_position + travel
 	$VoyageWorld/LookAroundCameraRig.position = _look_around_camera_base_position + travel
 	$VoyageWorld/AppreciationCameraRig.position = _appreciation_camera_base_position + travel
