@@ -6,6 +6,8 @@
 
 ## 1. authority와 evidence를 구분하는 법
 
+**2026-09-13 공통 관찰축.** 기본 후면 구도와 승인 이미지 byte는 유지한다. LookAround 중립은 기본 카메라의 위치·기준 yaw/pitch를 공유하고 상대 입력만 독립적으로 회전한다. Appreciation은 같은 초기 heading을 쓰되 기존 감상 pitch/높이·foreground 숨김을 유지한다. 두 조작 카메라의 수면 방향은 절대 세계 yaw가 아니라 기준에 대한 상대 yaw를 소비한다. 이는 기존 카드의 공간 기준 교정이며 단일 world 섬·연속 모델 회전 완료가 아니다. [관찰축 검증](../evidence/2026-09-13-camera-reference/REVIEW.md)이 이번 source와 evidence를 소유한다.
+
 **2026-09-11 분리본 확정 후 실행.** 최신 `확정하고 진행해`는 분리본 외형과 후면 모션 연결을 승인한다. [분리본 승인·원본/런타임 해시·consumer 기록](candidates/2026-09-11-blueprint/stern-motion-parts-v1.receipt.json)이 책임 owner다. 승인 RGBA를 변경 없이 runtime 경로로 복사하고 `FinalDioramaCard → PartsViewport → Hull/Player/Pet/SternRail`로 조립한다. 새 재질은 자홍색 잔여색만 보정한다. 이는 기본 외형/후면 slice이며 구형 측면·후면 각도 카드와 다른 외형은 아직 교체되지 않았다. Aseprite frame export는 현재 분리 AtlasTexture와 위상 기반 움직임에 필수가 아니므로 미사용이며 1-frame 파일을 모션 완료로 생산하지 않는다.
 
 **2026-09-11 최신 교정.** 사용자가 수정본의 실제 적용을 요청했다. 외형 기준은 `candidates/2026-09-10-intimate-diorama/stern-staging-no-oars-v3.png`이며 SHA-256은 `4f33cad8273699cb84eb19c875c3a0521adc79e49c283e80d802d716c0ddd3c5`다. 현재 구형 production art와 동일하다고 취급하지 않는다. v3는 한 장의 RGB 구도 이미지로, 독립 캐릭터 모션/옆면/3D 모델 준비를 뜻하지 않는다. 아래 기존 texture 재사용은 이전 작업의 사실이며 최신 교정 요청의 완료 조건이 아니다. 파생 분리 자산은 원본 외형 유지 검사와 실제 consumer 연결 전까지 후보다.

@@ -975,8 +975,9 @@ func _apply_background_flow_to_backdrop(backdrop: Sprite3D) -> void:
 	flow_material.set_shader_parameter("flow_offset", _background_flow_offset)
 	flow_material.set_shader_parameter("forward_flow_offset", _forward_water_flow_offset)
 	var travel_direction := Vector2(0.0, 1.0)
-	if backdrop.get_parent() == $VoyageWorld/LookAroundCameraRig/LookAroundCamera3D:
-		var yaw: float = $VoyageWorld/LookAroundCameraRig.rotation.y
+	var camera_rig := backdrop.get_parent().get_parent()
+	if camera_rig.has_method("get_relative_yaw_radians"):
+		var yaw: float = camera_rig.get_relative_yaw_radians()
 		travel_direction = Vector2(-sin(yaw), cos(yaw))
 	flow_material.set_shader_parameter("travel_direction", travel_direction)
 

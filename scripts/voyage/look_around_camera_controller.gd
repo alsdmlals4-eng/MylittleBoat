@@ -5,6 +5,8 @@ signal angle_changed(angle_id: String)
 
 @export var mouse_sensitivity := 0.12
 @export var touch_sensitivity := 0.12
+@export var reference_yaw_degrees := 0.0
+@export var reference_pitch_degrees := 0.0
 @export var min_pitch_degrees := -16.0
 @export var max_pitch_degrees := 38.0
 @export var min_yaw_degrees := -135.0
@@ -22,8 +24,8 @@ var _last_angle_id := "front"
 
 
 func _ready() -> void:
-	_pitch_degrees = clampf(rad_to_deg(rotation.x), min_pitch_degrees, max_pitch_degrees)
-	_yaw_degrees = clampf(rad_to_deg(rotation.y), min_yaw_degrees, max_yaw_degrees)
+	_pitch_degrees = clampf(rad_to_deg(rotation.x) - reference_pitch_degrees, min_pitch_degrees, max_pitch_degrees)
+	_yaw_degrees = clampf(rad_to_deg(rotation.y) - reference_yaw_degrees, min_yaw_degrees, max_yaw_degrees)
 	_apply_camera_rotation()
 	_last_angle_id = get_angle_id()
 
@@ -34,6 +36,10 @@ func _is_input_active() -> bool:
 
 func cancel_drag() -> void:
 	_dragging = false
+
+
+func get_relative_yaw_radians() -> float:
+	return deg_to_rad(_yaw_degrees)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -82,7 +88,7 @@ func _rotate_from_delta(delta: Vector2, sensitivity: float) -> void:
 
 
 func _apply_camera_rotation() -> void:
-	rotation_degrees = Vector3(_pitch_degrees, _yaw_degrees, 0.0)
+	rotation_degrees = Vector3(reference_pitch_degrees + _pitch_degrees, reference_yaw_degrees + _yaw_degrees, 0.0)
 	var next_angle_id := get_angle_id()
 	if next_angle_id == _last_angle_id:
 		return

@@ -43,7 +43,10 @@ func _run() -> void:
 		var look_around_rig := scene.get_node_or_null("VoyageWorld/LookAroundCameraRig") as Node3D
 		_expect(diorama_rig != null and diorama_rig.position.z < 0.0, "normal diorama camera must look from the stern side")
 		_expect(diorama_rig != null and diorama_rig.rotation.y < -2.0, "normal diorama camera must face the boat from its rear three-quarter angle")
-		_expect(look_around_rig != null and look_around_rig.position.z > 0.0, "Look Around default rig must stay independent from the new normal rear camera")
+		_expect(look_around_rig != null and look_around_rig.position.is_equal_approx(diorama_rig.position), "neutral Look Around must start at the same stern position")
+		var normal_basis := diorama_rig.basis
+		look_around_rig.set_view_angles(76.0, 0.0)
+		_expect(diorama_rig.basis.is_equal_approx(normal_basis) and not look_around_rig.basis.is_equal_approx(normal_basis), "Look Around input must rotate independently without moving the normal camera")
 		scene.queue_free()
 		await process_frame
 	_finish()

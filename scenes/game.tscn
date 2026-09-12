@@ -126,9 +126,11 @@ region_enabled = true
 region_rect = Rect2(632, 350, 1028, 350)
 
 [node name="LookAroundCameraRig" type="Node3D" parent="VoyageWorld"]
-position = Vector3(3.8, 4.6, 6.7)
-rotation = Vector3(-0.52, 0.48, 0)
+position = Vector3(-3.8, 4.6, -6.7)
+rotation = Vector3(-0.52, -2.66, 0)
 script = ExtResource("7")
+reference_yaw_degrees = -152.41015
+reference_pitch_degrees = -29.793805
 
 [node name="LookAroundCamera3D" type="Camera3D" parent="VoyageWorld/LookAroundCameraRig"]
 current = false
@@ -166,9 +168,10 @@ texture = ExtResource("14")
 material_override = SubResource("ShaderMaterial_look_around_foreground_key")
 
 [node name="AppreciationCameraRig" type="Node3D" parent="VoyageWorld"]
-position = Vector3(0, 2.2, 6.8)
-rotation = Vector3(-0.16, 0, 0)
+position = Vector3(-3.8, 2.2, -6.7)
+rotation = Vector3(-0.16, -2.66, 0)
 script = ExtResource("2")
+reference_yaw_degrees = -152.41015
 
 [node name="AppreciationCamera3D" type="Camera3D" parent="VoyageWorld/AppreciationCameraRig"]
 current = false

@@ -6,6 +6,8 @@
 
 ### 2026-09-13 진행 계획 — 실제 항해 경로와 구간 연속성
 
+후속 관찰축 단위는 기존 기본 카메라를 보존하고 LookAround/Appreciation의 초기 x/z 위치·세계 yaw를 맞춘다. LookAround는 `reference_yaw_degrees`·`reference_pitch_degrees`와 사용자 상대 각도를 분리해 yaw ±135°와 pitch -16°..38°의 상대 입력 제한·front/port/starboard/aft 분류를 유지한다. 생산 기준 pitch는 -29.793805°여서 실제 pitch 범위는 -45.793805°..8.206195°다. 수면 consumer도 두 조작 카메라의 상대 yaw를 사용한다. 테스트는 초기 heading 불일치 RED → 정렬 GREEN, 중립/좌우 수면 방향·입력·구도·overlay 회귀, 실제 세 시점 캡처 순서다. 이는 공통 기준축 준비이지 아직 단일 world 섬이나 실제 3D 모델 회전의 완성이 아니다.
+
 사용자가 승인한 실제 3D 항해 권장안의 첫 단위다. `game_scene.gd`의 512-unit modulo 이동은 공통 world 물체 도입 시 뒤로 튀므로 `VoyageRoute` Path3D와 BoatProgress가 이동 위치를 소유하게 한다. 초기 해역은 기존 +Z 직선 방향을 보존하며 128-unit 구간의 초과 거리를 다음 구간으로 전달한다. 카메라·보트·접점은 같은 경로 위치를 소비하고 title/still/background/overlay·저장·보상은 유지한다. curved route·단일 world 섬·수면·모델 제작 완료를 이 단위로 주장하지 않는다.
 
 - [x] `test_voyage_route_continuity.gd`에서 512 경계 역이동과 Path3D 부재를 RED로 확인.

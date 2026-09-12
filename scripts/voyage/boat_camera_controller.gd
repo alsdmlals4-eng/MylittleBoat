@@ -3,6 +3,7 @@ extends Node3D
 
 @export var mouse_sensitivity := 0.12
 @export var touch_sensitivity := 0.12
+@export var reference_yaw_degrees := 0.0
 @export var min_pitch_degrees := -28.0
 @export var max_pitch_degrees := 18.0
 
@@ -25,6 +26,10 @@ func _is_input_active() -> bool:
 
 func cancel_drag() -> void:
 	_dragging = false
+
+
+func get_relative_yaw_radians() -> float:
+	return deg_to_rad(_yaw_degrees - reference_yaw_degrees)
 
 
 func _unhandled_input(event: InputEvent) -> void:

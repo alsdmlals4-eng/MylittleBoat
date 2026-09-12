@@ -28,6 +28,35 @@ func run() -> void:
 	game.set_application_foreground(true)
 	var camera := game.get_node("VoyageWorld/DioramaCameraRig") as Node3D
 	var start := camera.position
+	var normal_heading := Vector2(camera.global_basis.z.x, camera.global_basis.z.z).normalized()
+	for rig_name in ["LookAroundCameraRig", "AppreciationCameraRig"]:
+		var other := game.get_node("VoyageWorld/" + rig_name) as Node3D
+		var heading := Vector2(other.global_basis.z.x, other.global_basis.z.z).normalized()
+		expect(normal_heading.dot(heading) > 0.999, "neutral cameras must share voyage heading: " + rig_name)
+		var sea := other.get_child(0).get_node("SeaBackdrop") as Sprite3D
+		game._apply_background_flow_to_backdrop(sea)
+		var direction: Vector2 = sea.material_override.get_shader_parameter("travel_direction")
+		expect(direction.distance_to(Vector2(0.0, 1.0)) < 0.0001, "neutral world reference must not reverse screen water: " + rig_name)
+		if rig_name == "LookAroundCameraRig":
+			expect(camera.global_basis.z.dot(other.global_basis.z) > 0.999, "neutral look-around must retain normal framing before user drag")
+			other.set_view_angles(76.0, 0.0)
+			expect(other.get_angle_id() == "port", "world heading offset must not change relative port classification")
+			game._apply_background_flow_to_backdrop(sea)
+			direction = sea.material_override.get_shader_parameter("travel_direction")
+			expect(direction.distance_to(Vector2(-0.970296, 0.241922)) < 0.001, "port water must use relative rather than absolute yaw")
+			other.set_view_angles(0.0, 0.0)
+			expect(camera.global_basis.z.dot(other.global_basis.z) > 0.999, "neutral reset must restore the original world reference")
+		else:
+			other.get_child(0).current = true
+			var drag := InputEventScreenDrag.new()
+			drag.relative = Vector2(750.0, 0.0)
+			other._unhandled_input(drag)
+			game._apply_background_flow_to_backdrop(sea)
+			direction = sea.material_override.get_shader_parameter("travel_direction")
+			expect(direction.distance_to(Vector2(1.0, 0.0)) < 0.001, "appreciation water must also follow user-relative camera yaw")
+			drag.relative = -drag.relative
+			other._unhandled_input(drag)
+	camera.get_child(0).current = true
 	game._apply_drift_motion(10.0)
 	expect(is_equal_approx(camera.position.z, start.z), "title must not travel")
 	game.start_voyage_from_title()
