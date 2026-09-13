@@ -73,7 +73,7 @@
 | --- | --- | --- | --- |
 | W1. 정적 방향 카드의 각도 파열 | 다른 그림을 교체하므로 가림·자세가 연속적이지 않음 | P0, 근거리 실제 3D와 손그림 재질 왕복 검증. 2D 원화를 모델이라고 부르지 않음 | 같은 mesh/rig로 허용 yaw·pitch 전부 재생. 실패하면 PARTIAL 유지, 회전 축소는 별도 결정 |
 | W2. 부유와 전진의 증거 부족 | 보트 왕복 흔들림·일부 수면 픽셀 변화만 확인하면 정체처럼 보임 | P0, waterline·wake·전진을 같은 좌표계에 연결. 화면 전체 스크롤 제외 | 30초 실제 시간 궤적, 수면 접점 전체 주기. 사용자 전진 지각은 별도 |
-| W3. 앨범 복귀 시 장면 연속성 | 현재 scene 전환은 시각 위상을 재생성할 수 있음 | P0, 같은 VoyageWorld를 유지하는 overlay. 입력·소리 별도 process domain | 반복 20회에도 world instance·phase·선택 동일, overlay 중 시간 증가 0 |
+| W3. 앨범 상세 확대 시 연속성 회귀 위험 | 현재 기본 앨범은 같은 GameScene의 overlay로 연결됨. 상세 추가가 이 연속성을 깨뜨리지 않아야 함 | R08은 현재 overlay를 재사용. 별도 VoyageWorld/앨범 scene 전환 추가 금지 | 반복 20회에도 world instance·phase·선택 동일, overlay 중 시간 증가 0. 기존 구현을 신규 미구현으로 되돌려 세지 않음 |
 | W4. 신규 제작 자산 준비 부족 | 이미지 후보와 실제 모델·리그·모션 상태의 혼동 | P0, manifest에 원본/후보/필수 미제작을 분리. 낮 1세트 먼저 | 실제 파일·alpha·애니메이션·consumer 기준 ASSET_READY. 모형/그림 보드로 대체 불가 |
 | W5. 정보량과 기록의 성과화 | 300초·활동 수·다음 항해가 목표로 읽힐 수 있음 | P1, 기록은 앨범, 기본 화면은 바다. 기존 저장 의미 보존 | 기록 최대 1개, 자동 종료 0, 이전 기록 문자열 보존 |
 | W6. 반복 제작의 일관성 비용 | 장식·외형·동반자·각도 조합이 늘어남 | P1, 3 style/4 pet/8 slot/6 item 호환표와 공통 접점 | 조합별 침범 검사. 지원되지 않는 조합을 기본 외형으로 몰래 치환하지 않음 |
@@ -366,7 +366,7 @@ IMP-01은 추가 이미지 없이 구현을 시작할 수 있다. IMP-02는 해�
 | R04 / IMP-02·03 | 카메라는 고정 위치에서 회전, 탑승자는 사인파 반응 | 실제 orbit·reset·부유·rest/notice/settle 연결 | P0 / R01–03. 계약 probe는 먼저 가능. PARTIAL |
 | R05 / IMP-04 | 네 시간대 resolver/기존 이미지 있음 | 새 world family의 네 시간대 동기 전환. 계절 풍경은 R02 소유 | P1 / 낮 R01–04 통합 통과. PARTIAL |
 | R06 / IMP-04 | 3 style/4 pet/8 slot/6 item 존재. style/pet 즉시 저장 | 미리보기/탭별 적용/취소, 새 모델 호환 전수 | P1 / 데이터 UI는 R07 뒤, 새 family는 R03 뒤. FEASIBLE(자산 제외) |
-| R07 / IMP-05 | 사진의 손상 목록 보호 + R07a helper/comfort 복구 코드 연결 | 나머지 저장 owner·성공 확정/UI·사진 경로 제한 | P0 / R07a 구현, 전체 PARTIAL. 전원차단 보장 제외 |
+| R07 / IMP-05 | helper/comfort와 다섯 단순 저장 owner에 복구 코드 연결 | 사진 저장/경로·GameState 성공 확정·복구 UI | P0 / R07a·R07b1 구현, 전체 PARTIAL. 전원차단 보장 제외 |
 | R08 / IMP-05 | 앨범 최근/이전 3장 탐색과 누락 안내 있음 | 실제 사진 상세·안전한 지연 읽기·닫기 복귀 | P1 / R07 경로 경계. FEASIBLE |
 | R09 / IMP-01·05 | 같은 world overlay, 조용한 낚시 상태·취소 있음 | 전 화면 입력/가독성·저장 실패·무손실 선택 행동 완결 | P1 / R06–08 연결. FEASIBLE |
 | R10 / IMP-05 | 지속 OceanBed와 5단계 음량·음소거 있음 | 필요 근접 효과음 최소 layer·독립 제어·청취 검증 | P2 / 실제 음원·소비처 확인. PARTIAL |
@@ -376,6 +376,17 @@ IMP-01은 추가 이미지 없이 구현을 시작할 수 있다. IMP-02는 해�
 FEASIBLE은 설계상 구현 경로가 있다는 뜻이다. `SPECIFIED`와 `ASSET_READY`, `IMPLEMENTED`, `RUNTIME_VERIFIED`를 구분한다. 이전 62 headless·20 Python·30초 GPU 결과는 해당 revision의 역사적 증거이며 이번 문서 작성으로 재실행한 결과가 아니다. Start/overlay/route/음량/앨범 pagination 자체를 다시 신규 제작하지 않는다.
 
 #### 공통 좌표·시간·상태 계약
+
+**2026-09-14 실행 전 벤치마킹 재대조.** 다음은 제작진·공식 자료에서 확인한 원리와 이 프로젝트의 적용 판단이다. 다른 게임의 엔진 내부를 추측하거나 이 비교를 우리 게임의 성능 증거로 쓰지 않는다. 최적화의 채택 기준은 동일 장치·renderer·viewport에서의 R11 측정과 실제 화면의 R01/R04 통과다.
+
+| 근거 | 채택/변형/제외와 실제 연결 | 기대효과·검증 한계 |
+|---|---|---|
+| [DREDGE 제작진의 수면 시행착오](https://www.gamedeveloper.com/design/trawling-in-the-deep-how-black-salt-games-made-spooky-fishing-rpg-i-dredge-i-) — 파도에 의해 배가 비정상적으로 날아가는 문제, 단순 사인 파형과 이동 제어 | `ADAPT`. R01은 경로의 XZ 진행과 수면 높이/기울기의 시각 접점을 분리한다. 수면 물리로 항해 시간을 진행시키거나 배를 밀지 않는다. DREDGE의 시간 자원·위험·경제는 `REJECT` | 기존 `VoyageRoute`를 보존하면서 전진과 부유를 각각 검사할 수 있다. 같은 CPU/GPU 파형·선체 접점·정지/재개·128/512 경계를 실제 검증해야 한다 |
+| [Lake 공식 접근성](https://whitethorngames.com/lake/accessibility) — 자동 이동, 안정적 카메라와 추적 선택 | `ADAPT`. 목적지/배송 목표는 도입하지 않고 자동 항해·선택적 둘러보기·저감/정지 설정을 유지한다. R04 자동 sway와 사용자 orbit을 분리한다 | 흔들림을 줄여도 경관의 공간적 이동이 남는지 R01/R04에서 검사. 접근성 목록은 우리 게임의 멀미/Human 통과 근거가 아니다 |
+| [DREDGE 모바일 제작진 발표](https://developer.apple.com/videos/play/meet-with-apple/247/) — 화면비·손가락 가림·hover 의존을 수정 | `ADAPT`. R06 미리보기/적용, R08 카드 탭→상세→같은 페이지, R09 UI 소비 입력의 카메라 전달 차단. 화면 위 두 개 joystick이나 경제형 inventory는 `REJECT` | 탭으로 의도가 명확한 조작을 제공한다. PC 클릭 테스트 외 실제 화면 크기·touch·확대 글꼴 검증이 필요하며 모바일 기기 없이 완료 판정하지 않는다 |
+| [Tiny Glade 제작진 인터뷰](https://80.lv/articles/exclusive-tiny-glade-developers-discuss-bevy-proceduralism-publishers-cozy-games) — 원하는 경험에 맞는 요소별 제작 파이프라인 | `ADAPT`. R01 수면, R02 sky/cloud/명소, R03 선체·인물·동반자, R04 motion의 책임과 납품을 분리한다. 자체 엔진/대규모 procedural GPU 생성기는 `REJECT` | 한 장 합성 그림을 다시 분해하는 재작업과 이중 수면을 피한다. 인터뷰에 없는 수면 알고리즘을 Tiny Glade의 구현이라고 주장하지 않는다 |
+
+세 구현 대안은 R01의 화면 UV 보정 지속, 공통 세계 수면+기존 경로, 전체 해양 물리/오픈월드다. 현재 선택은 두 번째다. 큰 지도나 물리 엔진을 늘리는 것보다 세계에 고정된 가까운 물결·멀리 있는 명소를 보트/카메라가 지나가게 만드는 편이 현재 목적지 없는 휴식과 검증 비용에 맞는다. 성능 측정 전에는 **현재 제약에 맞는 권장 구조**이며 전 플랫폼의 최적해로 단정하지 않는다.
 
 ```text
 GameState(항해·기억)     RestingSoundscape(지속 오디오)
@@ -464,7 +475,7 @@ WorldEnvironment/Sky(자동 yaw 없음, 수동 시점에 공간 대응)
 
 #### R07. 저장 보호·정상본 복구·사진 경로
 
-**2026-09-14 R07a 구현 현황.** 아래 공통 store API와 comfort 연결은 실제 구현됐다(`4773c68`). 다른 owner와 사진 resolver/UI는 여전히 명세 단계다. 세부 검증·미검증은 [현재 증거](../evidence/2026-09-14-recoverable-save/REVIEW.md)를 따른다. 단순 읽기는 파일을 변경하지 않으며 증거 보존/잠금 파일 쓰기는 실제 저장·명시 복구 요청 때만 수행한다.
+**2026-09-14 R07a·R07b1 구현 현황.** 공통 store/comfort(`4773c68`)에 이어 identity/decor/together-time/ambient/ledger owner도 연결했다(`b07f8b8`, 우선순위 교정 `6f6f716`). 사진 resolver와 GameState/UI 성공 확정은 여전히 남았다. 세부 검증·미검증 및 독립 검토 상태는 [현재 증거](../evidence/2026-09-14-recoverable-save/REVIEW.md)를 따른다. 단순 읽기는 파일을 변경하지 않으며 증거 보존/잠금 파일 쓰기는 실제 저장·명시 복구 요청 때만 수행한다.
 
 **선택.** A 기존 파일 바로 overwrite `REJECT`, B 기존 schema를 유지한 owner별 staging+검증 정상본+복구 receipt `ADAPT`, C 새 DB/클라우드/전체 migration `REJECT`. 대상은 `scripts/core/*_persistence.gd`, `cosmetic_identity_profile.gd`, `comfort_preferences.gd`의 실제 소비 owner다. 단순 rename을 Windows/모바일 모두 atomic 또는 전원차단 안전하다고 부르지 않는다.
 
@@ -477,6 +488,10 @@ WorldEnvironment/Sky(자동 yaw 없음, 수동 시점에 공간 대응)
 사진은 PNG 저장·목록 저장을 분리한다. 목록 commit 성공 전 UI 성공/메모리 추가 없음. 손상 목록은 현재처럼 저장 거부. 새 PNG만 남는 중단 상태는 원본을 지우지 않고 recovery receipt에 기록한다. 저장 직후 실패의 이번 생성 PNG teardown과 사용자 원본 삭제를 구분한다. 기존 id/label/atmosphere/image_path는 보존한다.
 
 읽기 경계. album은 metadata의 임의 경로를 직접 열지 않고 owner의 `resolve_photo_path(entry: Dictionary) -> String`을 호출한다. 지정 photo directory 안에 있고 예상 id basename과 일치하는 정상 PNG만 반환한다. `..`, 절대 외부 경로, 접두사만 같은 sibling, 경로 구분자 삽입, 확인 불가 link/reparse 우회는 거부한다. fixture에서 안전한 link 판별이 엔진/API로 검증되지 않으면 해당 경로를 열지 않는다. metadata는 보존하고 읽기 불가 안내만 한다.
+
+R07b 사진 구현의 자원 경계는 압축 PNG 32 MiB 이하, 각 축 4096 이하, 총 16,777,216 pixels 이하다. 전체 디코드 전에 파일 크기/PNG header를 확인하고 초과·손상 파일은 원본을 그대로 둔 채 unavailable로 표시한다. A 무제한 디코드 `REJECT`, B 현재 촬영 크기를 포함하는 유한 상한+오류 반환 `ADAPT`, C 새 썸네일 DB/마이그레이션 `DEFER`다. 이 수치는 엔진 최대치가 아니라 앨범의 최대 카드 3장+상세 1장에 맞춘 초기 방어 상한이며 R11 메모리 측정으로 더 낮출 수 있다. [Godot Image API](https://docs.godotengine.org/en/stable/classes/class_image.html)의 오류 반환과 [DirAccess.is_link](https://docs.godotengine.org/en/stable/classes/class_diraccess.html#class-diraccess-method-is-link)의 실제 플랫폼 지원을 검증한다. 앱 자신의 save root 아래 link/reparse 검사를 수행하되, 동시에 파일을 바꾸는 악의적 OS 사용자의 경쟁 상태까지 완전 차단했다고 주장하지 않는다.
+
+R07의 실제 상태 확정 소비처는 GameState의 외형/장식/풍경/물고기/항해 기록과 together-time flush다. 저장 실패 때 기록 배열·성공 문구·입질 소비를 확정하지 않고 미저장 함께한 시간은 유지한다. comfort/mute는 기존 접근성 예외로 이번 실행에 즉시 적용하되 영구 저장 실패를 별도로 알린다. `game_scene.gd::_apply_stored_boat_decor`처럼 읽은 선택을 화면에 적용하는 함수는 다시 저장하지 않아야 한다. 최초 Scene 진입/앨범 복귀를 사용자 선택 변경으로 취급하지 않는다.
 
 **완료 판정.** 파일 없음/파싱 실패/unknown key/NaN/잘못된 row/type/디스크 쓰기 실패/각 쓰기 단계 종료/복구본도 손상/경로 탈출/중복 사진을 격리 `user://test_*`에서 시험한다. NOT_COMMITTED는 원본 bytes(또는 기존 부재)와 기억 개수·선택 불변을 확인한다. 복원 실패는 RECOVERY_REQUIRED·후속 쓰기 차단·메모리/모든 복구 증거 보존을 확인하며 정상 rollback으로 세지 않는다. 복구는 silent reset과 구별되는 RECOVERED 읽기 및 recover_primary 결과를 기록한다. production save로 fault injection 금지.
 

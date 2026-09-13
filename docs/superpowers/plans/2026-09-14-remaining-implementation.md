@@ -103,7 +103,7 @@ python -m unittest discover -s tests -p 'test_*.py' -v
 git diff --check
 ```
 
-새 `test_*.gd`를 실제 추가하면 `.github/workflows/godot-validation.yml`, `README.md`, `docs/PROJECT_WORK_REUSE_HANDOFF.json`의 계약 수와 display-only 구분을 함께 수정한다. 현재 총 63개/62 headless는 이 문서에서 새 tests가 존재한다는 뜻이 아니다.
+새 `test_*.gd`를 실제 추가하면 `.github/workflows/godot-validation.yml`, `README.md`, `docs/PROJECT_WORK_REUSE_HANDOFF.json`의 계약 수와 display-only 구분을 함께 수정한다. 수는 현재 파일과 CI 목록에서 재계산하며 이 문서의 제안 테스트를 구현된 테스트로 세지 않는다. R07a 직후 기준은 64개/63 headless다.
 
 ## Task R01 — 공통 world 수면
 
@@ -241,6 +241,8 @@ expect(draft.snapshot("identity").pet_type == "dog", "cancel must restore commit
 ## Task R07 — owner별 저장 안전
 
 실행 상태. R07a 공통 helper+comfort 첫 consumer가 `4773c68`에 구현됐다. 최초 저장의 원본 의도 기록은 pending 생성 전 수행하도록 독립 검토에서 교정했다. 이후 나머지 owner, GameState/UI 성공 경계, 사진 경로를 검증한 뒤에만 전체 R07을 완료로 올린다. 아래 전체 Task 체크박스는 부분 납품만으로 완료 처리하지 않는다. [현재 증거](../../evidence/2026-09-14-recoverable-save/REVIEW.md).
+
+실행 묶음은 R07b1의 다섯 단순 owner → 사진 PNG/목록과 경로 경계 → GameState 성공 확정·복구 UI다. 각 묶음 독립 검토 뒤 다음으로 이어간다. 실패 시 together-time의 미저장 누적을 지우지 않고, 물고기는 목록 저장 성공 전 입질 상태를 소비하지 않는다. 항해 기록도 성공 전 생성 완료를 표시하지 않는다. 이 연결 뒤 R06 draft/R08 상세로 이어가며 저장 helper만으로 전체 완성을 주장하지 않는다.
 
 **Files.** Create `scripts/core/recoverable_config_store.gd`, `tests/test_recoverable_config_store.gd`. Modify 실제 `scripts/core/comfort_preferences.gd`, `cosmetic_identity_profile.gd`, `boat_decor_persistence.gd`, `together_time_persistence.gd`, `ambient_memory_persistence.gd`, `memory_ledger_persistence.gd`, `photo_memory_persistence.gd`; GameState는 성공 확정 경로만 변경.
 

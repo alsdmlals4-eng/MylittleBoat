@@ -80,3 +80,35 @@ fault test는 실제 격리 파일과 테스트 subclass의 파일 연산 실패
 최종 scoped hygiene review는 spec PASS/quality APPROVED, 신규 finding 없음이다. parent가 여덟 경로 부재와 `git diff --quiet 4773c68..HEAD -- scripts scenes assets project.godot`의 무변경을 재확인했다. 마지막 Python 20개와 문서 형식 검사도 통과했다. 전체 R01–R12 branch/main merge review나 출시 승인이 아니라 R07a의 검토 결과다.
 
 생산 설정은 내용을 읽지 않고 파일 metadata만 확인했다. 정확한 comfort primary 하나(30 bytes, lastWriteTimeUtc `2026-09-10 13:10:44`)만 있었으며 해당 production 파생 sidecar는 없었다. 읽기 교정 전 부수 파일 생성의 역사적 절대 부재까지 추정하지 않는다.
+
+## R07b1 — 다섯 단순 owner 연결
+
+기준 `b828f78`, 구현 `b07f8b8`, 우선순위 교정 `6f6f716`, 공통 읽기 분기 추출 `02e5a256`. `boat_decor_persistence`, `cosmetic_identity_profile`, `together_time_persistence`, `ambient_memory_persistence`, `memory_ledger_persistence`가 같은 공통 store를 소비한다. 기존 signature/key/normalizer를 유지하며 COMMITTED만 OK, 각 owner의 status/recover API를 제공한다. GameState/UI/photo/comfort production 변경은 이 범위 밖이다. 독립 검토에서 지적된 중복을 교정한 뒤 scoped spec PASS/quality Approved, 남은 finding 없음이다.
+
+현재 미지원 identity ID는 strict validator에서 지원 불가를 포함한 CORRUPT로 분류하고 caller의 기존 fallback은 읽기로만 유지한다. decor는 임의 String dictionary라는 기존 저장 domain을 유지하되 unknown slot/item/appearance가 있는 원본의 전체 교체는 ERR_UNAVAILABLE/NOT_COMMITTED로 거부한다. 원본을 지우거나 일부 변경을 성공으로 반환하지 않는다. 미해결 pending/receipt가 함께 있으면 RECOVERY_REQUIRED가 우선한다. 이 우선순위는 실제 RED 2건 뒤 교정했으며 helper를 우회하는 별도 lock 판별을 복제하지 않았다.
+
+| 검증 | source·결과와 한계 |
+|---|---|
+| TDD 기본 연결 | 최초 backup/API 부재 RED 10 → focused GREEN. future decor 보존 RED 2 → guard GREEN |
+| owner 회귀 | 기존 다섯 owner와 신규 `test_simple_owner_recovery.gd`의 정상/손상/복구/unknown/secondary key/NaN·Inf/쓰기 실패 검사 통과 |
+| 전체 headless | b07f8b8 code의 전체 65개 중 display-only 1개 제외, 64개 exit 0 / failed 0. 전용 사용자 저장 공간에서 실행 |
+| 마지막 교정 | 6f6f716의 pending/receipt+unsupported 조합 RED 2 → SIMPLE_OWNER_RECOVERY_FAILURES=0. 전체 suite 중복 실행이 아닌 해당 범위 재검증 |
+| capture 정리 | 수정한 capture/probe 10개 `--check-only` 통과. 실제 GPU 캡처를 새로 했다는 뜻이 아님 |
+| 부모 문서 검사 | 작업 중 count 갱신 이전 Python20은 2개 실패, count 동기화 후 재실행 20개 통과. 중간 실패를 최종 성공으로 소급하지 않음 |
+| 원본 보호 | 원본 project.godot SHA256 `C59566A16130C7629EC897EE9399420753F1391ABD8875C430D49BDDB5A0770A` 동일. 구현자가 실제 사용자 파일 8개의 이름/크기/hash 전후 일치 확인, 내용 미출력. 격리 test_* 잔여 0 |
+
+다섯 실제 scoped 검토는 baseline/RED→wrapper, future-ID 보존, 기존 fixture teardown, secondary-field/실제 staging failure, 최종 전체 consumer+격리 실행 순서로 수행했다. 각 단계에서 GDD R07·다섯 owner·helper/comfort·관련 fixture를 재독해했고, 원본 경로와 untouched GameState/UI/photo를 대조했다. 상세 command/output/source blob은 작업 보고서에 보존하며 이 표만으로 전체 게임 5회 검증을 주장하지 않는다. 정상 overwrite 유지/새 DB보다 기존 helper 재사용을 채택하고, unknown row silent merge 대신 명시 저장 거부를 선택했다.
+
+외부 active QA project는 `C:/Users/user/AppData/Local/Temp/MyLittleBoat-r07b1-3fd622b196824aaca3c9e30075f23483`다. project.godot 사본에 custom user-dir만 추가했고 실제 probe 출력은 `C:/Users/user/AppData/Roaming/MyLittleBoat_test_r07b1_3fd622b196824aaca3c9e30075f23483`였다. 원본 source directories는 junction, 다른 root files는 hard link이므로 그 경로에서 원본을 편집하거나 root를 재귀삭제하면 안 된다. 후속 검증 consumer로 보존하며 사용자 삭제대기 산출물과 구분한다. 원본 사용자 저장 경로에서 직접 실행한 검증은 아니다.
+
+### 부모 설계·조사 재대조
+
+1. branch/main/PR 및 Base adapter를 재조회했다. origin/main `7181d5e`, 현재 branch는 이 시작점에서 44 commits 앞섰다. 열린 PR19는 read-only, Base remote `d830c0f`는 드리프트 입력이고 v9.4.4를 유지했다.
+2. 기존 GDD R01/R07/B1–B4, 실제 route/water/fishing/GameState/Album 소비처를 대조했다. 같은 GameScene album overlay가 이미 있는데 W3가 미구현처럼 표현되어 이를 현재 회귀 위험으로 교정했다.
+3. DREDGE 제작진의 파도/이동 분리, Apple의 모바일 재설계 발표, Lake 접근성, Tiny Glade 제작진의 요소별 파이프라인을 재독해했다. GDD에 채택/변형/제외·consumer·검증 한계를 연결했다. 인터뷰에 없는 알고리즘이나 측정 전 최적 성능을 추정하지 않았다.
+4. GameState의 선반영/성공 문구와 startup decor 재저장을 읽고 후속 R07b3에 성공 후 확정·읽기 무쓰기·미저장 시간·입질 보존을 명세했다. 사진의 무제한 임의 경로 디코드보다 owner 경계·유한 상한을 선택하고 R07b2로 분리했다.
+5. 수정 GDD/계획/현재 handoff를 재대조하고 `git diff --check` 및 Python20을 확인했다. 실제 파일이 없는 모델·후보 final lock·GPU/Device/Human/출시를 완료로 높이지 않았다. actor와 별도 reviewer의 source 검토는 독립 gate다.
+
+이 단계의 학습은 같은 파일 처리 helper를 실제 여섯 owner가 소비하도록 넓혔다는 점과 fixture setup만으로 사용자 저장 격리가 보장되지 않는다는 점이다. Base 승격은 아직 하지 않았고 별도 범용 framework를 추가하지 않았다. 뒤이어 사진 저장/경로→실제 GameState·복구 UI→draft/사진 상세를 구현한다. 모델 납품·세계 수면·카메라 통합과 R11/R12는 그대로 남아 있다.
+
+독립 검토 round 1은 다섯 owner에 반복된 읽기 전용 legacy fallback 정책을 Important로 지적했다. `02e5a256`에서 기존 helper의 `config_for_legacy_read` 하나로 추출했고 strict read/write/recover 본문과 owner validator/normalizer는 유지했다. owner 통합+기존 다섯 owner+comfort+store 총 8개 focused 계약을 추출 전후에 실행해 각각 exit 0 / 오류 패턴 없음. scoped 재검토는 ADDRESSED/새 breakage 없음이었다. 부모는 같은 head의 격리 game Scene `--quit-after 1` exit 0과 Python20 PASS를 확인했다. 기존 전체64 결과와 마지막 focused8/Scene smoke를 분리하며 최종 head 전체64를 다시 실행했다고 쓰지 않는다.

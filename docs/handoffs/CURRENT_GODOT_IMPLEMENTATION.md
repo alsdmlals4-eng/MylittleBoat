@@ -6,6 +6,8 @@
 
 ### 2026-09-14 R07a 저장 보호·첫 comfort consumer
 
+후속 R07b1은 `b07f8b8`과 `6f6f716`에서 다섯 단순 owner까지 연결했고 `02e5a256`에서 공통 읽기 정책 중복을 해소했다. 격리 저장 환경의 64 headless 계약, 마지막 focused 8개와 game Scene smoke 및 독립 재검토 PASS가 있으며 exact 증거 범위는 아래 evidence owner를 따른다. 사진·GameState/UI 전체 연결 전이므로 R07 완료는 아니다. 현재 계획 실행은 [R01–R12 실행 계획](../superpowers/plans/2026-09-14-remaining-implementation.md)을 따른다.
+
 명세 준비 후 같은 날 사용자 실행 승인으로 `RecoverableConfigStore`와 기존 `ComfortPreferences`를 연결했다. `6e50ad0`의 기본 구현, `3724c67`의 읽기 무변경 교정, `4773c68`의 최초 staging 이전 원본 의도 기록을 포함한다. `COMMITTED / NOT_COMMITTED / RECOVERY_REQUIRED`, 검증된 rolling last_good, 중단 후 원본 hash 기반 복구, 명시 복구 전 쓰기 차단이 실제 코드에 있다. 기존 음소거·움직임 저감의 session-only 의미를 유지한다.
 
 이는 R07a의 helper+첫 owner 범위다. 나머지 persistence owner·GameState 성공 확정·플레이어용 복구 UI·사진 경로 검증은 아직 남았다. 수면/카메라/모델 화면은 변경하지 않았다. [저장 보호 증거와 남은 작업](../evidence/2026-09-14-recoverable-save/REVIEW.md)이 검증 ceiling을 소유한다. 재사용 검증 코드와 테스트 파일 정리는 실제 consumer에 연결했고 Base에 아직 승격하지 않았다.
