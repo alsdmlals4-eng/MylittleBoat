@@ -17,6 +17,7 @@ func run_checks() -> void:
 	for kind in ["comfort", "together_time", "memory_ledger", "identity", "boat_decor"]:
 		var path := "user://test_stern_motion_%s.cfg" % kind
 		paths.append(path)
+		preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(path)
 		state.call("set_%s_storage_path" % kind, path)
 	state.reset_session()
 	state.set_selected_player_style("c_loose_knit")
@@ -107,8 +108,7 @@ func run_checks() -> void:
 	for _frame in 4:
 		await process_frame
 	for path in paths:
-		if FileAccess.file_exists(path):
-			DirAccess.remove_absolute(ProjectSettings.globalize_path(path))
+		preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(path)
 	print("STERN_MOTION_FAILURES=%d" % failures)
 	quit(1 if failures else 0)
 

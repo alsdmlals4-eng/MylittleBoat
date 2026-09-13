@@ -27,6 +27,7 @@ func run() -> void:
 	for kind in ["comfort", "together_time", "memory_ledger", "identity", "boat_decor", "ambient_memory"]:
 		var path := "user://test_overlay_%s.cfg" % kind
 		paths.append(path)
+		preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(path)
 		state.call("set_%s_storage_path" % kind, path)
 	state.begin_voyage()
 	state.set_photo_memory_storage("user://test_overlay_photos.cfg", "user://test_overlay_photos")
@@ -254,8 +255,7 @@ func run() -> void:
 	for i in 4:
 		await process_frame
 	for path in paths:
-		if FileAccess.file_exists(path):
-			DirAccess.remove_absolute(ProjectSettings.globalize_path(path))
+		preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(path)
 	if DirAccess.dir_exists_absolute("user://test_overlay_photos"):
 		for file_name in DirAccess.get_files_at("user://test_overlay_photos"):
 			DirAccess.remove_absolute(ProjectSettings.globalize_path("user://test_overlay_photos/" + file_name))

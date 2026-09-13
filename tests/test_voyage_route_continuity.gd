@@ -17,6 +17,7 @@ func run() -> void:
 	for kind in ["comfort", "together_time", "memory_ledger", "identity", "boat_decor", "ambient_memory"]:
 		var path := "user://test_route_%s.cfg" % kind
 		paths.append(path)
+		preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(path)
 		state.call("set_%s_storage_path" % kind, path)
 	state.reset_session()
 	state.set_motion_comfort_profile("standard")
@@ -109,8 +110,7 @@ func run() -> void:
 		await process_frame
 	root.get_node("RestingSoundscape").release_ocean_bed_for_shutdown()
 	for path in paths:
-		if FileAccess.file_exists(path):
-			DirAccess.remove_absolute(ProjectSettings.globalize_path(path))
+		preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(path)
 	print("ROUTE_CONTINUITY_FAILURES=%d" % failures)
 	quit(1 if failures else 0)
 

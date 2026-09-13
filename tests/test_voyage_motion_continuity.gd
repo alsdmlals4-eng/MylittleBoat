@@ -17,6 +17,7 @@ func run_checks() -> void:
 	for kind in ["comfort", "together_time", "memory_ledger"]:
 		var path := "user://test_motion_continuity_%s.cfg" % kind
 		storage_paths.append(path)
+		preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(path)
 		state.call("set_%s_storage_path" % kind, path)
 	state.reset_session()
 	state.set_motion_comfort_profile("standard")
@@ -63,8 +64,7 @@ func run_checks() -> void:
 	else:
 		print("SKIP: GPU shader assertions require display renderer")
 	for path in storage_paths:
-		if FileAccess.file_exists(path):
-			DirAccess.remove_absolute(ProjectSettings.globalize_path(path))
+		preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(path)
 	print("MOTION_CONTINUITY_FAILURES=%d" % failures)
 	quit(1 if failures else 0)
 
