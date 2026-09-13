@@ -4,7 +4,7 @@
 
 ## Current owner route
 
-2026-09-10 현재 작업은 `PROJECT_GDD.md` 첫 절의 **승인된 재기획 방향과 현재 작업**이다. 코어는 유지하며 화면·아트·모션을 재검토한다. 기존 구현은 보존된 기준선이고 새 후보는 구현/최종 승인과 구분한다. 아래 2026-09-02 PDF의 current 표기는 당시 publication receipt에 한정하며, 새 재기획 내용을 포함하지 않는 역사적 source-bound 스냅샷이다. 새 PDF publication은 준비 중이다.
+2026-09-14 현재 요청은 남은 작업의 설계·구현 명세 준비다. 제품·설계 owner는 `PROJECT_GDD.md`의 **R01–R12**, 작업 순서·파일·테스트 절차는 [남은 작업 구현 계획](superpowers/plans/2026-09-14-remaining-implementation.md)이다. 실제 구현 상태는 handoff와 코드/evidence로 확인한다. 문서 작성이 runtime 구현/최종 아트 승인/출시 승인을 뜻하지 않는다. 아래 과거 PDF의 current 표기는 당시 publication receipt에 한정한다.
 
 | 질문 | current owner |
 | --- | --- |

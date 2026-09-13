@@ -8,7 +8,7 @@
 
 2026-09-13 최신 사용자는 “게임 전체 완성, 구현까지 계속 진행”을 명시했다. 기존 rest-first 코어와 현재 기획의 안전한 구현·교정은 반복 승인 없이 계속한다. 아래 과거의 ‘기획만 진행/production 보류’ 문장은 이 최신 구현 지시를 차단하지 않는다. 새 최종 아트 lock·핵심 의미 변경·공개 social 안전 gate·비용/배포/보안/파괴적 데이터 변경·Human 선언은 별도로 유지한다. 단위 검사 통과를 전체 게임 완료로 보고하지 않는다.
 
-현재 실행 우선순위는 P9의 실제 consumer를 따른다. 공통 공간·근거리 모델의 준비 제약과 독립적인 저장/입력/설정 작업을 분리해 한 자산 때문에 전체 구현이 멈추지 않게 한다.
+현재 남은 설계·실행 우선순위는 **2026-09-14 R01–R12와 연결된 구현 계획**을 따른다. P9는 전체 제작 단계의 기준으로 보존한다. 공통 공간·근거리 모델의 준비 제약과 독립적인 저장/입력/설정 작업을 분리해 한 자산 때문에 전체 구현이 멈추지 않게 한다. 최신 요청은 이 남은 작업의 명세 준비이며 이번 턴은 게임 코드를 변경하지 않는다.
 
 | 묶음 | 현재 상태 | 다음 완료 기준 |
 | --- | --- | --- |
@@ -349,6 +349,204 @@ IMP-01은 추가 이미지 없이 구현을 시작할 수 있다. IMP-02는 해�
 저장 오류 시 성공 UI/기록 중복을 금지한다. 쓰기 전에 유효성 확인, 성공 후 state 확정, 가능한 atomic replace와 이전 정상본 복구를 구현 패키지에서 검증한다. 손상 파일은 보존하고 조용한 기본값으로 진입하되 자동 저장이 복구 가능 원본을 덮지 않게 한다. 사진 경로는 지정 user directory 내부인지 확인하고, 누락 파일·디스크 부족·중복 클릭·동일 시각 파일명·앱 종료 도중 저장을 테스트한다. 자동 원본 사진 삭제/용량 cap은 채택하지 않는다. 나중에 사용자가 선택하는 사진 삭제 UI를 만들 때 exact 대상·확인·복구 가능성을 별도 명세한다.
 
 모든 휴식 기능은 offline 실행이 기본이다. analytics SDK·클라우드 저장·계정 의무·공개 업로드를 추가하지 않는다. 병편지의 기존 moderation/consent/report/block/age/production gate는 별도 설계 owner를 그대로 따른다. 온라인 safety release가 안 됐어도 local rest는 막지 않는다. 새 출시 플랫폼·스토어 가격·배포일·서명·개인정보 정책 확정을 이 기획으로 대신하지 않는다.
+
+### 2026-09-14 남은 작업 설계 명세 — R01–R12
+
+**요청 범위는 남은 작업과 설계·구현 명세 준비다. 이번 문서로 게임 코드·자산을 적용하거나 최종 아트/출시 승인을 얻은 것으로 처리하지 않는다.** 기존 P1–P10/B1–B12의 의미는 이 GDD가 계속 소유한다. 아래는 그 목표와 현재 코드 사이의 차이를 구현 단위로 구체화한 설계다. 실행 절차는 [남은 작업 구현 계획](../superpowers/plans/2026-09-14-remaining-implementation.md)이 소유하며 별도 AI/GDD master를 만들지 않는다.
+
+기준은 작업 branch `6b7949a563150bd93e08d5d5eb1e028eab7336ef`, 관찰한 origin/main `7181d5e6845e75107eade8c4d2e62e10334ab54b`다. 두 revision은 같지 않다. 아래 구현 상태는 **작업 branch 기준**이며 main에 모두 반영됐다는 뜻이 아니다. PR #19는 다른 social workstream으로 read-only다. Base v9.4.4 adapter를 유지하며 최신 Base 관찰값 `d830c0f6967678eed3c208ac6b24f9cd1b262ec3`로 조용히 교체하지 않는다.
+
+#### 현재 구현과 남은 범위
+
+| ID / 기존 패키지 | 현재 확인한 상태 | 남은 납품물 | 우선순위·착수 조건 |
+| --- | --- | --- | --- |
+| R01 / IMP-02 | 실제 직선 Path3D, 수평 방향 연결 있음. 수면은 camera-local | 공통 world 수면·깊이·접점·장거리 연속성 | P0 / 기술 probe 가능, 신규 texture production은 lock 필요. PARTIAL |
+| R02 / IMP-02·04 | 봄섬 하나 world 공유. sky/cloud/일반 motif는 camera-local | 세계 방향 sky·cloud와 일반 motif의 공통 배치 | P0 / R01 좌표 계약. PARTIAL |
+| R03 / IMP-03 | 후면 분리 PNG 모션 있음. assets에서 모델 파일 없음 | 기본 player+dog+boat의 실제 mesh/UV/rig/3clip 왕복 | P0 / 제작 경로·원본·최종 외형 lock 필요. BLOCKED_UNVERIFIED |
+| R04 / IMP-02·03 | 카메라는 고정 위치에서 회전, 탑승자는 사인파 반응 | 실제 orbit·reset·부유·rest/notice/settle 연결 | P0 / R01–03. 계약 probe는 먼저 가능. PARTIAL |
+| R05 / IMP-04 | 네 시간대 resolver/기존 이미지 있음 | 새 world family의 네 시간대 동기 전환. 계절 풍경은 R02 소유 | P1 / 낮 R01–04 통합 통과. PARTIAL |
+| R06 / IMP-04 | 3 style/4 pet/8 slot/6 item 존재. style/pet 즉시 저장 | 미리보기/탭별 적용/취소, 새 모델 호환 전수 | P1 / 데이터 UI는 R07 뒤, 새 family는 R03 뒤. FEASIBLE(자산 제외) |
+| R07 / IMP-05 | 사진의 손상 목록 덮어쓰기 방지 있음 | 다른 저장 owner 보호, 검증된 정상본 복구·경로 제한 | P0 / 독립 착수. FEASIBLE(전원차단 보장 제외) |
+| R08 / IMP-05 | 앨범 최근/이전 3장 탐색과 누락 안내 있음 | 실제 사진 상세·안전한 지연 읽기·닫기 복귀 | P1 / R07 경로 경계. FEASIBLE |
+| R09 / IMP-01·05 | 같은 world overlay, 조용한 낚시 상태·취소 있음 | 전 화면 입력/가독성·저장 실패·무손실 선택 행동 완결 | P1 / R06–08 연결. FEASIBLE |
+| R10 / IMP-05 | 지속 OceanBed와 5단계 음량·음소거 있음 | 필요 근접 효과음 최소 layer·독립 제어·청취 검증 | P2 / 실제 음원·소비처 확인. PARTIAL |
+| R11 / IMP-06 | headless/GPU 검사, Windows 내부 export 경로 있음 | 실제 시간 장기 soak·리소스/성능·실기기·패키지 검사 | P0 측정 / P1 통합. Device는 장치 없으면 BLOCKED_UNVERIFIED |
+| R12 / IMP-06 | 작업 branch와 main 차이, 과거 source-bound PDF 존재 | 검토된 main 통합·현재 구현 Blueprint·배포 gate | 마지막 / R01–11 완료 증거 및 권한. PARTIAL |
+
+FEASIBLE은 설계상 구현 경로가 있다는 뜻이다. `SPECIFIED`와 `ASSET_READY`, `IMPLEMENTED`, `RUNTIME_VERIFIED`를 구분한다. 이전 62 headless·20 Python·30초 GPU 결과는 해당 revision의 역사적 증거이며 이번 문서 작성으로 재실행한 결과가 아니다. Start/overlay/route/음량/앨범 pagination 자체를 다시 신규 제작하지 않는다.
+
+#### 공통 좌표·시간·상태 계약
+
+```text
+GameState(항해·기억)     RestingSoundscape(지속 오디오)
+          │                          │
+기존 foreground/overlay gate ── UI와 오디오를 world에서 분리
+          │ active visual delta
+VoyageRoute(+Z 직선, 목적지 없음)
+          ├─ BoatSpace/선체 anchors ── player/pet/장식/접점
+          ├─ Camera focus ── orbit 입력/감상/reset
+          ├─ OceanSurface(세계 좌표 UV, 배 이동과 이중 scroll 금지)
+          └─ WorldScenery(항로 밖, 고정 위치를 실제로 지나감)
+WorldEnvironment/Sky(자동 yaw 없음, 수동 시점에 공간 대응)
+```
+
+- 길이 기준 1 Godot unit = 제작상 1 m. 기존 2D card의 임의 pixel scale을 실제 모델 치수로 승계하지 않는다. 새 기본 선체 시험 길이 3 m, 폭 1.4 m. 최종 화면 크기는 B10 접점/구도와 함께 검수한다.
+- 선수 +Z, 위 +Y. 선체 원점은 수면 중심. world 수면 평균 y=0. 기존 `-2.25` 접점 보정은 **구형 후면 카드 전용**으로 남기며 새 모델에 적용하지 않는다.
+- visual advance는 현재 속도 tier와 `standard/gentle/still=1/0.5/0`를 한 번만 곱한다. title은 부유만, Start 뒤 route 진행. 물 shader의 `TIME`으로 비활성/overlay를 우회하지 않는다.
+- full overlay/앱 비활성에서 world·반응·풍경 시간 동결. 재개 프레임에 이탈 시간을 더하지 않는다. UI·음량·뒤로 버튼은 동결하지 않는다. 영구 저장에 파도 phase나 카메라 각도를 추가하지 않는다.
+- 새 production family는 한 번에 전환한다. 기존 card를 새 mesh 위에 겹치거나 새 바다 뒤에 기존 SeaBackdrop을 남겨 이중 수면을 만들지 않는다. 기존 family는 검증된 rollback용으로 보존한다.
+
+#### R01. 세계 수면·전진·접점
+
+**현 consumer**는 `scenes/game.tscn`의 세 `SeaBackdrop`, 숨겨진 `OceanPlane`, `BoatWaterContact`, `BoatWaterlineContact`와 `scripts/voyage/game_scene.gd::_apply_drift_motion`다. `scripts/voyage/voyage_route.gd`는 현재 128-unit 직선 구간을 잇는다.
+
+**선택.** A 화면 UV를 계속 보정 `REJECT`(pitch/가림 불일치), B 한 world 수면+기존 직선 경로 `ADAPT`, C 전체 해양 물리/무한 오픈월드 `DEFER`(현재 소비 가치 대비 복잡함). 물리 부력으로 이동시키지 않고 시각 파동과 경로 이동을 분리한다.
+
+**새 책임.** 제안 `scripts/voyage/world_ocean.gd`가 수면 위치·phase·접점 높이를 제공하고, 제안 `assets/shaders/world_ocean.gdshader`가 세계 XZ를 texture 좌표로 사용한다. `OceanPlane`을 실제 consumer로 전환한다. 기본 180×180 plane과 far 200의 현재 값을 무조건 유지하지 않는다. 허용 카메라의 최저 시선각까지 plane 경계가 노출되지 않도록 거리 fade와 sky 수평선을 먼저 검증한다. plane은 boat 주변으로 재중심화할 수 있으나 UV는 world 좌표 또는 연속 tile origin을 사용해 수면 무늬가 배와 같이 붙어가지 않게 한다. route 이동을 UV scroll에도 다시 더하지 않는다.
+
+낮 탑뷰 후보 `MLB-NEW-SEA-001`은 `docs/visual/candidates/2026-09-11-blueprint/manifest.json`에서 FINAL_PENDING이다. 파일은 존재하지만 production-ready가 아니다. 격리 probe에만 사용하고, 실제 반복·모든 허용각·투명도/반사 검사와 lock 뒤 runtime copy를 등록한다. 새 투명감은 texture ALPHA를 낮추는 것만으로 해결하지 않는다. 첫 비교는 A 불투명 얕은 바다색(기준), B 깊이색+약한 굴절(시험), C 다중 screen/depth 패스(보류). B가 지원 renderer·접점·성능을 통과하지 못하면 A는 비교 기준으로만 유지하고 투명한 물 완료로 표시하지 않는다.
+
+제안 인터페이스는 `advance_visual(delta: float, intensity: float, active: bool) -> void`, `sample_height(world_xz: Vector2) -> float`, `set_boat_anchor(anchor: Transform3D) -> void`다. shader uniform은 `visual_phase: float`, `tile_origin_xz: Vector2`, `water_tint: Color`, `ripple_strength: float`이며 전부 transient다. 작은 두 사인파를 쓸 경우 CPU 접점 높이와 GPU 높이가 같은 파라미터를 공유한다. 별도 난수 부력·높이 계산 금지.
+
+**완료 판정.** 기본/좌우/후방/상하극점에서 동일한 diagnostic world 표식의 위치를 비교한다. 표식은 QA 전용이며 게임 아트가 아니다. 128/512-unit, UV 한 주기, plane 재중심화 경계에서 표식 화면위치 jump ≤1 logical px를 초기 기계 기준으로 시험한다. 30초/5분/30분 실제 시간 capture와 접점 높이 오차 ≤0.02 m 시험값을 기록한다. still/overlay/background에서는 phase와 route 변화 0. 오직 물의 패치만 측정하고 섬이 포함된 영역은 속도 증거에서 제외한다. 수면 근경/원경 속도 관계를 실제 world 표식으로 판정한다.
+
+#### R02. 하늘·구름·일반 명소 공간화
+
+**선택.** A 카메라별 sky 카드 `REJECT`, B `WorldEnvironment.environment.sky`와 독립 world cloud/원경 `ADAPT`, C 거대한 sky mesh+전체 3D 지형 `DEFER`. `Sky`는 먼 배경 방향, 구름과 섬은 독립 consumer로 둔다. 낮/밤 flat 이미지가 panorama라는 뜻은 아니다. sky 후보는 yaw 범위와 seam coverage를 검사해 lock 후 연결한다.
+
+현재 `SeasonalIslandLayer`의 공통 앵커 패턴을 일반 `AmbientSceneryPass`에도 적용한다. 제안 `scripts/voyage/world_scenery_layer.gd`는 `present_motif(motif_id: String, route_transform: Transform3D) -> bool`, `advance_visual(delta: float, active: bool) -> void`, `clear_motif() -> void`를 제공한다. `drift_scenery_director.gd`의 선택 ID/간격/확률은 그대로 입력받고 새 보상은 없다. 최대 큰 motif 1개. 중심선으로부터 거리 `abs(x) >= boat_half_width + rotated_motif_radius + 1.25`를 확보한다. radius는 billboard 회전까지 포함한 실제 크기로 구한다. 중앙에 섬을 내고 collision으로 피해 가는 새 항법은 만들지 않는다.
+
+앵커 생성 후 world 위치는 고정, 접근·통과는 route 이동 결과다. 날씨/시간대 전환으로 화면 중간에 섬을 새 위치로 순간 재생성하지 않는다. 정상 퇴장 또는 안전 fade 후 교체한다. 구름의 자동 이동도 world active clock을 사용하며 still에서 멈춘다. sky 자동 yaw=0, 수동 카메라 회전에는 방향이 바뀌어야 한다.
+
+**완료 판정.** 7개 기존 motif ID별 양쪽 항로·3 camera·시작/중간/퇴장, 중앙 통과 불가, single-instance, 누출 없음. sky는 title/자동 drift에 고정되되 user yaw에는 방향이 바뀜을 별도 검사한다. 기존 이미지로 옆면/가장자리를 충족하지 못하면 해당 family는 후보로 남기고 억지 확대하지 않는다.
+
+#### R03. 실제 근거리 3D 납품·왕복
+
+**선택.** A 방향 카드 추가 `REJECT`(연속 가림 불가), B 기본 한 가족의 glTF mesh/rig/손그림 texture `ADAPT`, C 모든 외형 동시 제작 `DEFER`. 먼저 player 1+dog 1+boat 1로 import·접점·변형 품질을 증명한다. 현재 `assets` 안에는 glb/gltf/blend/fbx/obj가 없으므로 이 단위는 자산 납품 차단 상태다. 무료 로컬 제작 도구 조사·기술 feasibility와 모델 완성은 분리한다. 설치·유료 서비스·파일 외부 전송은 필요한 권한을 별도 확인한다.
+
+실제 파일이 생길 때 제안 runtime 경로는 `assets/models/boat/boat.glb`, `assets/models/player/player.glb`, `assets/models/companion/dog.glb`다. **지금 존재하는 경로가 아니다.** 모델 제작 원본·texture 원본·export 설정·Godot import 설정·권리/출처·hash를 기존 visual manifest에 추가한다. PNG를 plane으로 감싼 glb나 Godot primitive 조합으로 최종 모델을 대신하지 않는다.
+
+필수 node/anchor 이름은 `Waterline`, `SeatPlayer`, `BackSupportPlayer`, `FootSupportPlayer`, `SeatPet`, `FootSupportPet`, `CameraFocus`, `WakeAnchor`, `DecorAnchors/<기존 slot ID>`다. 모델은 +Z 선수/1 m 단위, root scale (1,1,1). player/pet에는 Skeleton3D와 `rest_loop` 6 s, `notice` 1.2 s, `settle` 1.8 s 시험 clip을 납품한다. root translation=0, rest만 loop, notice/settle은 one-shot. 현재 공개되지 않은 얼굴/의상 세부는 최종 아트 lock에서 판단한다.
+
+첫 모델 texture는 1024/2048 비교, 재질·삼각형·bone 수는 측정값으로 기록한다. 미지정 모바일의 최종 상한을 발명하지 않는다. 실루엣/접점/잔털·투명 material 오버드로우에 따라 최저 품질을 결정한다. `scenes/boat_space.tscn`에 imported scene의 wrapper를 두고 자동 재import 대상 자체를 수동 편집하지 않는다.
+
+**완료 판정.** reimport 2회에도 wrapper anchor·clip 이름 보존, 승인 후면 구도 비교, 전 허용 yaw/pitch에서 갑작스러운 외형 교체 없음, 좌석/발 접점 drift ≤0.02 m 시험, 의상/선체 관통·잘림 검수, rollback family 복귀 가능. 도구 실행 성공만으로 ASSET_READY 판정 금지.
+
+#### R04. 추적·orbit·부유·탑승 모션
+
+**선택.** A 제자리 카메라 회전 `REJECT`, B route focus를 중심으로 수동 orbit `ADAPT`, C 자동 orbit/물리 spring chase `DEFER`. 제안 `scripts/voyage/voyage_orbit_controller.gd`가 카메라 위치와 방향을 함께 계산한다. normal reset은 기준 후면 3/4, `CameraFocus`를 화면 (0.5,0.80)±(0.03,0.03)에 두는 framing 시험이다. 캐릭터/선미가 UI 뒤로 잘리지 않게 실제 mesh bounds도 검사한다. 고정 반경 초기값 8.5 m를 비교하고 최종값은 기본 3 m 선체와 화면 capture로 정한다.
+
+`set_view_angles(yaw: float, pitch: float) -> void`, `reset_view() -> void`, `set_focus_transform(value: Transform3D) -> void`, `cancel_drag() -> void`를 제공한다. yaw는 기준 대비 ±135°. pitch 입력 -16..38은 **orbit 위치의 위에서 내려다보는 정도**로 정의하여 기준 elevation 29.793805°에 더한다. 위치는 focus+rotated radius, 시선 목표는 별도로 `focus + Vector3.UP * framing_height`다. 실제 camera orientation은 이 시선 목표를 바라보도록 계산하며 pitch를 다시 -elevation으로 덮지 않는다. normal/reset/viewport 변경 때 framing_height를 0..radius×0.8 범위에서 탐색하여 focus의 정규화 투영 좌표 (0.5,0.80)를 맞춘다. 해가 없거나 mesh가 잘리면 검증 실패로 남기고 몰래 crop하지 않는다. 수동 orbit 중에는 마지막 framing_height를 유지하고 극점에서 mesh bounds를 재검사한다. 현재 rotation-only 코드의 +pitch 부호를 그대로 복사하지 않는다. `get_angle_id()`의 overhead 의미는 보존하되 카드 선택을 runtime model에 적용하지 않는다. horizon roll=0, 관성/자동 줌 없음.
+
+보트의 작은 heave/roll은 route에서 분리된 시각 offset, 탑승자는 같은 BoatSpace를 상속한다. 제안 `scripts/companion/rest_pose_controller.gd`의 `advance_rest(delta: float, intensity: float, active: bool)`가 REST→NOTICE→SETTLE→REST를 제어한다. 반응 대기 45–90 active seconds, notice 1.2 s, settle 1.8 s. 탭은 진행 중 반응을 다시 시작하거나 예약하지 않는다. still에서는 자동 pose·clip 시간 동결, 수동 보기와 소리는 유지한다. 저감 모드는 움직임 강도를 줄이지 반응 빈도를 보상으로 바꾸지 않는다.
+
+**완료 판정.** 대각 드래그·두 손가락·release/focus loss·UI drag·20회 reset, 같은 voyage instance/시간/소리 보존. 전 각도에서 focus 프레임 안, 좌석 접점 유지. 반응 종료 뒤 rest 복귀 점프 없음, inactive 1시간 뒤 catch-up 0, 연타해도 notice queue 0. 현재 2D slice에는 새 모델 clip 완료를 표시하지 않는다.
+
+#### R05. 시간대 family 동기화
+
+**선택.** A 즉시 texture 교체 `REJECT`(큰 색 점프), B sky/sea/light/모델 재질의 공통 3초 blend `ADAPT`, C 모든 시간대 이중 world 상주 `REJECT`(메모리/중복). `time_of_day_catalog.gd`와 resolver ID는 유지한다. 제안 `scripts/voyage/atmosphere_transition.gd`의 `request_atmosphere(id: String)`, `advance_visual(delta: float, active: bool)`, `get_blend_weight() -> float`가 하나의 0..1 weight를 제공한다. 현재/다음 family 최대 두 개만 유지하고 완료 뒤 이전 texture 참조를 해제한다.
+
+첫 진입은 로컬 시계의 해당 family를 즉시 적용한다. 실행 중 경계만 3 active seconds 전환, overlay/background는 전환도 동결한다. 전환 중 다른 요청은 `latest_requested_id` 문자열 하나만 갱신하며 세 번째 texture를 읽지 않는다. 현재 전환을 끝낸 뒤 최신 ID가 도달한 target과 다를 때만 새 3초 전환을 시작한다. 동일 ID 재요청은 weight를 초기화하지 않는다. 복귀 때도 최신 시계 ID만 요청하고 놓친 시간대 backlog는 재생하지 않는다. 따라서 최신 시각 반영은 남은 전환 최대 3초와 새 전환 3초까지 지연될 수 있으나 화면은 연속적이다. still은 자동 blend를 돌리지 않고 최신 family를 한 번 즉시 동기화하며 이전 참조와 pending ID를 비운다. 시간대 저장 preference/보상 없음. 계절별 풍경의 기존 motif ID·제작·연결은 R02에서 담당하며 새 계절 전용 하늘/바다 family 확대는 이번 R05에 포함하지 않는다.
+
+**완료 판정.** 04/05,08/09,16/17,20/21시, 월 경계, 전환 중 다시 시간 변경, invalid hour. 세 카메라/물/선체/구름의 atmosphere ID와 blend 값 동일. 단색 tint로 네 시간대 아트 납품을 대신하지 않는다.
+
+#### R06. 꾸미기 draft·기존 ID·새 외형 family
+
+**확인된 차이.** `game_scene.gd::_on_player_style_selected/_on_pet_type_selected`가 현재 즉시 GameState를 변경한다. `UI-05`의 미리보기 후 적용/취소를 충족하지 않는다.
+
+**선택.** A 즉시 저장 유지 `REJECT`, B 탭별 메모리 draft+명시 적용 `ADAPT`, C 여러 cfg를 한 글로벌 거래로 묶기 `DEFER`. 외형 탭은 style+pet을 identity 파일에 함께 적용, 장식 탭은 decor+appearances를 decor 파일에 함께 적용한다. 적용 버튼은 현재 탭을 명시하고 닫기/뒤로는 **아직 적용하지 않은 draft만** 버린다. 이미 적용한 다른 탭을 취소한 것처럼 표현하지 않는다.
+
+제안 `scripts/decor/decor_edit_session.gd`는 `begin(identity: Dictionary, decor: Dictionary)`, `set_identity(style: String, pet: String)`, `set_item(slot: String, item: String, appearance: String)`, `snapshot(tab_id: String) -> Dictionary`, `discard(tab_id: String)`, `mark_applied(tab_id: String)`를 제공한다. snapshot은 deep copy이며 identity 키는 player_style/pet_type, decor 키는 decor/appearances다. GameState에 제안 `apply_identity_selection(style: String, pet: String) -> bool`, `apply_decor_selection(decor: Dictionary, appearances: Dictionary) -> bool`을 추가한다. persist가 성공해야 state/signal을 확정하고 mark_applied로 해당 탭 baseline을 갱신한다. preview는 snapshot을 읽고 autoload/save를 쓰지 않는다. 실패 문구를 보여 주고 committed 모습으로 복구한다.
+
+기존 style `a_soft_hooded/b_short_cape/c_loose_knit`, pet `cat/rabbit/otter/dog`, 8 slot/6 item는 삭제·이름 변경하지 않는다. 3×4=12 identity 조합, 모든 허용 slot/item/appearance를 catalog에서 열거한다. 새 family 미지원 ID를 default로 치환하지 않고 기존 family를 명시 유지한다. 새 모델 하나 완료와 전 외형 호환 완료를 별도로 표시한다.
+
+**완료 판정.** 선택만 하고 닫기→cfg/state bytes 동일, Apply 성공 1회, 실패→기존 모습 유지. NOT_COMMITTED는 파일 보존, RECOVERY_REQUIRED는 R07의 쓰기 잠금·복구 안내를 따른다. 연타 중복 0, slot 불가 item 거부, preview와 바다 동일 선택. 12 identity 조합+호환 장식·네 시간대·카메라 극점에서 clipping/접점 검사.
+
+#### R07. 저장 보호·정상본 복구·사진 경로
+
+**선택.** A 기존 파일 바로 overwrite `REJECT`, B 기존 schema를 유지한 owner별 staging+검증 정상본+복구 receipt `ADAPT`, C 새 DB/클라우드/전체 migration `REJECT`. 대상은 `scripts/core/*_persistence.gd`, `cosmetic_identity_profile.gd`, `comfort_preferences.gd`의 실제 소비 owner다. 단순 rename을 Windows/모바일 모두 atomic 또는 전원차단 안전하다고 부르지 않는다.
+
+제안 공통 `scripts/core/recoverable_config_store.gd`는 파일 처리만 맡고 각 owner의 schema 검증 Callable을 받는다. `read_validated(path: String, validate: Callable) -> Dictionary`, `write_validated(path: String, candidate: ConfigFile, validate: Callable) -> Dictionary`, `recover_primary(path: String, validate: Callable) -> Dictionary`. read 결과 키는 `status: String`(OK/ABSENT/RECOVERED/CORRUPT/IO_ERROR), `config: ConfigFile|null`, `source_path: String`. write/recover 결과는 `status: String`(COMMITTED/NOT_COMMITTED/RECOVERY_REQUIRED), `error: Error`, `source_path: String`이며 COMMITTED만 state/UI 성공으로 전달한다. filename 확장은 `.pending`, `.last_good`, `.recovery.json`이고 owner 파일 옆에 둔다. 단일 앱 내 동일 owner의 쓰기는 직렬화한다.
+
+쓰기 순서. 기존 정상 primary를 검증→candidate를 pending에 쓰고 재읽기 검증→기존 primary의 정상본을 last_good에 복사·hash 대조→교체 시도→primary 재읽기 검증→성공 반환. 기존 pending이 있으면 먼저 검증·복구 판정하여 보존하고 새 쓰기로 덮지 않는다. 교체 전 실패는 NOT_COMMITTED다. 교체 후 검증 실패는 verified last_good으로 원본을 복원하고 재읽기/hash가 일치할 때만 NOT_COMMITTED다. 원래 파일이 없었다면 이번 쓰기의 산출물만 격리 보존한 뒤 primary 부재를 검증한다. 복원/부재 검증도 실패하거나 commit 여부를 판정할 수 없으면 RECOVERY_REQUIRED로 해당 owner 쓰기를 잠그고 모든 primary/last_good/pending/recovery 증거와 마지막 committed 메모리를 보존한다. UI는 단순 취소가 아니라 복구 필요를 표시하며 디스크 불변을 주장하지 않는다.
+
+깨진 primary는 별도 recovery 사본과 hash를 보존하고 검증된 last_good만 읽기 복구 후보로 사용한다. read의 RECOVERED는 backup 읽기 상태이지 primary 복원 성공이 아니다. `recover_primary`가 사본 보존→검증 정상본 복원→readback/hash 일치를 확인한 COMMITTED 이후에만 쓰기 잠금을 해제한다. 실패하면 RECOVERY_REQUIRED를 유지한다. 이전 원본/알 수 없는 key는 자동 정규화 삭제하지 않는다. staging/backup 정리에 실패해도 회복 가능 증거를 남긴다. OS crash/power-loss 내성은 별도 실제 장애 시험 전 PARTIAL이다.
+
+사진은 PNG 저장·목록 저장을 분리한다. 목록 commit 성공 전 UI 성공/메모리 추가 없음. 손상 목록은 현재처럼 저장 거부. 새 PNG만 남는 중단 상태는 원본을 지우지 않고 recovery receipt에 기록한다. 저장 직후 실패의 이번 생성 PNG teardown과 사용자 원본 삭제를 구분한다. 기존 id/label/atmosphere/image_path는 보존한다.
+
+읽기 경계. album은 metadata의 임의 경로를 직접 열지 않고 owner의 `resolve_photo_path(entry: Dictionary) -> String`을 호출한다. 지정 photo directory 안에 있고 예상 id basename과 일치하는 정상 PNG만 반환한다. `..`, 절대 외부 경로, 접두사만 같은 sibling, 경로 구분자 삽입, 확인 불가 link/reparse 우회는 거부한다. fixture에서 안전한 link 판별이 엔진/API로 검증되지 않으면 해당 경로를 열지 않는다. metadata는 보존하고 읽기 불가 안내만 한다.
+
+**완료 판정.** 파일 없음/파싱 실패/unknown key/NaN/잘못된 row/type/디스크 쓰기 실패/각 쓰기 단계 종료/복구본도 손상/경로 탈출/중복 사진을 격리 `user://test_*`에서 시험한다. NOT_COMMITTED는 원본 bytes(또는 기존 부재)와 기억 개수·선택 불변을 확인한다. 복원 실패는 RECOVERY_REQUIRED·후속 쓰기 차단·메모리/모든 복구 증거 보존을 확인하며 정상 rollback으로 세지 않는다. 복구는 silent reset과 구별되는 RECOVERED 읽기 및 recover_primary 결과를 기록한다. production save로 fault injection 금지.
+
+#### R08. 앨범 사진 상세·자원 해제
+
+**선택.** A 최근/이전 카드만 유지 `REJECT`(UI-06 상세 누락), B 같은 album 안의 단일 상세 overlay `ADAPT`, C 갤러리 별도 scene/무한 preload `REJECT`. 현재 `album_view.gd`는 카드가 입력을 무시하고 원본 3장을 직접 읽는다.
+
+`scenes/album.tscn`에 제안 `PhotoDetail` Control/TextureRect/Caption/Back, script는 기존 `scripts/ui/album_view.gd`에 작은 책임으로 추가한다. `open_photo_detail(photo_id: String) -> bool`, `close_photo_detail() -> void`. card는 사진 ID를 전달하고 R07 경로 검증 뒤 해당 한 장만 읽는다. 뒤로 순서는 상세→같은 페이지/스크롤의 앨범→같은 항해. 잘못된 ID·누락·손상은 서로 구분해 표시하고 기존 기록은 삭제하지 않는다. 공유/다운로드/삭제 기능은 추가하지 않는다.
+
+최대 원본 residency는 현재 3개 card+상세 1개를 상한으로 시작하고 화면용 썸네일 필요성은 R11 측정으로 결정한다. detail 닫기/페이지 변경/앨범 닫기에서 참조를 해제한다. viewport를 바꿔도 전체 이미지 비율을 유지하고 caption/Back은 읽을 수 있어야 한다.
+
+**완료 판정.** 0/1/3/4/100개 기록, 첫/마지막 페이지 clamp, 상세 20회 열기/닫기, 파일 누락·외부 path·메모리 해제, 360×640/540×960/720×1280, overlay 중 world 시간 증가 0. 기존 pagination을 재구현하지 않는다.
+
+#### R09. 선택 행동·입력·가독성 통합
+
+**선택.** A 새 시작 튜토리얼/상시 HUD `REJECT`, B 기존 작은 메뉴와 state를 유지하며 실패/취소/입력을 보강 `ADAPT`, C 모든 선택 행동 제거 `REJECT`. 범위는 기존 game/album/decor/fishing/low_pressure_interactable이며 새 미니게임·보상은 없다.
+
+낚시 WAITING/BITE_READY/QUIET_READY와 실패 패널티 없음은 유지한다. overlay 열기/취소는 결과 0, 준비 상태 연타는 결과 최대 1. 저장 실패 때 catch state를 성공으로 소모하지 않는지는 실제 state/persistence 경로로 검증하고 필요하면 저장 성공 뒤 resolve 순서로 바꾼다. no-catch는 실패 팝업 없이 휴식 복귀한다. 300초 후 자동 종료·재시작 유도 패널을 만들지 않고 기록은 앨범에서 보이게 한다.
+
+text-native Theme/Container를 우선한다. 초기 시험값 본문 18 logical px, hit 영역 48 logical px. 큰 글자 배율 1/1.25/1.5 비교, safe-area padding은 실제 viewport/display rect에서 계산한다. 메뉴 button/option/slider가 받은 입력을 camera가 다시 소비하면 실패. reset와 뒤로의 우선순위를 `사진 busy 복원→상세→full overlay→쉬는 메뉴→기본 항해`로 명시한다. 화면낭독기 지원은 실제 연결을 확인하기 전 미지원/미검증으로 남긴다.
+
+**완료 판정.** 시작 연타/사진 busy 중 뒤로/drag 중 popup/focus loss/20회 overlay/낚시 취소/저장 실패/큰 글자·긴 caption 표본. 기본 화면에 엽서·성과 카운터 자동 노출 0. 소리와 색 없이 중요한 상태·오류를 파악할 수 있어야 한다.
+
+#### R10. 근접 소리 최소 보강
+
+**선택.** A 현재 ocean만 유지 `ADOPT_BASELINE`, B 실제 waterline/선체·작은 동반자 반응에 필요한 짧은 효과만 독립 bus로 추가 `TEST`, C 음악·다수 자연음 상시 중첩 `REJECT`. 현재 OceanBed와 volume 기능은 완성된 기준선으로 보존한다. 효과음이 정말 필요한 clip/consumer를 청취 가능한 원본으로 확인한 뒤 B를 채택한다.
+
+제안 `RestingSoundscape.play_near_effect(effect_id: String) -> bool`, GameState의 `set_effect_volume(value: float) -> bool`. effect ID는 실제 납품된 파일만 catalog에 등록한다. 현재 존재하지 않는 음원 경로를 납품 완료로 쓰지 않는다. effect bus 0..1, 최대 동시 one-shot 2개 시험, 과밀 요청은 queue 없이 버린다. UI/배경 이탈 처리와 ocean 재생 위치는 분리한다. `comfort_preferences_v1.cfg` optional `effects_volume`은 실제 bus 연결 시에만 추가한다.
+
+**완료 판정.** muted startup/0..1 범위/저장 실패 session-only/화면 전환 ocean 재시작 0/voice limit/반응 연타/loop seam·peak 검사. OS 출력·귀로 듣는 품질은 Human 선언 후 별도. 새 음악이나 유료 음원 구매는 포함하지 않는다.
+
+#### R11. 성능·장시간·내부 패키지 검증
+
+**선택.** A 테스트 수만 증가 `REJECT`, B 기존 capture/contract에 실제 시간·자원·패키지 측정 추가 `ADAPT`, C 대형 외부 telemetry 서비스 `REJECT`. `tests/capture_voyage_realtime_motion.gd`, `tools/analyze_voyage_motion_capture.py`, 기존 tests/export를 재사용한다. frame time median/p95/p99, draw calls, texture/메모리, viewport, renderer, engine, 하드웨어와 실행 revision을 기록한다. 실제 30초/5분/30분은 수동 delta 장기 점프와 구분한다.
+
+PC 60 fps/모바일 30 fps는 시험 목표이며 기기 미지정 상태에서 최저사양·PASS를 만들지 않는다. 먼저 기준 PC p95 16.7 ms, 모바일 p95 33.3 ms를 목표로 측정하고 미달 구간의 texture/투명 overdraw/photo load부터 줄인다. idle·사진 상세 20회·꾸미기 조합 교체·시간대 4회·30분 후 메모리 plateau를 비교한다. 10회 워밍업 뒤 후속 10회에서 지속 증가 여부를 기록하고 OS 잡음과 실제 retained resource를 구분한다.
+
+Windows 현재 preset은 unsigned 내부 배포용이다. clean import→export→새 빈 user data로 실행→기존 테스트 save fixture 로드→실제 Start/사진/앨범/음량까지 패키지에서 확인한다. 원본 사진/사용자 save를 빌드에 포함하지 않는다. 모바일은 target OS/장치/SDK·서명 권한이 확인되기 전 spec만 준비하고 새 store upload는 하지 않는다.
+
+#### R12. 통합·Blueprint·공개 범위 분리
+
+**선택.** A 누적 branch를 즉시 main에 합치기 `REJECT`, B 범위·충돌·검증을 확인한 PR 통합 `ADAPT`, C 정본을 별도 문서/Notion으로 복제 `REJECT`. 시작 시 exact branch/main/open PR·ruleset를 다시 확인한다. unrelated PR #19는 흡수·수정·병합하지 않는다. 검토된 범위만 정상 PR 절차로 합치고 main에서 import/전체 tests/실제 패키지 재검증한다. 새로운 branch를 이미 병합된 것처럼 보고하지 않는다.
+
+구현 후 사람용 Blueprint는 기존 GDD와 source-bound PDF generator를 재사용해 갱신한다. 새 runtime screenshot/모션 표본, 화면 아틀라스, 상세 SWOT 실행 상태, 시스템 연결, 데이터/자산표와 실제 consumer를 빠짐없이 포함한다. 이전 PDF/receipt는 덮지 않는다. 새 revision/hash/page count/텍스트 넘침/이미지 중복/캡션·후보/실행 구별을 검증한다. 단순 링크 개수나 과거 캡처로 현재 적용을 증명하지 않는다.
+
+local game 완성과 온라인 병편지 공개는 다른 gate다. social 구현/보안 상세는 기존 `docs/superpowers/specs/2026-08-24-bondee-diorama-delayed-bottle-design.md`를 책임 owner로 유지한다. production moderation·동의·16+·report/block·운영·지원·정책 증거 없이는 공개 금지. 이 명세로 법적 적합성·온라인 배포를 새 승인하지 않는다. 해당 workstream이 사용자 지정으로 열릴 때 최신 공식 규정과 실제 backend를 별도 조사한다.
+
+최종 승인 조건은 ① local core 기능 전체 ② 새 art/model consumer ③ 기계/실행/기기 증거 ④ 사용자가 선언한 Human 검증 ⑤ 권리·서명·공개 gate를 각각 표기하는 것이다. 일부 통과를 전체 출시 PASS로 합치지 않는다.
+
+#### 조사 근거와 해석 범위
+
+2026-09-14 조회. 아래는 설계 근거이며 우리 프로젝트 실행 증거가 아니다.
+
+- [Godot spatial shaders](https://docs.godotengine.org/en/stable/tutorials/shaders/shader_reference/spatial_shader.html) — world 좌표/재질 입력 분리. R01에서 엔진 전역 TIME 대신 승인된 active clock을 공급한다.
+- [Godot Sky](https://docs.godotengine.org/en/stable/classes/class_sky.html) — R02 먼 배경 owner. 평면 후보의 자동 panorama 승격은 제외한다.
+- [Godot 3D format/import](https://docs.godotengine.org/en/stable/tutorials/assets_pipeline/importing_3d_scenes/available_formats.html) — R03 glTF 제작/왕복 경로. 엔진 지원이 모델 제작 성공을 뜻하지 않는다.
+- [Godot ConfigFile](https://docs.godotengine.org/en/stable/classes/class_configfile.html) — R07 load/save Error와 기존 저장 형식. 파일 API를 전원차단 transaction 보장으로 해석하지 않는다.
+- [DREDGE 제작진의 Apple 플랫폼 사례·공식 transcript](https://developer.apple.com/videos/play/meet-with-apple/247/) — 터치 버튼·손가락 가림·UI 흐름은 PC 입력을 그대로 옮기는 것으로 끝나지 않았다는 제작 경험을 R09/R11에 ADAPT. 이 게임에는 수동 항해 joystick·낚시 경제·유료화 사례를 가져오지 않는다. 공개 transcript를 읽었으며 영상 전체 시청/내부 코드 열람은 아니다.
+- DREDGE Sprint 22 페이지는 이번 직접 open에서 오류가 나 근거로 채택하지 않았다. 검색 요약만으로 우리 수면 구현 완료를 주장하지 않는다.
+
+#### 유지·추가·교체·폐기 판단
+
+| 현재 상태 | 권장 조치 | 이유·기대효과 |
+| --- | --- | --- |
+| 단일 route/overlay/사진 pagination/ocean volume 있음 | 유지·회귀 검사 | 검증된 기능을 다시 만들지 않아 장면/저장 회귀 감소 |
+| camera-local sea/sky와 방향 카드 | 새 family 통과 후 production consumer 교체 | 공간 모순·연속 회전 파열 제거. 파일은 즉시 삭제하지 않음 |
+| 즉시 저장 꾸미기 | R06 draft/적용/취소 추가 | 실수 선택과 저장 실패의 의미 명확화 |
+| 부분 저장 보호 | R07 공통 파일 절차만 재사용, schema는 기존 owner | 손상 복구를 각 기능에서 제각각 만들지 않음 |
+| 여러 과거 기획/증거 | current router는 이 절/실행 계획, historical receipt 보존 | 오래된 완료/보류 상태를 현재 실행 권한으로 오독하는 일 감소 |
+| 사용 종료 원본·임시 probe | 소비처/해시 확인 후 날짜별 삭제 대기 이동 | 실제 사용 파일만 작업 경로에 유지하고 사용자 직접 삭제 보장 |
+
+새 공용 skill/module은 현재 필요 없다. world 좌표·fault injection·증거 분리 교훈은 프로젝트 handoff로 연결하고, 여러 프로젝트에서 동일 실패가 확인될 때만 Base promotion 후보를 만든다.
 
 #### P9. 제작 순서·실제 consumer·검증 계획
 

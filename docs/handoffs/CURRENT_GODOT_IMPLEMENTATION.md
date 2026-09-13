@@ -4,6 +4,14 @@
 **역할:** 실제 코드·Scene·test·runtime evidence와 현재 제품 정본의 차이를 기록하는 기술 router
 **현재 사람용 정본:** [프로젝트 GDD](../design/PROJECT_GDD.md)
 
+### 2026-09-14 남은 작업·설계/구현 명세 준비
+
+이번 요청은 구현이 아니라 남은 작업 명세 준비다. 기준 branch `6b7949a563150bd93e08d5d5eb1e028eab7336ef`, origin/main `7181d5e6845e75107eade8c4d2e62e10334ab54b`를 대조했다. GDD R01–R12가 제품별 설계·인터페이스·자산/저장/실패/완료 기준을 소유하며, [실행 계획](../superpowers/plans/2026-09-14-remaining-implementation.md)이 파일 경계·선행 관계·테스트 본문·작은 실행 단계를 소유한다. 새 별도 AI/GDD master는 없다.
+
+현재 code read에서 추가로 확인한 차이는 style/pet 선택의 즉시 저장과 UI-05 draft 계약 불일치, 사진 pagination만 있고 UI-06 상세 입력이 없는 점이다. R06/R08로 명세했다. 모델·새 수면/sky 후보 lock·실제 모바일·Human·공개 social/Release는 미준비 gate를 유지한다. 기존 route/overlay/음량/사진 보호를 다시 미구현으로 분류하지 않았다. 이 문서 작업은 runtime source·Scene·자산·저장 파일을 바꾸지 않는다.
+
+문서 검토에서 orbit pivot/시선 목표 분리, 두 family를 유지하는 latest-ID 전환, 저장 복원 실패의 RECOVERY_REQUIRED/owner 쓰기 잠금을 교정했다. 검토 기록은 실행 계획 말미가 소유한다. `git diff --check`, 기존 Python 20 tests 통과 및 runtime 파일 무변경을 확인했다. 새 Godot 계약·GPU·기기·Human 검증은 이번 명세 작성에서 NOT_RUN이다.
+
 ### 2026-09-13 수면의 세계 항로 방향 연결
 
 기본 3/4 카메라에서 물이 항상 화면 아래로만 흐르던 방향 불일치를 교정한다. `game_scene.gd::_apply_background_flow_to_backdrop()`는 input-relative yaw 대신 실제 Camera3D의 수평 세계 right/forward와 현재 직선 `VoyageRoute`의 세계 +Z를 비교한다. 현재 기본 heading -2.66 rad에서 수면 방향은 약 (-0.463191, 0.886258)이며, 세 카메라가 같은 방향 기준을 소비한다. 기존 위상/속도/foreground/comfort/저장/원화 byte와 shader 원근은 변경하지 않는다.
