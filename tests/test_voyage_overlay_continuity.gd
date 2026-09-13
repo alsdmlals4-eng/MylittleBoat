@@ -225,6 +225,28 @@ func run() -> void:
 				root.size = Vector2i(540, 960)
 				album.get_node("%BackButton").pressed.emit()
 				expect(is_equal_approx(game.get_forward_water_flow_offset(), phase), "history back must resume the same phase")
+				# 실제 GPU 사진 저장이 손상 목록을 만나면 성공 UI/중복 기록 없이 원본을 보존한다.
+				var ledger_before := FileAccess.get_file_as_bytes("user://test_overlay_photos.cfg")
+				var count_before: int = state.photo_memories.size()
+				var files_before := DirAccess.get_files_at("user://test_overlay_photos")
+				var broken_ledger := "[voyage_postcards]\nentries=42\n"
+				var file := FileAccess.open("user://test_overlay_photos.cfg", FileAccess.WRITE)
+				file.store_string(broken_ledger)
+				file.close()
+				game.get_node("%RestMenuButton").pressed.emit()
+				expect(game.get_node("%TakePhotoButton").is_visible_in_tree(), "photo failure test must use the visible player action")
+				game.get_node("%TakePhotoButton").pressed.emit()
+				for frame in 4:
+					await process_frame
+				expect(state.photo_memories.size() == count_before, "failed real capture must not append a photo")
+				expect(DirAccess.get_files_at("user://test_overlay_photos") == files_before, "failed real capture must not leak a PNG")
+				expect(FileAccess.get_file_as_string("user://test_overlay_photos.cfg") == broken_ledger, "failed real capture must not overwrite damaged metadata")
+				expect("사진을 남기지 못했어요" in game.get_node("%StatusLabel").text, "failed real capture must show an honest quiet error")
+				expect(game.get_node("%StatusLabel").is_visible_in_tree(), "failed photo message must be visible to the player")
+				await capture("photo-save-error")
+				file = FileAccess.open("user://test_overlay_photos.cfg", FileAccess.WRITE)
+				file.store_buffer(ledger_before)
+				file.close()
 	if is_instance_valid(current_scene):
 		current_scene.queue_free()
 	await process_frame

@@ -17,15 +17,35 @@ func _init(config_path: String = DEFAULT_CONFIG_PATH, image_directory: String = 
 func save_photo(image: Image, label: String, atmosphere_id: String) -> Dictionary:
 	var normalized_label := label.strip_edges()
 	var normalized_atmosphere := atmosphere_id.strip_edges()
-	if image == null or normalized_label.is_empty() or normalized_atmosphere.is_empty():
+	if image == null or image.is_empty() or normalized_label.is_empty() or normalized_atmosphere.is_empty():
 		return {"ok": false}
+	# 읽기 실패를 빈 앨범으로 덮어쓰지 않는다. 복구할 원본은 그대로 보존한다.
+	var ledger := ConfigFile.new()
+	var entries: Array[Dictionary] = []
+	if FileAccess.file_exists(_config_path):
+		if ledger.load(_config_path) != OK:
+			return {"ok": false}
+		if not ledger.has_section_key("voyage_postcards", "entries"):
+			return {"ok": false}
+		var raw_entries: Variant = ledger.get_value("voyage_postcards", "entries")
+		if not raw_entries is Array:
+			return {"ok": false}
+		for raw_entry in raw_entries:
+			if not raw_entry is Dictionary:
+				return {"ok": false}
+			for field in ["id", "label", "atmosphere_id", "image_path"]:
+				var value: Variant = raw_entry.get(field)
+				if not value is String or value.strip_edges().is_empty():
+					return {"ok": false}
+		entries = _normalize_entries(raw_entries)
+		if entries.size() != raw_entries.size():
+			return {"ok": false}
 	if DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(_image_directory)) != OK:
 		return {"ok": false}
-	var id := _next_id()
+	var id := _next_id(entries)
 	var image_path := _image_directory.path_join("%s.png" % id)
 	if image.save_png(image_path) != OK:
 		return {"ok": false}
-	var entries := load_entries()
 	var entry := {
 		"id": id,
 		"label": normalized_label,
@@ -76,12 +96,12 @@ func _normalize_entries(value: Variant) -> Array[Dictionary]:
 	return entries
 
 
-func _next_id() -> String:
+func _next_id(entries: Array[Dictionary]) -> String:
 	var base_id := "postcard_%d" % int(Time.get_unix_time_from_system())
 	var candidate := base_id
 	var suffix := 2
 	var reserved_ids: Array[String] = []
-	for entry in load_entries():
+	for entry in entries:
 		reserved_ids.append(str(entry["id"]))
 	while candidate in reserved_ids or FileAccess.file_exists(_image_directory.path_join("%s.png" % candidate)):
 		candidate = "%s_%d" % [base_id, suffix]

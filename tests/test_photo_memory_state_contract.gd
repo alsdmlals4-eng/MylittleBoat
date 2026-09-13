@@ -40,6 +40,15 @@ func _run() -> void:
 		state.photos.clear()
 		state.load_photo_memories()
 		_expect(state.photo_memories.size() == 1 and state.photos == ["밤의 물결"], "new GameState load restores postcard ledger and legacy summary")
+		var before_memories: Array = state.photo_memories.duplicate(true)
+		var before_photos: Array = state.photos.duplicate()
+		var damaged := "[voyage_postcards]\nentries=42\n"
+		var file := FileAccess.open(CONFIG_PATH, FileAccess.WRITE)
+		file.store_string(damaged)
+		file.close()
+		_expect(not state.record_photo_memory(image, "저장되지 않은 사진", "bright"), "damaged disk ledger must not produce a successful GameState photo")
+		_expect(state.photo_memories == before_memories and state.photos == before_photos, "failed disk save must preserve in-memory album and legacy summary")
+		_expect(FileAccess.get_file_as_string(CONFIG_PATH) == damaged, "failed GameState save must retain recoverable source bytes")
 	_cleanup_storage()
 	_finish()
 

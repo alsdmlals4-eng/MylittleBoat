@@ -4,6 +4,16 @@
 **역할:** 실제 코드·Scene·test·runtime evidence와 현재 제품 정본의 차이를 기록하는 기술 router
 **현재 사람용 정본:** [프로젝트 GDD](../design/PROJECT_GDD.md)
 
+### 2026-09-13 전체 완성 목표와 사진 원본 보존 후속
+
+최신 사용자는 게임 전체 구현·완성을 목표로 계속 진행하도록 명시했다. GDD의 현재 실행 목표/P9를 기준으로 미구현 consumer를 지속 대조하며, 과거 planning-only 문장을 현재 안전한 구현의 차단으로 쓰지 않는다. 최종 아트·공개 social·Human/Device/Release와 고위험 경계는 유지한다. 공통 봄섬 단위는 `3e1961eecff4725876b1cf6527ad72a98b625175`로 local/remote branch equality까지 확인했고 main/PR #19는 그대로다.
+
+다음 P8/IMP-05는 사진 저장 전 원본 목록 읽기 실패 보호다. 기존 `load_entries()`의 []는 파일 없음/잘못된 형식을 구분하지 못해 새 사진으로 복구 가능한 원본을 덮었다. 실제 tests에서 wrong-type/missing-section RED 6건과 partial-row RED 3건을 재현했다. 현재 `PhotoMemoryPersistence.save_photo()`는 기존 목록의 파싱·section/key·Array·유효 행 보존을 먼저 확인한 뒤 PNG를 쓴다. 읽은 목록을 ID 예약에도 재사용한다. null/빈 image도 저장하지 않는다. 누락 PNG의 정상 메타데이터는 여전히 유지하며 자동 사진 삭제·새 schema·정상 저장 ID 변경은 없다.
+
+대안은 조용한 초기화 `REJECT`, 손상 원본 보존+명시 실패 `ADOPT`, 검증된 backup/transaction 복구 `DEFER_NEXT_PACKAGE`다. [Godot ConfigFile](https://docs.godotengine.org/en/stable/classes/class_configfile.html)의 load/save 오류와 overwrite 의미를 확인했다. 단순 rename을 atomic이라고 부를 수 없으며 현재 공식 master Windows 구현은 기존 목적 파일을 remove 후 MoveFile한다. 이 master 조회는 실행 엔진의 exact implementation 증거가 아니고, 이번 변경에서는 rename/backup을 도입하지 않는다. power-loss 안전 저장과 자동 복구는 별도 실제 장애 시험이 필요하다.
+
+GameState는 실패 시 배열을 추가하지 않고 실제 GPU 촬영도 기존 조용한 실패 문구를 사용한다. 검증은 persistence → 실제 GameState → GPU 사진/앨범/overlay → 전체 회귀 순서다. 원본 bytes·기존 PNG 목록·사진 개수·실패 문구를 함께 확인한다. 독립 검토에서 숫자 필드가 문자열로 변환되어 원본이 바뀌는 RED 12건을 추가로 확인하고 저장 전 필수 4필드의 실제 String 타입 검사로 교정했다. 실제 파서 실패도 원본 보존을 확인한다. GPU 검사는 내부 촬영 직접 호출 대신 쉬는 메뉴 → 사진 버튼의 실제 신호 경로와 실패 문구의 화면 표시를 확인한다. 새 알림 UI나 그림은 추가하지 않았다. [사진 저장 보호 검토](../evidence/2026-09-13-photo-ledger-guard/REVIEW.md)가 최종 evidence를 소유한다.
+
 ### 2026-09-13 진행 — 공통 세계 원경의 실제 통과
 
 기존 승인 봄섬 두 camera-local 복제를 `VoyageWorld/SeasonalIslandLayer` 한 개로 대체한다. 직선 항로 기준 좌우 x ±4, y -2.3, 현재 route z +3.5에 배치하며 billboard 대각 반경과 중앙 통행 여유 1.25를 확보한다. 이는 원경용 승인 PNG의 공간 consumer 전환이며 새 3D 지형/아트 승격이 아니다. side 입력은 이제 화면 좌우가 아닌 world 항로의 좌우다. 기본 3/4 시선 때문에 반대쪽 섬은 주변부에 보이고 사용자가 돌려볼 수 있다. 카메라를 강제로 섬으로 돌리지 않는다.

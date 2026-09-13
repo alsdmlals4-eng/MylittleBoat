@@ -1,0 +1,51 @@
+{
+  "baseline_head": "3e1961eecff4725876b1cf6527ad72a98b625175",
+  "sources": [
+    {
+      "Path": "C:\\Users\\user\\Documents\\GitHub\\MyLittleBoat\\scripts\\core\\photo_memory_persistence.gd",
+      "Hash": "04A8465D489EC98B97858D3765DEB984697309297D21AAE800378AF085F0D708"
+    },
+    {
+      "Path": "C:\\Users\\user\\Documents\\GitHub\\MyLittleBoat\\tests\\test_photo_memory_persistence.gd",
+      "Hash": "FA5983E7452CE9C4A8C9536B87D52C37CC82BBE078FB43D740BA21D0DCE69327"
+    },
+    {
+      "Path": "C:\\Users\\user\\Documents\\GitHub\\MyLittleBoat\\tests\\test_photo_memory_state_contract.gd",
+      "Hash": "B4191509231701BAA52101D77044DA2468ADE6DEF70A444C517E7639D0B8B98C"
+    },
+    {
+      "Path": "C:\\Users\\user\\Documents\\GitHub\\MyLittleBoat\\tests\\test_voyage_overlay_continuity.gd",
+      "Hash": "834A30579984757A3DBE9C160F907F847032A15E7453D8747544BBE3381A73BD"
+    },
+    {
+      "Path": "C:\\Users\\user\\Documents\\GitHub\\MyLittleBoat\\scripts\\voyage\\game_scene.gd",
+      "Hash": "C9879595A23439104FFEE8A35DB77D1980216E6FCCD18EA6CC60377165E5AC80"
+    },
+    {
+      "Path": "C:\\Users\\user\\Documents\\GitHub\\MyLittleBoat\\scenes\\game.tscn",
+      "Hash": "3C14B40670221344A6E771A70F04BF638259A4C65763995CB7426A016C135E70"
+    }
+  ],
+  "headless": {
+    "passed": 61,
+    "failed": 0
+  },
+  "python": {
+    "passed": 20
+  },
+  "gpu": {
+    "engine": "4.7.2",
+    "renderer": "Forward Mobile Vulkan",
+    "device": "Windows NVIDIA RTX 3050",
+    "overlay_failures": 0,
+    "photo_failure_png_sha256": "4CA21B896876A9EEA548EC551A616005490F1679F443006A44D57B1E8373E51F"
+  },
+  "not_verified": [
+    "power_loss",
+    "atomic_replace",
+    "automatic_recovery",
+    "physical_mobile",
+    "human_ux",
+    "release"
+  ]
+}
