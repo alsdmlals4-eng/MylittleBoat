@@ -58,6 +58,12 @@ func _write(path: String, candidate: ConfigFile, validate: Callable) -> Dictiona
 			merged.set_value(section, key, candidate.get_value(section, key))
 	if not validate.call(merged):
 		return _result("NOT_COMMITTED", ERR_INVALID_DATA, path)
+	var old_hash := _hash(path) if old.status == "OK" else ""
+	if old.status == "OK" and old_hash.is_empty():
+		return _result("NOT_COMMITTED", ERR_FILE_CANT_READ, path)
+	# Record original absence before staging can leave an interrupted first-save file.
+	if not _write_receipt(path, {"status": "RECOVERY_REQUIRED", "original_absent": old.status == "ABSENT", "original_hash": old_hash}):
+		return _result("NOT_COMMITTED", ERR_FILE_CANT_WRITE, path)
 	var pending := path + ".pending"
 	var error := _save(merged, pending)
 	if error != OK:
@@ -65,18 +71,12 @@ func _write(path: String, candidate: ConfigFile, validate: Callable) -> Dictiona
 	var staged := _read(pending, validate)
 	if staged.status != "OK" or staged.config.encode_to_text() != merged.encode_to_text():
 		return _result("NOT_COMMITTED", ERR_FILE_CORRUPT, path)
-	var old_hash := _hash(path) if old.status == "OK" else ""
 	if old.status == "OK":
-		if old_hash.is_empty():
-			return _result("NOT_COMMITTED", ERR_FILE_CANT_WRITE, path)
 		if _exists(path + ".last_good") and _read(path + ".last_good", validate).status != "OK" and not _archive(path + ".last_good"):
 			return _result("NOT_COMMITTED", ERR_FILE_CANT_WRITE, path)
 		error = _copy(path, path + ".last_good")
 		if error != OK or _hash(path + ".last_good") != old_hash:
 			return _result("NOT_COMMITTED", ERR_FILE_CANT_WRITE, path)
-	# Persist ambiguity before replacement; a new process must explicitly recover it.
-	if not _write_receipt(path, {"status": "RECOVERY_REQUIRED", "original_absent": old.status == "ABSENT", "original_hash": old_hash}):
-		return _result("NOT_COMMITTED", ERR_FILE_CANT_WRITE, path)
 	var candidate_hash := _hash(pending)
 	error = _replace(pending, path)
 	var committed := _read(path, validate)

@@ -13,6 +13,9 @@ class FaultStore extends "res://scripts/core/recoverable_config_store.gd":
 	var replaced := false
 	var fault_kind := ""
 	func _save(config: ConfigFile, path: String) -> Error:
+		if fault_kind == "partial_stage":
+			super._save(config, path)
+			return ERR_FILE_CANT_WRITE
 		return ERR_FILE_CANT_WRITE if fail_stage else super._save(config, path)
 	func _replace(source: String, destination: String) -> Error:
 		var error := super._replace(source, destination)
@@ -158,6 +161,22 @@ func run() -> void:
 			expect(fresh.recover_primary(boundary_path, valid).status == "COMMITTED", kind + " explicit recovery succeeds")
 			if kind == "absence_remove":
 				expect(not FileAccess.file_exists(boundary_path), "explicit recovery restores original absence after failed removal")
+	for kind in ["pending_read", "partial_stage"]:
+		for existed in [false, true]:
+			var interrupted_path: String = DIR + "/early_%s_%s.cfg" % [kind, str(existed)]
+			if existed:
+				candidate(41).save(interrupted_path)
+			var early := FaultStore.new()
+			early.fault_kind = kind
+			expect(early.write_validated(interrupted_path, candidate(42), valid).status == "NOT_COMMITTED", "early staging fails before replacement")
+			var fresh: Variant = load(SCRIPT).new()
+			expect(fresh.write_validated(interrupted_path, candidate(43), valid).status == "RECOVERY_REQUIRED", "early pending blocks overwrite")
+			expect(fresh.recover_primary(interrupted_path, valid).status == "COMMITTED", "recorded first-save absence permits explicit early-stage recovery")
+			if existed:
+				expect(fresh.read_validated(interrupted_path, valid).config.get_value("test", "value") == 41, "early recovery preserves existing primary")
+			else:
+				expect(not FileAccess.file_exists(interrupted_path), "early first-save recovery restores absence")
+			expect(fresh.write_validated(interrupted_path, candidate(44), valid).status == "COMMITTED", "recovered early stage permits next save")
 	cleanup()
 	print("PASS: recoverable config store" if failures == 0 else "FAILED: recoverable config store %d" % failures)
 	quit(0 if failures == 0 else 1)
