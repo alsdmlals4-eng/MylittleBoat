@@ -8,6 +8,7 @@ const AUTHORED_OCEAN_BED := true
 const OCEAN_BED_VOLUME_DB := -18.0
 
 var ocean_bed: AudioStreamPlayer
+var _target_gain := 0.0
 
 
 func _ready() -> void:
@@ -18,6 +19,10 @@ func _ready() -> void:
 		ocean_bed.autoplay = true
 		ocean_bed.volume_db = OCEAN_BED_VOLUME_DB
 		add_child(ocean_bed)
+	_target_gain = db_to_linear(OCEAN_BED_VOLUME_DB) * GameState.get_ocean_volume()
+	ocean_bed.volume_linear = _target_gain
+	GameState.ocean_volume_changed.connect(_on_ocean_volume_changed)
+	set_process(false)
 
 	if DisplayServer.get_name() == "headless":
 		return
@@ -26,6 +31,19 @@ func _ready() -> void:
 		ocean_bed.stream = _build_authored_ocean_loop()
 	if not ocean_bed.playing:
 		ocean_bed.play()
+
+
+func _on_ocean_volume_changed(volume: float) -> void:
+	_target_gain = db_to_linear(OCEAN_BED_VOLUME_DB) * volume
+	set_process(true)
+
+
+func _process(delta: float) -> void:
+	# 150ms 이내 선형 gain 전환으로 재생 위치와 원본 파형을 보존한다.
+	ocean_bed.volume_linear = move_toward(ocean_bed.volume_linear, _target_gain, db_to_linear(OCEAN_BED_VOLUME_DB) * maxf(delta, 0.0) / 0.15)
+	if is_equal_approx(ocean_bed.volume_linear, _target_gain):
+		ocean_bed.volume_linear = _target_gain
+		set_process(false)
 
 
 func _exit_tree() -> void:

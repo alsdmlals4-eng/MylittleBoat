@@ -1,0 +1,69 @@
+{
+  "baseline_head": "769ed6bf7378ec94229fb6e1f8345df1af907330",
+  "sources": [
+    {
+      "Path": "C:\\Users\\user\\Documents\\GitHub\\MyLittleBoat\\scripts\\core\\comfort_preferences.gd",
+      "Hash": "FD4C2C212D79569EFC37DB8B76AEED4057C89D8A7416C6E29D17146841F93C73"
+    },
+    {
+      "Path": "C:\\Users\\user\\Documents\\GitHub\\MyLittleBoat\\scripts\\core\\game_state.gd",
+      "Hash": "ADE951369BEF373A20BC79654FBCE3664996AE47234A30DC699BA1B8FA18DADE"
+    },
+    {
+      "Path": "C:\\Users\\user\\Documents\\GitHub\\MyLittleBoat\\scripts\\audio\\resting_soundscape.gd",
+      "Hash": "F1BD1C28652C5605CF0BAAAD03323ECB99977F4D3F32C15CCA099FD17938D8E2"
+    },
+    {
+      "Path": "C:\\Users\\user\\Documents\\GitHub\\MyLittleBoat\\scripts\\voyage\\game_scene.gd",
+      "Hash": "721576FDE98C1458F07671D737DC685544C876795928C37A3D820BA8BCDF90D0"
+    },
+    {
+      "Path": "C:\\Users\\user\\Documents\\GitHub\\MyLittleBoat\\scenes\\game.tscn",
+      "Hash": "24EB352EE0D48D5F5ED10A7EE47E9BA2199BD85A313B3ECE8DE2787179387EBF"
+    },
+    {
+      "Path": "C:\\Users\\user\\Documents\\GitHub\\MyLittleBoat\\tests\\test_comfort_preferences.gd",
+      "Hash": "57614B4972F060DE9F1DC7AD071A7A37FF68D80D76F511ECF89966405CA592B0"
+    },
+    {
+      "Path": "C:\\Users\\user\\Documents\\GitHub\\MyLittleBoat\\tests\\test_ocean_volume_contract.gd",
+      "Hash": "09519387F7F3106FFABC5BFA701B68BD81E61CA48A088F754B10C28399CB6CAD"
+    },
+    {
+      "Path": "C:\\Users\\user\\Documents\\GitHub\\MyLittleBoat\\.github\\workflows\\godot-validation.yml",
+      "Hash": "5B385F851629CAF83CDCE978183C47AE3E6DB5532E1EE73A9924C57CE33CC793"
+    }
+  ],
+  "images": [
+    {
+      "name": "muted-360x640.png",
+      "hash": "86F659B953FD62B74C78AB72F694E45B46CB4D683081B0039E4775CB0BE728A2"
+    },
+    {
+      "name": "muted-540x960.png",
+      "hash": "3D01B5BE787D75B0657F7A6AE141C8318EC924FBCC6B4EA8A196CD594431F537"
+    },
+    {
+      "name": "muted-720x1280.png",
+      "hash": "58C17D78098ADE5CD5BD64F2B2E2669FF8DAD89B2B49DC731085B4B37F865452"
+    },
+    {
+      "name": "volume-popup-360.png",
+      "hash": "3BD814982F68615097C01720E96A27C426290B35D0D5AFA2CD5761D0488B75A2"
+    },
+    {
+      "name": "volume-popup.png",
+      "hash": "5F4B19484C39CB14BEC8804C92200339486A5C871E670940796EA65047C23531"
+    }
+  ],
+  "headless_passed": 62,
+  "python_passed": 20,
+  "gpu_audio_failures": 0,
+  "gpu_overlay_failures": 0,
+  "engine": "4.7.2",
+  "renderer": "Windows Vulkan Forward Mobile RTX 3050",
+  "human_listening": "NOT_RUN",
+  "physical_mobile": "NOT_RUN",
+  "remote_ci": "NOT_RUN",
+  "release": "NOT_RUN"
+}

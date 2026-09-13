@@ -1,6 +1,8 @@
 # 항해의 누적 기억과 현재 세션 상태를 관리한다.
 extends Node
 
+signal ocean_volume_changed(volume: float)
+
 const VOYAGE_SECONDS := 300.0
 const BOAT_DECOR_PERSISTENCE_SCRIPT = preload("res://scripts/core/boat_decor_persistence.gd")
 const IDENTITY_PROFILE_SCRIPT = preload("res://scripts/core/cosmetic_identity_profile.gd")
@@ -25,6 +27,7 @@ var selected_player_style := "c_loose_knit"
 var selected_pet_type := "dog"
 var together_time_seconds := 0.0
 var motion_comfort_profile := "standard"
+var _ocean_volume := 1.0
 
 # Scene 전환에도 유지되어야 하는 현재 항해 상태다.
 var voyage_active := false
@@ -263,6 +266,21 @@ func get_motion_comfort_scale() -> float:
 ## Restores visual-motion comfort without changing device-clock atmosphere or player progress.
 func load_motion_comfort() -> void:
 	motion_comfort_profile = _comfort_preferences.load_profile()
+	_ocean_volume = _comfort_preferences.load_ocean_volume()
+	ocean_volume_changed.emit(_ocean_volume)
+
+
+## Applies sound immediately even if the local preference cannot be saved.
+func set_ocean_volume(volume: float) -> bool:
+	if not is_finite(volume) or volume < 0.0 or volume > 1.0:
+		return false
+	_ocean_volume = volume
+	ocean_volume_changed.emit(_ocean_volume)
+	return _comfort_preferences.save_ocean_volume(volume) == OK
+
+
+func get_ocean_volume() -> float:
+	return _ocean_volume
 
 
 ## Switches postcard metadata and PNG storage together for isolated contract tests.

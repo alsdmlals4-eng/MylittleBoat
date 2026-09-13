@@ -4,6 +4,14 @@
 **역할:** 실제 코드·Scene·test·runtime evidence와 현재 제품 정본의 차이를 기록하는 기술 router
 **현재 사람용 정본:** [프로젝트 GDD](../design/PROJECT_GDD.md)
 
+### 2026-09-13 바다 소리 조절 구현
+
+전체 완성 queue의 P7에서 독립적으로 구현 가능한 기존 OceanBed 음량/음소거를 연결했다. camera/world fresh-read는 현재 모델/리그 미준비를 재확인했고 회전 완료로 승격하지 않았다. `ComfortPreferences`의 기존 파일/section에 ocean_volume 키를 추가하고 기존 motion/unknown key를 보존한다. GameState는 유효한 음량을 먼저 live 적용하고 저장 성공 여부를 반환하며, 실제 OceanBed는 stream을 교체하지 않고 gain만 전환한다. `OceanVolumeOption`은 쉬는 메뉴에서만 노출되고 감상에서는 숨긴다. 영구 저장 실패는 기존 StatusLabel에 알려주며 이번 실행의 mute는 막지 않는다.
+
+조사/선택은 OS 음량만 사용 `REJECT`, 기존 메뉴의 실제 ocean consumer 조절 `ADAPT`, 새 다채널 설정 시스템 `DEFER`다. [Lake 공식 접근성 목록](https://whitethorngames.com/lake/accessibility)의 개별 음량/라디오 선택과 [XAG 105](https://learn.microsoft.com/en-us/xbox/accessibility/xbox-accessibility-guidelines/105)의 사용자 제어를 참고하되 아직 없는 음악·효과음/음성 슬라이더는 만들지 않는다. `AudioStreamPlayer.volume_linear`를 기존 -18 dB 믹스에 곱하고, preference를 sound startup보다 먼저 읽는다. 초기 파일 없는 상태는 기존 소리와 동일하다.
+
+이번 headless CI 집합은 총 63개 중 62개다. `test_chibi_normal_chroma_material_proof.gd`의 display-only 경계는 유지하며 새 audio 계약의 실제 stream/입력/캡처는 GPU에서도 별도로 실행한다. exact 결과·다섯 검토·실행 화면·미검증 경계는 [음량 구현 검증](../evidence/2026-09-13-ocean-volume/REVIEW.md)이 소유한다. 150ms 검사는 누적 delta의 gain 계산이며 OS 오디오 지연/프레임 지연 상한 인증이 아니다.
+
 ### 2026-09-13 전체 완성 목표와 사진 원본 보존 후속
 
 최신 사용자는 게임 전체 구현·완성을 목표로 계속 진행하도록 명시했다. GDD의 현재 실행 목표/P9를 기준으로 미구현 consumer를 지속 대조하며, 과거 planning-only 문장을 현재 안전한 구현의 차단으로 쓰지 않는다. 최종 아트·공개 social·Human/Device/Release와 고위험 경계는 유지한다. 공통 봄섬 단위는 `3e1961eecff4725876b1cf6527ad72a98b625175`로 local/remote branch equality까지 확인했고 main/PR #19는 그대로다.

@@ -330,6 +330,8 @@ IMP-01은 추가 이미지 없이 구현을 시작할 수 있다. IMP-02는 해�
 
 설정은 환경음·효과음 음량/음소거, 기존 모션 편안함, 기본 시점 복귀를 최소 범위로 한다. 새 저장값은 구현 시 기존 preference owner의 호환 가능한 확장으로 명세하고 임의로 쓰지 않는다. 진동은 기본 없음. 중요한 저장 오류·낚시 준비·입력 수용은 소리 또는 색 하나만으로 알리지 않는다.
 
+2026-09-13 바다 소리 조절은 기존 실제 `OceanBed` consumer에 연결했다. 쉬는 메뉴의 `OceanVolumeOption`에서 끄기/25/50/75/100%를 고르며 100%는 기존 -18 dB 믹스의 1.0배다. `comfort_preferences_v1.cfg`의 `[comfort] ocean_volume` 숫자 0..1을 추가하되 기존 `profile`과 다른 키를 보존한다. 이전 파일이나 잘못된 음량값은 1.0으로 읽고, 읽지 못한 원본은 새 저장으로 덮지 않는다. 저장 실패여도 현재 음량은 적용하고 실패 문구를 표시한다. `RestingSoundscape`가 재생 위치를 유지하며 누적 process delta 기준 full-range 최대 150ms로 gain만 전환한다. 재시작·증폭·새 음원·의무 설정 단계는 없다. 실제 효과음 consumer가 없는 현재 별도 효과음 조절기를 만들지 않았으며, 효과음 layer 추가 때 독립 조절을 연결한다. [실행·입력·저장 검증](../evidence/2026-09-13-ocean-volume/REVIEW.md). 청취 품질/실기기 접근성은 별도다.
+
 540×960을 설계 기준으로 유지하되 360×640·540×960·720×1280과 긴 화면의 safe area를 검사한다. 터치 영역은 초기 기준 48 logical px, 본문 18 logical px 이상으로 시험하고 큰 글자에서도 버튼이 겹치지 않게 한다. 이는 장치별 dp/pt 인증이나 접근성 PASS가 아니다. 색 대비는 실제 배경 위 측정, focus/뒤로/드래그 충돌·스크린리더 지원은 각각 검증한다. 지원하지 않은 입력·보조공학을 지원 완료로 표시하지 않는다.
 
 글자 크기·오류 안내에도 동일한 가독성 설정을 적용하고, 소리·색 하나에만 정보를 의존하지 않는 원칙은 [XAG 101](https://learn.microsoft.com/en-us/xbox/accessibility/xbox-accessibility-guidelines/101)과 [XAG 103](https://learn.microsoft.com/en-us/xbox/accessibility/xbox-accessibility-guidelines/103)을 참고한다. 위 48/18 값은 이 프로젝트 시험값이지 XAG의 수치를 그대로 옮긴 것이 아니다.

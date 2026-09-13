@@ -171,6 +171,14 @@ func _ready() -> void:
 	%LookAroundButton.pressed.connect(_toggle_look_around_mode)
 	%SpeedButton.pressed.connect(_cycle_speed)
 	%ComfortButton.pressed.connect(_cycle_motion_comfort)
+	for percent in [0, 25, 50, 75, 100]:
+		%OceanVolumeOption.add_item("바다 소리: 끄기" if percent == 0 else "바다 소리: %d%%" % percent, percent)
+	var volume_popup := %OceanVolumeOption.get_popup() as PopupMenu
+	volume_popup.add_theme_font_size_override("font_size", 18)
+	var font_height := volume_popup.get_theme_font("font").get_height(18)
+	volume_popup.add_theme_constant_override("v_separation", maxi(0, ceili(48.0 - font_height)))
+	%OceanVolumeOption.select(roundi(GameState.get_ocean_volume() * 4.0))
+	%OceanVolumeOption.item_selected.connect(_on_ocean_volume_selected)
 	%FishingButton.pressed.connect(_handle_fishing_action)
 	%DecorButton.pressed.connect(_open_decor_panel)
 	%InteractButton.pressed.connect(_open_interaction_panel)
@@ -832,6 +840,12 @@ func _cycle_motion_comfort() -> void:
 	_update_ui("파도를 %s하게 조절했습니다." % _get_motion_comfort_name())
 
 
+func _on_ocean_volume_selected(index: int) -> void:
+	var volume := float(%OceanVolumeOption.get_item_id(index)) / 100.0
+	var saved := GameState.set_ocean_volume(volume)
+	_update_ui("바다 소리를 조절했어요." if saved else "지금 소리는 바뀌었지만 설정을 저장하지 못했어요.")
+
+
 func _get_motion_comfort_name() -> String:
 	return str(MOTION_COMFORT_NAMES.get(GameState.get_motion_comfort_profile(), "기본"))
 
@@ -1298,6 +1312,7 @@ func _apply_appreciation_mode() -> void:
 	%LookAroundButton.visible = controls_visible
 	%SpeedButton.visible = controls_visible
 	%ComfortButton.visible = controls_visible
+	%OceanVolumeOption.visible = controls_visible
 	%FishingButton.visible = controls_visible
 	%DecorButton.visible = controls_visible
 	%InteractButton.visible = controls_visible
