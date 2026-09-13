@@ -186,8 +186,7 @@ func _cleanup(scene: Node, album_scene: Node, game_state: Node, prior_session: D
 
 
 func _cleanup_test_storage() -> void:
-	if FileAccess.file_exists(TEST_COMFORT_PATH):
-		DirAccess.remove_absolute(ProjectSettings.globalize_path(TEST_COMFORT_PATH))
+	preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(TEST_COMFORT_PATH)
 	if FileAccess.file_exists(TEST_PHOTO_CONFIG_PATH):
 		DirAccess.remove_absolute(ProjectSettings.globalize_path(TEST_PHOTO_CONFIG_PATH))
 	if DirAccess.dir_exists_absolute(ProjectSettings.globalize_path(TEST_PHOTO_IMAGE_DIRECTORY)):

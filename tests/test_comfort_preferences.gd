@@ -18,6 +18,7 @@ func _run() -> void:
 		_finish()
 		return
 	var preferences: Variant = (load(PERSISTENCE_PATH) as Script).new(STORAGE_PATH)
+	_expect(preferences.has_method("get_last_storage_result"), "comfort must expose recovery state")
 	_expect(preferences.load_profile() == "standard", "missing comfort file must restore standard motion")
 	_expect(preferences.save_profile("gentle") == OK, "valid gentle profile must save locally")
 	_expect(preferences.load_profile() == "gentle", "saved comfort profile must round-trip")
@@ -39,7 +40,8 @@ func _run() -> void:
 		preserved.load(STORAGE_PATH)
 		_expect(preserved.get_value("future", "retained", "") == "keep", "audio update must preserve unrelated preference keys")
 		_write_raw_config("[comfort]\nocean_volume=\"wrong\"\n")
-		_expect(is_equal_approx(preferences.load_ocean_volume(), 1.0), "invalid persisted type must not reach audio gain")
+		_expect(is_equal_approx(preferences.load_ocean_volume(), 0.5), "invalid persisted type recovers verified last good gain")
+		_expect(preferences.get_last_storage_result().status == "RECOVERED", "backup reading is exposed separately")
 		_write_raw_config("[comfort]\nocean_volume=[\n")
 		var damaged_bytes := FileAccess.get_file_as_bytes(STORAGE_PATH)
 		var previous_output := Engine.print_error_messages
@@ -53,7 +55,9 @@ func _run() -> void:
 	_expect(is_equal_approx(preferences.get_motion_scale("gentle"), 0.5), "gentle profile must halve automatic motion amplitude")
 	_expect(is_zero_approx(preferences.get_motion_scale("still")), "still profile must remove automatic motion amplitude")
 	_write_raw_config("[comfort]\nprofile=\"invalid\"\n")
-	_expect(preferences.load_profile() == "standard", "malformed stored profile must safely restore standard")
+	_expect(preferences.load_profile() == "still", "malformed stored profile recovers last good profile")
+	_expect(preferences.recover_primary().status == "COMMITTED", "owner exposes explicit verified recovery")
+	_expect(preferences.save_profile("gentle") == OK, "owner writes again only after verified recovery")
 	_remove_test_file()
 	_finish()
 
@@ -66,8 +70,7 @@ func _write_raw_config(contents: String) -> void:
 
 
 func _remove_test_file() -> void:
-	if FileAccess.file_exists(STORAGE_PATH):
-		DirAccess.remove_absolute(ProjectSettings.globalize_path(STORAGE_PATH))
+	preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(STORAGE_PATH)
 
 
 func _expect(condition: bool, message: String) -> void:

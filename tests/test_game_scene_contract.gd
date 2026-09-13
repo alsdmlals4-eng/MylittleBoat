@@ -172,8 +172,7 @@ func _expect(condition: bool, message: String) -> void:
 
 
 func _remove_test_file() -> void:
-	if FileAccess.file_exists(COMFORT_STORAGE_PATH):
-		DirAccess.remove_absolute(ProjectSettings.globalize_path(COMFORT_STORAGE_PATH))
+	preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(COMFORT_STORAGE_PATH)
 
 
 func _cleanup_photo_storage() -> void:

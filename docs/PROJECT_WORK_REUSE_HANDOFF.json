@@ -464,8 +464,8 @@
       "workflow_owner": ".github/workflows/godot-validation.yml",
       "initial_recovery_contract_count": 52,
       "initial_recovery_headless_contract_count": 51,
-      "current_contract_count": 63,
-      "headless_contract_count": 62,
+      "current_contract_count": 64,
+      "headless_contract_count": 63,
       "display_only_contract": "test_chibi_normal_chroma_material_proof.gd",
       "selected_approach": "SORTED_DISCOVERY_WITH_EXACT_COUNT_AND_EXCLUSION_GUARDS",
       "alternatives": [
@@ -473,7 +473,7 @@
         "ADAPT: separate static manifest, because it makes review explicit but duplicates the test-directory list.",
         "ADOPT: sorted test-directory discovery with exact all/headless/exclusion guards, because a contract-set change fails closed until its renderer boundary is reviewed."
       ],
-      "workflow_contract": "The Ubuntu Bash step gathers sorted tests/test_*.gd, requires 63 sources, skips exactly the named display-only proof, runs every remaining contract with the existing 20-second timeout, and requires 62 executions before returning aggregate status. Ocean-volume, motion-continuity, stern-motion and overlay-continuity contracts additionally run GPU assertions locally; headless explicitly skips display-only assertions.",
+      "workflow_contract": "The Ubuntu Bash step gathers sorted tests/test_*.gd, requires 64 sources, skips exactly the named display-only proof, runs every remaining contract with the existing 20-second timeout, and requires 63 executions before returning aggregate status. Recoverable config-store faults run in isolated test files. Ocean-volume, motion-continuity, stern-motion and overlay-continuity contracts additionally run GPU assertions locally; headless explicitly skips display-only assertions.",
       "local_equivalent_result": "PASS: after Bright/spring seasonal-parallax contract, distant-island crop/lane guard, and temporal runtime-capture guard additions, local Godot 4.7.2 bounded sorted-discovery batches completed all=58, headless=57, display_only=1, failed=0. The 27+30 headless batches preserve the one renderer-only exception. Earlier 57/56 Look Around receipt remains historical.",
       "local_yaml_parser": "NOT_AVAILABLE: Python PyYAML, actionlint, yamllint, Ruby YAML, PowerShell ConvertFrom-Yaml, and Node yaml/js-yaml were not installed. No new dependency was added; static workflow contract plus the actual Bash loop are the local checks.",
       "evidence_boundary": "This is local workflow-configuration and 57-contract machine evidence only. It is not a remote CI PASS, Human/device UX PASS, or a headless replacement for the Windows GL Compatibility material proof.",

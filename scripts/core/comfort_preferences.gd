@@ -11,6 +11,8 @@ const MOTION_SCALES := {
 }
 
 var _path: String
+var _store := preload("res://scripts/core/recoverable_config_store.gd").new()
+var _last_storage_result: Dictionary = {}
 
 
 func _init(path: String = DEFAULT_PATH) -> void:
@@ -28,8 +30,8 @@ func save_ocean_volume(volume: float) -> Error:
 
 
 func load_ocean_volume() -> float:
-	var config := ConfigFile.new()
-	if config.load(_path) != OK:
+	var config := _load_config()
+	if config == null:
 		return 1.0
 	var value: Variant = config.get_value("comfort", "ocean_volume", 1.0)
 	if not (value is float or value is int):
@@ -38,20 +40,49 @@ func load_ocean_volume() -> float:
 
 
 func _save_value(key: String, value: Variant) -> Error:
-	var config := ConfigFile.new()
-	if FileAccess.file_exists(_path):
-		var error := config.load(_path)
-		if error != OK:
-			return error
+	var read_result := _store.read_validated(_path, _validate)
+	var config: ConfigFile = read_result.config
+	if read_result.status not in ["OK", "ABSENT"]:
+		_last_storage_result = {"status": "RECOVERY_REQUIRED", "error": read_result.error if read_result.error != OK else ERR_FILE_CORRUPT, "source_path": _path}
+		return _last_storage_result.error
+	if config == null:
+		config = ConfigFile.new()
 	config.set_value("comfort", key, value)
-	return config.save(_path)
+	_last_storage_result = _store.write_validated(_path, config, _validate)
+	return OK if _last_storage_result.status == "COMMITTED" else _last_storage_result.error
 
 
 func load_profile() -> String:
-	var config := ConfigFile.new()
-	if config.load(_path) != OK:
+	var config := _load_config()
+	if config == null:
 		return "standard"
 	return normalize_profile(str(config.get_value("comfort", "profile", "standard")))
+
+
+func get_last_storage_result() -> Dictionary:
+	return _last_storage_result.duplicate()
+
+
+func recover_primary() -> Dictionary:
+	_last_storage_result = _store.recover_primary(_path, _validate)
+	return get_last_storage_result()
+
+
+func _load_config() -> ConfigFile:
+	_last_storage_result = _store.read_validated(_path, _validate)
+	return _last_storage_result.config
+
+
+func _validate(config: ConfigFile) -> bool:
+	if config.has_section_key("comfort", "profile"):
+		var profile: Variant = config.get_value("comfort", "profile")
+		if not profile is String or profile not in PROFILE_ORDER:
+			return false
+	if config.has_section_key("comfort", "ocean_volume"):
+		var volume: Variant = config.get_value("comfort", "ocean_volume")
+		if not (volume is float or volume is int) or not is_finite(float(volume)) or float(volume) < 0.0 or float(volume) > 1.0:
+			return false
+	return true
 
 
 func normalize_profile(profile: String) -> String:

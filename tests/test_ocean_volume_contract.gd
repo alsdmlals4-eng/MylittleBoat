@@ -37,8 +37,7 @@ func run() -> void:
 	var state := root.get_node("GameState")
 	var sound := root.get_node("RestingSoundscape")
 	var player := sound.get_node("OceanBed") as AudioStreamPlayer
-	if FileAccess.file_exists(STORAGE):
-		DirAccess.remove_absolute(ProjectSettings.globalize_path(STORAGE))
+	preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(STORAGE)
 	state.set_comfort_storage_path(STORAGE)
 	var isolated_paths: Array[String] = [STORAGE]
 	for kind in ["together_time", "memory_ledger", "identity", "boat_decor", "ambient_memory"]:
@@ -169,6 +168,7 @@ func run() -> void:
 	sound.release_ocean_bed_for_shutdown()
 	for i in 4:
 		await process_frame
+	preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(STORAGE)
 	for path in isolated_paths:
 		if FileAccess.file_exists(path):
 			DirAccess.remove_absolute(ProjectSettings.globalize_path(path))
