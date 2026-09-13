@@ -352,7 +352,7 @@ IMP-01은 추가 이미지 없이 구현을 시작할 수 있다. IMP-02는 해�
 
 ### 2026-09-14 남은 작업 설계 명세 — R01–R12
 
-**요청 범위는 남은 작업과 설계·구현 명세 준비다. 이번 문서로 게임 코드·자산을 적용하거나 최종 아트/출시 승인을 얻은 것으로 처리하지 않는다.** 기존 P1–P10/B1–B12의 의미는 이 GDD가 계속 소유한다. 아래는 그 목표와 현재 코드 사이의 차이를 구현 단위로 구체화한 설계다. 실행 절차는 [남은 작업 구현 계획](../superpowers/plans/2026-09-14-remaining-implementation.md)이 소유하며 별도 AI/GDD master를 만들지 않는다.
+**명세 준비 뒤 2026-09-14 사용자 `좋아 권장안대로 작업진행해`로 안전한 구현·검증 실행이 승인됐다. 최종 아트 lock·Human·출시 승인은 별도다.** 기존 P1–P10/B1–B12의 의미는 이 GDD가 계속 소유한다. 아래는 그 목표와 현재 코드 사이의 차이를 구현 단위로 구체화한 설계다. 실행 절차는 [남은 작업 구현 계획](../superpowers/plans/2026-09-14-remaining-implementation.md)이 소유하며 별도 AI/GDD master를 만들지 않는다. 현재 R07의 공통 저장 절차와 첫 owner부터 구현 중이며 전체 R07 완료가 아니다.
 
 기준은 작업 branch `6b7949a563150bd93e08d5d5eb1e028eab7336ef`, 관찰한 origin/main `7181d5e6845e75107eade8c4d2e62e10334ab54b`다. 두 revision은 같지 않다. 아래 구현 상태는 **작업 branch 기준**이며 main에 모두 반영됐다는 뜻이 아니다. PR #19는 다른 social workstream으로 read-only다. Base v9.4.4 adapter를 유지하며 최신 Base 관찰값 `d830c0f6967678eed3c208ac6b24f9cd1b262ec3`로 조용히 교체하지 않는다.
 
@@ -366,7 +366,7 @@ IMP-01은 추가 이미지 없이 구현을 시작할 수 있다. IMP-02는 해�
 | R04 / IMP-02·03 | 카메라는 고정 위치에서 회전, 탑승자는 사인파 반응 | 실제 orbit·reset·부유·rest/notice/settle 연결 | P0 / R01–03. 계약 probe는 먼저 가능. PARTIAL |
 | R05 / IMP-04 | 네 시간대 resolver/기존 이미지 있음 | 새 world family의 네 시간대 동기 전환. 계절 풍경은 R02 소유 | P1 / 낮 R01–04 통합 통과. PARTIAL |
 | R06 / IMP-04 | 3 style/4 pet/8 slot/6 item 존재. style/pet 즉시 저장 | 미리보기/탭별 적용/취소, 새 모델 호환 전수 | P1 / 데이터 UI는 R07 뒤, 새 family는 R03 뒤. FEASIBLE(자산 제외) |
-| R07 / IMP-05 | 사진의 손상 목록 덮어쓰기 방지 있음 | 다른 저장 owner 보호, 검증된 정상본 복구·경로 제한 | P0 / 독립 착수. FEASIBLE(전원차단 보장 제외) |
+| R07 / IMP-05 | 사진의 손상 목록 보호 + R07a helper/comfort 복구 코드 연결 | 나머지 저장 owner·성공 확정/UI·사진 경로 제한 | P0 / R07a 구현, 전체 PARTIAL. 전원차단 보장 제외 |
 | R08 / IMP-05 | 앨범 최근/이전 3장 탐색과 누락 안내 있음 | 실제 사진 상세·안전한 지연 읽기·닫기 복귀 | P1 / R07 경로 경계. FEASIBLE |
 | R09 / IMP-01·05 | 같은 world overlay, 조용한 낚시 상태·취소 있음 | 전 화면 입력/가독성·저장 실패·무손실 선택 행동 완결 | P1 / R06–08 연결. FEASIBLE |
 | R10 / IMP-05 | 지속 OceanBed와 5단계 음량·음소거 있음 | 필요 근접 효과음 최소 layer·독립 제어·청취 검증 | P2 / 실제 음원·소비처 확인. PARTIAL |
@@ -464,11 +464,13 @@ WorldEnvironment/Sky(자동 yaw 없음, 수동 시점에 공간 대응)
 
 #### R07. 저장 보호·정상본 복구·사진 경로
 
+**2026-09-14 R07a 구현 현황.** 아래 공통 store API와 comfort 연결은 실제 구현됐다(`4773c68`). 다른 owner와 사진 resolver/UI는 여전히 명세 단계다. 세부 검증·미검증은 [현재 증거](../evidence/2026-09-14-recoverable-save/REVIEW.md)를 따른다. 단순 읽기는 파일을 변경하지 않으며 증거 보존/잠금 파일 쓰기는 실제 저장·명시 복구 요청 때만 수행한다.
+
 **선택.** A 기존 파일 바로 overwrite `REJECT`, B 기존 schema를 유지한 owner별 staging+검증 정상본+복구 receipt `ADAPT`, C 새 DB/클라우드/전체 migration `REJECT`. 대상은 `scripts/core/*_persistence.gd`, `cosmetic_identity_profile.gd`, `comfort_preferences.gd`의 실제 소비 owner다. 단순 rename을 Windows/모바일 모두 atomic 또는 전원차단 안전하다고 부르지 않는다.
 
 제안 공통 `scripts/core/recoverable_config_store.gd`는 파일 처리만 맡고 각 owner의 schema 검증 Callable을 받는다. `read_validated(path: String, validate: Callable) -> Dictionary`, `write_validated(path: String, candidate: ConfigFile, validate: Callable) -> Dictionary`, `recover_primary(path: String, validate: Callable) -> Dictionary`. read 결과 키는 `status: String`(OK/ABSENT/RECOVERED/CORRUPT/IO_ERROR), `config: ConfigFile|null`, `source_path: String`. write/recover 결과는 `status: String`(COMMITTED/NOT_COMMITTED/RECOVERY_REQUIRED), `error: Error`, `source_path: String`이며 COMMITTED만 state/UI 성공으로 전달한다. filename 확장은 `.pending`, `.last_good`, `.recovery.json`이고 owner 파일 옆에 둔다. 단일 앱 내 동일 owner의 쓰기는 직렬화한다.
 
-쓰기 순서. 기존 정상 primary를 검증→candidate를 pending에 쓰고 재읽기 검증→기존 primary의 정상본을 last_good에 복사·hash 대조→교체 시도→primary 재읽기 검증→성공 반환. 기존 pending이 있으면 먼저 검증·복구 판정하여 보존하고 새 쓰기로 덮지 않는다. 교체 전 실패는 NOT_COMMITTED다. 교체 후 검증 실패는 verified last_good으로 원본을 복원하고 재읽기/hash가 일치할 때만 NOT_COMMITTED다. 원래 파일이 없었다면 이번 쓰기의 산출물만 격리 보존한 뒤 primary 부재를 검증한다. 복원/부재 검증도 실패하거나 commit 여부를 판정할 수 없으면 RECOVERY_REQUIRED로 해당 owner 쓰기를 잠그고 모든 primary/last_good/pending/recovery 증거와 마지막 committed 메모리를 보존한다. UI는 단순 취소가 아니라 복구 필요를 표시하며 디스크 불변을 주장하지 않는다.
+쓰기 순서. 기존 정상 primary와 candidate를 검증→원본 hash/부재를 담은 쓰기 의도를 검증 저장→candidate를 pending에 쓰고 재읽기 검증→기존 primary의 정상본을 last_good에 복사·hash 대조→교체 시도→primary 재읽기 검증→성공 반환. 의도 기록은 최초 저장의 pending 실패에서도 검증된 원본 부재를 복구할 수 있도록 pending 생성 전에 남긴다. 기존 pending/미해결 의도 기록이 있으면 먼저 검증·복구 판정하여 보존하고 새 쓰기로 덮지 않는다. 알 수 없는 orphan pending만으로 원본 부재를 추정하지 않는다. 교체 전 실패는 NOT_COMMITTED다. 교체 후 검증 실패는 verified last_good으로 원본을 복원하고 재읽기/hash가 일치할 때만 NOT_COMMITTED다. 원래 파일이 없었다면 이번 쓰기의 산출물만 격리 보존한 뒤 primary 부재를 검증한다. 복원/부재 검증도 실패하거나 commit 여부를 판정할 수 없으면 RECOVERY_REQUIRED로 해당 owner 쓰기를 잠그고 모든 primary/last_good/pending/recovery 증거와 마지막 committed 메모리를 보존한다. UI는 단순 취소가 아니라 복구 필요를 표시하며 디스크 불변을 주장하지 않는다.
 
 깨진 primary는 별도 recovery 사본과 hash를 보존하고 검증된 last_good만 읽기 복구 후보로 사용한다. read의 RECOVERED는 backup 읽기 상태이지 primary 복원 성공이 아니다. `recover_primary`가 사본 보존→검증 정상본 복원→readback/hash 일치를 확인한 COMMITTED 이후에만 쓰기 잠금을 해제한다. 실패하면 RECOVERY_REQUIRED를 유지한다. 이전 원본/알 수 없는 key는 자동 정규화 삭제하지 않는다. staging/backup 정리에 실패해도 회복 가능 증거를 남긴다. OS crash/power-loss 내성은 별도 실제 장애 시험 전 PARTIAL이다.
 

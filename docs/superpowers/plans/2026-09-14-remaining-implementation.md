@@ -1,6 +1,6 @@
 # 남은 게임 구현 Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking. 별도 사용자 요청 없이 실행 방식 선택 질문을 반복하지 않는다. 이번 요청은 명세 준비이며 이 문서 작성 중 게임 구현은 시작하지 않는다.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking. 별도 사용자 요청 없이 실행 방식 선택 질문을 반복하지 않는다. 명세 준비 뒤 2026-09-14 `좋아 권장안대로 작업진행해`로 안전한 구현·검증 실행이 승인됐다. 최종 아트/기기/Human/출시 gate는 유지한다.
 
 **Goal:** 목적지 없는 동반자 보트 휴식을 실제 공간 이동·연속 회전·안전한 기억 저장·사용 가능한 내부 빌드까지 연결한다.
 
@@ -239,6 +239,8 @@ expect(draft.snapshot("identity").pet_type == "dog", "cancel must restore commit
 - [ ] 교정·commit. 데이터 UI와 모델 확대는 독립적으로 검토 가능한 두 commit으로 분리한다.
 
 ## Task R07 — owner별 저장 안전
+
+실행 상태. R07a 공통 helper+comfort 첫 consumer가 `4773c68`에 구현됐다. 최초 저장의 원본 의도 기록은 pending 생성 전 수행하도록 독립 검토에서 교정했다. 이후 나머지 owner, GameState/UI 성공 경계, 사진 경로를 검증한 뒤에만 전체 R07을 완료로 올린다. 아래 전체 Task 체크박스는 부분 납품만으로 완료 처리하지 않는다. [현재 증거](../../evidence/2026-09-14-recoverable-save/REVIEW.md).
 
 **Files.** Create `scripts/core/recoverable_config_store.gd`, `tests/test_recoverable_config_store.gd`. Modify 실제 `scripts/core/comfort_preferences.gd`, `cosmetic_identity_profile.gd`, `boat_decor_persistence.gd`, `together_time_persistence.gd`, `ambient_memory_persistence.gd`, `memory_ledger_persistence.gd`, `photo_memory_persistence.gd`; GameState는 성공 확정 경로만 변경.
 
