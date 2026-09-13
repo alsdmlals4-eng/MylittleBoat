@@ -23,14 +23,7 @@ func recover_primary() -> Dictionary:
 
 func _load_config() -> ConfigFile:
 	_last_storage_result = _store.read_validated(_path, _validate)
-	if _last_storage_result.config != null:
-		return _last_storage_result.config
-	# Legacy fallback is read-only; schema-invalid bytes remain barred from saving.
-	if _last_storage_result.status == "CORRUPT" and _last_storage_result.error == ERR_INVALID_DATA:
-		var legacy := ConfigFile.new()
-		if legacy.load(_path) == OK:
-			return legacy
-	return null
+	return _store.config_for_legacy_read(_path, _last_storage_result)
 
 
 func _validate(config: ConfigFile) -> bool:

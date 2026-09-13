@@ -5,6 +5,16 @@ extends RefCounted
 static var _busy: Dictionary = {}
 static var _locked: Dictionary = {}
 
+func config_for_legacy_read(path: String, read_result: Dictionary) -> ConfigFile:
+	if read_result.config != null:
+		return read_result.config
+	# Read-only compatibility never promotes malformed data to a validated write source.
+	if read_result.status == "CORRUPT" and read_result.error == ERR_INVALID_DATA:
+		var legacy := ConfigFile.new()
+		if _load(legacy, path) == OK:
+			return legacy
+	return null
+
 func read_validated(path: String, validate: Callable) -> Dictionary:
 	var primary := _read(path, validate)
 	if _exists(path + ".recovery.json"):
