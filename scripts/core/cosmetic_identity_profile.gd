@@ -6,23 +6,58 @@ const DEFAULT_PATH := "user://identity_profile_v1.cfg"
 const CATALOG_SCRIPT = preload("res://scripts/identity/identity_visual_catalog.gd")
 
 var _path: String
+var _store := preload("res://scripts/core/recoverable_config_store.gd").new()
+var _last_storage_result: Dictionary = {}
 var _catalog = CATALOG_SCRIPT.new()
 
 
 func _init(path: String = DEFAULT_PATH) -> void:
 	_path = path
 
+func get_last_storage_result() -> Dictionary:
+	return _last_storage_result.duplicate()
+
+
+func recover_primary() -> Dictionary:
+	_last_storage_result = _store.recover_primary(_path, _validate)
+	return get_last_storage_result()
+
+
+func _load_config() -> ConfigFile:
+	_last_storage_result = _store.read_validated(_path, _validate)
+	if _last_storage_result.config != null:
+		return _last_storage_result.config
+	# Legacy fallback is read-only; schema-invalid bytes remain barred from saving.
+	if _last_storage_result.status == "CORRUPT" and _last_storage_result.error == ERR_INVALID_DATA:
+		var legacy := ConfigFile.new()
+		if legacy.load(_path) == OK:
+			return legacy
+	return null
+
+
+func _validate(config: ConfigFile) -> bool:
+	if config.has_section_key("identity", "player_style_id"):
+		var style: Variant = config.get_value("identity", "player_style_id")
+		if not style is String or style not in _catalog.get_player_style_ids():
+			return false
+	if config.has_section_key("identity", "pet_type_id"):
+		var pet: Variant = config.get_value("identity", "pet_type_id")
+		if not pet is String or pet not in _catalog.get_pet_type_ids():
+			return false
+	return true
+
 
 func save(player_style_id: String, pet_type_id: String) -> Error:
 	var config := ConfigFile.new()
 	config.set_value("identity", "player_style_id", normalize_player_style(player_style_id))
 	config.set_value("identity", "pet_type_id", normalize_pet_type(pet_type_id))
-	return config.save(_path)
+	_last_storage_result = _store.write_validated(_path, config, _validate)
+	return OK if _last_storage_result.status == "COMMITTED" else _last_storage_result.error
 
 
 func load() -> Dictionary:
-	var config := ConfigFile.new()
-	if config.load(_path) != OK:
+	var config := _load_config()
+	if config == null:
 		return _default_identity()
 	return {
 		"player_style_id": normalize_player_style(str(config.get_value("identity", "player_style_id", ""))),

@@ -103,8 +103,7 @@ func _remove_test_file() -> void:
 
 
 func _remove_memory_ledger_storage() -> void:
-	if FileAccess.file_exists(MEMORY_LEDGER_STORAGE_PATH):
-		DirAccess.remove_absolute(ProjectSettings.globalize_path(MEMORY_LEDGER_STORAGE_PATH))
+	preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(MEMORY_LEDGER_STORAGE_PATH)
 
 
 func _finish() -> void:

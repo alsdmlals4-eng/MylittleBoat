@@ -2,7 +2,7 @@
 extends SceneTree
 
 const BOAT_SPACE_PATH := "res://scenes/boat_space.tscn"
-const TEST_SAVE_PATH := "user://final_composite_decor_contract.cfg"
+const TEST_SAVE_PATH := "user://test_final_composite_decor_contract.cfg"
 const CUSHION_TEXTURE_PATH := "res://assets/images/decor/pet_cushion/cushion_floral_chibi.png"
 
 var _failures := 0
@@ -66,8 +66,7 @@ func _expect(condition: bool, message: String) -> void:
 
 
 func _remove_test_save() -> void:
-	if FileAccess.file_exists(TEST_SAVE_PATH):
-		DirAccess.remove_absolute(ProjectSettings.globalize_path(TEST_SAVE_PATH))
+	preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(TEST_SAVE_PATH)
 
 
 func _finish() -> void:

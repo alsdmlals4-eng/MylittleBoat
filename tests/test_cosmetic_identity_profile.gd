@@ -3,8 +3,8 @@ extends SceneTree
 
 const CATALOG_PATH := "res://scripts/identity/identity_visual_catalog.gd"
 const PROFILE_PATH := "res://scripts/core/cosmetic_identity_profile.gd"
-const TEST_SAVE_PATH := "user://identity_profile_contract.cfg"
-const GAME_STATE_TEST_SAVE_PATH := "user://identity_game_state_contract.cfg"
+const TEST_SAVE_PATH := "user://test_identity_profile_contract.cfg"
+const GAME_STATE_TEST_SAVE_PATH := "user://test_identity_game_state_contract.cfg"
 
 var _failures := 0
 
@@ -29,6 +29,7 @@ func _run() -> void:
 		_expect(profile.save("unknown", "fox") == OK, "unknown values normalize rather than fail")
 		_expect(profile.load() == {"player_style_id": "c_loose_knit", "pet_type_id": "dog"}, "unknown values must normalize to defaults")
 		var invalid := ConfigFile.new()
+		_remove_test_save()
 		invalid.set_value("identity", "player_style_id", 42)
 		invalid.set_value("identity", "pet_type_id", [])
 		_expect(invalid.save(TEST_SAVE_PATH) == OK, "test must create a corrupt typed profile")
@@ -54,13 +55,11 @@ func _run() -> void:
 
 
 func _remove_test_save() -> void:
-	if FileAccess.file_exists(TEST_SAVE_PATH):
-		DirAccess.remove_absolute(ProjectSettings.globalize_path(TEST_SAVE_PATH))
+	preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(TEST_SAVE_PATH)
 
 
 func _remove_game_state_test_save() -> void:
-	if FileAccess.file_exists(GAME_STATE_TEST_SAVE_PATH):
-		DirAccess.remove_absolute(ProjectSettings.globalize_path(GAME_STATE_TEST_SAVE_PATH))
+	preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(GAME_STATE_TEST_SAVE_PATH)
 
 
 func _expect(condition: bool, message: String) -> void:

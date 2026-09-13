@@ -2,7 +2,7 @@
 extends SceneTree
 
 const PERSISTENCE_PATH := "res://scripts/core/boat_decor_persistence.gd"
-const TEST_SAVE_PATH := "user://boat_decor_persistence_contract.cfg"
+const TEST_SAVE_PATH := "user://test_boat_decor_persistence_contract.cfg"
 
 var _failures := 0
 
@@ -41,9 +41,7 @@ func _run() -> void:
 
 
 func _remove_test_save() -> void:
-	var absolute_path := ProjectSettings.globalize_path(TEST_SAVE_PATH)
-	if FileAccess.file_exists(TEST_SAVE_PATH):
-		DirAccess.remove_absolute(absolute_path)
+	preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(TEST_SAVE_PATH)
 
 
 func _expect(condition: bool, message: String) -> void:

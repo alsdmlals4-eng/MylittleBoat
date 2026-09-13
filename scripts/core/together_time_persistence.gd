@@ -5,21 +5,49 @@ extends RefCounted
 const DEFAULT_PATH := "user://together_time_v1.cfg"
 
 var _path: String
+var _store := preload("res://scripts/core/recoverable_config_store.gd").new()
+var _last_storage_result: Dictionary = {}
 
 
 func _init(path: String = DEFAULT_PATH) -> void:
 	_path = path
 
+func get_last_storage_result() -> Dictionary:
+	return _last_storage_result.duplicate()
+
+
+func recover_primary() -> Dictionary:
+	_last_storage_result = _store.recover_primary(_path, _validate)
+	return get_last_storage_result()
+
+
+func _load_config() -> ConfigFile:
+	_last_storage_result = _store.read_validated(_path, _validate)
+	if _last_storage_result.config != null:
+		return _last_storage_result.config
+	# Legacy fallback is read-only; schema-invalid bytes remain barred from saving.
+	if _last_storage_result.status == "CORRUPT" and _last_storage_result.error == ERR_INVALID_DATA:
+		var legacy := ConfigFile.new()
+		if legacy.load(_path) == OK:
+			return legacy
+	return null
+
+
+func _validate(config: ConfigFile) -> bool:
+	var seconds: Variant = config.get_value("together_time", "seconds", 0.0)
+	return (seconds is float or seconds is int) and is_finite(float(seconds)) and float(seconds) >= 0.0
+
 
 func save_seconds(value: float) -> Error:
 	var config := ConfigFile.new()
 	config.set_value("together_time", "seconds", _normalize_seconds(value))
-	return config.save(_path)
+	_last_storage_result = _store.write_validated(_path, config, _validate)
+	return OK if _last_storage_result.status == "COMMITTED" else _last_storage_result.error
 
 
 func load_seconds() -> float:
-	var config := ConfigFile.new()
-	if config.load(_path) != OK:
+	var config := _load_config()
+	if config == null:
 		return 0.0
 	var raw_value: Variant = config.get_value("together_time", "seconds", 0.0)
 	if typeof(raw_value) != TYPE_FLOAT and typeof(raw_value) != TYPE_INT:

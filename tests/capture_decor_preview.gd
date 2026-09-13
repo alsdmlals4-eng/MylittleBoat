@@ -2,8 +2,8 @@
 extends SceneTree
 
 const EVIDENCE_DIRECTORY := "res://docs/evidence/2026-08-30-direct-entry-real-time"
-const IDENTITY_TEST_SAVE_PATH := "user://capture_decor_preview_identity.cfg"
-const DECOR_TEST_SAVE_PATH := "user://capture_decor_preview_decor.cfg"
+const IDENTITY_TEST_SAVE_PATH := "user://test_capture_decor_preview_identity.cfg"
+const DECOR_TEST_SAVE_PATH := "user://test_capture_decor_preview_decor.cfg"
 const OUTPUT_FILE_NAME := "decor_preview_alt_identity_540x960.png"
 
 
@@ -55,8 +55,8 @@ func _capture() -> void:
 
 
 func _prepare_isolated_cosmetics(game_state: Node) -> void:
-	DirAccess.remove_absolute(ProjectSettings.globalize_path(IDENTITY_TEST_SAVE_PATH))
-	DirAccess.remove_absolute(ProjectSettings.globalize_path(DECOR_TEST_SAVE_PATH))
+	preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(IDENTITY_TEST_SAVE_PATH)
+	preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(DECOR_TEST_SAVE_PATH)
 	game_state.set_identity_storage_path(IDENTITY_TEST_SAVE_PATH)
 	game_state.set_boat_decor_storage_path(DECOR_TEST_SAVE_PATH)
 	game_state.boat_decor.clear()
@@ -100,12 +100,12 @@ func _cleanup(scene: Node, game_state: Node) -> void:
 func _restore_storage(game_state: Node) -> void:
 	game_state.reset_session()
 	game_state.set_identity_storage_path("user://identity_profile_v1.cfg")
-	DirAccess.remove_absolute(ProjectSettings.globalize_path(IDENTITY_TEST_SAVE_PATH))
+	preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(IDENTITY_TEST_SAVE_PATH)
 	game_state.boat_decor.clear()
 	game_state.boat_decor_appearances.clear()
 	game_state.set_boat_decor_storage_path("user://boat_decor_v1.cfg")
 	game_state.load_boat_decor()
-	DirAccess.remove_absolute(ProjectSettings.globalize_path(DECOR_TEST_SAVE_PATH))
+	preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(DECOR_TEST_SAVE_PATH)
 
 
 func _fail(message: String) -> void:

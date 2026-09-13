@@ -170,7 +170,6 @@ func run() -> void:
 		await process_frame
 	preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(STORAGE)
 	for path in isolated_paths:
-		if FileAccess.file_exists(path):
-			DirAccess.remove_absolute(ProjectSettings.globalize_path(path))
+		preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(path)
 	print("OCEAN_VOLUME_FAILURES=%d" % failures)
 	quit(1 if failures else 0)

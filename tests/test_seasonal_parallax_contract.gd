@@ -308,8 +308,7 @@ func _expect(condition: bool, message: String) -> void:
 func _finish() -> void:
 	root.get_node("RestingSoundscape").release_ocean_bed_for_shutdown()
 	for path in _storage_paths:
-		if FileAccess.file_exists(path):
-			DirAccess.remove_absolute(ProjectSettings.globalize_path(path))
+		preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(path)
 	if _failures == 0:
 		print("PASS: seasonal parallax contract")
 		quit(0)

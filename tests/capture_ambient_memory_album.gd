@@ -3,7 +3,7 @@ extends SceneTree
 
 const EVIDENCE_DIRECTORY := "res://docs/evidence/2026-08-30-direct-entry-real-time"
 const ALBUM_PATH := "res://scenes/album.tscn"
-const STORAGE_PATH := "user://capture_ambient_memory_album.cfg"
+const STORAGE_PATH := "user://test_capture_ambient_memory_album.cfg"
 const CAPTURE_NAME := "album_restored_ambient_memory_540x960.png"
 const AMBIENT_ENTRY := "멀리 바위 아치 사이로 잔잔한 물줄기가 보입니다."
 
@@ -70,9 +70,11 @@ func _capture() -> void:
 
 
 func _clear_storage() -> void:
-	var file := FileAccess.open(STORAGE_PATH, FileAccess.WRITE)
-	if file != null:
-		file.store_string("")
+	preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(STORAGE_PATH)
+
+
+func _finalize() -> void:
+	_clear_storage()
 
 
 func _fail(message: String) -> void:

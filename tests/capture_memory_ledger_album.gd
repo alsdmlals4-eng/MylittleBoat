@@ -3,7 +3,7 @@ extends SceneTree
 
 const EVIDENCE_DIRECTORY := "res://docs/evidence/2026-08-30-memory-ledger"
 const ALBUM_PATH := "res://scenes/album.tscn"
-const STORAGE_PATH := "user://capture_memory_ledger_album.cfg"
+const STORAGE_PATH := "user://test_capture_memory_ledger_album.cfg"
 const CAPTURE_NAME := "album_restored_fish_and_voyage_540x960.png"
 const FISH_ENTRY := "유리빛 정어리"
 const VOYAGE_ENTRY := "오늘의 항해 · 사진 0 · 풍경 0 · 편지 0 · 물고기 1"
@@ -95,8 +95,7 @@ func _restore_storage(game_state: Node) -> void:
 
 
 func _clear_storage() -> void:
-	if FileAccess.file_exists(STORAGE_PATH):
-		DirAccess.remove_absolute(ProjectSettings.globalize_path(STORAGE_PATH))
+	preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(STORAGE_PATH)
 
 
 func _fail(message: String) -> void:

@@ -3,7 +3,7 @@ extends SceneTree
 
 const CATALOG_PATH := "res://scripts/identity/identity_visual_catalog.gd"
 const BOAT_SPACE_PATH := "res://scenes/boat_space.tscn"
-const GAME_STATE_TEST_SAVE_PATH := "user://identity_visual_contract.cfg"
+const GAME_STATE_TEST_SAVE_PATH := "user://test_identity_visual_contract.cfg"
 const EXPECTED_PLAYER_PATHS := {
 	"a_soft_hooded": "res://assets/images/runtime/chibi_alternates/avatar_a_soft_hooded_chibi.png",
 	"b_short_cape": "res://assets/images/runtime/chibi_alternates/avatar_b_short_cape_chibi.png",
@@ -127,8 +127,7 @@ func _get_art_card_texture_path(owner: Node3D) -> String:
 
 
 func _remove_game_state_test_save() -> void:
-	if FileAccess.file_exists(GAME_STATE_TEST_SAVE_PATH):
-		DirAccess.remove_absolute(ProjectSettings.globalize_path(GAME_STATE_TEST_SAVE_PATH))
+	preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(GAME_STATE_TEST_SAVE_PATH)
 
 
 func _expect(condition: bool, message: String) -> void:

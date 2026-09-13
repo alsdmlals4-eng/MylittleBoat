@@ -2,7 +2,7 @@
 extends SceneTree
 
 const GAME_SCENE_PATH := "res://scenes/game.tscn"
-const TEST_DECOR_SAVE_PATH := "user://chibi_normal_clean_capture_decor.cfg"
+const TEST_DECOR_SAVE_PATH := "user://test_chibi_normal_clean_capture_decor.cfg"
 const EVIDENCE_DIRECTORY := "res://docs/evidence/2026-08-30-chibi-normal-material-proof"
 const EVIDENCE_FILE_NAME := "chibi_normal_clean_night_540x960.png"
 
@@ -75,8 +75,7 @@ func _cleanup(scene: Node, game_state: Node) -> void:
 func _restore_user_decor(game_state: Node) -> void:
 	game_state.set_boat_decor_storage_path("user://boat_decor_v1.cfg")
 	game_state.load_boat_decor()
-	if FileAccess.file_exists(TEST_DECOR_SAVE_PATH):
-		DirAccess.remove_absolute(ProjectSettings.globalize_path(TEST_DECOR_SAVE_PATH))
+	preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(TEST_DECOR_SAVE_PATH)
 
 
 func _get_warm_foreground_width(image: Image) -> int:

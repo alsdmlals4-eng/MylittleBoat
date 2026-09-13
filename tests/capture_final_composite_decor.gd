@@ -3,8 +3,8 @@ extends SceneTree
 
 const EVIDENCE_PATH := "res://docs/evidence/2026-08-27-final-composite-decor/floral-cushion_postcard-selected_main_540x960.png"
 const EVIDENCE_DIRECTORY := "res://docs/evidence/2026-08-27-final-composite-decor"
-const IDENTITY_TEST_SAVE_PATH := "user://capture_final_composite_identity.cfg"
-const DECOR_TEST_SAVE_PATH := "user://capture_final_composite_decor.cfg"
+const IDENTITY_TEST_SAVE_PATH := "user://test_capture_final_composite_identity.cfg"
+const DECOR_TEST_SAVE_PATH := "user://test_capture_final_composite_decor.cfg"
 const RUNTIME_CAPTURE_GUARD_SCRIPT = preload("res://scripts/visual/runtime_capture_guard.gd")
 
 
@@ -66,8 +66,7 @@ func _restore_state(game_state: Node) -> void:
 
 func _remove_test_saves() -> void:
 	for test_save_path in [IDENTITY_TEST_SAVE_PATH, DECOR_TEST_SAVE_PATH]:
-		if FileAccess.file_exists(test_save_path):
-			DirAccess.remove_absolute(ProjectSettings.globalize_path(test_save_path))
+		preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(test_save_path)
 
 
 func _fail(message: String) -> void:

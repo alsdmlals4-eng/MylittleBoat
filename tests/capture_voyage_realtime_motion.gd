@@ -111,5 +111,4 @@ func capture() -> void:
 
 func _cleanup_storage() -> void:
 	for path in paths:
-		if FileAccess.file_exists(path):
-			DirAccess.remove_absolute(ProjectSettings.globalize_path(path))
+		preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(path)

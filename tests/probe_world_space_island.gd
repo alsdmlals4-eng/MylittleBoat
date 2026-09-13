@@ -95,8 +95,7 @@ func run() -> void:
 	for _frame in 4:
 		await process_frame
 	for path in paths:
-		if FileAccess.file_exists(path):
-			DirAccess.remove_absolute(ProjectSettings.globalize_path(path))
+		preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(path)
 	quit(0 if file != null and capture_errors == 0 and world_unchanged and cleared else 2)
 
 func sample(_game: Node, label: String, world_position: Vector3) -> void:

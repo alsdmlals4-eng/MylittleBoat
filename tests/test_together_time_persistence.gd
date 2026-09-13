@@ -37,7 +37,7 @@ func _write_raw_config(contents: String) -> void:
 
 
 func _cleanup_test_storage() -> void:
-	DirAccess.remove_absolute(ProjectSettings.globalize_path(STORAGE_PATH))
+	preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(STORAGE_PATH)
 
 
 func _expect(condition: bool, message: String) -> void:

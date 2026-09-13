@@ -17,7 +17,6 @@ func _run() -> void:
 	if not ResourceLoader.exists(PERSISTENCE_PATH):
 		_finish()
 		return
-	_write_raw_config("")
 	var persistence: Variant = (load(PERSISTENCE_PATH) as Script).new(STORAGE_PATH)
 	var missing_entries: Dictionary = persistence.load_entries()
 	_expect(missing_entries == {"fish": [], "voyage_records": []}, "missing memory ledger must restore empty fish and voyage-record lists")
@@ -40,7 +39,7 @@ func _write_raw_config(contents: String) -> void:
 
 
 func _cleanup_test_storage() -> void:
-	DirAccess.remove_absolute(ProjectSettings.globalize_path(STORAGE_PATH))
+	preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(STORAGE_PATH)
 
 
 func _expect(condition: bool, message: String) -> void:

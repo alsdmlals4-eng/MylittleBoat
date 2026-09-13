@@ -2,8 +2,8 @@
 extends SceneTree
 
 const EVIDENCE_DIRECTORY := "res://docs/evidence/2026-08-31-split-sky-sea-background"
-const IDENTITY_TEST_SAVE_PATH := "user://capture_four_time_identity.cfg"
-const DECOR_TEST_SAVE_PATH := "user://capture_four_time_decor.cfg"
+const IDENTITY_TEST_SAVE_PATH := "user://test_capture_four_time_identity.cfg"
+const DECOR_TEST_SAVE_PATH := "user://test_capture_four_time_decor.cfg"
 const TIME_OF_DAY_CATALOG_SCRIPT = preload("res://scripts/voyage/time_of_day_catalog.gd")
 const RUNTIME_CAPTURE_GUARD_SCRIPT = preload("res://scripts/visual/runtime_capture_guard.gd")
 
@@ -118,8 +118,7 @@ func _save_runtime_image(file_name: String) -> bool:
 
 
 func _remove_identity_test_save() -> void:
-	if FileAccess.file_exists(IDENTITY_TEST_SAVE_PATH):
-		DirAccess.remove_absolute(ProjectSettings.globalize_path(IDENTITY_TEST_SAVE_PATH))
+	preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(IDENTITY_TEST_SAVE_PATH)
 
 
 func _restore_test_state(game_state: Node) -> void:
@@ -147,8 +146,7 @@ func _hour_for_time_of_day(time_of_day_id: String) -> int:
 
 
 func _remove_decor_test_save() -> void:
-	if FileAccess.file_exists(DECOR_TEST_SAVE_PATH):
-		DirAccess.remove_absolute(ProjectSettings.globalize_path(DECOR_TEST_SAVE_PATH))
+	preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(DECOR_TEST_SAVE_PATH)
 
 
 func _fail(message: String) -> void:

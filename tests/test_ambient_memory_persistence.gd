@@ -17,7 +17,6 @@ func _run() -> void:
 	if not ResourceLoader.exists(PERSISTENCE_PATH):
 		_finish()
 		return
-	_write_raw_config("")
 	var persistence: Variant = (load(PERSISTENCE_PATH) as Script).new(STORAGE_PATH)
 	_expect(persistence.load_entries().is_empty(), "missing ambient-memory file must restore an empty list")
 	var entries: Array[String] = ["멀리 바위 아치 사이로 잔잔한 물줄기가 보입니다.", "해안의 모래빛 절벽이 물 위에 길게 번집니다."]
@@ -36,7 +35,7 @@ func _write_raw_config(contents: String) -> void:
 
 
 func _cleanup_test_storage() -> void:
-	DirAccess.remove_absolute(ProjectSettings.globalize_path(STORAGE_PATH))
+	preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(STORAGE_PATH)
 
 
 func _expect(condition: bool, message: String) -> void:

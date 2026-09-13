@@ -2,8 +2,8 @@
 extends SceneTree
 
 const EVIDENCE_DIRECTORY := "res://docs/evidence/2026-08-27-runtime-identity-selection"
-const GAME_STATE_TEST_SAVE_PATH := "user://capture_identity_selection.cfg"
-const BOAT_DECOR_TEST_SAVE_PATH := "user://capture_runtime_identity_decor.cfg"
+const GAME_STATE_TEST_SAVE_PATH := "user://test_capture_identity_selection.cfg"
+const BOAT_DECOR_TEST_SAVE_PATH := "user://test_capture_runtime_identity_decor.cfg"
 
 
 func _init() -> void:
@@ -89,13 +89,11 @@ func _save_runtime_image(file_name: String) -> bool:
 
 
 func _remove_test_save() -> void:
-	if FileAccess.file_exists(GAME_STATE_TEST_SAVE_PATH):
-		DirAccess.remove_absolute(ProjectSettings.globalize_path(GAME_STATE_TEST_SAVE_PATH))
+	preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(GAME_STATE_TEST_SAVE_PATH)
 
 
 func _remove_decor_test_save() -> void:
-	if FileAccess.file_exists(BOAT_DECOR_TEST_SAVE_PATH):
-		DirAccess.remove_absolute(ProjectSettings.globalize_path(BOAT_DECOR_TEST_SAVE_PATH))
+	preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(BOAT_DECOR_TEST_SAVE_PATH)
 
 
 func _restore_game_state_storage(game_state: Node) -> void:
