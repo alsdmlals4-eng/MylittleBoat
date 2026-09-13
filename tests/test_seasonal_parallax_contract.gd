@@ -20,6 +20,7 @@ const ISLAND_CAMERA_PATHS := [
 ]
 
 var _failures := 0
+var _storage_paths: Array[String] = []
 
 
 func _init() -> void:
@@ -27,6 +28,12 @@ func _init() -> void:
 
 
 func _run() -> void:
+	var state := root.get_node("GameState")
+	for kind in ["comfort", "together_time", "memory_ledger", "identity", "boat_decor", "ambient_memory"]:
+		var path := "user://test_seasonal_world_%s.cfg" % kind
+		_storage_paths.append(path)
+		state.call("set_%s_storage_path" % kind, path)
+	state.reset_session()
 	_expect(ResourceLoader.exists(RESOLVER_PATH), "real-time atmosphere resolver must exist")
 	_expect(ResourceLoader.exists(DIRECTOR_PATH), "drift scenery director must exist")
 	_expect(ResourceLoader.exists(SEASONAL_ISLAND_TEXTURE_PATH), "approved bright spring island texture must be runtime-loadable")
@@ -53,8 +60,57 @@ func _run() -> void:
 
 	await _verify_scene_consumers()
 	await _verify_seasonal_motion_and_progression_boundary()
-	_verify_temporal_renderer_evidence_contract()
+	await _verify_world_anchor()
 	_finish()
+
+
+func _verify_world_anchor() -> void:
+	var scene := (load(GAME_SCENE_PATH) as PackedScene).instantiate()
+	root.add_child(scene)
+	await process_frame
+	scene.set_process(false)
+	scene.set_application_foreground(true)
+	scene.start_voyage_from_title()
+	var state := root.get_node("GameState")
+	state.motion_comfort_profile = "standard"
+	state.speed_index = 1
+	scene._show_seasonal_island_layer(load(SEASONAL_ISLAND_TEXTURE_PATH), 1.0)
+	var island := scene.get_node_or_null("VoyageWorld/SeasonalIslandLayer") as Sprite3D
+	_expect(island != null, "one world island must replace camera-owned moving copies")
+	if island != null:
+		var anchor := island.global_position
+		var before := scene.get_node("VoyageWorld/DioramaCameraRig").global_position as Vector3
+		scene._apply_drift_motion(3.0)
+		_expect(island.global_position.is_equal_approx(anchor), "landmark must remain stationary while the boat advances")
+		var after := scene.get_node("VoyageWorld/DioramaCameraRig").global_position as Vector3
+		_expect(is_equal_approx(after.z - before.z, 0.96), "world landmark passage must use actual boat travel")
+		for camera_path in CLOUD_CAMERA_PATHS:
+			var camera := scene.get_node(camera_path) as Camera3D
+			_expect((camera.cull_mask & island.layers) != 0, "all voyage cameras must observe the same world island")
+		_expect(absf(anchor.x) - island.region_rect.size.x * island.pixel_size * 0.5 > 1.0, "world island bounds must not intrude into the central boat corridor")
+		var progress: float = scene.get("_seasonal_island_progress")
+		state.motion_comfort_profile = "still"
+		scene._apply_drift_motion(100.0)
+		_expect(island.visible and is_equal_approx(scene.get("_seasonal_island_progress"), progress), "still must retain island and its travel progress")
+		state.motion_comfort_profile = "standard"
+		scene.set_application_foreground(false)
+		scene._apply_drift_motion(100.0)
+		_expect(island.visible and is_equal_approx(scene.get("_seasonal_island_progress"), progress), "background must not consume world passage distance")
+		scene.set_application_foreground(true)
+		scene._apply_drift_motion(8.0)
+		_expect(island.visible and island.global_position.is_equal_approx(anchor), "island must persist while boat reaches and passes its anchor")
+		var boat_z: float = scene.get_node("VoyageWorld/VoyageRoute/BoatProgress").global_position.z
+		_expect(boat_z > anchor.z, "boat must actually pass the island's longitudinal position")
+		scene._apply_drift_motion(10.0)
+		_expect(not island.visible, "landmark must retire after the real pass, without accumulating nodes")
+		scene._apply_drift_motion(1590.0)
+		scene._show_seasonal_island_layer(load(SEASONAL_ISLAND_TEXTURE_PATH), -1.0)
+		var late_anchor := island.global_position
+		_expect(late_anchor.z > 512.0, "new island must spawn near the current long-distance boat, not world origin")
+		scene._apply_drift_motion(3.0)
+		_expect(island.global_position.is_equal_approx(late_anchor) and island.visible, "long-distance island must stay fixed and observable")
+	scene.queue_free()
+	await process_frame
 
 
 func _find_seasonal_bright_event() -> Dictionary:
@@ -89,16 +145,13 @@ func _verify_scene_consumers() -> void:
 	var look_around_foreground := scene.get_node_or_null("VoyageWorld/LookAroundCameraRig/LookAroundCamera3D/LookAroundForeground") as Sprite3D
 	var look_around_cloud := scene.get_node_or_null("VoyageWorld/LookAroundCameraRig/LookAroundCamera3D/SeasonalCloudLayer") as Sprite3D
 	_expect(look_around_foreground != null and look_around_cloud != null and look_around_foreground.material_override != look_around_cloud.material_override, "seasonal cloud material must not overwrite the angle-foreground texture binding")
-	for camera_path in ISLAND_CAMERA_PATHS:
-		var island := scene.get_node_or_null("%s/SeasonalIslandLayer" % camera_path) as Sprite3D
-		_expect(island != null, "%s must own a named seasonal island layer" % camera_path)
-		if island != null:
-			_expect(island.texture != null and island.texture.resource_path == SEASONAL_ISLAND_TEXTURE_PATH, "%s island layer must use the exact approved island texture" % camera_path)
+	var island := scene.get_node_or_null("VoyageWorld/SeasonalIslandLayer") as Sprite3D
+	_expect(island != null and island.texture.resource_path == SEASONAL_ISLAND_TEXTURE_PATH, "shared world island must use the approved texture")
 	_verify_distant_island_geometry(scene)
 	_verify_camera_scenery_isolation(scene)
 	scene.call("_show_seasonal_island_layer", load(SEASONAL_ISLAND_TEXTURE_PATH), 1.0)
 	scene.call("_apply_seasonal_island_progress", 0.5)
-	var retained_island := scene.get_node("%s/SeasonalIslandLayer" % ISLAND_CAMERA_PATHS[0]) as Sprite3D
+	var retained_island := scene.get_node("VoyageWorld/SeasonalIslandLayer") as Sprite3D
 	var retained_position := retained_island.position
 	for transition in range(4):
 		scene.call("_toggle_appreciation_mode")
@@ -128,26 +181,24 @@ func _verify_camera_scenery_isolation(scene: Node) -> void:
 		var camera := scene.get_node(camera_path) as Camera3D
 		_expect(camera.get_cull_mask_value(1), "camera must retain shared boat and water rendering")
 		for owner_path in ISLAND_CAMERA_PATHS:
-			for node_name in ["SeasonalIslandLayer", "AmbientSceneryPass"]:
+			for node_name in ["AmbientSceneryPass"]:
 				var scenery := scene.get_node("%s/%s" % [owner_path, node_name]) as Sprite3D
 				var can_render := (camera.cull_mask & scenery.layers) != 0
 				_expect(can_render == (camera_path == owner_path), "%s must render only its own %s, never another camera's scenery" % [camera_path, node_name])
 
 
 func _verify_same_side_depth_pass(scene: Node) -> void:
+	scene.set_process(false)
+	scene.set_application_foreground(true)
 	for side in [-1.0, 0.0, 1.0]:
 		scene.call("_show_seasonal_island_layer", load(SEASONAL_ISLAND_TEXTURE_PATH), side)
-		var previous_depth := 100.0
+		var island := scene.get_node("VoyageWorld/SeasonalIslandLayer") as Sprite3D
+		var anchor := island.global_position
 		for step in range(1, 10):
 			scene.call("_apply_seasonal_island_progress", float(step) / 10.0)
-			for camera_path in ISLAND_CAMERA_PATHS:
-				var island := scene.get_node("%s/SeasonalIslandLayer" % camera_path) as Sprite3D
-				var half_width := island.region_rect.size.x * island.pixel_size * 0.5
-				_expect(absf(island.position.x) - half_width > 0.5, "island bounds must leave the central sea lane clear throughout transit")
-				_expect(island.position.x * (side if side != 0.0 else 1.0) > 0.0, "island must stay on its entry side, including zero-offset fallback")
-			var normal := scene.get_node("%s/SeasonalIslandLayer" % ISLAND_CAMERA_PATHS[0]) as Sprite3D
-			_expect(absf(normal.position.z) < previous_depth, "passing scenery must change depth, not only slide sideways")
-			previous_depth = absf(normal.position.z)
+			var half_width := island.region_rect.size.x * island.pixel_size * 0.5
+			_expect(absf(island.position.x) - half_width > 1.0, "world island bounds must leave the central sea lane clear throughout transit")
+			_expect(island.global_position.is_equal_approx(anchor), "fading must not translate the world island")
 	scene.call("_clear_ambient_scenery_passes")
 
 
@@ -155,15 +206,17 @@ func _verify_distant_island_geometry(scene: Node) -> void:
 	var camera := scene.get_node_or_null("VoyageWorld/DioramaCameraRig/DioramaCamera3D") as Camera3D
 	var sea := scene.get_node_or_null("VoyageWorld/DioramaCameraRig/DioramaCamera3D/SeaBackdrop") as Sprite3D
 	var ambient_scenery := scene.get_node_or_null("VoyageWorld/DioramaCameraRig/DioramaCamera3D/AmbientSceneryPass") as Sprite3D
-	var island := scene.get_node_or_null("VoyageWorld/DioramaCameraRig/DioramaCamera3D/SeasonalIslandLayer") as Sprite3D
+	scene.call("_show_seasonal_island_layer", load(SEASONAL_ISLAND_TEXTURE_PATH), 1.0)
+	var island := scene.get_node_or_null("VoyageWorld/SeasonalIslandLayer") as Sprite3D
 	_expect(camera != null and sea != null and ambient_scenery != null and island != null, "distant-island geometry needs the real normal camera, sea, ambient pass, and island layer")
 	if camera == null or sea == null or ambient_scenery == null or island == null or island.texture == null:
 		return
-	_expect(island.position.z > sea.position.z, "seasonal island must remain in front of the flowing sea so its transparent distant silhouette can render")
+	var camera_depth := absf(camera.to_local(island.global_position).z)
+	_expect(camera_depth < absf(sea.position.z), "world island must start in front of the sea backdrop")
 	_expect(island.region_enabled, "seasonal island must crop the transparent source canvas before entering the distant background route")
 	var rendered_region := island.region_rect if island.region_enabled else Rect2(Vector2.ZERO, island.texture.get_size())
 	_expect(rendered_region.position.x > 0.0 and rendered_region.position.y > 0.0 and rendered_region.end.x < island.texture.get_width() and rendered_region.end.y < island.texture.get_height(), "seasonal island region must exclude the source image's empty margins")
-	var viewport_height_ratio := rendered_region.size.y * island.pixel_size / (2.0 * absf(island.position.z) * tan(deg_to_rad(camera.fov) * 0.5))
+	var viewport_height_ratio := rendered_region.size.y * island.pixel_size / (2.0 * camera_depth * tan(deg_to_rad(camera.fov) * 0.5))
 	_expect(viewport_height_ratio <= 0.30, "seasonal island must occupy a distant horizon scale instead of the boat-overlapping foreground scale")
 
 
@@ -194,17 +247,6 @@ func _verify_seasonal_motion_and_progression_boundary() -> void:
 	_expect(is_equal_approx(game_state.together_time_seconds, before_together_time), "seasonal visuals must not alter together-time semantics")
 
 
-func _verify_temporal_renderer_evidence_contract() -> void:
-	_expect(ResourceLoader.exists(CAPTURE_SCRIPT_PATH), "seasonal renderer evidence script must exist")
-	if not ResourceLoader.exists(CAPTURE_SCRIPT_PATH):
-		return
-	var source := FileAccess.get_file_as_string(CAPTURE_SCRIPT_PATH)
-	_expect(source.contains("MOTION_EARLY_CAPTURE_FILE"), "renderer evidence must retain an early in-transit island frame")
-	_expect(source.contains("MOTION_LATE_CAPTURE_FILE"), "renderer evidence must retain a late in-transit island frame")
-	_expect(source.contains("MIN_MOTION_HORIZONTAL_DELTA_PIXELS"), "renderer evidence must require a meaningful horizontal island displacement")
-	_expect(source.contains("_get_distant_island_center_x"), "renderer evidence must locate the rendered island rather than infer movement from a timer")
-
-
 func _sample_seasonal_motion(profile: String) -> Dictionary:
 	var game_state := root.get_node_or_null("GameState")
 	if game_state == null:
@@ -217,6 +259,7 @@ func _sample_seasonal_motion(profile: String) -> Dictionary:
 	# now correctly refuse to advance a genuinely inactive application.
 	scene.set_process(false)
 	scene.set_application_foreground(true)
+	scene.set("_title_waiting", false)
 	scene.call("apply_real_time_visual_context_for_tests", 12, 4)
 	var director = scene.get("_drift_scenery_director")
 	var event_seed := _find_no_save_seasonal_bright_seed()
@@ -229,14 +272,15 @@ func _sample_seasonal_motion(profile: String) -> Dictionary:
 	seed(event_seed)
 	scene.call("_advance_drift_scenery", 0.1)
 	var cloud := scene.get_node_or_null("VoyageWorld/DioramaCameraRig/DioramaCamera3D/SeasonalCloudLayer") as Sprite3D
-	var island := scene.get_node_or_null("VoyageWorld/DioramaCameraRig/DioramaCamera3D/SeasonalIslandLayer") as Sprite3D
+	var island := scene.get_node_or_null("VoyageWorld/SeasonalIslandLayer") as Sprite3D
 	var cloud_start_x := cloud.position.x if cloud != null else 0.0
-	var island_start_x := island.position.x if island != null else 0.0
+	var camera := scene.get_node("VoyageWorld/DioramaCameraRig/DioramaCamera3D") as Camera3D
+	var island_start := camera.to_local(island.global_position) if island != null else Vector3.ZERO
 	scene.call("_apply_drift_motion", 1.0)
 	var result := {
 		"island_visible": island != null and island.visible,
 		"cloud_delta": absf(cloud.position.x - cloud_start_x) if cloud != null else 0.0,
-		"island_delta": absf(island.position.x - island_start_x) if island != null else 0.0,
+		"island_delta": camera.to_local(island.global_position).distance_to(island_start) if island != null else 0.0,
 	}
 	scene.queue_free()
 	await process_frame
@@ -262,6 +306,10 @@ func _expect(condition: bool, message: String) -> void:
 
 
 func _finish() -> void:
+	root.get_node("RestingSoundscape").release_ocean_bed_for_shutdown()
+	for path in _storage_paths:
+		if FileAccess.file_exists(path):
+			DirAccess.remove_absolute(ProjectSettings.globalize_path(path))
 	if _failures == 0:
 		print("PASS: seasonal parallax contract")
 		quit(0)

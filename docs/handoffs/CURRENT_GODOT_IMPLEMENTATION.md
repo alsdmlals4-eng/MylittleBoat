@@ -4,6 +4,18 @@
 **역할:** 실제 코드·Scene·test·runtime evidence와 현재 제품 정본의 차이를 기록하는 기술 router
 **현재 사람용 정본:** [프로젝트 GDD](../design/PROJECT_GDD.md)
 
+### 2026-09-13 진행 — 공통 세계 원경의 실제 통과
+
+기존 승인 봄섬 두 camera-local 복제를 `VoyageWorld/SeasonalIslandLayer` 한 개로 대체한다. 직선 항로 기준 좌우 x ±4, y -2.3, 현재 route z +3.5에 배치하며 billboard 대각 반경과 중앙 통행 여유 1.25를 확보한다. 이는 원경용 승인 PNG의 공간 consumer 전환이며 새 3D 지형/아트 승격이 아니다. side 입력은 이제 화면 좌우가 아닌 world 항로의 좌우다. 기본 3/4 시선 때문에 반대쪽 섬은 주변부에 보이고 사용자가 돌려볼 수 있다. 카메라를 강제로 섬으로 돌리지 않는다.
+
+선택 비교는 camera-local 복제 유지 `REJECT`(서로 다른 공간), 단일 world billboard `ADAPT`(현재 승인 원경과 실제 경로 재사용), 모델 지형 `DEFER`(근거리 최종 방향이나 모델/리그·수면 미준비)다. [Godot SpriteBase3D](https://docs.godotengine.org/en/stable/classes/class_spritebase3d.html)의 거리 투영·billboard·depth 제약과 [DREDGE 제작진 사례](https://www.gamedeveloper.com/design/trawling-in-the-deep-how-black-salt-games-made-spooky-fishing-rpg-i-dredge-i-)의 시각 파도/진행 분리를 참고했다. 엔진·제작 사례가 우리 runtime 성공의 증거는 아니다.
+
+실행 순서는 공통 앵커 부재 RED → Scene/route consumer 연결 → 실제 촬영의 거의 보이지 않는 초기 배치 교정 → 시점/정지/통과/장거리 회귀 → 전체 검사·독립 검토·증거 readback이다. scope owner는 game scene, 기존 계절/overlay/route tests, 현재 capture 도구다. 저장 schema·보상·발견 확률·일반 풍경·승인 PNG bytes는 보존한다. 실패 시 이번 논리 변경만 되돌리고 이전 증거/다른 workstream은 유지한다.
+
+통과의 진행도는 실제 route 이동거리/6.5이며, standard speed 1에서 약 20.31초다. 14초는 일반 풍경의 기존 시간으로 유지한다. 섬은 anchor를 지난 뒤 3 units에서 정리하고 title/still/background/full overlay에서는 진행하지 않는다. 세 camera가 shared layer 1의 같은 앵커를 본다. 하늘·수면·구름과 일반 motif의 완전한 world 전환, 근거리 모델, 자유 회전 가림은 미완료다.
+
+기존 `capture_bright_spring_seasonal_parallax.gd`는 현재 공통 촬영기의 호환 진입점이다. display renderer와 **새 절대 출력 폴더**가 필요하며 과거 9/1 증거를 덮어쓰지 않는다. 수동 delta GPU 표본과 실제 30초 촬영을 구분한다. [현재 검증 기록](../evidence/2026-09-13-world-island/REVIEW.md)에서 최종 상태를 확인한다.
+
 ### 2026-09-13 진행 계획 — 실제 항해 경로와 구간 연속성
 
 후속 관찰축 단위는 기존 기본 카메라를 보존하고 LookAround/Appreciation의 초기 x/z 위치·세계 yaw를 맞춘다. LookAround는 `reference_yaw_degrees`·`reference_pitch_degrees`와 사용자 상대 각도를 분리해 yaw ±135°와 pitch -16°..38°의 상대 입력 제한·front/port/starboard/aft 분류를 유지한다. 생산 기준 pitch는 -29.793805°여서 실제 pitch 범위는 -45.793805°..8.206195°다. 수면 consumer도 두 조작 카메라의 상대 yaw를 사용한다. 테스트는 초기 heading 불일치 RED → 정렬 GREEN, 중립/좌우 수면 방향·입력·구도·overlay 회귀, 실제 세 시점 캡처 순서다. 이는 공통 기준축 준비이지 아직 단일 world 섬이나 실제 3D 모델 회전의 완성이 아니다.

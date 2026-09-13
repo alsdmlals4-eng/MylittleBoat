@@ -98,10 +98,10 @@ func run() -> void:
 	game._apply_drift_motion(0.0)
 	still_timer.start(0.05)
 	await create_timer(0.15).timeout
-	expect(game.get_node("VoyageWorld/DioramaCameraRig/DioramaCamera3D/SeasonalIslandLayer").visible, "frozen seasonal island must survive wall-clock expiry")
+	expect(game.get_node("VoyageWorld/SeasonalIslandLayer").visible, "frozen seasonal island must survive wall-clock expiry")
 	state.set_motion_comfort_profile("standard")
 	game._apply_drift_motion(100.0)
-	expect(not game.get_node("VoyageWorld/DioramaCameraRig/DioramaCamera3D/SeasonalIslandLayer").visible, "seasonal island must clear after visual completion")
+	expect(not game.get_node("VoyageWorld/SeasonalIslandLayer").visible, "seasonal island must clear after visual completion")
 	game._show_temporary_ambient_scenery_backdrop("res://assets/images/runtime/voyage/ambient_motifs/bright-seagrass-sandbar.png", 1.0)
 	await create_timer(0.04).timeout
 	var active_tween: Tween = game.get("_ambient_scenery_pass_tween")

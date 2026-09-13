@@ -107,8 +107,8 @@ var _seasonal_cloud_phase := 0.0
 var _seasonal_island_layer_base_positions: Array[Vector3] = []
 var _seasonal_island_active := false
 var _seasonal_island_progress := 0.0
-var _seasonal_island_start_offset_x := 0.0
-var _seasonal_island_end_offset_x := 0.0
+var _seasonal_island_start_distance := 0.0
+var _seasonal_island_pass_distance := 1.0
 var _boat_space_base_position := Vector3.ZERO
 var _boat_space_base_rotation := Vector3.ZERO
 var _boat_water_contact_base_position := Vector3.ZERO
@@ -880,7 +880,7 @@ func _set_camera_split_backdrop_visible(camera_path: String, is_visible: bool) -
 		return
 	var scenery_layer := int(CAMERA_SCENERY_LAYERS.get(camera_path, 0))
 	camera.cull_mask = (camera.cull_mask & ~CAMERA_SCENERY_MASK) | scenery_layer
-	for node_name in ["SeasonalIslandLayer", "AmbientSceneryPass"]:
+	for node_name in ["AmbientSceneryPass"]:
 		var scenery := camera.get_node_or_null(node_name) as Sprite3D
 		if scenery != null:
 			scenery.layers = scenery_layer
@@ -1005,12 +1005,12 @@ func _apply_drift_motion(delta: float) -> void:
 			1.0,
 		)
 	_apply_background_flow()
-	_apply_seasonal_parallax_motion(safe_delta, visual_motion_multiplier, comfort_scale)
 	if not _title_waiting:
 		# 실제 경로 위치를 배·카메라·접점이 함께 소비한다. 저장/보상 거리가 아니다.
 		$VoyageWorld/VoyageRoute.advance_distance(safe_delta * 0.32 * visual_motion_multiplier * comfort_scale)
 	var travel: Vector3 = $VoyageWorld.to_local($VoyageWorld/VoyageRoute/BoatProgress.global_position)
 	_voyage_visual_distance = travel.z
+	_apply_seasonal_parallax_motion(safe_delta, visual_motion_multiplier, comfort_scale)
 	$VoyageWorld/DioramaCameraRig.position = _diorama_camera_base_position + travel
 	$VoyageWorld/LookAroundCameraRig.position = _look_around_camera_base_position + travel
 	$VoyageWorld/AppreciationCameraRig.position = _appreciation_camera_base_position + travel
@@ -1058,10 +1058,7 @@ func _apply_seasonal_parallax_motion(safe_delta: float, visual_motion_multiplier
 				continue
 			_get_seasonal_cloud_layers()[index].position = _seasonal_cloud_layer_base_positions[index] + Vector3(cloud_offset_x, 0.0, 0.0)
 	if _seasonal_island_active and seasonal_motion_delta > 0.0:
-		_seasonal_island_progress = minf(
-			1.0,
-			_seasonal_island_progress + seasonal_motion_delta / AMBIENT_SCENERY_PASS_DURATION_SECONDS,
-		)
+		_seasonal_island_progress = clampf((_voyage_visual_distance - _seasonal_island_start_distance) / _seasonal_island_pass_distance, 0.0, 1.0)
 		_apply_seasonal_island_progress(_seasonal_island_progress)
 		if _seasonal_island_progress >= 1.0:
 			_restore_active_atmosphere_backdrop()
@@ -1145,18 +1142,20 @@ func _show_seasonal_island_layer(scenery_texture: Texture2D, backdrop_offset_x: 
 	_clear_ambient_scenery_passes()
 	_seasonal_island_active = true
 	_seasonal_island_progress = 0.0
-	# 중앙 바닷길은 비우고 같은 쪽 원경을 지난다. 0 입력도 오른쪽으로 안전하게 배치한다.
+	# 첫 해역의 직선 항로 좌우에 고정한다. 화면 좌우가 아닌 세계 기준이다.
 	var side := -1.0 if backdrop_offset_x < 0.0 else 1.0
-	_seasonal_island_start_offset_x = side * 3.7
-	_seasonal_island_end_offset_x = side * 4.5
-	for index in _get_seasonal_island_layers().size():
-		if index >= _seasonal_island_layer_base_positions.size():
-			continue
-		var island_layer := _get_seasonal_island_layers()[index]
-		island_layer.texture = scenery_texture
-		island_layer.position = _seasonal_island_layer_base_positions[index] + Vector3(_seasonal_island_start_offset_x, 0.0, 0.0)
-		island_layer.modulate = Color(1.0, 1.0, 1.0, 0.0)
-		island_layer.visible = true
+	var island_layer := $VoyageWorld/SeasonalIslandLayer as Sprite3D
+	var anchor := Vector3(side * 4.0, -2.3, _voyage_visual_distance + 3.5)
+	var half_extent := island_layer.region_rect.size.length() * island_layer.pixel_size * 0.5
+	# billboard의 회전 가능한 대각 반경까지 항로 밖에 둔다.
+	anchor.x = side * maxf(absf(anchor.x), half_extent + 1.25)
+	island_layer.position = anchor
+	island_layer.texture = scenery_texture
+	island_layer.modulate = Color(1.0, 1.0, 1.0, 0.0)
+	island_layer.visible = true
+	_seasonal_island_start_distance = _voyage_visual_distance
+	# 섬의 앞에서 사라지지 않도록 배가 앵커보다 3 units 뒤까지 지난다.
+	_seasonal_island_pass_distance = maxf(anchor.z - _voyage_visual_distance + 3.0, 4.48)
 	%AmbientSceneryReturnTimer.start()
 	_sync_scenery_motion_clock()
 
@@ -1183,8 +1182,7 @@ func _get_ambient_scenery_passes() -> Array[Sprite3D]:
 
 func _get_seasonal_island_layers() -> Array[Sprite3D]:
 	return [
-		$VoyageWorld/DioramaCameraRig/DioramaCamera3D/SeasonalIslandLayer as Sprite3D,
-		$VoyageWorld/AppreciationCameraRig/AppreciationCamera3D/SeasonalIslandLayer as Sprite3D,
+		$VoyageWorld/SeasonalIslandLayer as Sprite3D,
 	]
 
 
@@ -1206,14 +1204,7 @@ func _apply_seasonal_island_progress(progress: float) -> void:
 		smoothstep(0.0, AMBIENT_SCENERY_PASS_FADE_FRACTION, progress),
 		smoothstep(0.0, AMBIENT_SCENERY_PASS_FADE_FRACTION, 1.0 - progress),
 	)
-	var offset_x := lerpf(_seasonal_island_start_offset_x, _seasonal_island_end_offset_x, progress)
-	for index in _get_seasonal_island_layers().size():
-		if index >= _seasonal_island_layer_base_positions.size():
-			continue
-		var island_layer := _get_seasonal_island_layers()[index]
-		# 제한된 camera-relative 깊이: 다가올수록 커지고 바깥으로 투영된다. 실제 월드 항법은 아니다.
-		var approach_z := 7.0 * progress
-		island_layer.position = _seasonal_island_layer_base_positions[index] + Vector3(offset_x, 0.0, approach_z)
+	for island_layer in _get_seasonal_island_layers():
 		island_layer.modulate = Color(1.0, 1.0, 1.0, pass_alpha)
 
 

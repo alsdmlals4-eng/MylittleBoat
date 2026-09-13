@@ -54,6 +54,10 @@ func run_checks() -> void:
 		expect(right.x < -0.99 and left.x > 0.99, "90/-90 degree views must retain the specified flow sign")
 	game.queue_free()
 	await process_frame
+	# autoload 소리는 Scene 교체 때 유지하되 테스트 종료 전에는 먼저 해제한다.
+	root.get_node("RestingSoundscape").release_ocean_bed_for_shutdown()
+	for _frame in 4:
+		await process_frame
 	if DisplayServer.get_name() != "headless":
 		await check_shader()
 	else:

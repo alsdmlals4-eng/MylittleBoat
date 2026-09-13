@@ -1,0 +1,162 @@
+{
+	"capture_errors": 0,
+	"cleared_after_pass": true,
+	"motion_time_evidence": "EXPLICIT_DELTA_NOT_REALTIME",
+	"renderer": "mobile",
+	"role": "PRODUCTION_WORLD_ISLAND_MANUAL_DELTA_GPU_SAMPLES",
+	"samples": [
+		{
+			"behind": false,
+			"camera": "/root/GameScene/VoyageWorld/DioramaCameraRig/DioramaCamera3D",
+			"island_pixel_samples": 1440,
+			"island_pixel_x_bounds": [
+				0,
+				222
+			],
+			"label": "normal-5s",
+			"screen": [
+				30.3046264648438,
+				512.834838867188
+			],
+			"world": [
+				4.0,
+				-2.29999995231628,
+				3.5
+			]
+		},
+		{
+			"behind": false,
+			"camera": "/root/GameScene/VoyageWorld/AppreciationCameraRig/AppreciationCamera3D",
+			"island_pixel_samples": 1227,
+			"island_pixel_x_bounds": [
+				0,
+				226
+			],
+			"label": "appreciation-5s",
+			"screen": [
+				71.8012084960938,
+				659.007995605469
+			],
+			"world": [
+				4.0,
+				-2.29999995231628,
+				3.5
+			]
+		},
+		{
+			"behind": false,
+			"camera": "/root/GameScene/VoyageWorld/LookAroundCameraRig/LookAroundCamera3D",
+			"island_pixel_samples": 1419,
+			"island_pixel_x_bounds": [
+				0,
+				222
+			],
+			"label": "look-neutral-5s",
+			"screen": [
+				30.2477531433105,
+				512.842163085938
+			],
+			"world": [
+				4.0,
+				-2.29999995231628,
+				3.5
+			]
+		},
+		{
+			"behind": false,
+			"camera": "/root/GameScene/VoyageWorld/LookAroundCameraRig/LookAroundCamera3D",
+			"island_pixel_samples": 1985,
+			"island_pixel_x_bounds": [
+				202,
+				538
+			],
+			"label": "look-left-5s",
+			"screen": [
+				357.251678466797,
+				499.233306884766
+			],
+			"world": [
+				4.0,
+				-2.29999995231628,
+				3.5
+			]
+		},
+		{
+			"behind": false,
+			"camera": "/root/GameScene/VoyageWorld/DioramaCameraRig/DioramaCamera3D",
+			"island_pixel_samples": 210,
+			"island_pixel_x_bounds": [
+				0,
+				62
+			],
+			"label": "normal-15s",
+			"screen": [
+				-174.069625854492,
+				661.498046875
+			],
+			"world": [
+				4.0,
+				-2.29999995231628,
+				3.5
+			]
+		},
+		{
+			"behind": true,
+			"camera": "/root/GameScene/VoyageWorld/DioramaCameraRig/DioramaCamera3D",
+			"island_pixel_samples": 0,
+			"island_pixel_x_bounds": [
+				540,
+				-1
+			],
+			"label": "normal-passed",
+			"screen": [
+				2255.34106445313,
+				-1387.4892578125
+			],
+			"world": [
+				0.0,
+				0.0,
+				0.0
+			]
+		},
+		{
+			"behind": false,
+			"camera": "/root/GameScene/VoyageWorld/DioramaCameraRig/DioramaCamera3D",
+			"island_pixel_samples": 84,
+			"island_pixel_x_bounds": [
+				510,
+				538
+			],
+			"label": "opposite-5s",
+			"screen": [
+				720.152038574219,
+				723.519226074219
+			],
+			"world": [
+				-4.0,
+				-2.29999995231628,
+				21.1000003814697
+			]
+		},
+		{
+			"behind": false,
+			"camera": "/root/GameScene/VoyageWorld/LookAroundCameraRig/LookAroundCamera3D",
+			"island_pixel_samples": 3006,
+			"island_pixel_x_bounds": [
+				0,
+				406
+			],
+			"label": "look-opposite-5s",
+			"screen": [
+				179.530685424805,
+				652.989562988281
+			],
+			"world": [
+				-4.0,
+				-2.29999995231628,
+				21.1000003814697
+			]
+		}
+	],
+	"world_position_unchanged_during_pass": true
+}

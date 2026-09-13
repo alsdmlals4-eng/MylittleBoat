@@ -81,7 +81,7 @@ func capture() -> void:
 		var player := game.get_node("VoyageWorld/BoatSpace/FinalDioramaCard/PartsViewport/Player") as Sprite2D
 		var pet := game.get_node("VoyageWorld/BoatSpace/FinalDioramaCard/PartsViewport/Pet") as Sprite2D
 		rows.append({"seconds": elapsed, "phase": game.get_forward_water_flow_offset(), "ambient_phase": game.get_background_flow_offset(), "foreground": game.get("_application_in_foreground"), "boat": [boat.x, boat.y, boat.z], "contact": [contact.x, contact.y, contact.z], "camera": [camera.x, camera.y, camera.z], "player_rotation": player.rotation, "pet_rotation": pet.rotation, "remaining_seconds": state.remaining_seconds})
-		var island := game.get_node("VoyageWorld/DioramaCameraRig/DioramaCamera3D/SeasonalIslandLayer") as Sprite3D
+		var island := game.get_node("VoyageWorld/SeasonalIslandLayer") as Sprite3D
 		rows[-1]["atmosphere"] = game.get_active_atmosphere_id()
 		rows[-1]["season"] = game.get_active_season_id()
 		rows[-1]["island_progress"] = game.get("_seasonal_island_progress")

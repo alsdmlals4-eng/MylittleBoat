@@ -1,0 +1,112 @@
+{
+  "status": "RUNTIME_VERIFIED_BOUNDED",
+  "base_head": "27cc4a9f32c02dd0ee56c59a37b994c361c6edc0",
+  "source_hashes": [
+    {
+      "path": "scripts/voyage/game_scene.gd",
+      "sha256": "C9879595A23439104FFEE8A35DB77D1980216E6FCCD18EA6CC60377165E5AC80"
+    },
+    {
+      "path": "scenes/game.tscn",
+      "sha256": "3C14B40670221344A6E771A70F04BF638259A4C65763995CB7426A016C135E70"
+    },
+    {
+      "path": "tests/test_seasonal_parallax_contract.gd",
+      "sha256": "AA254A7ACDD296B55FD12D92ED235B78630A24795EFA74801BE91274525BE66E"
+    },
+    {
+      "path": "tests/test_voyage_overlay_continuity.gd",
+      "sha256": "D604DEFB094A71E89ACFFAF979F096C5C9CD6ED75CA5631452548CEEFD05912D"
+    },
+    {
+      "path": "tests/test_voyage_motion_continuity.gd",
+      "sha256": "205A4E37BD5BE83EB8970AB134D23AEFBB0F6583D885953F74B5F0F55995FEB4"
+    },
+    {
+      "path": "tests/probe_world_space_island.gd",
+      "sha256": "9B6FBCFE228EC94185FCE287BB9C660D91E079005BD7978868FE9F911ADB5A44"
+    },
+    {
+      "path": "tests/capture_bright_spring_seasonal_parallax.gd",
+      "sha256": "FEAD8E26FC3B750FF4BD6CAFEED662B929F6CC09CD35838F6E253A402F7233F8"
+    },
+    {
+      "path": "tests/capture_voyage_realtime_motion.gd",
+      "sha256": "8B038EB113B14030A73D212882BE4AAE6D835AAB94700E2FE89E353CD45E3529"
+    },
+    {
+      "path": "assets/images/runtime/voyage/seasonal_parallax/bright-spring-islet.png",
+      "sha256": "22E9AE8B74B331F7147936B780823D81EA59DD407837BF4ACBC9F82FFC046987"
+    }
+  ],
+  "engine": "4.7.2.stable.ed1daf0bf",
+  "renderer": "mobile",
+  "device": "NVIDIA GeForce RTX 3050 Windows Vulkan 1.4.303",
+  "headless": {
+    "passed": 61,
+    "failed": 0,
+    "display_only_excluded": 1
+  },
+  "python": {
+    "passed": 20,
+    "failed": 0
+  },
+  "gpu": {
+    "projection": "projection/projection.json",
+    "realtime": "verified-runtime/motion-analysis.json",
+    "overlay_failures": 0,
+    "shader_wrap_error": 0,
+    "audio_shutdown": {
+      "red": "AudioStreamWAV and AudioStreamPlaybackWAV leaked at exit",
+      "fix": "test teardown releases autoload before engine quit and waits four frames",
+      "post_fix_verbose_runs": 3,
+      "leaks": 0
+    },
+    "nonfatal_notices": [
+      "Verbose RGB8 to RGBA8 hardware conversion remains; no source image bytes changed"
+    ]
+  },
+  "review_loops": [
+    {
+      "id": 1,
+      "start": "09:02:29",
+      "end": "09:02:43"
+    },
+    {
+      "id": 2,
+      "start": "09:03:16",
+      "end": "09:03:24"
+    },
+    {
+      "id": 3,
+      "start": "09:03:41",
+      "end": "09:03:55",
+      "finding": "audio exit leak"
+    },
+    {
+      "id": 4,
+      "start": "09:04:17",
+      "end": "09:06:46",
+      "correction": "test audio teardown; 3 GPU runs and four scope contracts"
+    },
+    {
+      "id": 5,
+      "start": "09:07:52",
+      "end": "09:08:00"
+    }
+  ],
+  "human": "NOT_RUN",
+  "physical_mobile": "NOT_RUN",
+  "release": "NOT_RUN",
+  "scope_limits": [
+    "One approved spring island world billboard; not full 3D scenery",
+    "Camera/sky/sea and near models are still partial",
+    "GPU automated visual samples are not human comfort proof"
+  ],
+  "cleanup": {
+    "manifest": "C:/Users/user/Desktop/MyLittleBoat_삭제대기_20260913/world-island-intermediate-manifest.json",
+    "files": 172,
+    "bytes": 84506173,
+    "action": "MOVED_NOT_DELETED"
+  }
+}

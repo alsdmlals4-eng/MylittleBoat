@@ -16,6 +16,8 @@
 
 ## 플레이 경험
 
+2026-09-13 봄섬 후속은 세 시점이 **한 개의 세계 공간 섬**을 보도록 연결합니다. 섬이 화면을 따라 움직이는 대신 배·카메라가 실제 항로를 진행하며 그 옆을 지납니다. 승인 원경 PNG를 재사용한 billboard slice이며 전체 3D 모델·새 수면 완성은 아닙니다. [현재 검증과 재생](docs/evidence/2026-09-13-world-island/REVIEW.md)을 참고합니다. 계절 촬영은 `--rendering-method mobile --script res://tests/capture_bright_spring_seasonal_parallax.gd -- <새 절대 출력 폴더>`로 실행하며 headless는 이미지 증거를 만들지 않고 거부합니다.
+
 2026-09-13 후속은 기본·둘러보기·감상의 초기 관찰 방향을 맞추고, 사용자 상대 회전과 수면 흐름을 연결합니다. 기본 rear 구도는 보존하며 둘러보기 중립 진입 때 보트가 화면 밖으로 빠지거나 수면 흐름이 반전하는 문제를 회귀 검사합니다. [관찰축 구현·실행 증거와 남은 범위](docs/evidence/2026-09-13-camera-reference/REVIEW.md)를 참고합니다.
 
 2026-09-13 경로 연결 작업은 `VoyageRoute`의 실제 Path3D 위치를 배·세 카메라·두 수면 접점에 공유합니다. 128-unit 직선 구간을 이어 이전 512-unit 경계의 역이동을 없앱니다. 현재 계약 집합은 **62개 중 61개 headless**입니다. 이는 공통 공간의 이동 기반이며, world 섬·연속 3D 모델·새 수면 완성을 뜻하지 않습니다. 구현·검증 단계는 [현재 handoff](docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md)를 따릅니다.
