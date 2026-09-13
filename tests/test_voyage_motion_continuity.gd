@@ -50,8 +50,8 @@ func run_checks() -> void:
 	var left = sea.material_override.get_shader_parameter("travel_direction")
 	expect(right is Vector2 and left is Vector2, "water requires a view-relative travel vector")
 	if right is Vector2 and left is Vector2:
-		expect(right.x * left.x < -0.9, "opposite side views must show opposite lateral flow")
-		expect(right.x < -0.99 and left.x > 0.99, "90/-90 degree views must retain the specified flow sign")
+		expect(right.distance_to(-left) < 0.001, "opposite world views must reverse the entire water vector")
+		expect(right.distance_to(Vector2(-0.886258, -0.463191)) < 0.001, "side water must retain world heading, not assume the default 3/4 camera points straight ahead")
 	game.queue_free()
 	await process_frame
 	# autoload 소리는 Scene 교체 때 유지하되 테스트 종료 전에는 먼저 해제한다.

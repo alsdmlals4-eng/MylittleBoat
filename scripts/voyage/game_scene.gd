@@ -988,11 +988,14 @@ func _apply_background_flow_to_backdrop(backdrop: Sprite3D) -> void:
 	flow_material.set_shader_parameter("source_texture", backdrop.texture)
 	flow_material.set_shader_parameter("flow_offset", _background_flow_offset)
 	flow_material.set_shader_parameter("forward_flow_offset", _forward_water_flow_offset)
-	var travel_direction := Vector2(0.0, 1.0)
-	var camera_rig := backdrop.get_parent().get_parent()
-	if camera_rig.has_method("get_relative_yaw_radians"):
-		var yaw: float = camera_rig.get_relative_yaw_radians()
-		travel_direction = Vector2(-sin(yaw), cos(yaw))
+	# 직선 Path3D의 +Z 진행과 실제 카메라 축을 같은 세계 좌표에서 비교한다.
+	# 바다는 배의 진행 반대쪽으로 지나간다. 화면용 원근 변형은 shader가 소유한다.
+	var camera := backdrop.get_parent() as Camera3D
+	var route := $VoyageWorld/VoyageRoute as Path3D
+	var route_forward := route.global_basis.z.normalized()
+	var camera_right := Vector3(camera.global_basis.x.x, 0.0, camera.global_basis.x.z).normalized()
+	var camera_forward := Vector3(-camera.global_basis.z.x, 0.0, -camera.global_basis.z.z).normalized()
+	var travel_direction := Vector2(-camera_right.dot(route_forward), camera_forward.dot(route_forward))
 	flow_material.set_shader_parameter("travel_direction", travel_direction)
 
 

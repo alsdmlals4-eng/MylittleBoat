@@ -6,7 +6,7 @@
 
 ## 1. authority와 evidence를 구분하는 법
 
-**2026-09-13 공통 관찰축.** 기본 후면 구도와 승인 이미지 byte는 유지한다. LookAround 중립은 기본 카메라의 위치·기준 yaw/pitch를 공유하고 상대 입력만 독립적으로 회전한다. Appreciation은 같은 초기 heading을 쓰되 기존 감상 pitch/높이·foreground 숨김을 유지한다. 두 조작 카메라의 수면 방향은 절대 세계 yaw가 아니라 기준에 대한 상대 yaw를 소비한다. 이는 기존 카드의 공간 기준 교정이며 단일 world 섬·연속 모델 회전 완료가 아니다. [관찰축 검증](../evidence/2026-09-13-camera-reference/REVIEW.md)이 이번 source와 evidence를 소유한다.
+**2026-09-13 공통 관찰축과 수면 방향 후속.** 기본 후면 구도와 승인 이미지 byte는 유지한다. LookAround 중립은 기본 카메라의 위치·기준 yaw/pitch를 공유하고 상대 입력만 독립적으로 회전한다. Appreciation은 같은 초기 heading을 쓰되 기존 감상 pitch/높이·foreground 숨김을 유지한다. 초기 상대 yaw 수면 계산은 기본 3/4 heading을 누락해 [세계 항로 수면 방향 교정](../evidence/2026-09-13-water-heading/REVIEW.md)으로 대체한다. 세 카메라의 실제 수평 축과 직선 Path3D의 세계 진행축으로 같은 수면 흐름 방향을 구한다. 원근·수평선·하늘은 아직 기존 camera-local 표현이며 완전한 world 수면/연속 모델 회전 완료가 아니다. 이전 [관찰축 검증](../evidence/2026-09-13-camera-reference/REVIEW.md)은 당시 정렬 작업의 역사적 증거다.
 
 **2026-09-11 분리본 확정 후 실행.** 최신 `확정하고 진행해`는 분리본 외형과 후면 모션 연결을 승인한다. [분리본 승인·원본/런타임 해시·consumer 기록](candidates/2026-09-11-blueprint/stern-motion-parts-v1.receipt.json)이 책임 owner다. 승인 RGBA를 변경 없이 runtime 경로로 복사하고 `FinalDioramaCard → PartsViewport → Hull/Player/Pet/SternRail`로 조립한다. 새 재질은 자홍색 잔여색만 보정한다. 이는 기본 외형/후면 slice이며 구형 측면·후면 각도 카드와 다른 외형은 아직 교체되지 않았다. Aseprite frame export는 현재 분리 AtlasTexture와 위상 기반 움직임에 필수가 아니므로 미사용이며 1-frame 파일을 모션 완료로 생산하지 않는다.
 

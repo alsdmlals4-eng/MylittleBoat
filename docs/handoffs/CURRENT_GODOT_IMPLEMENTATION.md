@@ -4,6 +4,12 @@
 **역할:** 실제 코드·Scene·test·runtime evidence와 현재 제품 정본의 차이를 기록하는 기술 router
 **현재 사람용 정본:** [프로젝트 GDD](../design/PROJECT_GDD.md)
 
+### 2026-09-13 수면의 세계 항로 방향 연결
+
+기본 3/4 카메라에서 물이 항상 화면 아래로만 흐르던 방향 불일치를 교정한다. `game_scene.gd::_apply_background_flow_to_backdrop()`는 input-relative yaw 대신 실제 Camera3D의 수평 세계 right/forward와 현재 직선 `VoyageRoute`의 세계 +Z를 비교한다. 현재 기본 heading -2.66 rad에서 수면 방향은 약 (-0.463191, 0.886258)이며, 세 카메라가 같은 방향 기준을 소비한다. 기존 위상/속도/foreground/comfort/저장/원화 byte와 shader 원근은 변경하지 않는다.
+
+대안은 상대 입력 yaw 유지 `REJECT`(기본 관찰각 누락), 실제 수평 축을 기존 shader에 연결 `ADAPT`, 실제 world 수면/sky/모델 전환 `DEFER_NEXT_PACKAGE`다. 마지막 안은 최종 P5 목표로 유지하며 이번 수평 방향 수정의 완료와 구분한다. root cause RED 14건 뒤 GREEN, GPU 반복 경계, 실제 30초 항해와 전체 회귀를 [수면 방향 검증](../evidence/2026-09-13-water-heading/REVIEW.md)에 연결한다. 이전 관찰축 항목의 relative-yaw 수면 설명은 당시 구현 기록이며 최신 consumer는 이 항목이다.
+
 ### 2026-09-13 바다 소리 조절 구현
 
 전체 완성 queue의 P7에서 독립적으로 구현 가능한 기존 OceanBed 음량/음소거를 연결했다. camera/world fresh-read는 현재 모델/리그 미준비를 재확인했고 회전 완료로 승격하지 않았다. `ComfortPreferences`의 기존 파일/section에 ocean_volume 키를 추가하고 기존 motion/unknown key를 보존한다. GameState는 유효한 음량을 먼저 live 적용하고 저장 성공 여부를 반환하며, 실제 OceanBed는 stream을 교체하지 않고 gain만 전환한다. `OceanVolumeOption`은 쉬는 메뉴에서만 노출되고 감상에서는 숨긴다. 영구 저장 실패는 기존 StatusLabel에 알려주며 이번 실행의 mute는 막지 않는다.

@@ -1,6 +1,17 @@
 {
   "schema_version": 1,
   "project": "MY_LITTLE_BOAT",
+  "water_heading_20260913": {
+    "reuse_mode": "ADAPT_EXISTING_ROUTE_CAMERA_AND_WATER_SHADER",
+    "verification_evidence": "docs/evidence/2026-09-13-water-heading/REVIEW.md",
+    "project_only_lessons": [
+      "Input-relative yaw is not world travel direction when the neutral camera is already a 3/4 view. Use the actual horizontal camera basis and current straight route axis in the same coordinate frame.",
+      "Correct horizontal passage is not a world-water, pitch projection, sky rotation, model/rig, or Human comfort completion claim."
+    ],
+    "base_promotion_candidates": [],
+    "base_disposition": "PROJECT_ONLY_EXISTING_BASIS_AND_EVIDENCE_PATTERNS_NO_NEW_MODULE",
+    "rollback": "Revert this bounded water-heading commit; no save, asset, scene, shader, Base, or unrelated PR mutation."
+  },
   "closed_out_at": "2026-08-25",
   "pre_closeout_main": "e312f9f764051c8a4b25bd6206174498f5353c8e",
   "closeout_merged_main": "d2f8d2b883ff86208a7c0b0dedb99352f95f9edd",
