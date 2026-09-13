@@ -43,7 +43,8 @@ func _save_value(key: String, value: Variant) -> Error:
 	var read_result := _store.read_validated(_path, _validate)
 	var config: ConfigFile = read_result.config
 	if read_result.status not in ["OK", "ABSENT"]:
-		_last_storage_result = {"status": "RECOVERY_REQUIRED", "error": read_result.error if read_result.error != OK else ERR_FILE_CORRUPT, "source_path": _path}
+		_last_storage_result = _store.write_validated(_path, ConfigFile.new(), _validate)
+		_last_storage_result.error = read_result.error if read_result.error != OK else ERR_FILE_CORRUPT
 		return _last_storage_result.error
 	if config == null:
 		config = ConfigFile.new()

@@ -124,7 +124,9 @@ func run() -> void:
 	broken.store_string("[test]\nvalue=\"wrong\"\n")
 	broken.close()
 	DirAccess.copy_absolute(ProjectSettings.globalize_path(corrupt_path), ProjectSettings.globalize_path(corrupt_path + ".last_good"))
+	var files_before_read := DirAccess.get_files_at(DIR)
 	expect(store.read_validated(corrupt_path, valid).status == "CORRUPT", "corrupt primary and backup are not defaults")
+	expect(DirAccess.get_files_at(DIR) == files_before_read, "read must not mutate disk before test fixture isolates autoload paths")
 	expect(store.recover_primary(corrupt_path, valid).status == "RECOVERY_REQUIRED", "corrupt backup cannot recover")
 	var missing_path := DIR + "/missing_with_backup.cfg"
 	candidate(5).save(missing_path + ".last_good")

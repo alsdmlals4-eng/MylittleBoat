@@ -23,9 +23,6 @@ func read_validated(path: String, validate: Callable) -> Dictionary:
 			return {"status": "CORRUPT", "config": null, "source_path": path, "error": ERR_FILE_CORRUPT}
 	if primary.status == "OK":
 		return primary
-	if _exists(path):
-		_lock(path)
-		_archive(path)
 	var backup := _read(path + ".last_good", validate)
 	if backup.status == "OK":
 		backup.status = "RECOVERED"
