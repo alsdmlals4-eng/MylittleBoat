@@ -47,8 +47,11 @@ func _validate(config: ConfigFile) -> bool:
 func save(decor: Dictionary, appearances: Dictionary) -> Error:
 	var existing := _store.read_validated(_path, _validate)
 	if existing.status == "OK" and _has_unsupported_ids(existing.config):
-		_last_storage_result = {"status": "NOT_COMMITTED", "error": ERR_UNAVAILABLE, "source_path": _path}
-		return ERR_UNAVAILABLE
+		# An invalid candidate forbids replacement while the store still owns recovery priority.
+		_last_storage_result = _store.write_validated(_path, null, _validate)
+		if _last_storage_result.status == "NOT_COMMITTED" and _last_storage_result.error == ERR_INVALID_DATA:
+			_last_storage_result.error = ERR_UNAVAILABLE
+		return _last_storage_result.error
 	var config := ConfigFile.new()
 	config.set_value("boat_decor", "items", _string_dictionary(decor))
 	config.set_value("boat_decor", "appearances", _string_dictionary(appearances))
