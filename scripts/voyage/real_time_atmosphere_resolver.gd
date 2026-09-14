@@ -16,10 +16,5 @@ func resolve_hour(hour: int) -> String:
 
 
 func resolve_system_time() -> String:
-<<<<<<< HEAD
 	var local_time := Time.get_time_dict_from_system(false)
 	return resolve_hour(int(local_time.get("hour", -1)))
-=======
-	var time_dict := Time.get_time_dict_from_system(false)
-	return resolve_hour(int(time_dict.get("hour", -1)))
->>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
