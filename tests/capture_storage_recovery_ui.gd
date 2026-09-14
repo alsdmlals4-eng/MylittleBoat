@@ -40,10 +40,12 @@ func _run() -> void:
 	var label := scene.get_node("%StorageStatusLabel") as Label
 	if not button.visible or button.text != "정상본으로 복구" or not label.visible:
 		printerr("FAILED: recovery controls are not visible with expected wording")
+		await _shutdown_scene(scene)
 		_cleanup()
 		quit(1)
 		return
 	if not await _save_frame(required_path):
+		await _shutdown_scene(scene)
 		_cleanup()
 		quit(1)
 		return
@@ -51,13 +53,16 @@ func _run() -> void:
 	await process_frame
 	if scene.get_node("%StatusLabel").text != "정상본 복구를 마쳤습니다.":
 		printerr("FAILED: actual recovery button did not report committed success")
+		await _shutdown_scene(scene)
 		_cleanup()
 		quit(1)
 		return
 	if not await _save_frame(committed_path):
+		await _shutdown_scene(scene)
 		_cleanup()
 		quit(1)
 		return
+	await _shutdown_scene(scene)
 	_cleanup()
 	print("PASS: storage recovery UI display capture")
 	quit(0)
@@ -70,6 +75,17 @@ func _save_frame(path: String) -> bool:
 		printerr("FAILED: could not save %s" % path)
 		return false
 	return true
+
+
+func _shutdown_scene(scene: Node) -> void:
+	scene.queue_free()
+	for frame in 4:
+		await process_frame
+	var soundscape := root.get_node_or_null("RestingSoundscape")
+	if soundscape != null and soundscape.has_method("release_ocean_bed_for_shutdown"):
+		soundscape.release_ocean_bed_for_shutdown()
+	for frame in 4:
+		await process_frame
 
 
 func _cleanup() -> void:
