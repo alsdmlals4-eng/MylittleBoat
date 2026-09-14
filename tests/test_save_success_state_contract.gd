@@ -11,8 +11,33 @@ const FAILURE_IDENTITY_PATH := FAILURE_DIRECTORY + "/identity.cfg"
 const FAILURE_TOGETHER_PATH := FAILURE_DIRECTORY + "/together.cfg"
 const FAILURE_LEDGER_PATH := FAILURE_DIRECTORY + "/ledger.cfg"
 const FAILURE_COMFORT_PATH := FAILURE_DIRECTORY + "/blocked/comfort.cfg"
+const RECOVERY_LEDGER_PATH := "user://test_r07b3_recovery_ledger.cfg"
+const RECOVERY_COMFORT_PATH := "user://test_r07b3_recovery_comfort.cfg"
+const RETRY_UI_DIRECTORY := "user://test_r07b3_retry_ui_missing"
+const RETRY_UI_LEDGER_PATH := RETRY_UI_DIRECTORY + "/ledger.cfg"
+const PHOTO_CONFIG_PATH := "user://test_r07b3_photo.cfg"
+const PHOTO_DIRECTORY := "user://test_r07b3_photos"
 
 var _failures := 0
+
+
+class RecoveryThenCommitFailure:
+	extends RefCounted
+	var status := "RECOVERY_REQUIRED"
+
+	func get_last_storage_result() -> Dictionary:
+		return {"status": status}
+
+	func recover_primary() -> Dictionary:
+		status = "COMMITTED"
+		return {"status": status}
+
+	func load_entries() -> Dictionary:
+		return {"fish": [], "voyage_records": []}
+
+	func save_entries(_fish_entries: Array[String], _voyage_entries: Array[String]) -> Error:
+		status = "NOT_COMMITTED"
+		return ERR_CANT_CREATE
 
 
 func _init() -> void:
@@ -111,6 +136,103 @@ func _run() -> void:
 	comfort_readback.load(COMFORT_PATH)
 	_expect(comfort_readback.get_value("future", "preserve_me", "") == "yes", "combined comfort retry must preserve unknown valid sections and keys")
 
+	# Recovery must not hide the one pending voyage summary before it is durably committed.
+	state.set_memory_ledger_storage_path(RECOVERY_LEDGER_PATH)
+	state.fish.clear()
+	state.voyage_records.clear()
+	state.add_fish("정어리")
+	state.add_fish("고등어")
+	state.begin_voyage()
+	state.remaining_seconds = 0.0
+	var corrupt_ledger := FileAccess.open(RECOVERY_LEDGER_PATH, FileAccess.WRITE)
+	corrupt_ledger.store_string("[memory_ledger\ninvalid")
+	corrupt_ledger.close()
+	_expect(not bool(state.complete_voyage()), "corrupt ledger must retain one pending voyage summary")
+	_expect(bool(state.recover_storage("memory_ledger")), "ledger recovery must also commit its retained voyage summary")
+	_expect(state.voyage_record_created and state.voyage_records.size() == 1, "ledger recovery must finalize the pending summary exactly once")
+
+	# A successful retry must expose and execute the existing next-voyage action immediately.
+	state.set_memory_ledger_storage_path(RETRY_UI_LEDGER_PATH)
+	state.begin_voyage()
+	state.remaining_seconds = 0.0
+	_expect(not bool(state.complete_voyage()), "missing ledger directory must leave a retryable voyage summary")
+	state.set_identity_storage_path(IDENTITY_PATH)
+	state.load_identity()
+	state.set_together_time_storage_path(TOGETHER_PATH)
+	state.flush_together_time()
+	var retry_scene: Node = load("res://scenes/game.tscn").instantiate()
+	root.add_child(retry_scene)
+	retry_scene.open_rest_menu()
+	_expect(retry_scene.get_node("%StorageRecoveryButton").get_meta("owner_id", "") == "memory_ledger", "pending voyage must expose its ledger retry")
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(RETRY_UI_DIRECTORY))
+	retry_scene.get_node("%StorageRecoveryButton").pressed.emit()
+	_expect(retry_scene.get_node("%NextVoyageButton").visible, "committed voyage retry must immediately show NextVoyageButton")
+	current_scene = retry_scene
+	retry_scene.get_node("%NextVoyageButton").pressed.emit()
+	await process_frame
+	_expect(state.voyage_active and not state.voyage_record_created and is_equal_approx(state.remaining_seconds, state.VOYAGE_SECONDS), "visible next-voyage action must begin the next voyage")
+
+	# Comfort recovery must preserve and then commit the live pair without dropping future keys.
+	var recovery_comfort := ConfigFile.new()
+	recovery_comfort.set_value("comfort", "profile", "standard")
+	recovery_comfort.set_value("comfort", "ocean_volume", 1.0)
+	recovery_comfort.set_value("future", "preserve_me", "round1")
+	recovery_comfort.save(RECOVERY_COMFORT_PATH)
+	state.set_comfort_storage_path(RECOVERY_COMFORT_PATH)
+	state.set_motion_comfort_profile("gentle")
+	var corrupt_comfort := FileAccess.open(RECOVERY_COMFORT_PATH, FileAccess.WRITE)
+	corrupt_comfort.store_string("[comfort\ninvalid")
+	corrupt_comfort.close()
+	state.set_motion_comfort_profile("still")
+	state.set_ocean_volume(0.25)
+	state.set_identity_storage_path(IDENTITY_PATH)
+	state.load_identity()
+	state.set_together_time_storage_path(TOGETHER_PATH)
+	state.flush_together_time()
+	state.set_memory_ledger_storage_path(LEDGER_PATH)
+	state.save_memory_ledger()
+	var comfort_scene: Node = load("res://scenes/game.tscn").instantiate()
+	root.add_child(comfort_scene)
+	comfort_scene.open_rest_menu()
+	_expect(comfort_scene.get_node("%StorageRecoveryButton").get_meta("owner_id", "") == "comfort", "live comfort recovery must remain actionable")
+	comfort_scene.get_node("%StorageRecoveryButton").pressed.emit()
+	var recovered_comfort := ConfigFile.new()
+	recovered_comfort.load(RECOVERY_COMFORT_PATH)
+	_expect(recovered_comfort.get_value("comfort", "profile", "") == "still" and is_equal_approx(float(recovered_comfort.get_value("comfort", "ocean_volume", -1.0)), 0.25), "comfort recovery button must commit the live motion and volume pair")
+	_expect(recovered_comfort.get_value("future", "preserve_me", "") == "round1", "comfort recovery must preserve unknown validated keys")
+	comfort_scene.queue_free()
+
+	# A non-retryable photo failure must not hide a later actionable comfort failure.
+	state.set_photo_memory_storage(PHOTO_CONFIG_PATH, PHOTO_DIRECTORY)
+	state.record_photo_memory(null, "", "")
+	state.set_identity_storage_path(IDENTITY_PATH)
+	state.load_identity()
+	state.set_together_time_storage_path(TOGETHER_PATH)
+	state.flush_together_time()
+	state.set_memory_ledger_storage_path(LEDGER_PATH)
+	state.save_memory_ledger()
+	state.set_comfort_storage_path(FAILURE_DIRECTORY + "/blocked_photo_comfort/comfort.cfg")
+	state.set_ocean_volume(0.75)
+	var photo_scene: Node = load("res://scenes/game.tscn").instantiate()
+	root.add_child(photo_scene)
+	photo_scene.open_rest_menu()
+	_expect(photo_scene.get_node("%StorageRecoveryButton").get_meta("owner_id", "") == "comfort", "photo NOT_COMMITTED must not hide a later actionable comfort owner")
+	photo_scene.queue_free()
+
+	# A recovered primary followed by a failed pending commit must not claim that no verified original existed.
+	state._memory_ledger_persistence = RecoveryThenCommitFailure.new()
+	state._pending_voyage_summary = "round1 retained summary"
+	var partial_recovery_scene: Node = load("res://scenes/game.tscn").instantiate()
+	root.add_child(partial_recovery_scene)
+	partial_recovery_scene.open_rest_menu()
+	_expect(partial_recovery_scene.get_node("%StorageRecoveryButton").get_meta("owner_id", "") == "memory_ledger", "partial recovery fixture must expose the ledger recovery action")
+	partial_recovery_scene.get_node("%StorageRecoveryButton").pressed.emit()
+	_expect(partial_recovery_scene.get_node("%StatusLabel").text == "저장을 마치지 못했습니다. 원본과 이번 실행 상태는 유지했습니다.", "post-recovery commit failure must use a truthful retained-state message")
+	_expect(partial_recovery_scene.get_node("%StorageRecoveryButton").visible, "post-recovery commit failure must remain actionable")
+	partial_recovery_scene.queue_free()
+	state._memory_ledger_persistence = preload("res://scripts/core/memory_ledger_persistence.gd").new(LEDGER_PATH)
+	state._pending_voyage_summary = ""
+
 	_expect(state.get_storage_status("unknown_owner").is_empty(), "unknown owner status must fail closed")
 	_expect(not bool(state.recover_storage("unknown_owner")), "unknown owner recovery must fail closed")
 	state.set_identity_storage_path(IDENTITY_PATH)
@@ -143,7 +265,7 @@ func _run() -> void:
 
 
 func _cleanup() -> void:
-	for path in [IDENTITY_PATH, DECOR_PATH, TOGETHER_PATH, LEDGER_PATH, COMFORT_PATH]:
+	for path in [IDENTITY_PATH, DECOR_PATH, TOGETHER_PATH, LEDGER_PATH, COMFORT_PATH, RECOVERY_LEDGER_PATH, RECOVERY_COMFORT_PATH, PHOTO_CONFIG_PATH]:
 		preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(path)
 	if DirAccess.dir_exists_absolute(ProjectSettings.globalize_path(FAILURE_DIRECTORY)):
 		if DirAccess.dir_exists_absolute(ProjectSettings.globalize_path(FAILURE_DIRECTORY + "/blocked")):
@@ -153,6 +275,10 @@ func _cleanup() -> void:
 		for name in DirAccess.get_files_at(FAILURE_DIRECTORY):
 			DirAccess.remove_absolute(ProjectSettings.globalize_path(FAILURE_DIRECTORY.path_join(name)))
 		DirAccess.remove_absolute(ProjectSettings.globalize_path(FAILURE_DIRECTORY))
+	if DirAccess.dir_exists_absolute(ProjectSettings.globalize_path(RETRY_UI_DIRECTORY)):
+		for name in DirAccess.get_files_at(RETRY_UI_DIRECTORY):
+			DirAccess.remove_absolute(ProjectSettings.globalize_path(RETRY_UI_DIRECTORY.path_join(name)))
+		DirAccess.remove_absolute(ProjectSettings.globalize_path(RETRY_UI_DIRECTORY))
 
 
 func _expect(condition: bool, message: String) -> void:

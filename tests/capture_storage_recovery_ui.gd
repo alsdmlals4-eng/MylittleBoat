@@ -2,6 +2,8 @@
 extends SceneTree
 
 const STORAGE_PATH := "user://test_capture_r07b3_identity.cfg"
+const RETRY_DIRECTORY := "user://test_capture_r07b3_retry_missing"
+const RETRY_LEDGER_PATH := RETRY_DIRECTORY + "/ledger.cfg"
 
 var _state: Node
 
@@ -17,7 +19,8 @@ func _run() -> void:
 	var isolated_user_dir := bool(ProjectSettings.get_setting("application/config/use_custom_user_dir", false)) and str(ProjectSettings.get_setting("application/config/custom_user_dir_name", "")).begins_with("MyLittleBoat_test_")
 	var required_path := resolved_output.path_join("storage_recovery_required.png")
 	var committed_path := resolved_output.path_join("storage_recovery_committed.png")
-	if output_directory.is_empty() or not resolved_output.is_absolute_path() or resolved_output.begins_with(project_root) or not DirAccess.dir_exists_absolute(resolved_output) or FileAccess.file_exists(required_path) or FileAccess.file_exists(committed_path) or not isolated_user_dir:
+	var retry_path := resolved_output.path_join("storage_voyage_retry_committed.png")
+	if output_directory.is_empty() or not resolved_output.is_absolute_path() or resolved_output.begins_with(project_root) or not DirAccess.dir_exists_absolute(resolved_output) or FileAccess.file_exists(required_path) or FileAccess.file_exists(committed_path) or FileAccess.file_exists(retry_path) or not isolated_user_dir:
 		printerr("FAILED: capture requires an empty external output directory and isolated MyLittleBoat test user dir")
 		quit(1)
 		return
@@ -62,6 +65,37 @@ func _run() -> void:
 		_cleanup()
 		quit(1)
 		return
+	_state.set_memory_ledger_storage_path(RETRY_LEDGER_PATH)
+	_state.begin_voyage()
+	_state.remaining_seconds = 0.0
+	if _state.complete_voyage():
+		printerr("FAILED: isolated missing directory unexpectedly committed a voyage")
+		await _shutdown_scene(scene)
+		_cleanup()
+		quit(1)
+		return
+	scene.open_rest_menu()
+	await process_frame
+	if button.get_meta("owner_id", "") != "memory_ledger" or button.text != "저장 다시 시도":
+		printerr("FAILED: pending voyage did not expose its actual retry action")
+		await _shutdown_scene(scene)
+		_cleanup()
+		quit(1)
+		return
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(RETRY_DIRECTORY))
+	button.pressed.emit()
+	await process_frame
+	if not scene.get_node("%NextVoyageButton").visible or scene.get_node("%StatusLabel").text != "저장을 다시 마쳤습니다.":
+		printerr("FAILED: voyage retry did not expose its committed next-voyage result")
+		await _shutdown_scene(scene)
+		_cleanup()
+		quit(1)
+		return
+	if not await _save_frame(retry_path):
+		await _shutdown_scene(scene)
+		_cleanup()
+		quit(1)
+		return
 	await _shutdown_scene(scene)
 	_cleanup()
 	print("PASS: storage recovery UI display capture")
@@ -90,3 +124,7 @@ func _shutdown_scene(scene: Node) -> void:
 
 func _cleanup() -> void:
 	preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(STORAGE_PATH)
+	var retry_directory := ProjectSettings.globalize_path(RETRY_DIRECTORY)
+	if DirAccess.dir_exists_absolute(retry_directory):
+		preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(RETRY_LEDGER_PATH)
+		DirAccess.remove_absolute(retry_directory)

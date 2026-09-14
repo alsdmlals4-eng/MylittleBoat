@@ -471,9 +471,13 @@ func recover_storage(owner_id: String) -> bool:
 		"identity": load_identity()
 		"boat_decor": load_boat_decor()
 		"ambient_memory": load_ambient_memories()
-		"memory_ledger": load_memory_ledger()
+		"memory_ledger":
+			load_memory_ledger()
+			if not _pending_voyage_summary.is_empty():
+				return retry_pending_voyage_record()
 		"photo_memory": load_photo_memories()
-		"comfort": pass
+		"comfort":
+			return _comfort_preferences.save_preferences(motion_comfort_profile, _ocean_volume) == OK
 	# together_time intentionally preserves this execution's unsaved accumulation.
 	return true
 

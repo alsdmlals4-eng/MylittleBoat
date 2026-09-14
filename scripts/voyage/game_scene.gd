@@ -1371,7 +1371,10 @@ func _refresh_storage_recovery_ui() -> void:
 	for owner_id in ["identity", "boat_decor", "together_time", "ambient_memory", "memory_ledger", "photo_memory", "comfort"]:
 		var result: Dictionary = GameState.get_storage_status(owner_id)
 		var status := str(result.get("status", ""))
-		if status not in ["", "OK", "ABSENT", "COMMITTED"]:
+		var actionable := status not in ["", "OK", "ABSENT", "COMMITTED"]
+		if owner_id == "photo_memory":
+			actionable = status in ["RECOVERED", "RECOVERY_REQUIRED", "CORRUPT"]
+		if actionable:
 			issue_owner = owner_id
 			issue_status = status
 			break
@@ -1396,9 +1399,10 @@ func _recover_or_retry_storage() -> void:
 			_apply_identity_visuals()
 		elif owner_id == "boat_decor":
 			_apply_stored_boat_decor()
+		_sync_next_voyage_button()
 		_update_ui("정상본 복구를 마쳤습니다." if recovery else "저장을 다시 마쳤습니다.")
 	else:
-		_update_ui("검증된 정상본이 없어 복구하지 못했습니다. 원본은 보존했습니다." if recovery else "아직 저장하지 못했습니다. 쉬는 시간은 계속할 수 있어요.")
+		_update_ui("저장을 마치지 못했습니다. 원본과 이번 실행 상태는 유지했습니다." if recovery else "아직 저장하지 못했습니다. 쉬는 시간은 계속할 수 있어요.")
 	_refresh_storage_recovery_ui()
 
 
