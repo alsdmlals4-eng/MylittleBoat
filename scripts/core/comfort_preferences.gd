@@ -29,6 +29,20 @@ func save_ocean_volume(volume: float) -> Error:
 	return _save_value("ocean_volume", volume)
 
 
+func save_preferences(profile: String, ocean_volume: float) -> Error:
+	if normalize_profile(profile) != profile or not is_finite(ocean_volume) or ocean_volume < 0.0 or ocean_volume > 1.0:
+		return ERR_INVALID_PARAMETER
+	var read_result := _store.read_validated(_path, _validate)
+	if read_result.status not in ["OK", "ABSENT"]:
+		_last_storage_result = _store.write_validated(_path, null, _validate)
+		return _last_storage_result.error
+	var config: ConfigFile = read_result.config if read_result.config != null else ConfigFile.new()
+	config.set_value("comfort", "profile", profile)
+	config.set_value("comfort", "ocean_volume", ocean_volume)
+	_last_storage_result = _store.write_validated(_path, config, _validate)
+	return OK if _last_storage_result.status == "COMMITTED" else _last_storage_result.error
+
+
 func load_ocean_volume() -> float:
 	var config := _load_config()
 	if config == null:

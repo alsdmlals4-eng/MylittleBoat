@@ -1,6 +1,7 @@
 # 보트 꾸미기·상호작용 기술 UI의 무압력·감상모드 계약을 검증한다.
 extends SceneTree
 
+const DECOR_STORAGE_PATH := "user://test_boat_life_ui_decor.cfg"
 var _failures := 0
 
 func _init() -> void:
@@ -12,7 +13,10 @@ func _run() -> void:
 	if gs == null:
 		_finish()
 		return
+	preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(DECOR_STORAGE_PATH)
+	gs.set_boat_decor_storage_path(DECOR_STORAGE_PATH)
 	gs.boat_decor.clear()
+	gs.boat_decor_appearances.clear()
 	gs.reset_session()
 	gs.voyage_active = true
 	gs.remaining_seconds = 123.0
@@ -111,6 +115,7 @@ func _expect(condition: bool, message: String) -> void:
 		printerr("FAIL: %s" % message)
 
 func _finish() -> void:
+	preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(DECOR_STORAGE_PATH)
 	if _failures == 0:
 		print("PASS: boat life UI contract")
 		quit(0)

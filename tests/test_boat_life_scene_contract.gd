@@ -1,6 +1,7 @@
 # 보트 생활공간의 단일 bob owner와 8개 꾸미기 슬롯을 검증한다.
 extends SceneTree
 
+const DECOR_STORAGE_PATH := "user://test_boat_life_scene_decor.cfg"
 var _failures := 0
 
 func _init() -> void:
@@ -12,9 +13,12 @@ func _run() -> void:
 	if gs == null:
 		_finish()
 		return
+	preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(DECOR_STORAGE_PATH)
+	gs.set_boat_decor_storage_path(DECOR_STORAGE_PATH)
 	gs.boat_decor.clear()
-	gs.set_boat_decor("bow_left", "lantern")
-	gs.set_boat_decor("rear_right", "mug")
+	gs.boat_decor_appearances.clear()
+	_expect(gs.set_boat_decor("bow_left", "lantern"), "fixture lantern decor must commit")
+	_expect(gs.set_boat_decor("rear_right", "mug"), "fixture mug decor must commit")
 	gs.voyage_active = true
 	gs.remaining_seconds = 123.0
 	gs.appreciation_mode = false
@@ -94,6 +98,7 @@ func _expect(condition: bool, message: String) -> void:
 		printerr("FAIL: %s" % message)
 
 func _finish() -> void:
+	preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(DECOR_STORAGE_PATH)
 	if _failures == 0:
 		print("PASS: boat life scene contract")
 		quit(0)

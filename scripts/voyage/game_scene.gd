@@ -194,6 +194,7 @@ func _ready() -> void:
 	%InteractionCloseButton.pressed.connect(_close_interaction_panel)
 	%AlbumButton.pressed.connect(_open_album)
 	%NextVoyageButton.pressed.connect(_start_next_voyage)
+	%StorageRecoveryButton.pressed.connect(_recover_or_retry_storage)
 	%AtmosphereRefreshTimer.timeout.connect(refresh_real_time_atmosphere)
 	%AmbientSceneryReturnTimer.timeout.connect(_restore_active_atmosphere_backdrop)
 	%DistantSceneryFadeTimer.timeout.connect(_hide_distant_scenery)
@@ -228,9 +229,9 @@ func _process(delta: float) -> void:
 		GameState.advance_together_time(delta)
 	var completed_now := GameState.tick_voyage(delta)
 	if completed_now:
-		GameState.complete_voyage()
+		var record_saved := GameState.complete_voyage()
 		_sync_next_voyage_button()
-		_update_ui("오늘의 항해 기록이 만들어졌습니다. 더 머물거나 다음 항해를 준비해도 좋아요.")
+		_update_ui("오늘의 항해 기록이 만들어졌습니다. 더 머물거나 다음 항해를 준비해도 좋아요." if record_saved else "항해는 계속 쉬어도 좋아요. 기록 저장은 쉬는 메뉴에서 다시 시도할 수 있습니다.")
 	else:
 		_update_ui()
 
@@ -489,34 +490,45 @@ func apply_boat_decor(slot_id: String, item_id: String, appearance_id: String = 
 	var slot: Node = _get_decor_slot(slot_id)
 	if slot == null or not slot.has_method("apply_item"):
 		return false
+	var candidate_decor: Dictionary = GameState.boat_decor.duplicate(true)
+	var candidate_appearances: Dictionary = GameState.boat_decor_appearances.duplicate(true)
+	candidate_decor[slot_id] = item_id
+	if item_id == "pet_cushion" and not appearance_id.is_empty():
+		candidate_appearances[slot_id] = appearance_id
+	else:
+		candidate_appearances.erase(slot_id)
+	if not GameState.apply_decor_selection(candidate_decor, candidate_appearances):
+		return false
 	if not bool(slot.call("apply_item", item_id, appearance_id)):
 		return false
-	GameState.set_boat_decor(slot_id, item_id)
-	if item_id == "pet_cushion" and slot.has_method("get_appearance_id"):
-		GameState.set_boat_decor_appearance(slot_id, str(slot.call("get_appearance_id")))
-	else:
-		GameState.set_boat_decor_appearance(slot_id, "")
 	_sync_identity_decor_visuals()
 	_refresh_decor_preview()
 	return true
 
 
-func clear_boat_decor(slot_id: String) -> void:
+func clear_boat_decor(slot_id: String) -> bool:
+	var candidate_decor: Dictionary = GameState.boat_decor.duplicate(true)
+	var candidate_appearances: Dictionary = GameState.boat_decor_appearances.duplicate(true)
+	candidate_decor.erase(slot_id)
+	candidate_appearances.erase(slot_id)
+	if not GameState.apply_decor_selection(candidate_decor, candidate_appearances):
+		return false
 	var slot: Node = _get_decor_slot(slot_id)
 	if slot != null and slot.has_method("apply_item"):
 		slot.call("apply_item", "")
-	GameState.set_boat_decor(slot_id, "")
 	_sync_identity_decor_visuals()
 	_refresh_decor_preview()
+	return true
 
 
 func _apply_stored_boat_decor() -> void:
 	for slot_id in _decor_catalog.get_slot_ids():
 		var item_id := GameState.get_boat_decor(slot_id)
-		if item_id == "":
-			clear_boat_decor(slot_id)
-		elif not apply_boat_decor(slot_id, item_id, GameState.get_boat_decor_appearance(slot_id)):
-			clear_boat_decor(slot_id)
+		var slot := _get_decor_slot(slot_id)
+		if slot != null and slot.has_method("apply_item"):
+			slot.call("apply_item", item_id, GameState.get_boat_decor_appearance(slot_id))
+	_sync_identity_decor_visuals()
+	_refresh_decor_preview()
 
 
 func _get_decor_slot(slot_id: String) -> Node:
@@ -565,18 +577,24 @@ func _on_player_style_selected(_index: int) -> void:
 	var player_style_id := _get_selected_metadata(%PlayerStyleOption)
 	if player_style_id == "":
 		return
-	GameState.set_selected_player_style(player_style_id)
-	_apply_identity_visuals()
-	_update_ui("플레이어 외형을 조용히 바꿨습니다.")
+	if GameState.set_selected_player_style(player_style_id):
+		_apply_identity_visuals()
+		_update_ui("플레이어 외형을 조용히 바꿨습니다.")
+	else:
+		_populate_identity_options()
+		_update_ui("외형을 저장하지 못해 이전 모습을 유지했습니다.")
 
 
 func _on_pet_type_selected(_index: int) -> void:
 	var pet_type_id := _get_selected_metadata(%PetTypeOption)
 	if pet_type_id == "":
 		return
-	GameState.set_selected_pet_type(pet_type_id)
-	_apply_identity_visuals()
-	_update_ui("동반자의 모습을 조용히 바꿨습니다.")
+	if GameState.set_selected_pet_type(pet_type_id):
+		_apply_identity_visuals()
+		_update_ui("동반자의 모습을 조용히 바꿨습니다.")
+	else:
+		_populate_identity_options()
+		_update_ui("동반자 선택을 저장하지 못해 이전 모습을 유지했습니다.")
 
 
 func _apply_identity_visuals() -> void:
@@ -666,8 +684,10 @@ func _clear_selected_decor() -> void:
 	var slot_id := _get_selected_metadata(%DecorSlotOption)
 	if slot_id == "":
 		return
-	clear_boat_decor(slot_id)
-	_update_ui("%s 자리를 비웠습니다. 잃는 것은 없습니다." % _decor_catalog.get_slot_label(slot_id))
+	if clear_boat_decor(slot_id):
+		_update_ui("%s 자리를 비웠습니다. 잃는 것은 없습니다." % _decor_catalog.get_slot_label(slot_id))
+	else:
+		_update_ui("장식을 저장하지 못해 이전 모습을 유지했습니다.")
 	_refresh_decor_item_options()
 	_refresh_interaction_targets()
 
@@ -722,6 +742,7 @@ func open_rest_menu() -> void:
 	$BottomPanel.visible = true
 	$TopPanel.visible = true
 	%RestMenuButton.visible = false
+	_refresh_storage_recovery_ui()
 
 
 ## Returns from optional rest actions to the low-UI boat view.
@@ -835,9 +856,9 @@ func _cycle_speed() -> void:
 
 
 func _cycle_motion_comfort() -> void:
-	GameState.cycle_motion_comfort_profile()
+	var saved := GameState.cycle_motion_comfort_profile()
 	_sync_scenery_motion_clock()
-	_update_ui("파도를 %s하게 조절했습니다." % _get_motion_comfort_name())
+	_update_ui("파도를 %s하게 조절했습니다." % _get_motion_comfort_name() if saved else "파도 움직임은 바뀌었지만 설정을 저장하지 못했어요.")
 
 
 func _on_ocean_volume_selected(index: int) -> void:
@@ -1118,7 +1139,8 @@ func _advance_drift_scenery(delta: float) -> void:
 	%DistantSceneryLabel.visible = true
 	%DistantSceneryFadeTimer.start()
 	if bool(event.get("save_memory", false)):
-		GameState.record_ambient_memory(label)
+		if not GameState.record_ambient_memory(label):
+			_update_ui("풍경은 그대로 바라볼 수 있지만 기억을 저장하지 못했어요.")
 	# 발견/기록 주기는 유지하되 still 중 새 이동을 쌓거나 동결된 풍경을 교체하지 않는다.
 	if is_zero_approx(GameState.get_motion_comfort_scale()):
 		return
@@ -1255,13 +1277,14 @@ func _hide_distant_scenery() -> void:
 
 func _handle_fishing_action() -> void:
 	if _fishing_session.is_bite_ready():
-		var fish_name: String = str(FISH_NAMES.pick_random())
-		var caught: String = str(_fishing_session.resolve_catch(fish_name))
-		if caught != "":
-			GameState.add_fish(caught)
+		var fish_name: String = str(_fishing_session.prepare_catch(str(FISH_NAMES.pick_random())))
+		if fish_name != "" and GameState.add_fish(fish_name):
+			var caught: String = str(_fishing_session.resolve_catch(fish_name))
 			_set_fishing_status("%s 한 마리를 낚아 항해 기억에 남겼습니다." % caught)
 			_update_ui("작은 입질 하나가 오늘의 항해에 기억으로 남았습니다.")
-		%FishingButton.text = "낚시"
+			%FishingButton.text = "낚시"
+		else:
+			_set_fishing_status("입질은 그대로 기다리고 있어요. 저장을 확인한 뒤 다시 낚아 올릴 수 있습니다.")
 		return
 	if _fishing_session.is_quiet_ready():
 		_fishing_session.resolve_quiet()
@@ -1340,6 +1363,43 @@ func _set_normal_boat_foreground_visible(is_visible: bool) -> void:
 
 func _sync_next_voyage_button() -> void:
 	%NextVoyageButton.visible = not GameState.appreciation_mode and GameState.voyage_record_created
+
+
+func _refresh_storage_recovery_ui() -> void:
+	var issue_owner := ""
+	var issue_status := ""
+	for owner_id in ["identity", "boat_decor", "together_time", "ambient_memory", "memory_ledger", "photo_memory", "comfort"]:
+		var result: Dictionary = GameState.get_storage_status(owner_id)
+		var status := str(result.get("status", ""))
+		if status not in ["", "OK", "ABSENT", "COMMITTED"]:
+			issue_owner = owner_id
+			issue_status = status
+			break
+	%StorageStatusLabel.visible = not issue_owner.is_empty()
+	%StorageRecoveryButton.visible = not issue_owner.is_empty()
+	%StorageRecoveryButton.set_meta("owner_id", issue_owner)
+	if issue_owner.is_empty():
+		return
+	%StorageStatusLabel.text = "저장 확인 필요"
+	%StorageRecoveryButton.text = "정상본으로 복구" if issue_status in ["RECOVERED", "RECOVERY_REQUIRED", "CORRUPT"] else "저장 다시 시도"
+
+
+func _recover_or_retry_storage() -> void:
+	var owner_id := str(%StorageRecoveryButton.get_meta("owner_id", ""))
+	if owner_id.is_empty():
+		return
+	var status := str(GameState.get_storage_status(owner_id).get("status", ""))
+	var recovery := status in ["RECOVERED", "RECOVERY_REQUIRED", "CORRUPT"]
+	var succeeded := GameState.recover_storage(owner_id) if recovery else GameState.retry_owner_storage(owner_id)
+	if succeeded:
+		if owner_id == "identity":
+			_apply_identity_visuals()
+		elif owner_id == "boat_decor":
+			_apply_stored_boat_decor()
+		_update_ui("정상본 복구를 마쳤습니다." if recovery else "저장을 다시 마쳤습니다.")
+	else:
+		_update_ui("검증된 정상본이 없어 복구하지 못했습니다. 원본은 보존했습니다." if recovery else "아직 저장하지 못했습니다. 쉬는 시간은 계속할 수 있어요.")
+	_refresh_storage_recovery_ui()
 
 
 func _open_album() -> void:

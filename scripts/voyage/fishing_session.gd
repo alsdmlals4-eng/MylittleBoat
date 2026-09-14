@@ -12,6 +12,7 @@ enum State {
 var _state := State.IDLE
 var _wait_remaining := 0.0
 var _outcome_id := "catch"
+var _ready_fish := ""
 
 
 ## Starts one calm fishing wait with either a catch or a quiet no-catch ending.
@@ -50,9 +51,23 @@ func is_quiet_ready() -> bool:
 func resolve_catch(fish_name: String) -> String:
 	if _state != State.BITE_READY:
 		return ""
+	var caught := _ready_fish if not _ready_fish.is_empty() else fish_name
 	_state = State.IDLE
 	_wait_remaining = 0.0
-	return fish_name
+	_ready_fish = ""
+	return caught
+
+
+func prepare_catch(fish_name: String) -> String:
+	if _state != State.BITE_READY:
+		return ""
+	if _ready_fish.is_empty():
+		_ready_fish = fish_name
+	return _ready_fish
+
+
+func get_ready_catch() -> String:
+	return _ready_fish if _state == State.BITE_READY else ""
 
 
 ## Resolves a quiet no-catch result without a loss, score, or stored reward.
@@ -68,6 +83,7 @@ func resolve_quiet() -> bool:
 func cancel() -> void:
 	_state = State.IDLE
 	_wait_remaining = 0.0
+	_ready_fish = ""
 
 
 func _finish_wait() -> void:

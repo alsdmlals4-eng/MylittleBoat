@@ -12,6 +12,8 @@ const COMFORT_PREFERENCES_SCRIPT = preload("res://scripts/core/comfort_preferenc
 const PHOTO_MEMORY_PERSISTENCE_SCRIPT = preload("res://scripts/core/photo_memory_persistence.gd")
 const MEMORY_LEDGER_PERSISTENCE_SCRIPT = preload("res://scripts/core/memory_ledger_persistence.gd")
 const TOGETHER_TIME_SAVE_INTERVAL_SECONDS := 15.0
+const DECOR_CATALOG_SCRIPT = preload("res://scripts/decor/boat_decor_catalog.gd")
+const DECOR_VISUAL_ASSETS_SCRIPT = preload("res://scripts/decor/decor_visual_assets.gd")
 
 # 여러 항해에 걸쳐 유지되는 기억이다.
 var photos: Array[String] = []
@@ -48,6 +50,8 @@ var _comfort_preferences = COMFORT_PREFERENCES_SCRIPT.new()
 var _photo_memory_persistence = PHOTO_MEMORY_PERSISTENCE_SCRIPT.new()
 var _memory_ledger_persistence = MEMORY_LEDGER_PERSISTENCE_SCRIPT.new()
 var _unsaved_together_time_seconds := 0.0
+var _together_time_since_save_attempt := 0.0
+var _pending_voyage_summary := ""
 
 
 func _ready() -> void:
@@ -80,15 +84,17 @@ func reset_session() -> void:
 
 
 ## Stores or clears one cosmetic boat-decor choice without creating rewards.
-func set_boat_decor(slot_id: String, item_id: String) -> void:
+func set_boat_decor(slot_id: String, item_id: String) -> bool:
 	if slot_id == "":
-		return
+		return false
+	var candidate_decor := boat_decor.duplicate(true)
+	var candidate_appearances := boat_decor_appearances.duplicate(true)
 	if item_id == "":
-		boat_decor.erase(slot_id)
-		boat_decor_appearances.erase(slot_id)
+		candidate_decor.erase(slot_id)
+		candidate_appearances.erase(slot_id)
 	else:
-		boat_decor[slot_id] = item_id
-	save_boat_decor()
+		candidate_decor[slot_id] = item_id
+	return apply_decor_selection(candidate_decor, candidate_appearances)
 
 
 ## Returns the process-lifetime cosmetic item stored in one boat slot.
@@ -97,14 +103,15 @@ func get_boat_decor(slot_id: String) -> String:
 
 
 ## Stores or clears a cosmetic appearance without changing the stable decor item meaning.
-func set_boat_decor_appearance(slot_id: String, appearance_id: String) -> void:
+func set_boat_decor_appearance(slot_id: String, appearance_id: String) -> bool:
 	if slot_id == "":
-		return
+		return false
+	var candidate_appearances := boat_decor_appearances.duplicate(true)
 	if appearance_id == "":
-		boat_decor_appearances.erase(slot_id)
+		candidate_appearances.erase(slot_id)
 	else:
-		boat_decor_appearances[slot_id] = appearance_id
-	save_boat_decor()
+		candidate_appearances[slot_id] = appearance_id
+	return apply_decor_selection(boat_decor, candidate_appearances)
 
 
 ## Returns the stored cosmetic appearance for one boat decor slot.
@@ -120,8 +127,26 @@ func set_boat_decor_storage_path(path: String) -> void:
 
 
 ## Writes only cosmetic boat decor to the local device.
-func save_boat_decor() -> void:
-	_boat_decor_persistence.save(boat_decor, boat_decor_appearances)
+func save_boat_decor() -> bool:
+	return _boat_decor_persistence.save(boat_decor, boat_decor_appearances) == OK
+
+
+func apply_decor_selection(decor: Dictionary, appearances: Dictionary) -> bool:
+	var catalog = DECOR_CATALOG_SCRIPT.new()
+	var visuals = DECOR_VISUAL_ASSETS_SCRIPT.new()
+	for slot in decor:
+		if not slot is String or not decor[slot] is String or not catalog.is_compatible(slot, decor[slot]):
+			return false
+	for slot in appearances:
+		if not slot is String or not appearances[slot] is String or decor.get(slot, "") != "pet_cushion" or appearances[slot] not in visuals.get_cushion_appearance_ids():
+			return false
+	var candidate_decor := decor.duplicate(true)
+	var candidate_appearances := appearances.duplicate(true)
+	if _boat_decor_persistence.save(candidate_decor, candidate_appearances) != OK:
+		return false
+	boat_decor = candidate_decor
+	boat_decor_appearances = candidate_appearances
+	return true
 
 
 ## Restores cosmetic boat decor or keeps an empty boat when the file is unavailable.
@@ -142,15 +167,13 @@ func get_selected_pet_type() -> String:
 
 
 ## Stores a selected player family as local cosmetic state only.
-func set_selected_player_style(value: String) -> void:
-	selected_player_style = _identity_profile.normalize_player_style(value)
-	save_identity()
+func set_selected_player_style(value: String) -> bool:
+	return apply_identity_selection(value, selected_pet_type)
 
 
 ## Stores a selected companion species as local cosmetic state only.
-func set_selected_pet_type(value: String) -> void:
-	selected_pet_type = _identity_profile.normalize_pet_type(value)
-	save_identity()
+func set_selected_pet_type(value: String) -> bool:
+	return apply_identity_selection(selected_player_style, value)
 
 
 ## Switches the identity storage target for isolated contract tests.
@@ -162,8 +185,18 @@ func set_identity_storage_path(path: String) -> void:
 
 
 ## Writes only the selected visual identity to the local device.
-func save_identity() -> void:
-	_identity_profile.save(selected_player_style, selected_pet_type)
+func save_identity() -> bool:
+	return _identity_profile.save(selected_player_style, selected_pet_type) == OK
+
+
+func apply_identity_selection(player_style: String, pet_type: String) -> bool:
+	if _identity_profile.normalize_player_style(player_style) != player_style or _identity_profile.normalize_pet_type(pet_type) != pet_type:
+		return false
+	if _identity_profile.save(player_style, pet_type) != OK:
+		return false
+	selected_player_style = player_style
+	selected_pet_type = pet_type
+	return true
 
 
 ## Restores selected visual identity or keeps the approved C + dog default.
@@ -179,6 +212,7 @@ func set_together_time_storage_path(path: String) -> void:
 		return
 	_together_time_persistence = TOGETHER_TIME_PERSISTENCE_SCRIPT.new(path)
 	_unsaved_together_time_seconds = 0.0
+	_together_time_since_save_attempt = 0.0
 	load_together_time()
 
 
@@ -186,25 +220,35 @@ func set_together_time_storage_path(path: String) -> void:
 func advance_together_time(delta: float) -> void:
 	if not voyage_active:
 		return
+	if not is_finite(delta):
+		return
 	var safe_delta := maxf(delta, 0.0)
 	if is_zero_approx(safe_delta):
 		return
 	together_time_seconds += safe_delta
 	_unsaved_together_time_seconds += safe_delta
-	if _unsaved_together_time_seconds >= TOGETHER_TIME_SAVE_INTERVAL_SECONDS:
+	_together_time_since_save_attempt += safe_delta
+	if _together_time_since_save_attempt >= TOGETHER_TIME_SAVE_INTERVAL_SECONDS:
 		flush_together_time()
 
 
 ## Writes the current global together-time total to the local device.
-func flush_together_time() -> void:
-	_together_time_persistence.save_seconds(together_time_seconds)
+func flush_together_time() -> bool:
+	var previous_status := str(_together_time_persistence.get_last_storage_result().get("status", ""))
+	if is_zero_approx(_unsaved_together_time_seconds) and previous_status in ["", "OK", "ABSENT", "COMMITTED"]:
+		return true
+	_together_time_since_save_attempt = 0.0
+	if _together_time_persistence.save_seconds(together_time_seconds) != OK:
+		return false
 	_unsaved_together_time_seconds = 0.0
+	return true
 
 
 ## Restores together time or safely starts at zero when local data is unavailable.
 func load_together_time() -> void:
 	together_time_seconds = _together_time_persistence.load_seconds()
 	_unsaved_together_time_seconds = 0.0
+	_together_time_since_save_attempt = 0.0
 
 
 ## Switches the ambient-memory storage target for isolated contract tests.
@@ -216,13 +260,17 @@ func set_ambient_memory_storage_path(path: String) -> void:
 
 
 ## Records one automatically discovered scenery memory and persists it immediately.
-func record_ambient_memory(entry: String) -> void:
+func record_ambient_memory(entry: String) -> bool:
 	var normalized_entry := entry.strip_edges()
 	if normalized_entry.is_empty():
-		return
-	ambient_memories.append(normalized_entry)
-	sceneries.append(normalized_entry)
-	_ambient_memory_persistence.save_entries(ambient_memories)
+		return false
+	var candidate: Array[String] = ambient_memories.duplicate()
+	candidate.append(normalized_entry)
+	if _ambient_memory_persistence.save_entries(candidate) != OK:
+		return false
+	ambient_memories = candidate
+	sceneries = ambient_memories.duplicate()
+	return true
 
 
 ## Restores only durable ambient scenery memories for the existing Album consumer.
@@ -240,17 +288,17 @@ func set_comfort_storage_path(path: String) -> void:
 
 
 ## Stores a local motion-comfort choice without mutating voyage progress or atmosphere.
-func set_motion_comfort_profile(profile: String) -> void:
+func set_motion_comfort_profile(profile: String) -> bool:
 	motion_comfort_profile = _comfort_preferences.normalize_profile(profile)
-	_comfort_preferences.save_profile(motion_comfort_profile)
+	return _comfort_preferences.save_profile(motion_comfort_profile) == OK
 
 
 ## Cycles through the three optional visual-motion comfort profiles.
-func cycle_motion_comfort_profile() -> void:
+func cycle_motion_comfort_profile() -> bool:
 	var profiles: Array[String] = COMFORT_PREFERENCES_SCRIPT.PROFILE_ORDER
 	var current_index := profiles.find(get_motion_comfort_profile())
 	var next_index := (current_index + 1) % profiles.size()
-	set_motion_comfort_profile(profiles[next_index])
+	return set_motion_comfort_profile(profiles[next_index])
 
 
 ## Returns the normalized local visual-motion preference.
@@ -328,8 +376,8 @@ func set_memory_ledger_storage_path(path: String) -> void:
 
 
 ## Writes only quiet fish memories and completed voyage summaries to the local device.
-func save_memory_ledger() -> void:
-	_memory_ledger_persistence.save_entries(fish, voyage_records)
+func save_memory_ledger() -> bool:
+	return _memory_ledger_persistence.save_entries(fish, voyage_records) == OK
 
 
 ## Restores only fish memories and completed voyage summaries, never bottle letters.
@@ -345,30 +393,41 @@ func load_memory_ledger() -> void:
 
 ## Advances the active voyage timer and reports when it reaches zero this tick.
 func tick_voyage(delta: float) -> bool:
-	if not voyage_active or remaining_seconds <= 0.0:
+	if not voyage_active or remaining_seconds <= 0.0 or not is_finite(delta):
 		return false
 	remaining_seconds = maxf(0.0, remaining_seconds - maxf(delta, 0.0))
 	return remaining_seconds <= 0.0
 
 
 ## Creates exactly one memory record only after an active voyage reaches zero.
-func complete_voyage() -> void:
+func complete_voyage() -> bool:
 	if not voyage_active or remaining_seconds > 0.0 or voyage_record_created:
-		return
-	voyage_record_created = true
+		return false
 	var photos_this_voyage := maxi(0, photos.size() - _voyage_photo_start_count)
 	var scenery_this_voyage := maxi(0, sceneries.size() - _voyage_scenery_start_count)
 	var letters_this_voyage := maxi(0, letters.size() - _voyage_letter_start_count)
 	var fish_this_voyage := maxi(0, fish.size() - _voyage_fish_start_count)
-	voyage_records.append(
-		"오늘의 항해 · 사진 %d · 풍경 %d · 편지 %d · 물고기 %d" % [
+	if _pending_voyage_summary.is_empty():
+		_pending_voyage_summary = "오늘의 항해 · 사진 %d · 풍경 %d · 편지 %d · 물고기 %d" % [
 			photos_this_voyage,
 			scenery_this_voyage,
 			letters_this_voyage,
 			fish_this_voyage,
 		]
-	)
-	save_memory_ledger()
+	var candidate_records: Array[String] = voyage_records.duplicate()
+	candidate_records.append(_pending_voyage_summary)
+	if _memory_ledger_persistence.save_entries(fish, candidate_records) != OK:
+		return false
+	voyage_records = candidate_records
+	voyage_record_created = true
+	_pending_voyage_summary = ""
+	return true
+
+
+func retry_pending_voyage_record() -> bool:
+	if _pending_voyage_summary.is_empty():
+		return false
+	return complete_voyage()
 
 
 ## Adds a photo album entry.
@@ -387,6 +446,56 @@ func add_letter(entry: String) -> void:
 
 
 ## Adds a caught fish as a quiet memory without turning fishing repetition into affection farming.
-func add_fish(entry: String) -> void:
-	fish.append(entry)
-	save_memory_ledger()
+func add_fish(entry: String) -> bool:
+	var candidate: Array[String] = fish.duplicate()
+	candidate.append(entry)
+	if _memory_ledger_persistence.save_entries(candidate, voyage_records) != OK:
+		return false
+	fish = candidate
+	return true
+
+
+func get_storage_status(owner_id: String) -> Dictionary:
+	var owner = _storage_owner(owner_id)
+	return owner.get_last_storage_result() if owner != null else {}
+
+
+func recover_storage(owner_id: String) -> bool:
+	var owner = _storage_owner(owner_id)
+	if owner == null:
+		return false
+	var result: Dictionary = owner.recover_primary()
+	if result.get("status", "") != "COMMITTED":
+		return false
+	match owner_id:
+		"identity": load_identity()
+		"boat_decor": load_boat_decor()
+		"ambient_memory": load_ambient_memories()
+		"memory_ledger": load_memory_ledger()
+		"photo_memory": load_photo_memories()
+		"comfort": pass
+	# together_time intentionally preserves this execution's unsaved accumulation.
+	return true
+
+
+func retry_owner_storage(owner_id: String) -> bool:
+	match owner_id:
+		"identity": return save_identity()
+		"boat_decor": return save_boat_decor()
+		"together_time": return flush_together_time()
+		"ambient_memory": return _ambient_memory_persistence.save_entries(ambient_memories) == OK
+		"memory_ledger": return retry_pending_voyage_record() if not _pending_voyage_summary.is_empty() else save_memory_ledger()
+		"comfort": return _comfort_preferences.save_preferences(motion_comfort_profile, _ocean_volume) == OK
+	return false
+
+
+func _storage_owner(owner_id: String):
+	return {
+		"identity": _identity_profile,
+		"boat_decor": _boat_decor_persistence,
+		"together_time": _together_time_persistence,
+		"ambient_memory": _ambient_memory_persistence,
+		"memory_ledger": _memory_ledger_persistence,
+		"photo_memory": _photo_memory_persistence,
+		"comfort": _comfort_preferences,
+	}.get(owner_id)

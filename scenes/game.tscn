@@ -587,3 +587,16 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 tooltip_text = "바다 소리 음량"
+
+[node name="StorageStatusLabel" type="Label" parent="BottomPanel/ButtonGrid"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = "저장 확인 필요"
+tooltip_text = "저장 확인이 필요합니다. 쉬는 시간은 계속할 수 있어요."
+
+[node name="StorageRecoveryButton" type="Button" parent="BottomPanel/ButtonGrid"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = "정상본으로 복구"

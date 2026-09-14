@@ -18,7 +18,7 @@ func _init() -> void:
 		return
 
 	var session: RefCounted = fishing_script.new()
-	for method_name in ["cast_line", "advance", "is_waiting", "is_bite_ready", "resolve_catch", "cancel"]:
+	for method_name in ["cast_line", "advance", "is_waiting", "is_bite_ready", "prepare_catch", "get_ready_catch", "resolve_catch", "cancel"]:
 		_expect(session.has_method(method_name), "FishingSession must expose %s" % method_name)
 
 	if _failures > 0:
@@ -31,11 +31,15 @@ func _init() -> void:
 	_expect(not bool(session.call("advance", 1.0)), "advance before wait completion must not report a bite")
 	_expect(bool(session.call("advance", 1.0)), "advance at wait completion must report one bite")
 	_expect(bool(session.call("is_bite_ready")), "completed wait must enter BITE_READY")
+	_expect(str(session.call("prepare_catch", "정어리")) == "정어리", "ready bite must retain one fish candidate")
+	_expect(str(session.call("prepare_catch", "고등어")) == "정어리", "retry must retain the same fish candidate")
+	_expect(str(session.call("get_ready_catch")) == "정어리", "ready candidate must remain inspectable before commit")
 
 	var caught := str(session.call("resolve_catch", "정어리"))
 	_expect(caught == "정어리", "resolve_catch must return the caught fish name")
 	_expect(not bool(session.call("is_waiting")), "resolved catch must leave WAITING")
 	_expect(not bool(session.call("is_bite_ready")), "resolved catch must leave BITE_READY")
+	_expect(str(session.call("get_ready_catch")) == "", "resolved catch must clear the candidate")
 
 	session.call("cast_line", 5.0)
 	session.call("cancel")
