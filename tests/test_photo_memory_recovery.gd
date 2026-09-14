@@ -27,6 +27,10 @@ class InterruptedPhoto extends "res://scripts/core/photo_memory_persistence.gd":
 		super._write_png(path, bytes)
 		return ERR_FILE_CANT_WRITE
 
+class UnsupportedLinkInspection extends "res://scripts/core/photo_memory_persistence.gd":
+	func _supports_link_inspection() -> bool:
+		return false
+
 func _init() -> void:
 	call_deferred("run")
 
@@ -68,6 +72,14 @@ func run() -> void:
 	expect(FileAccess.get_file_as_bytes(PATH + ".last_good") == original, "backup matches exact original bytes")
 	expect(owner.resolve_photo_path(first) == first.image_path, "normal user path remains unchanged")
 	expect(owner.load_photo_image(first) != null, "normal PNG safely decodes")
+	var unsupported := UnsupportedLinkInspection.new(PATH, DIR)
+	var supported_bytes := FileAccess.get_file_as_bytes(first.image_path)
+	var unsupported_files := DirAccess.get_files_at(DIR)
+	expect(unsupported.resolve_photo_path(first).is_empty(), "indeterminate link inspection rejects an existing owned photo")
+	expect(unsupported.load_photo_image(first) == null, "indeterminate link inspection refuses image decode")
+	expect(not unsupported.save_photo(image, "지원 미확인", "bright").get("ok", false), "indeterminate link inspection rejects photo save")
+	expect(FileAccess.get_file_as_bytes(first.image_path) == supported_bytes, "unsupported inspection leaves the existing photo bytes unchanged")
+	expect(DirAccess.get_files_at(DIR) == unsupported_files, "unsupported inspection leaves no PNG or receipt")
 	for bad_id in ["", ".", "..", "../escape", "a/b", "a\\b", "C:escape", "name.png", "name."]:
 		var bad := first.duplicate(true)
 		bad.id = bad_id

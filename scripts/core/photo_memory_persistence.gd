@@ -187,7 +187,7 @@ func _safe_component(value: String) -> bool:
 
 func _safe_owned_path(path: String, allow_missing: bool = false) -> bool:
 	# user:// 자체는 앱 신뢰 경계다. 그 아래 모든 성분의 link/reparse를 검사한다.
-	if OS.get_name() not in ["Windows", "Linux", "macOS", "Android", "iOS"] or not path.begins_with("user://") or "\\" in path:
+	if not _supports_link_inspection() or not path.begins_with("user://") or "\\" in path:
 		return false
 	var parts := path.trim_prefix("user://").split("/", false)
 	if parts.is_empty() or "//" in path.trim_prefix("user://"):
@@ -205,6 +205,12 @@ func _safe_owned_path(path: String, allow_missing: bool = false) -> bool:
 			return allow_missing and _safe_component(part) and part == parts[-1]
 		current = current.path_join(part)
 	return true
+
+
+func _supports_link_inspection() -> bool:
+	# Godot documents DirAccess.is_link as implemented on these desktop platforms.
+	# Mobile and unknown targets fail closed until the engine documents and the project verifies support.
+	return OS.get_name() in ["Windows", "Linux", "macOS"]
 
 
 func _receipt_path(id: String) -> String:
