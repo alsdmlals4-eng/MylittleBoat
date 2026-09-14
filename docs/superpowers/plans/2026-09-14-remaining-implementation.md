@@ -24,6 +24,8 @@
 
 ## 기준과 실행 순서
 
+2026-09-14 재개 상태. R07b1은 완료 증거 범위대로 유지한다. R07b2는 하위 작업 도구 사용량 제한으로 코드 변경 없이 중단됐으며 다음 구현 단위로 남았다. 크로마키 이미지 제작 정책과 별도 월간 AI 증빙 PDF 추가는 게임 R01–R12 완료율에 합산하지 않는다. 현재 상세 증거와 PDF 발행 상태는 `docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md`를 따른다.
+
 기준 source `6b7949a563150bd93e08d5d5eb1e028eab7336ef`. origin/main `7181d5e6845e75107eade8c4d2e62e10334ab54b`와 다르므로 미래 실행 권한은 고정 SHA에서 추정하지 않는다. 실제 main·작업 branch·dirty 상태·PR·consumer·Base adapter를 매번 재독해한다.
 
 ```text

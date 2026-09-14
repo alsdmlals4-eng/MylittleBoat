@@ -6,6 +6,22 @@
 
 ### 2026-09-14 R07a 저장 보호·첫 comfort consumer
 
+2026-09-14 22시 KST 재개 시점. R07b2 사진 저장·경로 작업은 하위 작업 도구의 사용량 제한으로 중단됐다. `9c1e89e` 이후 해당 코드 변경·완료 보고가 없고 저장소 readback으로 미구현 상태를 유지한다. 다음 코딩 단위는 여전히 R07b2→R07b3이며 기존 준비 brief는 삭제하지 않는다. 이번 추가 요청은 크로마키 제작 규칙과 9월 AI 증빙 PDF이고 게임 runtime 변경으로 계산하지 않는다.
+
+월간 증빙 발행. `C:/Users/user/Documents/증빙서류/9월 증빙서류/my little boat_2026-09_AI활용_작업일지_증빙집_v1.0.pdf` 8쪽, 2,491,595 bytes, SHA-256 `4adbd50f3535bf1874c5fa42203aea3c883e4f95f6901ed4c9458b6f717e4bdd`. 같은 이름의 `.sources.json`에 45개 Git 기록과 8개 원본 hash를 보존한다. 사후 정리·미제출·계정/결제 미확인 상태이며 지원 협약 원문을 확인한 것으로 쓰지 않았다. `AGENTS.md`가 앞으로의 크로마키/월별 증빙 운영을 소유하고 PDF는 파생물이다.
+
+이 추가 범위의 실제 검토 기록은 다음과 같다. 기준 `9c1e89e`의 게임 소비처·기획 상태를 보존하는 문서/발행기 변경으로 한정한다.
+
+1. 요구·원본 대조. 사용자 지시, AGENTS, 기존 PDF 발행기, GDD/계획/저장 검증 owner, 이미지 manifest와 수면 검증 문서를 읽었다. 전체 대화 자동 복제·Git 날짜를 AI 날짜로 추정하는 안을 제외하고 45개 commit의 작성/커밋 날짜를 따로 보관했다. 게임 데이터/아트/자산 final lock은 변경하지 않았다.
+2. 출처 검증. 8개 원본 SHA-256과 섬 asset manifest SHA를 실제 파일과 대조해 일치. 누락 원본/섬 hash 불일치 시 발행 거부 경계가 있다. 원문 프롬프트 화면은 만들지 않고 저장된 발췌로 표시했다. 게임 변경 증거를 문서 생성으로 대체하지 않았다.
+3. 시각 검수. Poppler로 8쪽 전체를 렌더하고 각 PNG를 직접 확인했다. 한글·표·이미지·주석·footer와 1쪽 페이지 안내가 맞고 겹침/잘림을 발견하지 않았다. 하늘/바다/섬 원본은 새로 생성하거나 수정하지 않았다.
+4. 발행 안전 반례. 같은 v1.0 재실행을 실제 실행해 FileExistsError/exit 1로 거부했다. 의도한 음성 검사이며 PDF hash를 재확인한다. 미제출 원본도 조용히 덮지 않으며 추가 DB/월간 기획 master 대신 기존 기록 파생을 유지한다.
+5. 최종 범위/대안 대조. 본문은 미래 작업을 자동 판정하는 일반 보고 엔진이 아니라 검토된 9월 사례임을 발행기 docstring과 README에 명시했다. 8페이지 텍스트 필수 상태·45개 색인·PDF hash·발행 당시 기준 head의 원본 hash를 확인했다. bundled Python 회귀는 20개 중 19 PASS / 1 SKIP(기존 Blueprint의 optional PDF geometry inspector 부재)였다. 새 증빙 PDF는 별도로 Poppler 8쪽 전체를 직접 검수했다. 발행 뒤 이 handoff/실행 계획은 후속 상태로 갱신했으므로 PDF 원본 대조는 동봉 snapshot의 `9c1e89e` Git blob을 사용한다. 게임/Scene/assets는 무변경이며 새 GPU/Human/기기/출시 검증은 NOT_RUN이다.
+
+최종 대조 반례와 교정. `git cat-file --filters`는 체크아웃 줄바꿈 변환을 적용해 3개 문서의 byte hash가 달랐다. 원본 Git blob으로 다시 대조하니 8개 모두 저장된 hash와 정확히 일치했다. 따라서 `--verify <sources.json>`은 발행 기준 Git blob 및 명시적 CRLF 표현과 PDF hash를 검사하며 현재 변경된 문서를 과거 원본으로 대신 읽지 않는다. 발행 전 선택된 원본이 미커밋 상태이면 거부하도록 보호했다. 실패한 비교·명령 quoting 오류는 성공 검사로 계산하지 않았다.
+
+추가 음성 검증은 실제 미커밋 원본 거부, 메모리상의 잘못된 source hash 거부, 잘못된 PDF hash 거부의 세 반례 모두 통과했다. 실제 PDF/원본 파일은 변경하지 않았다. PDF 8개 렌더는 이번 검증의 사용 중 증거로 외부 임시 QA 폴더에 유지했으며 삭제 대상으로 추정하지 않았다. 기존 영수증 PDF와 다른 작업 폴더는 미변경이다.
+
 후속 R07b1은 `b07f8b8`과 `6f6f716`에서 다섯 단순 owner까지 연결했고 `02e5a256`에서 공통 읽기 정책 중복을 해소했다. 격리 저장 환경의 64 headless 계약, 마지막 focused 8개와 game Scene smoke 및 독립 재검토 PASS가 있으며 exact 증거 범위는 아래 evidence owner를 따른다. 사진·GameState/UI 전체 연결 전이므로 R07 완료는 아니다. 현재 계획 실행은 [R01–R12 실행 계획](../superpowers/plans/2026-09-14-remaining-implementation.md)을 따른다.
 
 명세 준비 후 같은 날 사용자 실행 승인으로 `RecoverableConfigStore`와 기존 `ComfortPreferences`를 연결했다. `6e50ad0`의 기본 구현, `3724c67`의 읽기 무변경 교정, `4773c68`의 최초 staging 이전 원본 의도 기록을 포함한다. `COMMITTED / NOT_COMMITTED / RECOVERY_REQUIRED`, 검증된 rolling last_good, 중단 후 원본 hash 기반 복구, 명시 복구 전 쓰기 차단이 실제 코드에 있다. 기존 음소거·움직임 저감의 session-only 의미를 유지한다.

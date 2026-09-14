@@ -136,6 +136,8 @@ Escalate only core player meaning, final visual lock, significant scope/cost, de
 
 ### Need-driven image candidate workflow
 
+2026-09-14 사용자 제작 규칙. 앞으로 배경 제거가 필요한 캐릭터·보트·동반자·구름·섬 등 독립 요소는 이미지 모델로 단색 크로마키 배경 원본을 먼저 생성한 뒤 배경을 제거한다. 대상 색과 겹치지 않는 key 색을 선택하고 원본·프롬프트·제거 설정·RGBA 결과의 provenance와 hash를 연결한다. 실제 alpha, 가장자리 key spill/halo, 내부 색 손실, 상태군 pivot와 consumer 합성을 검사한다. 체크무늬 RGB를 투명 이미지로 취급하지 않는다. 하늘·바다처럼 배경 자체인 불투명 texture는 별도 레이어로 유지한다. 기존 승인 원본을 일괄 재생성하거나 이 지침만으로 final lock을 우회하지 않는다.
+
 When a concrete runtime consumer, planned player-facing surface, product-distribution need, or current Blueprint planning-board purpose is established, do not stop for a routine pre-generation approval question. First read the current visual canon, approved images and mockups, actual consumer, required state family, dimensions, rights/provenance boundary, and reusable approved assets. Then generate exactly one consistent candidate with the host image model and stop for the user to decide `LOCK / REVISE / REJECT`.
 
 ```text
@@ -238,6 +240,10 @@ Final replies should include:
 - Any remaining risk or manual Godot check the user should perform.
 
 ## Commit Guidance
+
+### Monthly AI work evidence
+
+2026-09-14 사용자 요청에 따라 블루프린트와 별도로 `my little boat` 이름의 월별 「AI 활용 작업일지·증빙집」 PDF를 만든다. 9월 출력 위치는 `C:/Users/user/Documents/증빙서류/9월 증빙서류`다. `tools/build_ai_work_evidence_pdf.py`는 기존 Git·작업 검증·자산 provenance 기록의 파생 보고서만 만들며 새로운 기획 정본이 아니다. 실제 AI 작업일, Git 기록 시각, 사후 기록 작성일, 캡처일, PDF 발행일을 구분한다. 검증되지 않은 계정·모델·결제·비용 인정·협약 사실은 추정하지 않는다. 입력 원문 발췌와 실제 화면 캡처를 구분하고 부족한 원본은 누락으로 표시한다. 제출용 PDF에 비밀·원본 대화 전체·결제 원본을 자동 수록하지 않는다. 발행 파일은 덮어쓰지 않고 새 버전과 정정 이유를 남긴다. 지정 정산 양식을 대체하거나 자동 제출하지 않는다.
 
 Commit only when one logical change is complete and the repository workflow expects it.
 
