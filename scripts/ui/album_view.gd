@@ -80,8 +80,7 @@ func _refresh_postcards() -> void:
 	var first := _postcard_page * POSTCARDS_PER_PAGE
 	for offset in range(first, mini(first + POSTCARDS_PER_PAGE, postcard_entries.size())):
 		var entry: Dictionary = postcard_entries[postcard_entries.size() - 1 - offset]
-		var image_path := str(entry.get("image_path", ""))
-		var image: Image = Image.load_from_file(image_path) if FileAccess.file_exists(image_path) else null
+		var image: Image = GameState.load_photo_image(entry)
 		_add_postcard_card(image, str(entry.get("label", "조용한 항해")))
 	%PostcardRow.visible = not postcard_entries.is_empty()
 	%PostcardEmptyLabel.visible = postcard_entries.is_empty()

@@ -115,8 +115,7 @@ func _add_postcard(game_state: Node, label: String, atmosphere_id: String, color
 
 
 func _cleanup_photo_storage() -> void:
-	if FileAccess.file_exists(PHOTO_CONFIG_PATH):
-		DirAccess.remove_absolute(ProjectSettings.globalize_path(PHOTO_CONFIG_PATH))
+	preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(PHOTO_CONFIG_PATH)
 	if DirAccess.dir_exists_absolute(ProjectSettings.globalize_path(PHOTO_IMAGE_DIRECTORY)):
 		var directory := DirAccess.open(PHOTO_IMAGE_DIRECTORY)
 		if directory != null:

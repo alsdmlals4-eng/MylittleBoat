@@ -311,6 +311,14 @@ func load_photo_memories() -> void:
 		photos.append(str(entry.get("label", "")))
 
 
+func resolve_photo_path(entry: Dictionary) -> String:
+	return _photo_memory_persistence.resolve_photo_path(entry)
+
+
+func load_photo_image(entry: Dictionary) -> Image:
+	return _photo_memory_persistence.load_photo_image(entry)
+
+
 ## Switches fish and completed-voyage storage for isolated contract tests.
 func set_memory_ledger_storage_path(path: String) -> void:
 	if path == "":

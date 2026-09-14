@@ -100,8 +100,7 @@ func _write_raw_config(contents: String) -> void:
 
 
 func _cleanup_storage() -> void:
-	if FileAccess.file_exists(CONFIG_PATH):
-		DirAccess.remove_absolute(ProjectSettings.globalize_path(CONFIG_PATH))
+	preload("res://tests/helpers/config_store_test_cleanup.gd").remove_store(CONFIG_PATH)
 	var absolute_directory := ProjectSettings.globalize_path(IMAGE_DIRECTORY)
 	if not DirAccess.dir_exists_absolute(absolute_directory):
 		return
