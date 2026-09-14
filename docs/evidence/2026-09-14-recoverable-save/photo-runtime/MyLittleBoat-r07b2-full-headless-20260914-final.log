@@ -1,0 +1,397 @@
+HEADLESS_CONTRACT_COUNT=65
+BEGIN=test_album_composition_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: album composition contract
+EXIT=0 END=test_album_composition_contract.gd
+BEGIN=test_album_memory_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: album memory contract
+EXIT=0 END=test_album_memory_contract.gd
+BEGIN=test_ambient_memory_game_scene_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: ambient-memory game scene contract
+EXIT=0 END=test_ambient_memory_game_scene_contract.gd
+BEGIN=test_ambient_memory_persistence.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: ambient-memory persistence contract
+EXIT=0 END=test_ambient_memory_persistence.gd
+BEGIN=test_ambient_memory_state_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: ambient-memory state contract
+EXIT=0 END=test_ambient_memory_state_contract.gd
+BEGIN=test_ambient_motif_asset_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: ambient motif asset contract
+EXIT=0 END=test_ambient_motif_asset_contract.gd
+BEGIN=test_ambient_motif_game_scene_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: ambient motif game scene contract
+EXIT=0 END=test_ambient_motif_game_scene_contract.gd
+BEGIN=test_boat_decor_persistence.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: boat decor persistence contract
+EXIT=0 END=test_boat_decor_persistence.gd
+BEGIN=test_boat_decoration_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: boat decoration contract
+EXIT=0 END=test_boat_decoration_contract.gd
+BEGIN=test_boat_life_scene_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: boat life scene contract
+EXIT=0 END=test_boat_life_scene_contract.gd
+BEGIN=test_boat_life_ui_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: boat life UI contract
+EXIT=0 END=test_boat_life_ui_contract.gd
+BEGIN=test_calm_voyage_state.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: calm voyage state contract
+EXIT=0 END=test_calm_voyage_state.gd
+BEGIN=test_camera_input_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: appreciation camera input contract
+EXIT=0 END=test_camera_input_contract.gd
+BEGIN=test_chibi_normal_final_card_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: chibi normal final card contract
+EXIT=0 END=test_chibi_normal_final_card_contract.gd
+BEGIN=test_comfort_preferences.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: comfort-preferences persistence contract
+EXIT=0 END=test_comfort_preferences.gd
+BEGIN=test_cosmetic_identity_profile.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: cosmetic identity profile contract
+EXIT=0 END=test_cosmetic_identity_profile.gd
+BEGIN=test_decor_preview_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: decor preview contract
+EXIT=0 END=test_decor_preview_contract.gd
+BEGIN=test_diorama_avatar_camera_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: diorama avatar camera contract
+EXIT=0 END=test_diorama_avatar_camera_contract.gd
+BEGIN=test_direct_boat_entry_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: direct boat entry contract
+EXIT=0 END=test_direct_boat_entry_contract.gd
+BEGIN=test_drift_scenery_director.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: drift scenery director contract
+EXIT=0 END=test_drift_scenery_director.gd
+BEGIN=test_final_composite_decor_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: final composite decor contract
+EXIT=0 END=test_final_composite_decor_contract.gd
+BEGIN=test_final_composite_decor_visibility_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: final composite decor visibility contract
+EXIT=0 END=test_final_composite_decor_visibility_contract.gd
+BEGIN=test_fishing_outcome_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: fishing outcome contract
+EXIT=0 END=test_fishing_outcome_contract.gd
+BEGIN=test_fishing_session.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: fishing session contract
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+EXIT=0 END=test_fishing_session.gd
+BEGIN=test_game_scene_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+SKIP: headless renderer does not support viewport postcard capture
+PASS: calm voyage game scene contract
+EXIT=0 END=test_game_scene_contract.gd
+BEGIN=test_game_scene_time_of_day_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: game scene real-time atmosphere contract
+EXIT=0 END=test_game_scene_time_of_day_contract.gd
+BEGIN=test_handpainted_visual_slice_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: handpainted visual slice contract
+EXIT=0 END=test_handpainted_visual_slice_contract.gd
+BEGIN=test_headless_editor_plugin_guard_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: headless editor plugin guard contract
+EXIT=0 END=test_headless_editor_plugin_guard_contract.gd
+BEGIN=test_identity_visual_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: identity visual contract
+EXIT=0 END=test_identity_visual_contract.gd
+BEGIN=test_interaction_content_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: interaction content contract
+EXIT=0 END=test_interaction_content_contract.gd
+BEGIN=test_look_around_camera_input_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: look around camera input contract
+EXIT=0 END=test_look_around_camera_input_contract.gd
+BEGIN=test_look_around_foreground_split_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: Look Around foreground split contract
+EXIT=0 END=test_look_around_foreground_split_contract.gd
+BEGIN=test_look_around_game_scene_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: look around game scene contract
+EXIT=0 END=test_look_around_game_scene_contract.gd
+BEGIN=test_look_around_presentation_router.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: look around presentation router contract
+EXIT=0 END=test_look_around_presentation_router.gd
+BEGIN=test_low_pressure_interaction_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: low-pressure interaction contract
+EXIT=0 END=test_low_pressure_interaction_contract.gd
+BEGIN=test_main_menu_atmosphere_background_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: direct entry atmosphere owner contract
+EXIT=0 END=test_main_menu_atmosphere_background_contract.gd
+BEGIN=test_main_menu_identity_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: direct entry identity contract
+EXIT=0 END=test_main_menu_identity_contract.gd
+BEGIN=test_main_menu_time_of_day_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: direct entry real-time contract
+EXIT=0 END=test_main_menu_time_of_day_contract.gd
+BEGIN=test_memory_ledger_persistence.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: memory-ledger persistence contract
+EXIT=0 END=test_memory_ledger_persistence.gd
+BEGIN=test_memory_ledger_state_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: memory-ledger state contract
+EXIT=0 END=test_memory_ledger_state_contract.gd
+BEGIN=test_ocean_volume_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+OCEAN_VOLUME_FAILURES=0
+EXIT=0 END=test_ocean_volume_contract.gd
+BEGIN=test_photo_memory_persistence.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+EXPECTED_CONFIG_PARSE_FAILURE_EXERCISED
+PASS: photo-memory persistence contract
+EXIT=0 END=test_photo_memory_persistence.gd
+BEGIN=test_photo_memory_recovery.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PHOTO_540X960_THREE_LOAD_USEC=19153
+PHOTO_MEMORY_RECOVERY_FAILURES=0
+EXIT=0 END=test_photo_memory_recovery.gd
+BEGIN=test_photo_memory_state_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: photo-memory state contract
+EXIT=0 END=test_photo_memory_state_contract.gd
+BEGIN=test_rear_normal_voyage_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: rear normal voyage contract
+EXIT=0 END=test_rear_normal_voyage_contract.gd
+BEGIN=test_recoverable_config_store.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: recoverable config store
+EXIT=0 END=test_recoverable_config_store.gd
+BEGIN=test_resting_core_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: resting core authored ocean contract
+EXIT=0 END=test_resting_core_contract.gd
+BEGIN=test_runtime_capture_guard_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: runtime capture guard contract
+EXIT=0 END=test_runtime_capture_guard_contract.gd
+BEGIN=test_runtime_image_asset_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: runtime image asset contract
+EXIT=0 END=test_runtime_image_asset_contract.gd
+BEGIN=test_seasonal_parallax_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: seasonal parallax contract
+EXIT=0 END=test_seasonal_parallax_contract.gd
+BEGIN=test_simple_owner_recovery.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+SIMPLE_OWNER_RECOVERY_FAILURES=0
+EXIT=0 END=test_simple_owner_recovery.gd
+BEGIN=test_split_sky_sea_background_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: split sky sea background contract
+EXIT=0 END=test_split_sky_sea_background_contract.gd
+BEGIN=test_stern_motion_integration.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+STERN_MOTION_FAILURES=0
+EXIT=0 END=test_stern_motion_integration.gd
+BEGIN=test_storybook_art_card_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: storybook art card contract
+EXIT=0 END=test_storybook_art_card_contract.gd
+BEGIN=test_time_of_day_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: time-of-day contract
+EXIT=0 END=test_time_of_day_contract.gd
+BEGIN=test_title_brand_asset_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: title brand asset contract
+EXIT=0 END=test_title_brand_asset_contract.gd
+BEGIN=test_together_time_game_scene_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: together time game scene contract
+EXIT=0 END=test_together_time_game_scene_contract.gd
+BEGIN=test_together_time_persistence.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: together time persistence contract
+EXIT=0 END=test_together_time_persistence.gd
+BEGIN=test_together_time_state_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: together time state contract
+EXIT=0 END=test_together_time_state_contract.gd
+BEGIN=test_voyage_forward_drift_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: voyage forward drift contract
+EXIT=0 END=test_voyage_forward_drift_contract.gd
+BEGIN=test_voyage_motion_continuity.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+SKIP: GPU shader assertions require display renderer
+MOTION_CONTINUITY_FAILURES=0
+EXIT=0 END=test_voyage_motion_continuity.gd
+BEGIN=test_voyage_overlay_continuity.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+OVERLAY_CONTINUITY_FAILURES=0
+EXIT=0 END=test_voyage_overlay_continuity.gd
+BEGIN=test_voyage_route_continuity.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+ROUTE_SAMPLE before=504.979980 after=505.619995 start=-6.700000 comfort=1.000000
+ROUTE_CONTINUITY_FAILURES=0
+EXIT=0 END=test_voyage_route_continuity.gd
+BEGIN=test_waterline_contact_v2_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+PASS: waterline contact v2 contract
+EXIT=0 END=test_waterline_contact_v2_contract.gd
+BEGIN=test_windows_export_contract.gd
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Windows export contract passed
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+EXIT=0 END=test_windows_export_contract.gd
+FAILED_COUNT=0

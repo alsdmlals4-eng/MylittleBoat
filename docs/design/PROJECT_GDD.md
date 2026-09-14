@@ -8,7 +8,7 @@
 
 2026-09-13 최신 사용자는 “게임 전체 완성, 구현까지 계속 진행”을 명시했다. 기존 rest-first 코어와 현재 기획의 안전한 구현·교정은 반복 승인 없이 계속한다. 아래 과거의 ‘기획만 진행/production 보류’ 문장은 이 최신 구현 지시를 차단하지 않는다. 새 최종 아트 lock·핵심 의미 변경·공개 social 안전 gate·비용/배포/보안/파괴적 데이터 변경·Human 선언은 별도로 유지한다. 단위 검사 통과를 전체 게임 완료로 보고하지 않는다.
 
-현재 남은 설계·실행 우선순위는 **2026-09-14 R01–R12와 연결된 구현 계획**을 따른다. P9는 전체 제작 단계의 기준으로 보존한다. 공통 공간·근거리 모델의 준비 제약과 독립적인 저장/입력/설정 작업을 분리해 한 자산 때문에 전체 구현이 멈추지 않게 한다. 최신 요청은 이 남은 작업의 명세 준비이며 이번 턴은 게임 코드를 변경하지 않는다.
+현재 남은 설계·실행 우선순위는 **2026-09-14 R01–R12와 연결된 구현 계획**을 따른다. P9는 전체 제작 단계의 기준으로 보존한다. 공통 공간·근거리 모델의 준비 제약과 독립적인 저장/입력/설정 작업을 분리해 한 자산 때문에 전체 구현이 멈추지 않게 한다. 명세 준비 뒤 사용자 실행 승인과 재개 지시에 따라 안전한 구현·검증을 진행 중이며, 현재 단계는 handoff와 실제 검증 증거로 판정한다.
 
 | 묶음 | 현재 상태 | 다음 완료 기준 |
 | --- | --- | --- |
@@ -366,7 +366,7 @@ IMP-01은 추가 이미지 없이 구현을 시작할 수 있다. IMP-02는 해�
 | R04 / IMP-02·03 | 카메라는 고정 위치에서 회전, 탑승자는 사인파 반응 | 실제 orbit·reset·부유·rest/notice/settle 연결 | P0 / R01–03. 계약 probe는 먼저 가능. PARTIAL |
 | R05 / IMP-04 | 네 시간대 resolver/기존 이미지 있음 | 새 world family의 네 시간대 동기 전환. 계절 풍경은 R02 소유 | P1 / 낮 R01–04 통합 통과. PARTIAL |
 | R06 / IMP-04 | 3 style/4 pet/8 slot/6 item 존재. style/pet 즉시 저장 | 미리보기/탭별 적용/취소, 새 모델 호환 전수 | P1 / 데이터 UI는 R07 뒤, 새 family는 R03 뒤. FEASIBLE(자산 제외) |
-| R07 / IMP-05 | helper/comfort와 다섯 단순 저장 owner에 복구 코드 연결 | 사진 저장/경로·GameState 성공 확정·복구 UI | P0 / R07a·R07b1 구현, 전체 PARTIAL. 전원차단 보장 제외 |
+| R07 / IMP-05 | helper/comfort·다섯 단순 owner·사진 owner/Album 안전 읽기 연결 | GameState 성공 확정·복구 UI·모바일 사진 경로 지원 | P0 / R07a·R07b1·R07b2 scoped 구현/검증, 전체 PARTIAL. 전원차단 보장 제외 |
 | R08 / IMP-05 | 앨범 최근/이전 3장 탐색과 누락 안내 있음 | 실제 사진 상세·안전한 지연 읽기·닫기 복귀 | P1 / R07 경로 경계. FEASIBLE |
 | R09 / IMP-01·05 | 같은 world overlay, 조용한 낚시 상태·취소 있음 | 전 화면 입력/가독성·저장 실패·무손실 선택 행동 완결 | P1 / R06–08 연결. FEASIBLE |
 | R10 / IMP-05 | 지속 OceanBed와 5단계 음량·음소거 있음 | 필요 근접 효과음 최소 layer·독립 제어·청취 검증 | P2 / 실제 음원·소비처 확인. PARTIAL |
@@ -416,6 +416,8 @@ WorldEnvironment/Sky(자동 yaw 없음, 수동 시점에 공간 대응)
 **새 책임.** 제안 `scripts/voyage/world_ocean.gd`가 수면 위치·phase·접점 높이를 제공하고, 제안 `assets/shaders/world_ocean.gdshader`가 세계 XZ를 texture 좌표로 사용한다. `OceanPlane`을 실제 consumer로 전환한다. 기본 180×180 plane과 far 200의 현재 값을 무조건 유지하지 않는다. 허용 카메라의 최저 시선각까지 plane 경계가 노출되지 않도록 거리 fade와 sky 수평선을 먼저 검증한다. plane은 boat 주변으로 재중심화할 수 있으나 UV는 world 좌표 또는 연속 tile origin을 사용해 수면 무늬가 배와 같이 붙어가지 않게 한다. route 이동을 UV scroll에도 다시 더하지 않는다.
 
 낮 탑뷰 후보 `MLB-NEW-SEA-001`은 `docs/visual/candidates/2026-09-11-blueprint/manifest.json`에서 FINAL_PENDING이다. 파일은 존재하지만 production-ready가 아니다. 격리 probe에만 사용하고, 실제 반복·모든 허용각·투명도/반사 검사와 lock 뒤 runtime copy를 등록한다. 새 투명감은 texture ALPHA를 낮추는 것만으로 해결하지 않는다. 첫 비교는 A 불투명 얕은 바다색(기준), B 깊이색+약한 굴절(시험), C 다중 screen/depth 패스(보류). B가 지원 renderer·접점·성능을 통과하지 못하면 A는 비교 기준으로만 유지하고 투명한 물 완료로 표시하지 않는다.
+
+깊이 복원 구현 주의. [Godot 공식 depth 문서](https://docs.godotengine.org/en/stable/tutorials/shaders/advanced_postprocessing.html)를 2026-09-14 재확인했다. Mobile/Forward+와 Compatibility의 NDC z 범위를 같은 공식으로 처리하지 않고 renderer 분기를 둔다. depth는 해당 viewport의 값만 읽고 inverse projection으로 선형화한다. 다른 SubViewport의 카드 합성 깊이를 배 접점의 실제 깊이로 추정하지 않는다. [Spatial shader 문서](https://docs.godotengine.org/en/stable/tutorials/shaders/shader_reference/spatial_shader.html)의 depth/alpha 경계도 함께 검사한다. 이는 R01a 시험 구현 기준이며 현재 `voyage_split_sea_flow.gdshader`가 이미 이 새 world 수면이라는 뜻이 아니다.
 
 제안 인터페이스는 `advance_visual(delta: float, intensity: float, active: bool) -> void`, `sample_height(world_xz: Vector2) -> float`, `set_boat_anchor(anchor: Transform3D) -> void`다. shader uniform은 `visual_phase: float`, `tile_origin_xz: Vector2`, `water_tint: Color`, `ripple_strength: float`이며 전부 transient다. 작은 두 사인파를 쓸 경우 CPU 접점 높이와 GPU 높이가 같은 파라미터를 공유한다. 별도 난수 부력·높이 계산 금지.
 
@@ -494,6 +496,8 @@ R07b 사진 구현의 자원 경계는 압축 PNG 32 MiB 이하, 각 축 4096 �
 R07의 실제 상태 확정 소비처는 GameState의 외형/장식/풍경/물고기/항해 기록과 together-time flush다. 저장 실패 때 기록 배열·성공 문구·입질 소비를 확정하지 않고 미저장 함께한 시간은 유지한다. comfort/mute는 기존 접근성 예외로 이번 실행에 즉시 적용하되 영구 저장 실패를 별도로 알린다. `game_scene.gd::_apply_stored_boat_decor`처럼 읽은 선택을 화면에 적용하는 함수는 다시 저장하지 않아야 한다. 최초 Scene 진입/앨범 복귀를 사용자 선택 변경으로 취급하지 않는다.
 
 **완료 판정.** 파일 없음/파싱 실패/unknown key/NaN/잘못된 row/type/디스크 쓰기 실패/각 쓰기 단계 종료/복구본도 손상/경로 탈출/중복 사진을 격리 `user://test_*`에서 시험한다. NOT_COMMITTED는 원본 bytes(또는 기존 부재)와 기억 개수·선택 불변을 확인한다. 복원 실패는 RECOVERY_REQUIRED·후속 쓰기 차단·메모리/모든 복구 증거 보존을 확인하며 정상 rollback으로 세지 않는다. 복구는 silent reset과 구별되는 RECOVERED 읽기 및 recover_primary 결과를 기록한다. production save로 fault injection 금지.
+
+사진 손상 진단 경계. PNG 크기·chunk 구조·CRC 선검사 뒤에도 엔진 decoder가 압축 payload 손상을 발견하면 오류 반환을 확인하고 unavailable로 표시한다. 해당 격리 음성 검사의 예상 libpng/Godot 진단은 원본 로그와 따로 기록하며 일반 실행 오류 0으로 합산하지 않는다. 전역 오류 출력을 숨기거나 별도 PNG/DEFLATE decoder를 재구현하지 않는다. 플레이어에게 오류창·중단 없이 안내하는 계약과 악성 파일 입력의 엔진 진단 절대 부재는 다르다. 정상 사진/일반 회귀의 예상치 않은 오류는 검증 실패다.
 
 #### R08. 앨범 사진 상세·자원 해제
 

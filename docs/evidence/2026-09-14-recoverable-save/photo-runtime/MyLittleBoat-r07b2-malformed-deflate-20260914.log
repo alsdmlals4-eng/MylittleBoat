@@ -1,0 +1,27 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+EXPECTED_LIBPNG_DIAGNOSTICS_BEGIN
+WARNING: IDAT: incorrect header check
+   at: check_error (drivers/png/png_driver_common.cpp:57)
+   GDScript backtrace (most recent call first):
+       [0] load_photo_image (res://scripts/core/photo_memory_persistence.gd:141)
+       [1] run (res://tests/test_photo_memory_recovery.gd:99)
+ERROR: Condition "!success" is true. Returning: ERR_FILE_CORRUPT
+   at: png_to_image (drivers/png/png_driver_common.cpp:120)
+   GDScript backtrace (most recent call first):
+       [0] load_photo_image (res://scripts/core/photo_memory_persistence.gd:141)
+       [1] run (res://tests/test_photo_memory_recovery.gd:99)
+ERROR: Condition "err" is true. Returning: Ref<Image>()
+   at: load_mem_png (drivers/png/image_loader_png.cpp:60)
+   GDScript backtrace (most recent call first):
+       [0] load_photo_image (res://scripts/core/photo_memory_persistence.gd:141)
+       [1] run (res://tests/test_photo_memory_recovery.gd:99)
+ERROR: Condition "image.is_null()" is true. Returning: ERR_PARSE_ERROR
+   at: _load_from_buffer (core/io/image.cpp:4559)
+   GDScript backtrace (most recent call first):
+       [0] load_photo_image (res://scripts/core/photo_memory_persistence.gd:141)
+       [1] run (res://tests/test_photo_memory_recovery.gd:99)
+EXPECTED_LIBPNG_DIAGNOSTICS_END
+PHOTO_540X960_THREE_LOAD_USEC=19839
+PHOTO_MEMORY_RECOVERY_FAILURES=0

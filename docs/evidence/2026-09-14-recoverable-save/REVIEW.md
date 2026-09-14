@@ -112,3 +112,28 @@ fault test는 실제 격리 파일과 테스트 subclass의 파일 연산 실패
 이 단계의 학습은 같은 파일 처리 helper를 실제 여섯 owner가 소비하도록 넓혔다는 점과 fixture setup만으로 사용자 저장 격리가 보장되지 않는다는 점이다. Base 승격은 아직 하지 않았고 별도 범용 framework를 추가하지 않았다. 뒤이어 사진 저장/경로→실제 GameState·복구 UI→draft/사진 상세를 구현한다. 모델 납품·세계 수면·카메라 통합과 R11/R12는 그대로 남아 있다.
 
 독립 검토 round 1은 다섯 owner에 반복된 읽기 전용 legacy fallback 정책을 Important로 지적했다. `02e5a256`에서 기존 helper의 `config_for_legacy_read` 하나로 추출했고 strict read/write/recover 본문과 owner validator/normalizer는 유지했다. owner 통합+기존 다섯 owner+comfort+store 총 8개 focused 계약을 추출 전후에 실행해 각각 exit 0 / 오류 패턴 없음. scoped 재검토는 ADDRESSED/새 breakage 없음이었다. 부모는 같은 head의 격리 game Scene `--quit-after 1` exit 0과 Python20 PASS를 확인했다. 기존 전체64 결과와 마지막 focused8/Scene smoke를 분리하며 최종 head 전체64를 다시 실행했다고 쓰지 않는다.
+
+## R07b2 — 사진 저장과 실제 앨범 읽기
+
+시작 기준 `472017a`, 구현 `854fdce`, 미지원 플랫폼 guard 교정 `817cd65`. 사용량 제한으로 중단된 이전 worker의 의도된 변경을 보존해 이어갔다. 사진 목록은 기존 `RecoverableConfigStore`, PNG·중단 의도는 사진 owner가 책임진다. 추가 DB·전역 오류 억제·원본 resize를 만들지 않았다. raw metadata path를 직접 열던 Album은 `GameState.load_photo_image → PhotoMemoryPersistence`로 연결된다. 미확정 PNG는 원본/PNG 해시와 사진별 receipt를 남겨 보존한다. 정상 commit 후 불필요한 receipt는 남기지 않는다.
+
+| 검증 층 | 이번 실제 결과와 한계 |
+|---|---|
+| 저장·읽기 | unknown section/key/추가 row fields 보존, 손상 primary/backup, 명시 복구, 확정·미확정 쓰기 실패, PNG와 receipt 보존 확인 |
+| 크기 반례 교정 | 4097×1 입력의 저장 성공/읽기 실패를 RED로 재현. 같은 축4096/총16,777,216pixels/압축32MiB 상한으로 저장도 거부한 뒤 GREEN |
+| 경로 | basename/ID/외부 절대경로/prefix sibling/상위경로/역슬래시 거부. Windows 실제 junction 감지와 읽기·쓰기 차단, test-owned teardown 확인 |
+| 전체 자동 검사 | `854fdce` 코드에서 전체66 중 display-only1 제외 headless65 실행, 모든 exit0/FAILED_COUNT=0. [전체 로그](photo-runtime/MyLittleBoat-r07b2-full-headless-20260914-final.log) |
+| 마지막 guard | `817cd65`의 미지원 검사 seam RED7→GREEN. recovery/persistence/state/Album memory/Album composition focused5 exit0 및 post-commit recovery failures0. 마지막 head 전체65 재실행 주장은 하지 않음 |
+| 손상 압축 입력 | CRC 정상·압축 스트림 손상에서 예상 libpng/Godot 진단, null/error, 원본 byte 보존. [별도 음성 검사](photo-runtime/MyLittleBoat-r07b2-malformed-deflate-20260914.log). 일반 실행 오류0과 혼합하지 않음 |
+| GPU fixture | Windows RTX3050/OpenGL3.3 Compatibility/Godot4.7.2의 실제 Album texture 정상 연결·위조 path unavailable. 초기 오디오 종료 누수는 test teardown의 기존 soundscape release로 교정. [교정 뒤 로그](photo-runtime/MyLittleBoat-r07b2-gpu-album-20260914.log). 초기 경고는 tool output에만 남았으며 최신 로그를 초기 실패 증거로 쓰지 않음 |
+| 실제 게임 촬영 | `854fdce`, 2026-09-14 22:55:51 KST. 격리 game Scene의 실제 촬영 버튼 → 사진1장 commit → 같은 항해 Album overlay. [촬영 원본](photo-runtime/voyage-photo.png), [앨범 화면](photo-runtime/album-photo.png), [실행 로그](photo-runtime/runtime.log). REAL_PHOTO_CAPTURE_FAILURES=0 |
+| 비용 표본 | 단색540×960 3장19.370ms와 실제 게임 사진1장(567,869bytes)을 3회 읽은136.498ms는 서로 다른 표본. 이 머신의 일회 측정이며 모바일/모든 앨범 크기/UX 상한 검증이 아님 |
+| 부모 연결 검사 | CI coverage count 드리프트 RED2→66/65 동기화→GREEN2. Godot를 실행하지 않는 Python19 중18PASS/1SKIP(선택적 기존 PDF geometry inspector 없음). 새 증빙 PDF 렌더 검수와 별개 |
+
+부모가 실제 읽은 외부 로그·화면 hash를 복사본과 대조했다. 전체 로그 SHA256 `720671ebfc10b4f0d91bf070ea57fe7722e822ecda2685c057156abee667fbdb`, GPU 로그 `b50ba2821b598a634f87c823664f2c84a2b2df319843bb84c82270b5f698a588`, 손상 입력 로그 `7501f6676e6287663cd53afad020f8abf933a71e13bbdf6d529df148e49bf18e`. 실제 촬영 PNG SHA256 `22b41da1707542fe3b0565a1f21a1adcd2016ce3b653bbbfbae0b6f2b7956244`. `photo-runtime/.gdignore`는 문서용 증거의 엔진 import만 막으며 게임 자산 consumer를 변경하지 않는다.
+
+검토 순서는 ①현재 owner/consumer·격리 경계 ②저장 원본/복구·opaque 데이터 ③경로/실제 junction·손상 PNG ④저장/읽기 크기 불일치 반례 교정 ⑤실제 Album GPU·종료 정리·전체 회귀였다. 각 단계에서 관련 범위를 다시 읽고 untouched 항해/기록/아트/표시 전용 검사를 구분했다. 상세 command와 검토 내용은 active 작업 보고서에 유지한다. 독립 검토는 미지원 플랫폼 추정을 Important로 지적했고 `817cd65`로 교정, scoped 재검토에서 ADDRESSED/신규 Critical·Important 없음으로 확인됐다. 긴 stateful 테스트 분리는 Minor로 최종 branch review에 전달하며 지금 기능 완료의 대체 증거로 쓰지 않는다.
+
+플랫폼 제한. [Godot 공식 DirAccess](https://docs.godotengine.org/en/stable/classes/class_diraccess.html)는 `is_link` 구현을 Windows/Linux/macOS로 명시한다. Windows junction은 실제 실행했고 Linux/macOS는 이 작업에서 문서 근거만 있다. Android/iOS/unknown은 현재 사진 경로·새 저장을 거부한다. 모바일용 안전 경로 소비처를 실제 검증하기 전 모바일 사진 기능 완료로 표시하지 않는다. OS의 악의적 동시 바꿔치기 완전 방어, 전원 차단 보장, Human/실기기/출시는 미검증이다.
+
+학습·후속. 저장 성공 입력은 같은 owner가 다시 읽을 수 있는 범위 안이어야 한다. 단색 이미지의 비용을 실제 화면 디코드 성능으로 대표시키지 않는다. 차단된 filesystem 명령의 다른 도구 우회를 재사용 방법으로 승격하지 않는다. 테스트가 생성한 정확한 fixture teardown만 별도 계약으로 관리한다. 프로젝트 테스트로 고정했으며 Base 승격은 아직 하지 않았다. R07b3 성공 후 state 확정/복구 UI, R06 적용·취소, R08 사진 상세와 세계 수면·모델 작업은 그대로 남았다.

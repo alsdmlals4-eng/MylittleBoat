@@ -1,0 +1,83 @@
+WorkerThreadPool: 12 threads, 3 max low-priority.
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+TextServer: Added interface "Dummy"
+TextServer: Added interface "ICU / HarfBuzz / Graphite (Built-in)"
+Accessibility: AccessKit driver loaded.
+Native OpenGL API detected: 3.3: NVIDIA - NVIDIA GeForce RTX 3050
+NVAPI: Init OK!
+NVAPI: Profile not found, creating...
+NVAPI: Application not found in profile, creating...
+NVAPI: Error creating application: NVAPI_EXECUTABLE_ALREADY_IN_USE(code -167)
+Accessibility: window 0 adapter created.
+SDL: Init OK!
+Using "winink" pen tablet driver...
+Shader 'CanvasSdfShaderGLES3' SHA256: 81a7128325e491c3b03e114a8e6a65248063ec9bbb36584b1f18d6286ca299b9
+Shader 'SkeletonShaderGLES3' SHA256: a86c06099f50933320e4984dae2948a071f8bf256fe222ef64ea861136937664
+Shader 'ParticlesShaderGLES3' SHA256: 25d54a4f5abe1bf208bd721219b785cc8c1ca35f61eb963ff0694d50f03d7911
+Shader 'ParticlesCopyShaderGLES3' SHA256: 5e811267685f9060e74783cd7f7e105035af2482d3f690eef75e2d7ccf639ec4
+Shader 'CopyShaderGLES3' SHA256: 5e3f4f4a1a1b347fb94a0edbf434ef33565625e0d7239dc12169a08dd6d86da5
+Shader 'CubemapFilterShaderGLES3' SHA256: 07e9e6f8252ad7da238b49da8207a71877d31ed0b04c567b930c0c1ead2238c4
+Shader 'GlowShaderGLES3' SHA256: 3275226353991e6c0c0b54c6cde08f6ba54a6b9a8874a1263720851636fb6dfe
+Shader 'PostShaderGLES3' SHA256: 84791210f3d21fdf903fe28ded36b1e313a3d974f58e2bcedf4f8fb9310ad07d
+Shader 'FeedShaderGLES3' SHA256: 18e5bc8288e675785201a8c7035d575e51263b91382fff7a9851a0321524e33c
+Shader 'CanvasShaderGLES3' SHA256: ecf365ef77623373d5e8853b40c3529230958fa8ad678ebdd46931931ed5e3fa
+Shader 'CanvasOcclusionShaderGLES3' SHA256: 3c418324ba648acbcd02e289ca1067b5e3c8c192e725e5d82a477c4bc61dc4a2
+Shader 'SceneShaderGLES3' SHA256: 8726421d5667ee6fbb11d81e752102faff086cd85d5901506c0932e15ba05d63
+Shader 'SkyShaderGLES3' SHA256: b2ec57a4e5d9911d0a2a24529e3854cc5c8da2919d15aee8472518ed4b360206
+Shader 'TexBlitShaderGLES3' SHA256: add0ed3be130257a302f971aa469e5b236c5774f19aa6d17c9ea479315a12143
+OpenGL API 3.3.0 NVIDIA 572.16 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 3050
+WASAPI: Activated output_device using IAudioClient3 interface
+WASAPI: wFormatTag = 65534
+WASAPI: nChannels = 2
+WASAPI: nSamplesPerSec = 48000
+WASAPI: nAvgBytesPerSec = 384000
+WASAPI: nBlockAlign = 8
+WASAPI: wBitsPerSample = 32
+WASAPI: cbSize = 22
+WASAPI: mix_rate = 48000
+WASAPI: fundamental_period_frames = 32
+WASAPI: min_period_frames = 128
+WASAPI: max_period_frames = 480
+WASAPI: selected a period frame size of 480
+WASAPI: detected 2 channels
+WASAPI: audio buffer frames: 480 calculated latency: 10ms
+
+TextServer: Primary interface set to: "ICU / HarfBuzz / Graphite (Built-in)".
+CORE API HASH: 2004498165
+EDITOR API HASH: 1696660745
+Loading resource: res://tests/test_photo_memory_recovery.gd remapped: res://tests/test_photo_memory_recovery.gd
+Completed load for: 'res://tests/test_photo_memory_recovery.gd' remapped 'res://tests/test_photo_memory_recovery.gd' at thread -1
+SceneTreeFTI: traversal method DEFAULT
+Loading resource: res://scripts/core/game_state.gd remapped: res://scripts/core/game_state.gd
+Completed load for: 'res://scripts/core/game_state.gd' remapped 'res://scripts/core/game_state.gd' at thread -1
+Loading resource: res://scripts/audio/resting_soundscape.gd remapped: res://scripts/audio/resting_soundscape.gd
+Completed load for: 'res://scripts/audio/resting_soundscape.gd' remapped 'res://scripts/audio/resting_soundscape.gd' at thread -1
+Loading resource: res://addons/godot_ai/runtime/game_helper.gd remapped: res://addons/godot_ai/runtime/game_helper.gd
+Completed load for: 'res://addons/godot_ai/runtime/game_helper.gd' remapped 'res://addons/godot_ai/runtime/game_helper.gd' at thread -1
+Loading resource: res://addons/hera_agent_godot/runtime/game_inspector.gd remapped: res://addons/hera_agent_godot/runtime/game_inspector.gd
+Completed load for: 'res://addons/hera_agent_godot/runtime/game_inspector.gd' remapped 'res://addons/hera_agent_godot/runtime/game_inspector.gd' at thread -1
+Loaded system CA certificates
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+Loading resource: res://scenes/album.tscn remapped: res://scenes/album.tscn
+Loading resource: res://scripts/ui/album_view.gd remapped: res://scripts/ui/album_view.gd
+Loading resource: res://assets/images/ui/main_menu/main_menu_dawn_storybook_v1.png remapped: res://assets/images/ui/main_menu/main_menu_dawn_storybook_v1.png
+Loading resource: res://.godot/imported/main_menu_dawn_storybook_v1.png-b8780e2f2c2ff74bfc23494ee05874b1.ctex remapped: res://.godot/imported/main_menu_dawn_storybook_v1.png-b8780e2f2c2ff74bfc23494ee05874b1.ctex
+Completed load for: 'res://assets/images/ui/main_menu/main_menu_dawn_storybook_v1.png' remapped 'res://assets/images/ui/main_menu/main_menu_dawn_storybook_v1.png' at thread -1
+Loading resource: res://assets/images/ui/main_menu/main_menu_bright_storybook_v1.png remapped: res://assets/images/ui/main_menu/main_menu_bright_storybook_v1.png
+Loading resource: res://.godot/imported/main_menu_bright_storybook_v1.png-e130ca2e3c3bd494ded72add12be7e09.ctex remapped: res://.godot/imported/main_menu_bright_storybook_v1.png-e130ca2e3c3bd494ded72add12be7e09.ctex
+Completed load for: 'res://assets/images/ui/main_menu/main_menu_bright_storybook_v1.png' remapped 'res://assets/images/ui/main_menu/main_menu_bright_storybook_v1.png' at thread -1
+Loading resource: res://assets/images/ui/main_menu/main_menu_sunset_storybook_v1.png remapped: res://assets/images/ui/main_menu/main_menu_sunset_storybook_v1.png
+Loading resource: res://.godot/imported/main_menu_sunset_storybook_v1.png-6530c9f387865512a02533544ccc2730.ctex remapped: res://.godot/imported/main_menu_sunset_storybook_v1.png-6530c9f387865512a02533544ccc2730.ctex
+Completed load for: 'res://assets/images/ui/main_menu/main_menu_sunset_storybook_v1.png' remapped 'res://assets/images/ui/main_menu/main_menu_sunset_storybook_v1.png' at thread -1
+Loading resource: res://assets/images/ui/main_menu/main_menu_night_storybook_v1.png remapped: res://assets/images/ui/main_menu/main_menu_night_storybook_v1.png
+Loading resource: res://.godot/imported/main_menu_night_storybook_v1.png-02657f882ac1a832e51c8136c0315468.ctex remapped: res://.godot/imported/main_menu_night_storybook_v1.png-02657f882ac1a832e51c8136c0315468.ctex
+Completed load for: 'res://assets/images/ui/main_menu/main_menu_night_storybook_v1.png' remapped 'res://assets/images/ui/main_menu/main_menu_night_storybook_v1.png' at thread -1
+Completed load for: 'res://scripts/ui/album_view.gd' remapped 'res://scripts/ui/album_view.gd' at thread -1
+Completed load for: 'res://scenes/album.tscn' remapped 'res://scenes/album.tscn' at thread -1
+ALBUM_GPU_CAPTURE=C:\Users\user\AppData\Local\Temp\MyLittleBoat-r07b2-album-owner-binding-20260914.png
+PHOTO_540X960_THREE_LOAD_USEC=20585
+PHOTO_MEMORY_RECOVERY_FAILURES=0
+XR: Clearing primary interface
+XR: Removed interface "Native mobile"
+XR: Removed interface "OpenXR"
+Accessibility: window 0 adapter destroyed.

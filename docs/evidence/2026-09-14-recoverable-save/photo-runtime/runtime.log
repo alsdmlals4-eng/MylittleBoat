@@ -1,0 +1,12 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 3.3.0 NVIDIA 572.16 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 3050
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+REAL_PHOTO_THREE_LOAD_USEC=136498
+PHOTO_ID=postcard_1789394150
+PHOTO_SHA256=22b41da1707542fe3b0565a1f21a1adcd2016ce3b653bbbfbae0b6f2b7956244
+PHOTO_BYTES=567869
+RENDERER=gl_compatibility
+ADAPTER=NVIDIA GeForce RTX 3050
+CAPTURE_TIME=2026-09-14 22:55:51
+REAL_PHOTO_CAPTURE_FAILURES=0
