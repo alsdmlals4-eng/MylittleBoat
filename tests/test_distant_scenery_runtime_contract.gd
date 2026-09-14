@@ -1,7 +1,12 @@
-# 먼 풍경 원화가 실제 화면 레이어에 소비되는지 검증한다.
+# 과거 먼 풍경 테스트 경로에서 현재 ambient motif 런타임 소비 계약을 검증한다.
 extends SceneTree
 
 const GAME_SCENE_PATH := "res://scenes/game.tscn"
+const DIRECTOR_PATH := "res://scripts/voyage/drift_scenery_director.gd"
+const BRIGHT_MOTIF_PATHS := [
+	"res://assets/images/runtime/voyage/ambient_motifs/bright-seagrass-sandbar.png",
+	"res://assets/images/runtime/voyage/ambient_motifs/bright-chalk-cliffs-birds.png",
+]
 
 var _failures := 0
 
@@ -19,20 +24,40 @@ func _run() -> void:
 	var scene := packed_scene.instantiate()
 	root.add_child(scene)
 	await process_frame
-	var layer := scene.get_node_or_null("DistantSceneryLayer") as Control
-	_expect(layer != null, "game scene must expose a shared distant-scenery layer")
-	_expect(scene.has_method("_spawn_distant_scenery"), "game scene must consume distant scenery events")
-	if layer != null and scene.has_method("_spawn_distant_scenery"):
-		scene.call("_spawn_distant_scenery", "islet", false)
-		await process_frame
-		_expect(layer.get_child_count() == 1, "islet event must create exactly one screen-space distant scenery prop")
-		if layer.get_child_count() == 1:
-			var prop := layer.get_child(0) as TextureRect
-			_expect(prop.texture != null, "distant scenery prop must receive a runtime texture")
-			_expect(prop.position.y + prop.size.y <= 400.0, "distant scenery must stay at or above the horizon band")
+	_expect(scene.has_method("_advance_drift_scenery"), "game scene must consume current ambient motif events")
+	var scenery_timer := scene.get_node_or_null("AmbientSceneryReturnTimer") as Timer
+	_expect(scenery_timer != null, "game scene must retain the temporary ambient-scenery return timer")
+	var motif_seed := _find_bright_motif_seed()
+	_expect(motif_seed >= 0, "a deterministic bright ambient motif must be selectable")
+	if motif_seed >= 0 and scene.has_method("_advance_drift_scenery"):
+		scene.apply_real_time_atmosphere_for_hour(12)
+		var director = scene.get("_drift_scenery_director")
+		_expect(director != null, "game scene must expose the current drift-scenery director")
+		if director != null:
+			director.set_next_event_seconds_for_tests(0.0)
+			seed(motif_seed)
+			scene.call("_advance_drift_scenery", 0.1)
+			var normal_backdrop := scene.get_node_or_null("VoyageWorld/DioramaCameraRig/DioramaCamera3D/SeaBackdrop") as Sprite3D
+			_expect(
+				normal_backdrop != null
+				and normal_backdrop.texture != null
+				and normal_backdrop.texture.resource_path in BRIGHT_MOTIF_PATHS,
+				"current ambient scenery must be consumed through an approved temporary SeaBackdrop motif",
+			)
 	scene.queue_free()
 	await process_frame
 	_finish()
+
+
+func _find_bright_motif_seed() -> int:
+	for candidate_seed in range(1, 257):
+		var director = (load(DIRECTOR_PATH) as Script).new()
+		seed(candidate_seed)
+		director.set_next_event_seconds_for_tests(0.0)
+		var event := Dictionary(director.advance(0.1, "bright"))
+		if not event.is_empty():
+			return candidate_seed
+	return -1
 
 
 func _expect(condition: bool, message: String) -> void:
@@ -44,8 +69,8 @@ func _expect(condition: bool, message: String) -> void:
 
 func _finish() -> void:
 	if _failures == 0:
-		print("PASS: distant scenery runtime contract")
+		print("PASS: current ambient scenery runtime contract")
 		quit(0)
 	else:
-		printerr("FAILED: %d distant scenery runtime assertions" % _failures)
+		printerr("FAILED: %d ambient scenery runtime assertions" % _failures)
 		quit(1)
