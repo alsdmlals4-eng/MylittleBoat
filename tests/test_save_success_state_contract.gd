@@ -261,6 +261,12 @@ func _run() -> void:
 	_expect(scene.get_node("%StorageRecoveryButton").visible and scene.get_node("%StorageRecoveryButton").text == "저장 다시 시도", "rest menu must offer a bounded retry for NOT_COMMITTED")
 	_expect(scene.get_node("%StorageRecoveryButton").mouse_filter == Control.MOUSE_FILTER_STOP, "storage action must consume pointer input before camera routing")
 	scene.queue_free()
+	state.voyage_active = false
+	state.flush_together_time()
+	if is_instance_valid(current_scene):
+		current_scene.queue_free()
+	for frame in 2:
+		await process_frame
 	_finish()
 
 
