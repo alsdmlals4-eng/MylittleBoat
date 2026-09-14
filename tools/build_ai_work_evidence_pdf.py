@@ -18,7 +18,7 @@ from reportlab.lib import colors
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image, PageBreak
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image, PageBreak, KeepTogether
 
 ROOT = Path(__file__).resolve().parents[1]
 KST = timezone(timedelta(hours=9))
@@ -128,6 +128,7 @@ def main():
     small = ParagraphStyle('small', parent=body, fontSize=8, leading=12, spaceAfter=6)
     heading = ParagraphStyle('heading', parent=body, fontName='MLBB', fontSize=21, leading=29, spaceAfter=18)
     sub = ParagraphStyle('sub', parent=body, fontName='MLBB', fontSize=13, leading=20, spaceAfter=12)
+    source_heading = ParagraphStyle('source', parent=sub, fontSize=9, leading=13, spaceAfter=4)
     story = []
     def p(text, style=body):
         return Paragraph(escape(str(text)).replace('\n', '<br/>'), style)
@@ -225,8 +226,11 @@ def main():
     add('저장소 기준 경로. '+str(ROOT), small)
     add('상세 JSON은 같은 이름의 .sources.json 파일입니다. 전체 Git 목록과 작성/커밋 시각, 발행일, source head, 파일 크기와 SHA-256을 포함합니다. 해시는 동일 파일 확인 수단이며 파일 제작일의 공인 인증이 아닙니다.', small)
     for source in sources:
-        add(source['path'], sub)
-        add('SHA-256 '+source['sha256']+'\n마지막 관련 Git 기록 '+source['last_commit'], small)
+        story.append(KeepTogether([
+            p(source['path'], source_heading),
+            p('SHA-256 '+source['sha256']+'\n마지막 관련 Git 기록 '+source['last_commit'], small),
+            Spacer(1, 5),
+        ]))
     add('기존 Blueprint 원본은 docs/design/PROJECT_GDD.md 및 기존 PDF 발행 경로를 따릅니다. 본 보고서는 게임 기획 전체나 블루프린트를 복제하지 않습니다.', small)
     def footer(canvas, doc):
         canvas.setFont('MLB', 8)
