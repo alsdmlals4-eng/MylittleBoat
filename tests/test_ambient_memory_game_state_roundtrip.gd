@@ -1,4 +1,4 @@
-# 자동 풍경 기억이 중복을 포함해 GameState와 로컬 저장 사이를 왕복하는지 검증한다.
+# 자동 풍경 기억이 중복을 포함해 GameState와 격리 로컬 저장 사이를 왕복하는지 검증한다.
 extends SceneTree
 
 const TEST_SAVE_PATH := "user://ambient_memory_game_state_roundtrip.cfg"
@@ -19,16 +19,20 @@ func _run() -> void:
 		return
 
 	_expect(state.has_method("set_ambient_memory_storage_path"), "GameState must isolate ambient memory storage for a round-trip contract")
-	if state.has_method("set_ambient_memory_storage_path"):
-		state.sceneries.clear()
+	_expect(state.has_method("record_ambient_memory"), "GameState must expose the current ambient-memory writer")
+	if state.has_method("set_ambient_memory_storage_path") and state.has_method("record_ambient_memory"):
 		state.call("set_ambient_memory_storage_path", TEST_SAVE_PATH)
-		state.add_ambient_scenery("지나간 작은 부표")
-		state.add_ambient_scenery("지나간 작은 부표")
-		_expect(state.sceneries.size() == 2, "two equal ambient sightings must remain two in the current album")
+		state.ambient_memories.clear()
+		state.sceneries.clear()
+		state.call("record_ambient_memory", "지나간 작은 부표")
+		state.call("record_ambient_memory", "지나간 작은 부표")
+		_expect(state.ambient_memories.size() == 2, "two equal ambient sightings must remain two durable memories")
+		_expect(state.sceneries.size() == 2, "two equal ambient sightings must remain two entries in the current album")
+		state.ambient_memories.clear()
 		state.sceneries.clear()
 		state.load_ambient_memories()
-		_expect(state.sceneries == ["지나간 작은 부표", "지나간 작은 부표"], "saved duplicate ambient sightings must restore in order")
-		state.call("set_ambient_memory_storage_path", "user://ambient_memories_v1.cfg")
+		_expect(state.ambient_memories == ["지나간 작은 부표", "지나간 작은 부표"], "saved duplicate ambient memories must restore in order")
+		_expect(state.sceneries == ["지나간 작은 부표", "지나간 작은 부표"], "restored duplicate ambient memories must repopulate the album in order")
 	_remove_test_save()
 	_finish()
 
@@ -46,6 +50,7 @@ func _expect(condition: bool, message: String) -> void:
 
 
 func _finish() -> void:
+	_remove_test_save()
 	if _failures == 0:
 		print("PASS: ambient GameState duplicate round-trip contract")
 		quit(0)
