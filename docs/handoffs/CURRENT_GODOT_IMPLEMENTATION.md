@@ -40,6 +40,12 @@
 
 ### 마감 검토 기록 / 2026-09-16
 
+발행 readback. 기존 `my little boat_2026-09_AI활용_작업일지_증빙집_v1.2.pdf`에 같은 파일명으로 날짜별 요약 2쪽을 추가했다. 2026-09-16 16:00:02 KST, 11쪽·3,060,108bytes, SHA-256 `a263afe3075aed8599480ed55b86725c4f604c4ee0e290632c40676b2a780e50`. 추가 원본 revision `68877ba1597ce60c8f431958b7b5aad52ca764a0`; sources.json의 과거10원본+추가1원본 Git blob 검증 PASS. 이전9쪽과 갱신본1–9쪽의 Poppler85dpi PNG hash가 모두 같고 추가10–11쪽을 직접 검수했다. 이 보고서는 미제출이며 v1.3/새 월간 일지를 만들지 않았다.
+
+갱신 전 PDF/receipt는 `C:/Users/user/Documents/MyLittleBoat_삭제대기_20260916/monthly-report-before-append-1600`에 복구용으로 복사했다. 검수용 PNG20개는 같은 삭제대기 폴더의 `monthly-render-check`로 이동하고 이동 전후 해시를 대조했다. 원래 경로와 복원 방법은 그 폴더의 `복원안내.md`에 있다. 사용자 직접 삭제 방침을 유지하며 프로젝트 파일·세이브·다른 worktree는 삭제하지 않았다.
+
+Git readback. `68877ba`까지 정상 push 후 fetch로 `HEAD == origin/codex/title-boat-flow-20260831`을 확인했다. 이 발행 영수증 문단은 후속 마감 커밋으로 같은 브랜치에 push한다. main/PR19/PR107은 변경하지 않으며 branch 동기화가 main 병합이나 release PASS를 의미하지 않는다.
+
 기준 구현 HEAD `48f98fc`, dirty 문서와 기존 R07b3 증거를 보존했다. 아래는 이번 방향·기록 마감 범위의 실제 검토 순서이며 기존 R07 Important가 해소됐다는 clean exit 주장이 아니다.
 
 1. 권한/중첩. `git fetch origin`, `gh pr list`로 main `7181d5e`, 현재 branch 57 commits ahead/main 신규0, 열린 PR19·107을 확인했다. 두 PR은 read-only로 보존했다. Base remote `d830c0f`를 재확인하고 채택 v9.4.4 identity는 유지했다.
