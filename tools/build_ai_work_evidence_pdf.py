@@ -10,6 +10,9 @@ from collections import defaultdict
 from datetime import datetime, timezone, timedelta
 import hashlib
 import json
+import io
+import os
+import shutil
 from pathlib import Path
 import subprocess
 from xml.sax.saxutils import escape
@@ -48,9 +51,11 @@ def verify_receipt(receipt_path):
     if digest(pdf_path) != receipt['pdf_sha256']:
         raise ValueError('Published PDF hash mismatch')
     checked = []
-    for entry in receipt['sources']:
+    entries = [(receipt['source_head'], entry) for entry in receipt['sources']]
+    entries.extend((entry['source_head'], entry) for entry in receipt.get('appendices', []))
+    for head, entry in entries:
         blob = subprocess.check_output(['git', '-C', str(ROOT), 'cat-file', 'blob',
-                                       receipt['source_head']+':'+entry['path']])
+                                       head+':'+entry['path']])
         representations = {'git_blob': blob}
         if Path(entry['path']).suffix in ('.md', '.json'):
             representations['checkout_crlf'] = blob.replace(b'\r\n', b'\n').replace(b'\n', b'\r\n')
@@ -60,6 +65,92 @@ def verify_receipt(receipt_path):
             raise ValueError('Historical source byte mismatch: '+entry['path'])
         checked.append(dict(path=entry['path'], matched_representation=matches[0]))
     return checked
+
+
+def append_summary(receipt_path, relative, section_id, backup_dir):
+    """Append a committed dated log to the existing unsubmitted monthly report."""
+    from pypdf import PdfReader, PdfWriter
+    receipt_path, backup_dir = Path(receipt_path), Path(backup_dir)
+    pdf_path = receipt_path.with_name(receipt_path.name.replace('.sources.json', '.pdf'))
+    receipt = json.loads(receipt_path.read_text(encoding='utf-8'))
+    if receipt.get('submission_status') != 'NOT_SUBMITTED':
+        raise ValueError('Only NOT_SUBMITTED reports may be appended')
+    if any(entry['section_id'] == section_id for entry in receipt.get('appendices', [])):
+        raise ValueError('Section already appended; use an explicit correction entry')
+    verify_receipt(receipt_path)
+    source = (ROOT / relative).resolve()
+    source.relative_to(ROOT.resolve())
+    head = git('rev-parse', 'HEAD')
+    blob = subprocess.check_output(['git', '-C', str(ROOT), 'cat-file', 'blob', head+':'+relative])
+    text = source.read_text(encoding='utf-8')
+    if text != blob.decode('utf-8').replace('\r\n', '\n'):
+        raise ValueError('Commit reviewed log before appending')
+    begin, end = f'<!-- {section_id}_BEGIN -->', f'<!-- {section_id}_END -->'
+    if text.count(begin) != 1 or text.count(end) != 1 or text.index(begin) >= text.index(end):
+        raise ValueError('Unique ordered log section markers required')
+    summary = text.split(begin, 1)[1].split(end, 1)[0].strip()
+    if not summary:
+        raise ValueError('Empty log section')
+    if backup_dir.exists():
+        raise FileExistsError('Backup directory must be new')
+    now = datetime.now(KST).isoformat()
+    original = pdf_path.read_bytes()
+    reader = PdfReader(io.BytesIO(original))
+    pdfmetrics.registerFont(TTFont('MLB', 'C:/Windows/Fonts/malgun.ttf'))
+    pdfmetrics.registerFont(TTFont('MLBB', 'C:/Windows/Fonts/malgunbd.ttf'))
+    body = ParagraphStyle('append_body', fontName='MLB', fontSize=10, leading=16, spaceAfter=10, wordWrap='CJK')
+    heading = ParagraphStyle('append_heading', parent=body, fontName='MLBB', fontSize=16, leading=24, spaceAfter=14)
+    small = ParagraphStyle('append_small', parent=body, fontSize=8, leading=12)
+    story = [Paragraph('날짜별 누적 작업일지', heading),
+             Paragraph(escape('추가 기록·발행 시각 '+now+' / 미제출'), small)]
+    for paragraph in summary.split('\n\n'):
+        if paragraph.startswith('### '):
+            if len(story) > 2:
+                story.append(PageBreak())
+            story.append(Paragraph(escape(paragraph[4:]), heading))
+        else:
+            story.append(Paragraph(escape(paragraph).replace('\n', '<br/>'), body))
+    story.extend([Spacer(1, 10), Paragraph(escape('원본 '+relative+' / '+head), small),
+                  Paragraph(escape('추가 원본 SHA-256 '+digest(source)), small)])
+    addition = io.BytesIO()
+    def footer(canvas, doc):
+        canvas.setFont('MLB', 8)
+        canvas.drawString(50, 27, 'my little boat | 기존 월간 일지에 누적 | 사후 기록·미제출')
+        canvas.drawRightString(545, 27, str(len(reader.pages)+doc.page))
+    SimpleDocTemplate(addition, pagesize=(595,842), leftMargin=50, rightMargin=50,
+                      topMargin=45, bottomMargin=48).build(story, onFirstPage=footer, onLaterPages=footer)
+    writer = PdfWriter()
+    writer.append(reader)
+    writer.append(PdfReader(io.BytesIO(addition.getvalue())))
+    output = io.BytesIO()
+    writer.write(output)
+    merged = output.getvalue()
+    receipt.setdefault('appendices', []).append(dict(section_id=section_id, path=relative,
+        source_head=head, sha256=digest(source), appended_at=now,
+        previous_pdf_sha256=hashlib.sha256(original).hexdigest(),
+        first_page=len(reader.pages)+1, last_page=len(writer.pages), backup_dir=str(backup_dir)))
+    receipt['last_updated_at'] = now
+    receipt['pdf_sha256'] = hashlib.sha256(merged).hexdigest()
+    pending_pdf = pdf_path.with_suffix('.pdf.pending')
+    pending_receipt = receipt_path.with_suffix('.json.pending')
+    if pending_pdf.exists() or pending_receipt.exists():
+        raise FileExistsError('Interrupted append requires inspection before retry')
+    backup_dir.mkdir(parents=True)
+    shutil.copy2(pdf_path, backup_dir / pdf_path.name)
+    shutil.copy2(receipt_path, backup_dir / receipt_path.name)
+    if digest(backup_dir / pdf_path.name) != hashlib.sha256(original).hexdigest():
+        raise ValueError('Backup readback mismatch')
+    if digest(backup_dir / receipt_path.name) != digest(receipt_path):
+        raise ValueError('Receipt backup readback mismatch')
+    with pending_pdf.open('xb') as stream:
+        stream.write(merged)
+    with pending_receipt.open('x', encoding='utf-8') as stream:
+        json.dump(receipt, stream, ensure_ascii=False, indent=2)
+    os.replace(pending_pdf, pdf_path)
+    os.replace(pending_receipt, receipt_path)
+    # A crash between these two replacements is detectable by --verify; restore both backups.
+    verify_receipt(receipt_path)
+    return dict(pdf=str(pdf_path), pages=len(writer.pages), sha256=receipt['pdf_sha256'], backup=str(backup_dir))
 
 def source_snapshot():
     result = []
@@ -83,7 +174,16 @@ def main():
     parser.add_argument('--output-dir', type=Path)
     parser.add_argument('--version')
     parser.add_argument('--change-reason')
+    parser.add_argument('--append-to', type=Path, help='Existing .sources.json for the unsubmitted report')
+    parser.add_argument('--log-source', default='docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md')
+    parser.add_argument('--section-id')
+    parser.add_argument('--backup-dir', type=Path)
     args = parser.parse_args()
+    if args.append_to:
+        if not args.section_id or not args.backup_dir:
+            parser.error('Appending requires --section-id and --backup-dir')
+        print(json.dumps(append_summary(args.append_to, args.log_source, args.section_id, args.backup_dir), ensure_ascii=False))
+        return
     if args.verify:
         print(json.dumps(verify_receipt(args.verify), ensure_ascii=False))
         return
