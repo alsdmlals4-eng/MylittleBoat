@@ -6,7 +6,7 @@
     "id": "MY_LITTLE_BOAT",
     "repository": "alsdmlals4-eng/MylittleBoat",
     "engine": "Godot 4.7 stable",
-    "product_boundary": "REST_FIRST_LOCAL_COZY_BOAT_DIARAMA"
+    "product_boundary": "REST_FIRST_LOCAL_SMALL_ISLAND_FARM_SEA_VIEW"
   },
   "base_release": {
     "repository": "alsdmlals4-eng/Base",

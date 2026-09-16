@@ -7,9 +7,11 @@ Codex and other coding agents should follow this file when working in this repos
 Project name: `my little boat`
 Engine: Godot 4.7 stable
 Language: GDScript
-Genre: rest-first cozy boat diorama / healing voyage game
+Genre: rest-first small-island farming / sea-view healing game (user direction, 2026-09-16)
 
-Normal play shows a visible player avatar, pet, boat, decorations, and sea together through a calm 3/4 diorama camera. The existing sea-focused low-UI view is preserved as the optional `Appreciation Camera`.
+Current direction overrides the historical voyage plan. The player cares for a small island farm and rests while looking at the sea. Art targets Japanese youth-animation atmosphere; exact character proportions and final assets are not locked. Stop additional boat-forward-motion work. Preserve existing boat implementation, assets, save IDs and evidence as legacy/reference, not as proof of the new island game. New island mechanics require research and a bounded plan before implementation. Project name remains unchanged pending a naming decision.
+
+The current executable still shows the legacy boat diorama. The island farm is NOT_IMPLEMENTED. The existing sea-focused low-UI view may be evaluated for reuse; reuse is not automatic approval of the new camera.
 
 Do not add combat, failure states, competitive systems, ads, payments, realtime/global/public chat, follower/ranking systems, or social pressure mechanics.
 
@@ -47,6 +49,8 @@ Repository 문서 승인이나 정적 이미지가 runtime 구현 성공을 의�
 - Base의 newest main, open Base PR, template, optional editor/test tool은 drift·reuse 조사 입력일 뿐 automatic project adoption, vendor sync, runtime proof, or canon replacement 권한이 아니다.
 
 ## Core Game Direction
+
+**2026-09-16 current authority.** Small-island farm care + sea-view rest; Japanese youth-animation art direction. No compulsory daily chores, withering punishment, combat or competitive pressure is newly authorized. Crop loops, movement/camera, progression, tools, and art production must be specified next. The following voyage presentation/controls/loop are historical implementation context, not the current product target. See the opening decision in `docs/design/PROJECT_GDD.md`.
 
 Normal presentation:
 - Visible player avatar + pet + boat + sea in a calm 3/4 diorama.
@@ -242,6 +246,8 @@ Final replies should include:
 ## Commit Guidance
 
 ### Monthly AI work evidence
+
+**2026-09-16 최신 사용자 지시가 아래 버전 증식 규칙을 대체한다.** 기존 월간 작업일지에 날짜별 요약을 누적한다. 미제출 월중 PDF는 같은 파일에 요약 페이지를 추가하고 source receipt와 갱신일을 함께 기록한다. 새 일지나 v번호를 매 작업마다 늘리지 않는다. 교체 전 원본은 복구 가능한 보관 위치에 두며 원래 페이지·해시·출처를 보존한다. 이미 제출한 문서의 정정은 별도 정정 이력을 유지한다. 실제 작업일과 사후 기록일은 계속 분리한다.
 
 2026-09-14 사용자 요청에 따라 블루프린트와 별도로 `my little boat` 이름의 월별 「AI 활용 작업일지·증빙집」 PDF를 만든다. 9월 출력 위치는 `C:/Users/user/Documents/증빙서류/9월 증빙서류`다. `tools/build_ai_work_evidence_pdf.py`는 기존 Git·작업 검증·자산 provenance 기록의 파생 보고서만 만들며 새로운 기획 정본이 아니다. 실제 AI 작업일, Git 기록 시각, 사후 기록 작성일, 캡처일, PDF 발행일을 구분한다. 검증되지 않은 계정·모델·결제·비용 인정·협약 사실은 추정하지 않는다. 입력 원문 발췌와 실제 화면 캡처를 구분하고 부족한 원본은 누락으로 표시한다. 제출용 PDF에 비밀·원본 대화 전체·결제 원본을 자동 수록하지 않는다. 발행 파일은 덮어쓰지 않고 새 버전과 정정 이유를 남긴다. 지정 정산 양식을 대체하거나 자동 제출하지 않는다.
 

@@ -1,6 +1,17 @@
 {
   "schema_version": 1,
   "project": "MY_LITTLE_BOAT",
+  "island_pivot_closeout_20260916": {
+    "reuse_mode": "PRESERVE_LEGACY_RUNTIME_AND_APPEND_EXISTING_MONTHLY_REPORT",
+    "selected_modules": [],
+    "project_paths_changed": ["AGENTS.md", "docs/design/PROJECT_GDD.md", "docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md", "tools/build_ai_work_evidence_pdf.py"],
+    "verification_evidence": "docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md",
+    "evidence_ceiling": "USER_DIRECTION_RECORDED_NEW_ISLAND_RUNTIME_NOT_IMPLEMENTED",
+    "project_only_lessons": ["A new core direction stops the old autonomous plan without erasing code, saves or evidence.", "Append dated summaries to the existing unsubmitted monthly report; keep historical pages and a recoverable pre-update PDF/receipt pair."],
+    "base_promotion_candidates": [],
+    "base_disposition": "PROJECT_ONLY_NO_NEW_SHARED_SKILL_OR_BASE_LOCK_CHANGE",
+    "rollback": "Revert the closeout documentation/tool commits; restore both report files from the recorded backup directory if needed. Do not reset or delete game data."
+  },
   "water_heading_20260913": {
     "reuse_mode": "ADAPT_EXISTING_ROUTE_CAMERA_AND_WATER_SHADER",
     "verification_evidence": "docs/evidence/2026-09-13-water-heading/REVIEW.md",

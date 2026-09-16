@@ -4,6 +4,8 @@
 
 ## Current owner route
 
+**2026-09-16 우선 경로.** 작은 섬 농장·바다 감상으로 방향이 변경됐다. GDD 첫 결정이 새 방향을 소유하고 기존 R01–R12는 중단된 역사적 계획이다. 기존 handoff의 날짜별 누적 작업일지를 갱신하며 PDF는 같은 월간 파일에 추가하는 파생 보고서다. 아래 9월14일 설명은 당시 경로로만 읽는다.
+
 2026-09-14 현재 요청은 남은 작업의 설계·구현 명세 준비다. 제품·설계 owner는 `PROJECT_GDD.md`의 **R01–R12**, 작업 순서·파일·테스트 절차는 [남은 작업 구현 계획](superpowers/plans/2026-09-14-remaining-implementation.md)이다. 실제 구현 상태는 handoff와 코드/evidence로 확인한다. 문서 작성이 runtime 구현/최종 아트 승인/출시 승인을 뜻하지 않는다. 아래 과거 PDF의 current 표기는 당시 publication receipt에 한정한다.
 
 | 질문 | current owner |

@@ -1,5 +1,7 @@
 # 현재 화면·시각 asset consumer 정본
 
+**2026-09-16 방향 경계.** 새 작은 섬 농장 게임의 목표 아트는 일본 청춘 애니메이션풍이다. 새 이미지·캐릭터 비율·섬 consumer는 아직 제작/확정되지 않았다. 아래 자산·lock·runtime 표는 보존된 보트 버전의 실제 연결 기록이며 새 게임의 최종 아트 승인으로 승계하지 않는다. 기존 원본/해시/런타임 자산은 보존한다.
+
 **복구 상태:** `REBUILT_FROM_CURRENT_RUNTIME_2026-08-31`
 
 **역할:** 이 문서는 visual direction, 실제 runtime consumer, asset provenance, 화면별 evidence의 관계를 기록합니다. 사람용 게임 설명은 [프로젝트 GDD](../design/PROJECT_GDD.md)가, 코드 수준 상태는 [현재 Godot handoff](../handoffs/CURRENT_GODOT_IMPLEMENTATION.md)가 소유합니다.

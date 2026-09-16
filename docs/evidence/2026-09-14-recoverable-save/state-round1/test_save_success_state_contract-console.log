@@ -1,0 +1,107 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+ERROR: ConfigFile parse error at user://test_r07b3_identity.cfg:0: Unexpected EOF while parsing simple tag.
+   at: _parse (core/io/config_file.cpp:293)
+   GDScript backtrace (most recent call first):
+       [0] _load (res://scripts/core/recoverable_config_store.gd:225)
+       [1] _read (res://scripts/core/recoverable_config_store.gd:153)
+       [2] read_validated (res://scripts/core/recoverable_config_store.gd:19)
+       [3] _load_config (res://scripts/core/cosmetic_identity_profile.gd:27)
+       [4] load (res://scripts/core/cosmetic_identity_profile.gd:52)
+       [5] load_identity (res://scripts/core/game_state.gd:204)
+       [6] _run (res://tests/test_save_success_state_contract.gd:71)
+ERROR: ConfigFile parse error at user://test_r07b3_identity.cfg:0: Unexpected EOF while parsing simple tag.
+   at: _parse (core/io/config_file.cpp:293)
+   GDScript backtrace (most recent call first):
+       [0] _load (res://scripts/core/recoverable_config_store.gd:225)
+       [1] _read (res://scripts/core/recoverable_config_store.gd:153)
+       [2] _recover (res://scripts/core/recoverable_config_store.gd:117)
+       [3] recover_primary (res://scripts/core/recoverable_config_store.gd:112)
+       [4] recover_primary (res://scripts/core/cosmetic_identity_profile.gd:22)
+       [5] recover_storage (res://scripts/core/game_state.gd:467)
+       [6] _run (res://tests/test_save_success_state_contract.gd:73)
+ERROR: ConfigFile parse error at user://test_r07b3_recovery_ledger.cfg:0: Unexpected EOF while parsing simple tag.
+   at: _parse (core/io/config_file.cpp:293)
+   GDScript backtrace (most recent call first):
+       [0] _load (res://scripts/core/recoverable_config_store.gd:225)
+       [1] _read (res://scripts/core/recoverable_config_store.gd:153)
+       [2] _write (res://scripts/core/recoverable_config_store.gd:54)
+       [3] write_validated (res://scripts/core/recoverable_config_store.gd:47)
+       [4] save_entries (res://scripts/core/memory_ledger_persistence.gd:44)
+       [5] complete_voyage (res://scripts/core/game_state.gd:419)
+       [6] _run (res://tests/test_save_success_state_contract.gd:150)
+ERROR: ConfigFile parse error at user://test_r07b3_recovery_ledger.cfg:0: Unexpected EOF while parsing simple tag.
+   at: _parse (core/io/config_file.cpp:293)
+   GDScript backtrace (most recent call first):
+       [0] _load (res://scripts/core/recoverable_config_store.gd:225)
+       [1] _read (res://scripts/core/recoverable_config_store.gd:153)
+       [2] _recover (res://scripts/core/recoverable_config_store.gd:117)
+       [3] recover_primary (res://scripts/core/recoverable_config_store.gd:112)
+       [4] recover_primary (res://scripts/core/memory_ledger_persistence.gd:20)
+       [5] recover_storage (res://scripts/core/game_state.gd:467)
+       [6] _run (res://tests/test_save_success_state_contract.gd:151)
+ERROR: ConfigFile parse error at user://test_r07b3_recovery_comfort.cfg:0: Unexpected EOF while parsing simple tag.
+   at: _parse (core/io/config_file.cpp:293)
+   GDScript backtrace (most recent call first):
+       [0] _load (res://scripts/core/recoverable_config_store.gd:225)
+       [1] _read (res://scripts/core/recoverable_config_store.gd:153)
+       [2] read_validated (res://scripts/core/recoverable_config_store.gd:19)
+       [3] _save_value (res://scripts/core/comfort_preferences.gd:57)
+       [4] save_profile (res://scripts/core/comfort_preferences.gd:23)
+       [5] set_motion_comfort_profile (res://scripts/core/game_state.gd:293)
+       [6] _run (res://tests/test_save_success_state_contract.gd:186)
+ERROR: ConfigFile parse error at user://test_r07b3_recovery_comfort.cfg:0: Unexpected EOF while parsing simple tag.
+   at: _parse (core/io/config_file.cpp:293)
+   GDScript backtrace (most recent call first):
+       [0] _load (res://scripts/core/recoverable_config_store.gd:225)
+       [1] _read (res://scripts/core/recoverable_config_store.gd:153)
+       [2] _write (res://scripts/core/recoverable_config_store.gd:54)
+       [3] write_validated (res://scripts/core/recoverable_config_store.gd:47)
+       [4] _save_value (res://scripts/core/comfort_preferences.gd:60)
+       [5] save_profile (res://scripts/core/comfort_preferences.gd:23)
+       [6] set_motion_comfort_profile (res://scripts/core/game_state.gd:293)
+       [7] _run (res://tests/test_save_success_state_contract.gd:186)
+ERROR: ConfigFile parse error at user://test_r07b3_recovery_comfort.cfg:0: Unexpected EOF while parsing simple tag.
+   at: _parse (core/io/config_file.cpp:293)
+   GDScript backtrace (most recent call first):
+       [0] _load (res://scripts/core/recoverable_config_store.gd:225)
+       [1] _read (res://scripts/core/recoverable_config_store.gd:153)
+       [2] read_validated (res://scripts/core/recoverable_config_store.gd:19)
+       [3] _save_value (res://scripts/core/comfort_preferences.gd:57)
+       [4] save_ocean_volume (res://scripts/core/comfort_preferences.gd:29)
+       [5] set_ocean_volume (res://scripts/core/game_state.gd:327)
+       [6] _run (res://tests/test_save_success_state_contract.gd:187)
+ERROR: ConfigFile parse error at user://test_r07b3_recovery_comfort.cfg:0: Unexpected EOF while parsing simple tag.
+   at: _parse (core/io/config_file.cpp:293)
+   GDScript backtrace (most recent call first):
+       [0] _load (res://scripts/core/recoverable_config_store.gd:225)
+       [1] _read (res://scripts/core/recoverable_config_store.gd:153)
+       [2] _recover (res://scripts/core/recoverable_config_store.gd:117)
+       [3] recover_primary (res://scripts/core/recoverable_config_store.gd:112)
+       [4] recover_primary (res://scripts/core/comfort_preferences.gd:82)
+       [5] recover_storage (res://scripts/core/game_state.gd:467)
+       [6] _recover_or_retry_storage (res://scripts/voyage/game_scene.gd:1396)
+       [7] _run (res://tests/test_save_success_state_contract.gd:198)
+ERROR: ConfigFile parse error at user://test_r07b3_identity.cfg:0: Unexpected EOF while parsing simple tag.
+   at: _parse (core/io/config_file.cpp:293)
+   GDScript backtrace (most recent call first):
+       [0] _load (res://scripts/core/recoverable_config_store.gd:225)
+       [1] _read (res://scripts/core/recoverable_config_store.gd:153)
+       [2] read_validated (res://scripts/core/recoverable_config_store.gd:19)
+       [3] _load_config (res://scripts/core/cosmetic_identity_profile.gd:27)
+       [4] load (res://scripts/core/cosmetic_identity_profile.gd:52)
+       [5] load_identity (res://scripts/core/game_state.gd:204)
+       [6] _run (res://tests/test_save_success_state_contract.gd:244)
+ERROR: ConfigFile parse error at user://test_r07b3_identity.cfg:0: Unexpected EOF while parsing simple tag.
+   at: _parse (core/io/config_file.cpp:293)
+   GDScript backtrace (most recent call first):
+       [0] _load (res://scripts/core/recoverable_config_store.gd:225)
+       [1] _read (res://scripts/core/recoverable_config_store.gd:153)
+       [2] _recover (res://scripts/core/recoverable_config_store.gd:117)
+       [3] recover_primary (res://scripts/core/recoverable_config_store.gd:112)
+       [4] recover_primary (res://scripts/core/cosmetic_identity_profile.gd:22)
+       [5] recover_storage (res://scripts/core/game_state.gd:467)
+       [6] _recover_or_retry_storage (res://scripts/voyage/game_scene.gd:1396)
+       [7] _run (res://tests/test_save_success_state_contract.gd:251)
+PASS: save-success state contract

@@ -4,11 +4,61 @@
 **역할:** 실제 코드·Scene·test·runtime evidence와 현재 제품 정본의 차이를 기록하는 기술 router
 **현재 사람용 정본:** [프로젝트 GDD](../design/PROJECT_GDD.md)
 
-### 2026-09-14 R07a 저장 보호·첫 comfort consumer
+## 2026-09-16 마감 상태
+
+현재 방향은 작은 섬 농장·바다 감상과 일본 청춘 애니메이션풍이다. 보트 중심 R01–R12 추가 실행은 중단한다. 실행 파일은 여전히 보트 버전이며 새 섬 기능·새 아트는 미구현이다. 상세 승인 의미는 GDD 첫 결정을 따른다. 이번에는 기존 작업 마감·보존·날짜별 누적 기록·현재 브랜치 원격 동기화까지만 수행한다. 다른 PR/main을 수정하거나 보트 원본을 삭제하지 않는다.
+
+<!-- MONTHLY_APPEND_20260916_BEGIN -->
+### 누적 작업일지 / 2026-09-14 작업의 사후 요약
+
+기록 작성일 2026-09-16. 원래 작업일은 Git·9월14일 검증 기록 기준이며 오늘 새로 구현했다고 세지 않는다. 사용 도구는 Codex·로컬 Godot이며 계정 식별·원문 입력 화면·결제 증빙은 미확인이다.
+
+저장 성공 전에 외형·장식·풍경·물고기·항해 기록을 확정하던 경계를 수정했다. 실패한 항해 기록은 같은 후보를 유지하고, 쉬는 메뉴에서 문제가 있는 저장 owner만 복구/재시도하도록 연결했다. 사진 저장과 실제 앨범 연결도 기존 증빙에 포함되어 있다.
+
+구현 e67872b, 종료 정리 8041b6c, 복구 재시도 교정 920db8f, 테스트 teardown 48f98fc. 첫 독립 검토의 네 Important를 교정했다. 후속 검토에서는 정상 백업이 없어 복구할 수 없는 상황과 복구 후 저장 실패의 안내를 더 명확하게 구분해야 한다는 Important가 남았다. 마감 시 알려진 미해결 항목이며 R07 전체 완료가 아니다.
+
+검증 범위. 920db8f 관련 9개 focused 검사와 GPU 재시도 뒤 다음 항해 버튼 캡처가 있다. 최초 구현자의 66 headless 통과 보고는 tool history 범위이며 최종 head 전체 재실행 증거로 올리지 않는다. 9월16일 부모가 48f98fc 상태의 save-success 계약을 격리 저장 환경에서 다시 실행해 PASS와 test_r07b3 잔존 0을 확인했다. 의도한 손상 파일 parse 진단 10건은 실패 시나리오 출력이며 일반 게임 오류 없음으로 뭉뚱그리지 않는다. 새 섬 플레이·모바일·Human·출시 검증은 하지 않았다.
+
+원본 위치. docs/evidence/2026-09-14-recoverable-save/REVIEW.md 및 state-runtime, state-round1. 입력은 이전 대화의 작업 재개 요청이며 원문 화면을 재현하지 않았다. 기존 실제 게임 캡처는 보트 버전의 검증 화면으로만 유지한다.
+
+### 누적 작업일지 / 2026-09-16 방향 전환과 마감
+
+사용자 입력 발췌. “작은 섬에서 농장을 관리하고 바다를 보는 그런 힐링 게임으로 가자.” “그림체도 좀 더 일본 청춘 애니느낌으로가자.” “작업일지는 계속 새로만들지말고 기존거에 추가로 작성하는거야.” 이 텍스트는 현재 대화에서 옮긴 발췌이며 원문 화면 캡처가 아니다.
+
+기존 상태는 보트 이동감을 중심으로 진행하던 구현과 매번 버전이 증가하던 월간 PDF였다. 이번에는 AGENTS·GDD·실행 계획·문서 지도·README·시각 inventory·Base adapter의 현재 방향을 연결하고 이전 명세를 역사적 보존 범위로 표시했다. 이름은 my little boat를 유지하며 새 이름·농사 수치·캐릭터 세부 디자인은 확정하지 않았다.
+
+작업일지는 기존 handoff에 날짜별로 누적하며 기존 미제출 월간 PDF의 원래 페이지를 보존하고 요약 페이지를 추가한다. 새 일지나 v1.3을 만들지 않는다. 이전 파일은 복구용 사본만 남기고 현재 제출 준비용 경로는 유지한다. 과거 7쪽 등의 새 버전 발행 규칙은 이 최신 누적 규칙으로 대체된다. 실제 작업일·사후 기록일·발행일·캡처일은 계속 구분한다.
+
+재사용 판단. 기존 코드·자산·세이브·승인 provenance는 보존한다. 저장/복구·사진/앨범·바다 소리·감상 기능은 섬 게임 재사용 후보이지 이미 연결된 기능이 아니다. 보트 전진 연출 추가 개발, 새 섬 아트 생성, 농장 구현과 데이터 마이그레이션은 이번 마감에 포함하지 않았다. 새 기획은 농장 돌보기와 쉬기의 균형, 이동/카메라, 일본 청춘 애니풍 시각 구성을 먼저 조사한다.
+
+운영 대안. 별도 일지를 매번 생성하는 방식은 REJECT, 전체 월간 PDF를 매번 재작성하는 방식은 과거 페이지 변경 위험 때문에 DEFER, 기존 PDF에 날짜별 요약과 출처를 붙이는 방식을 ADOPT했다. 원본 PDF와 sources receipt를 검증한 뒤 미제출 파일만 갱신하며 이전 쌍을 복구용 보관한다. PDF 병합은 기존 Python 환경의 pypdf를 사용하고 새로운 유료 도구·공용 프레임워크를 도입하지 않는다.
+
+미검증 경계. 새 섬 농장 런타임과 최종 아트는 NOT_IMPLEMENTED, Human·모바일·출시는 NOT_RUN이다. 지원 협약 원문·비용 인정·계정·결제 자료는 확인하지 않았다. PDF는 미제출 보조 보고서이며 증명서나 새 기획 정본이 아니다. GitHub 동기화 결과는 이 문서의 별도 마감 readback을 따른다.
+<!-- MONTHLY_APPEND_20260916_END -->
+
+아래 날짜별 문단은 당시의 상태다. `다음 작업`·`현재` 표현을 새 섬 방향의 실행 승인으로 읽지 않는다.
+
+### 마감 검토 기록 / 2026-09-16
+
+기준 구현 HEAD `48f98fc`, dirty 문서와 기존 R07b3 증거를 보존했다. 아래는 이번 방향·기록 마감 범위의 실제 검토 순서이며 기존 R07 Important가 해소됐다는 clean exit 주장이 아니다.
+
+1. 권한/중첩. `git fetch origin`, `gh pr list`로 main `7181d5e`, 현재 branch 57 commits ahead/main 신규0, 열린 PR19·107을 확인했다. 두 PR은 read-only로 보존했다. Base remote `d830c0f`를 재확인하고 채택 v9.4.4 identity는 유지했다.
+2. 의미/consumer. AGENTS·GDD·현재 handoff·R01–R12·README·visual inventory·adapter를 읽었다. 보트 목표와 새 사용자 방향의 충돌을 발견해 각 진입점에 새 방향/역사적 실행 경계를 연결했다. actual scripts/scenes/assets를 변경하지 않았다. 새 실행 계획·농사 수치 임의 확정은 제외했다.
+3. 기존 수정 회귀. 격리 QA project의 `test_save_success_state_contract.gd`를 직접 실행해 PASS, 의도한 parse10건과 test_r07b3 잔존0을 확인했다. 920db8f의 기존 focused9/GPU 사본도 보존했다. 복구 불가 안내 구분 Important는 미해결로 공개하고 기존 PASS로 덮지 않았다.
+4. 일지 대안/반례. 별도 일지 생성/전체 재발행/기존 페이지 누적을 비교해 누적을 채택했다. [pypdf 공식 병합 문서](https://pypdf.readthedocs.io/en/stable/user/merging-pdfs.html)를 읽고 기존 발행기에만 추가했다. 미구현 append API에서 4개 실패 확인 후 실제 PDF·격리 Git fixture로 페이지/원본 backup/출처 확인·중복 추가 거부·제출본 거부·dirty 원본 거부 4개 PASS를 확인했다. 새 DB·유료 도구·별도 일지 master는 없다.
+5. 전체 문서/도구 회귀. `git diff --check` 통과, Python24 중23PASS/1SKIP(기존 optional PDF geometry inspector). JSON adapter/reuse·기존 source-bound Blueprint·CI coverage가 유지됐다. 기존 Blueprint와 실제 게임 art bytes는 변경하지 않았다. 월간 PDF render/hash 및 원격 readback은 발행 뒤 별도 기록한다. 소스와 PDF를 원자적 쌍으로 바꾸는 전원 차단 보장은 없으며 중단 시 hash 불일치로 감지하고 이전 두 파일을 복구한다.
+
+이 재사용은 프로젝트 전용으로 유지하고 새 Base module/skill로 승격하지 않는다. 다른 worktree·프로덕션 세이브는 수정하거나 삭제하지 않았다.
+
+### 2026-09-14 R07 저장 보호·사진 연결·증빙 발행
 
 최신 재개 상태. R07b2는 `854fdce`에서 사진 저장 owner·GameState 전달·실제 Album 안전 읽기를 구현했고 `817cd65`에서 미지원 플랫폼 거부를 교정했다. 전체65 headless는854fdce, 마지막 focused5는817cd65이며 독립 scoped 재검토 ADDRESSED/신규 Important 없음이다. 실제 게임 촬영 버튼→PNG/목록 저장→같은 항해 Album 표시를22:55:51 KST에 확인했다. [사진 저장·실행 증거](../evidence/2026-09-14-recoverable-save/REVIEW.md)가 정확한 범위를 소유한다. Android/iOS 사진 경로는 지원 검증 전 거부 상태다. 다음 단위는 R07b3 저장 성공 확정·복구 UI이며 전체 R07이나 수면·모델·아트 완성은 아니다.
 
 역사 기록 — 2026-09-14 22시 KST 첫 중단 시점에는 R07b2 변경이 없었고 `9c1e89e` 기준 미구현이었다. 아래 v1.0 월간 PDF는 그 시점의 스냅샷이며 현재 상태로 조용히 덮어쓰지 않는다.
+
+최신 증빙 PDF는 사용자 지정 9월 폴더의 `my little boat_2026-09_AI활용_작업일지_증빙집_v1.2.pdf`다. 기준 `cf7860d`, 2026-09-14 23:03:56 KST 사후 발행, 9쪽·2,956,725bytes, SHA256 `5d04e4ccf44f80e05ae59657a041c3430f7ce43849b849e42835faf89d64ccef`. Git50기록과 원본10개 hash를 동봉 sources.json으로 대조했다. 실제 촬영/Album 실행을 새 사례로 추가하고 과거 수면·자산 후보는 재수록으로 표시했다. Poppler 최신9쪽을 직접 모두 확인해 표·한글·이미지·footer와 색인 줄 분리를 검사했다. v1.1의 색인 파일명/해시가 페이지 경계에서 갈라지는 문제를 발견해 KeepTogether/작은 파일명 스타일로 교정했으며 실패한 시안을 덮지 않았다.
+
+미제출 v1.1 PDF·sources.json 두 파일(2,973,481bytes)은 `C:/Users/user/Documents/MyLittleBoat_삭제대기_20260914/pdf-v11-2305`로 이동했다. 이동 전후 hash가 일치하며 같은 폴더의 `복원안내.md`가 원래 위치·사유·복원 방법을 기록한다. v1.0 역사본과 현재 v1.2, runtime 증거·원화·다른 worktree·사용자 saves는 이동/삭제하지 않았다. PDF 검수는 Human 게임 검수·비용 인정·제출·메일 확인이 아니다.
 
 월간 증빙 발행. `C:/Users/user/Documents/증빙서류/9월 증빙서류/my little boat_2026-09_AI활용_작업일지_증빙집_v1.0.pdf` 8쪽, 2,491,595 bytes, SHA-256 `4adbd50f3535bf1874c5fa42203aea3c883e4f95f6901ed4c9458b6f717e4bdd`. 같은 이름의 `.sources.json`에 45개 Git 기록과 8개 원본 hash를 보존한다. 사후 정리·미제출·계정/결제 미확인 상태이며 지원 협약 원문을 확인한 것으로 쓰지 않았다. `AGENTS.md`가 앞으로의 크로마키/월별 증빙 운영을 소유하고 PDF는 파생물이다.
 
@@ -28,7 +78,7 @@
 
 명세 준비 후 같은 날 사용자 실행 승인으로 `RecoverableConfigStore`와 기존 `ComfortPreferences`를 연결했다. `6e50ad0`의 기본 구현, `3724c67`의 읽기 무변경 교정, `4773c68`의 최초 staging 이전 원본 의도 기록을 포함한다. `COMMITTED / NOT_COMMITTED / RECOVERY_REQUIRED`, 검증된 rolling last_good, 중단 후 원본 hash 기반 복구, 명시 복구 전 쓰기 차단이 실제 코드에 있다. 기존 음소거·움직임 저감의 session-only 의미를 유지한다.
 
-이는 R07a의 helper+첫 owner 범위다. 나머지 persistence owner·GameState 성공 확정·플레이어용 복구 UI·사진 경로 검증은 아직 남았다. 수면/카메라/모델 화면은 변경하지 않았다. [저장 보호 증거와 남은 작업](../evidence/2026-09-14-recoverable-save/REVIEW.md)이 검증 ceiling을 소유한다. 재사용 검증 코드와 테스트 파일 정리는 실제 consumer에 연결했고 Base에 아직 승격하지 않았다.
+이 문단은 R07a의 helper+첫 owner 납품 당시 범위다. 당시 남았던 나머지 persistence owner·사진 경로 검증의 후속 상태는 위 R07b1/R07b2와 [저장 보호 증거](../evidence/2026-09-14-recoverable-save/REVIEW.md)를 따른다. GameState 성공 확정·플레이어용 복구 UI는 R07b3의 별도 검증 대상이다. 수면/카메라/모델 화면은 이 저장 작업에서 변경하지 않았다. 재사용 검증 코드와 테스트 파일 정리는 실제 consumer에 연결했고 Base에 아직 승격하지 않았다.
 
 ### 2026-09-14 남은 작업·설계/구현 명세 준비
 

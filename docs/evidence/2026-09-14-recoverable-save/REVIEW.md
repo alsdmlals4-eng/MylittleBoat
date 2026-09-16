@@ -137,3 +137,27 @@ fault test는 실제 격리 파일과 테스트 subclass의 파일 연산 실패
 플랫폼 제한. [Godot 공식 DirAccess](https://docs.godotengine.org/en/stable/classes/class_diraccess.html)는 `is_link` 구현을 Windows/Linux/macOS로 명시한다. Windows junction은 실제 실행했고 Linux/macOS는 이 작업에서 문서 근거만 있다. Android/iOS/unknown은 현재 사진 경로·새 저장을 거부한다. 모바일용 안전 경로 소비처를 실제 검증하기 전 모바일 사진 기능 완료로 표시하지 않는다. OS의 악의적 동시 바꿔치기 완전 방어, 전원 차단 보장, Human/실기기/출시는 미검증이다.
 
 학습·후속. 저장 성공 입력은 같은 owner가 다시 읽을 수 있는 범위 안이어야 한다. 단색 이미지의 비용을 실제 화면 디코드 성능으로 대표시키지 않는다. 차단된 filesystem 명령의 다른 도구 우회를 재사용 방법으로 승격하지 않는다. 테스트가 생성한 정확한 fixture teardown만 별도 계약으로 관리한다. 프로젝트 테스트로 고정했으며 Base 승격은 아직 하지 않았다. R07b3 성공 후 state 확정/복구 UI, R06 적용·취소, R08 사진 상세와 세계 수면·모델 작업은 그대로 남았다.
+
+## R07b3 — 저장 성공 확정과 쉬는 메뉴 복구
+
+**2026-09-16 마감 갱신.** 보트 후속 작업은 사용자 방향 변경으로 중단했다. 아래 fix round1 진행 중 표기는 당시 기록이다. `920db8f`에서 네 Important를 교정했고 관련9개·GPU 증거는 `state-round1/`에 보존한다. `48f98fc`는 테스트 종료 후 함께한 시간 fixture가 다시 생성되는 순서를 교정했다. 9월16일 부모 직접 같은 save-success 계약 실행 PASS, 의도된 손상 parse10건, 종료 뒤 `test_r07b3*` 잔존0을 재확인했다. 전체66를 이 head에서 부모가 재실행한 것은 아니다. **정상 백업 부재와 복구 뒤 저장 실패의 사용자 안내 구분은 Important 미해결**로 보존한다. 새 섬 게임에서 재사용 전 교정해야 하며 R07 전체 clean exit/출시 완료를 주장하지 않는다.
+
+구현 기준 `cf7860d`, 구현 `e67872b`, 캡처 종료 정리 교정 `8041b6c`. 최신 사용자 재개 후 같은 작업의 미커밋 변경을 보존해 이어갔다. 독립 검토는 네 Important를 발견해 fix round1을 진행 중이며 R07b3/전체 R07/게임 완료를 선언하지 않는다.
+
+외형·장식·풍경·물고기·항해 기록은 실제 owner commit 뒤에만 GameState를 확정한다. 실패한 항해 기록은 같은 summary 하나를 유지하고, 물고기는 저장 성공 전 ready 후보를 소비하지 않는다. 함께한 시간은 미저장 누적과 저장 시도 간격을 분리한다. 꾸미기 표시 readback은 저장을 수행하지 않는다. 정상 저장 상태에는 복구 버튼을 숨기고, 문제 owner만 쉬는 메뉴에서 복구/재시도한다. 복구 뒤 외형과 장식의 실제 표시도 동기화한다. comfort는 현재 live motion/volume을 유지하고 두 값을 기존 unknown key와 함께 재시도한다.
+
+| 검증 층 | 확인 결과와 증거 범위 |
+|---|---|
+| 구현자 전체 회귀 | 67개 발견 중 display-only1 제외66 exit0 보고. 정렬한 연속 batch의 raw 출력은 구현자 tool history에만 있으며 이 문서에 가짜 합성 로그를 만들지 않음. display-only는 별도 Windows Mobile renderer PASS 보고 |
+| 부모 직접 검사 | `8041b6c`에서 격리 QA project로 `--headless --script res://tests/test_save_success_state_contract.gd` 실행, exit0/PASS. [원본 로그](state-runtime/parent-state-headless.log). 의도한 손상 cfg의 parse 진단4건과 정상 실행 오류를 구분 |
+| 복구 GPU | Godot4.7.2/Vulkan Forward Mobile/RTX3050/540×960. 실제 game Scene 쉬는 메뉴의 버튼 신호→owner 복구→성공 안내. [복구 전](state-runtime/storage_recovery_required.png), [복구 후](state-runtime/storage_recovery_committed.png), [실행 로그](state-runtime/gpu-runtime.log). physical touch/Human 입력 증거는 아님 |
+| 경고 교정 | 이전 v3의 종료 ObjectDB 경고는 tool stdout에만 있었음. 캡처에서 scene 해제·프레임 대기·기존 soundscape shutdown을 수행한 v4는 경고0 보고. 부모가 읽은 v4 raw log에는 의도한 corruption parse2건만 있으며 이를 일반 오류0으로 표기하지 않음 |
+| 문서·격리 | 부모 Python19 중18PASS/1SKIP. 추가 test count의65→66 불일치 교정 확인. 부모 직접 test 후 QA user dir의 test_* 잔존0. 다른 프로젝트 editor/production saves는 사용하지 않음 |
+
+증거 사본4개는 부모가 원본과 SHA256 대조 후 복사했다. GPU log `d772a8b585c2cb722614e5fc3499cd9711f09750e3475fc7c874094b0938a3e5`, 부모 state log `d00277d3750823b34ce8e64d1bd5f3a1e92ee294cea8230e1df8c6ae15a0d500`, 복구 전PNG `2b4312dbf70809ebc45698d2c653751a55780be4fdf72c59f6a9fbf6a531020f`, 복구 후PNG `049b32c0e049797531f347e0e83cc3195132bd53a562341d3722c27be95f955e`. `.gdignore`로 문서 증거를 엔진 import에서 제외한다. 이전 v1–v3 결과는 덮어쓰지 않았다.
+
+실제 다섯 검토는 전체 state/owner 소비처, 실패·기존 fixture 격리, 복구 UI와 visual readback, live 접근성·unknown key 보존, 캡처 격리·종료 정리 순으로 진행됐다. 각각 발견한 문제를 관련 focused 계약과 GPU로 재확인했으며, 전체66를 매 루프 반복한 것으로 세지 않는다. 상세 명령·발견·대안은 active plan 보고서에 있다. 새 DB/전체 migration 대신 기존 owner·테스트 seam을 재사용했다. power-loss·모바일 사진·Human·최종 아트·출시는 여전히 미검증이고, R06 draft/R08 상세는 후속 독립 단위다.
+
+부모 GPU 재실행. `8041b6c`에서 `MLB_R07B3_CAPTURE_DIR=C:/Users/user/AppData/Local/Temp/MyLittleBoat-R07b3-parent-20260914-2340`, 동일 격리 QA `--path`, `--resolution 540x960 --script res://tests/capture_storage_recovery_ui.gd`로 직접 실행했다. exit0와 실제 복구 버튼 PASS, 예상 parse2건 외 ObjectDB/자원 경고 없음. [부모 실행 로그](state-runtime/parent-gpu-runtime.log)는 같은 코드·호출 순서여서 v4 로그와 byte/hash가 동일하다. 같은 출력 대상으로 다시 시도하니 preflight exit1로 거부하고 기존 PNG hash를 유지했다. 이는 의도한 음성 검증이며 실패를 숨긴 성공 표시가 아니다. 부모가 실제 본 복구 후 화면에는 이전 family의 어두운 선체 일부가 보이므로 최종 외형 품질 검수는 R03/R06에 남기며 이 UI 검증으로 승인하지 않는다.
+
+독립 검토 발견. ① 손상 ledger primary 복구 뒤 pending summary가 남아도 정상 status로 재시도 UI가 사라짐 ② NOT_COMMITTED 기록 재시도 성공 뒤 NextVoyageButton 미동기화 ③ comfort backup 복구 뒤 live pair가 미저장이어도 안내가 사라짐 ④ photo NOT_COMMITTED를 지원하지 않는 generic retry로 보내고 뒤 owner 접근도 막음. 이는 기존 PASS가 시험하지 않은 실제 경로의 누락이며 테스트 통과만으로 완료하지 않는다. 원래 구현자에게 네 반례의 RED/GREEN과 실제 버튼·저장 readback을 함께 교정하도록 전달했다. 사진은 실패한 원본을 보존하지 않았는데 되살렸다고 표시하지 않고, 단순 실패는 기존 재촬영 경로·실제 손상 상태는 명시 복구 경로로 구분한다.

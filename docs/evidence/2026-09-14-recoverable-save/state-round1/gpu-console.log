@@ -1,0 +1,27 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Vulkan 1.4.303 - Forward Mobile - Using Device #0: NVIDIA - NVIDIA GeForce RTX 3050
+
+[godot_ai game_helper] registered mcp capture (debugger active=false, logger=true)
+ERROR: ConfigFile parse error at user://test_capture_r07b3_identity.cfg:0: Unexpected EOF while parsing simple tag.
+   at: _parse (core/io/config_file.cpp:293)
+   GDScript backtrace (most recent call first):
+       [0] _load (res://scripts/core/recoverable_config_store.gd:225)
+       [1] _read (res://scripts/core/recoverable_config_store.gd:153)
+       [2] read_validated (res://scripts/core/recoverable_config_store.gd:19)
+       [3] _load_config (res://scripts/core/cosmetic_identity_profile.gd:27)
+       [4] load (res://scripts/core/cosmetic_identity_profile.gd:52)
+       [5] load_identity (res://scripts/core/game_state.gd:204)
+       [6] _run (res://tests/capture_storage_recovery_ui.gd:35)
+ERROR: ConfigFile parse error at user://test_capture_r07b3_identity.cfg:0: Unexpected EOF while parsing simple tag.
+   at: _parse (core/io/config_file.cpp:293)
+   GDScript backtrace (most recent call first):
+       [0] _load (res://scripts/core/recoverable_config_store.gd:225)
+       [1] _read (res://scripts/core/recoverable_config_store.gd:153)
+       [2] _recover (res://scripts/core/recoverable_config_store.gd:117)
+       [3] recover_primary (res://scripts/core/recoverable_config_store.gd:112)
+       [4] recover_primary (res://scripts/core/cosmetic_identity_profile.gd:22)
+       [5] recover_storage (res://scripts/core/game_state.gd:467)
+       [6] _recover_or_retry_storage (res://scripts/voyage/game_scene.gd:1396)
+       [7] _run (res://tests/capture_storage_recovery_ui.gd:55)
+       [8] _save_frame (res://tests/capture_storage_recovery_ui.gd:111)
+PASS: storage recovery UI display capture

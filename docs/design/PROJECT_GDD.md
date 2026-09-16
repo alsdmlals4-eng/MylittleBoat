@@ -1,10 +1,27 @@
 # 마이 리틀 보트 기획서
 
 **현재 상태:** `CURRENT_HUMAN_FACING_GDD`
-**갱신일:** 2026-09-13
+**갱신일:** 2026-09-16
 **읽는 법:** 이 문서는 사람이 게임의 경험과 결정 상태를 이해하기 위한 정본입니다. 실제 코드·Scene·테스트·캡처는 [현재 Godot handoff](../handoffs/CURRENT_GODOT_IMPLEMENTATION.md)가, visual consumer와 provenance는 [visual inventory](../visual/CURRENT_SCREEN_SURFACE_INVENTORY_AND_VISUAL_ASSET_COVERAGE.md)가 소유합니다.
 
-## 현재 실행 목표 — 게임 전체 구현·완성
+## 현재 결정 — 작은 섬 농장과 바다 감상
+
+`MLB-DIRECTION-20260916 / USER_APPROVED_DIRECTION / ISLAND_RUNTIME_NOT_IMPLEMENTED`
+
+사용자는 보트로 이동하는 느낌을 중심 목표로 삼던 방향을 바꾸어 **작은 섬에서 농장을 관리하고 바다를 바라보는 힐링 게임**으로 전환했다. 아트 목표는 **일본 청춘 애니메이션풍**이다. 이 결정은 아래 항해 중심 P/B/R 명세보다 우선한다. 이번 마감은 결정·기록·기존 작업 보존·GitHub 동기화이며 새 섬 게임 구현 완료가 아니다.
+
+| 요소 | 이번 결정 | 다음 검토와 경계 |
+| --- | --- | --- |
+| 핵심 경험 | 섬의 작은 농장 돌보기 + 바다를 보며 쉬기 | 농사 행동·성장 시간·획득/사용 구조는 조사 후 구체화. 의무 일과·작물 고사 페널티를 자동 추가하지 않음 |
+| 전진 이동 | 보트 이동감을 완성하는 추가 작업 중단 | 기존 route/water/boat 코드·세이브·증거는 보존. 농장 런타임으로 자동 재해석하지 않음 |
+| 아트 | 일본 청춘 애니메이션풍으로 재검토 | 인물 비율·표정·빛·색감·섬 배경을 함께 검토. 기존 치비·보트 lock은 새 아트 lock이 아님 |
+| 재사용 후보 | local-first 저장/복구, 사진·앨범, 감상·바다 소리 | 실제 섬 consumer에 적합한지 먼저 검사. 동반자·낚시·편지는 새 필수 기능으로 확정하지 않음 |
+| 유지할 안전선 | 휴식 우선, 경쟁/전투/유료 압박 없음, 기존 데이터 보존 | 이름 변경·데이터 마이그레이션·공개 social·출시는 이번 결정에 포함하지 않음 |
+| 다음 작업 | 유사 게임 조사 → 농장/감상 루프·카메라 3대안 비교 → 최소 구현 명세 → 필요한 새 아트 후보 | 먼저 기획을 구체화. 구형 실행 캡처를 새 섬 게임 시안으로 쓰지 않음 |
+
+기존 R01–R12 실행 계획은 `SUPERSEDED_BY_ISLAND_DIRECTION`으로 중단한다. 완료된 저장 개선은 보존하되 재사용 검토 전 섬 기능 완료로 세지 않는다. 새 명세의 구체적인 수치·자산·화면 흐름은 아직 확정하지 않았다.
+
+## 역사적 실행 목표 — 보트 게임 전체 구현·완성 (2026-09-16 대체)
 
 2026-09-13 최신 사용자는 “게임 전체 완성, 구현까지 계속 진행”을 명시했다. 기존 rest-first 코어와 현재 기획의 안전한 구현·교정은 반복 승인 없이 계속한다. 아래 과거의 ‘기획만 진행/production 보류’ 문장은 이 최신 구현 지시를 차단하지 않는다. 새 최종 아트 lock·핵심 의미 변경·공개 social 안전 gate·비용/배포/보안/파괴적 데이터 변경·Human 선언은 별도로 유지한다. 단위 검사 통과를 전체 게임 완료로 보고하지 않는다.
 
@@ -477,7 +494,7 @@ WorldEnvironment/Sky(자동 yaw 없음, 수동 시점에 공간 대응)
 
 #### R07. 저장 보호·정상본 복구·사진 경로
 
-**2026-09-14 R07a·R07b1 구현 현황.** 공통 store/comfort(`4773c68`)에 이어 identity/decor/together-time/ambient/ledger owner도 연결했다(`b07f8b8`, 우선순위 교정 `6f6f716`). 사진 resolver와 GameState/UI 성공 확정은 여전히 남았다. 세부 검증·미검증 및 독립 검토 상태는 [현재 증거](../evidence/2026-09-14-recoverable-save/REVIEW.md)를 따른다. 단순 읽기는 파일을 변경하지 않으며 증거 보존/잠금 파일 쓰기는 실제 저장·명시 복구 요청 때만 수행한다.
+**2026-09-14 R07a·R07b1·R07b2 구현 현황.** 공통 store/comfort(`4773c68`)에 이어 identity/decor/together-time/ambient/ledger owner도 연결했다(`b07f8b8`, 우선순위 교정 `6f6f716`). 사진 owner와 실제 Album 안전 읽기는 `854fdce`, 미지원 플랫폼 차단은 `817cd65`다. GameState/UI 전체 성공 확정·복구 안내는 R07b3 검증 전이므로 완료가 아니다. 세부 검증·미검증 및 독립 검토 상태는 [현재 증거](../evidence/2026-09-14-recoverable-save/REVIEW.md)를 따른다. 단순 읽기는 파일을 변경하지 않으며 증거 보존/잠금 파일 쓰기는 실제 저장·명시 복구 요청 때만 수행한다.
 
 **선택.** A 기존 파일 바로 overwrite `REJECT`, B 기존 schema를 유지한 owner별 staging+검증 정상본+복구 receipt `ADAPT`, C 새 DB/클라우드/전체 migration `REJECT`. 대상은 `scripts/core/*_persistence.gd`, `cosmetic_identity_profile.gd`, `comfort_preferences.gd`의 실제 소비 owner다. 단순 rename을 Windows/모바일 모두 atomic 또는 전원차단 안전하다고 부르지 않는다.
 

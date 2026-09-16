@@ -1,5 +1,7 @@
 # 남은 게임 구현 Implementation Plan
 
+**2026-09-16 상태 — `SUPERSEDED_BY_ISLAND_DIRECTION`.** 사용자가 작은 섬 농장·바다 감상과 일본 청춘 애니메이션풍으로 방향을 바꾸고 현재 작업 마감·동기화를 요청했다. 아래 보트 중심 작업은 더 실행하지 않는다. R07b3까지의 실제 변경과 미해결 사항은 handoff/evidence로 보존한다. 아래 과거 실행 승인 문구는 이 중단을 덮지 않는다. 새 기획의 책임 owner는 [GDD 첫 결정](../../design/PROJECT_GDD.md)이다.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking. 별도 사용자 요청 없이 실행 방식 선택 질문을 반복하지 않는다. 명세 준비 뒤 2026-09-14 `좋아 권장안대로 작업진행해`로 안전한 구현·검증 실행이 승인됐다. 최종 아트/기기/Human/출시 gate는 유지한다.
 
 **Goal:** 목적지 없는 동반자 보트 휴식을 실제 공간 이동·연속 회전·안전한 기억 저장·사용 가능한 내부 빌드까지 연결한다.
