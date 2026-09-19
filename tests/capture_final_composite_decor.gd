@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # C+강아지 메인 합성에서 선택 엽서가 보이지 않는 장식 상태를 저장한다.
 extends SceneTree
 
@@ -74,12 +73,3 @@ func _remove_test_saves() -> void:
 func _fail(message: String) -> void:
 	printerr("FAILED: %s" % message)
 	quit(1)
-=======
-# 현재 direct boat entry 흐름으로 대체된 과거 장식 합성 capture를 retire한다.
-extends SceneTree
-
-
-func _init() -> void:
-	print("HISTORICAL_RETIRED: use res://tests/capture_direct_boat_entry_atmospheres.gd")
-	quit(0)
->>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564

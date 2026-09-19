@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # 과거 메뉴 자료의 외형 선택을 보존하되 시작 경로는 책임지지 않는다.
 extends Control
 
@@ -100,17 +99,3 @@ func _select_option_by_id(option: OptionButton, selected_id: String) -> void:
 		if str(option.get_item_metadata(index)) == selected_id:
 			option.select(index)
 			return
-=======
-# 구형 시작 메뉴 경로를 첫 보트 화면으로 안전하게 연결한다.
-extends Control
-
-
-func _ready() -> void:
-	call_deferred("_enter_direct_boat_scene")
-
-
-func _enter_direct_boat_scene() -> void:
-	if not GameState.voyage_active:
-		GameState.begin_voyage()
-	get_tree().change_scene_to_file("res://scenes/game.tscn")
->>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
