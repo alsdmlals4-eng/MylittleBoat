@@ -1,263 +1,54 @@
-# AGENTS.md
+# My Little Boat 작업 규칙
 
-Codex and other coding agents should follow this file when working in this repository.
+한국어로 결과부터 설명한다. 이 파일은 항상 필요한 보호선과 읽기 경로만 소유한다. 상세 작업 절차는 아래 프로젝트 adapter와 필요한 분야 원본에서 읽는다.
 
-## Project
+## 1. 현재 방향과 보호선
 
-Project name: `my little boat`
-Engine: Godot 4.7 stable
-Language: GDScript
-Genre: rest-first cozy boat diorama / healing voyage game
+- 제품 결정은 [GDD의 현재 결정](docs/design/PROJECT_GDD.md#현재-결정--작은-섬-농장과-바다-감상)이 소유한다. 작은 섬 농장 돌보기 + 바다 감상, 일본 청춘 애니메이션풍이다. 섬 게임은 `NOT_IMPLEMENTED`이며 실행 파일은 구형 보트 디오라마다.
+- 보트 전진감 추가 개발은 중단한다. 기존 보트 코드·자산·승인 이력·세이브 ID는 legacy/reference로 보존하며 섬 게임 구현 증거로 쓰지 않는다. 새 농사 규칙·캐릭터 비율·최종 아트는 이 문서로 확정하지 않는다.
+- Godot 4.7 stable / GDScript를 유지한다. 엔진·저장 호환성·승인 자산·플러그인·전역 설정을 운영 규칙 갱신 때문에 바꾸지 않는다.
+- 휴식 우선·local-first를 유지한다. 전투·체력/피해/죽음·실패 벌·경쟁/랭킹·광고/결제·의무 일과·방치/고사 벌·소셜 압박을 추가하지 않는다.
+- 온라인 예외는 기존 승인된 지연 `FriendBottle / DriftBottle`과 필요한 안전 운영뿐이다. 실시간/공개 채팅·피드·인기 지표는 금지한다. `DriftBottle` 공개는 서버 중재, 약관·커뮤니티 규칙, 16+, 신고·차단·동의, 운영·연락처·검증을 갖추기 전 금지한다. [기존 안전 계약](docs/superpowers/specs/2026-08-24-bondee-diorama-delayed-bottle-design.md)을 따른다. 편지가 새 섬 게임의 필수 기능으로 채택된 것은 아니다.
 
-Normal play shows a visible player avatar, pet, boat, decorations, and sea together through a calm 3/4 diorama camera. The existing sea-focused low-UI view is preserved as the optional `Appreciation Camera`.
+## 2. Current-authority read order
 
-Do not add combat, failure states, competitive systems, ads, payments, realtime/global/public chat, follower/ranking systems, or social pressure mechanics.
+1. 최신 사용자 지시 → 이 `AGENTS.md`.
+2. [현재 결정·GDD](docs/design/PROJECT_GDD.md) → [Active Context·현재 handoff](docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md)의 최신 절.
+3. 작업 폴더·최신 원격 main·관련 열린/최근 병합 PR → 실제 대상 코드·Scene·데이터·자산 consumer·검증 증거.
+4. [프로젝트 Base adapter](docs/operations/MY_LITTLE_BOAT_BASE_ADAPTER.json)의 채택 계약·조건부 경로 → 최신 Base main과 필요한 drift만 비교.
+5. 필요한 외부 원문. 과거 대화·메모리·고정 SHA·PDF·Issue 번호는 현재 실행 권한이 아니다.
 
-Online scope is allowed only for the approved delayed `FriendBottle` / `DriftBottle` subsystem and its required identity, moderation, report, block, consent, and safety operations. Voyage, rest, pet, decoration, album, fishing, and soundscape remain local-first and playable without the backend.
+[문서 지도](docs/DOCUMENTATION_MAP.md)는 질문별 원본을 찾는 경로다. GDD는 사람용 결정, 코드·데이터·Scene은 구현, 실행 로그·캡처는 runtime 증거를 각각 소유한다. PDF는 파생본이다. Notion은 `NOTION_LEGACY_DISCOVERY_ONLY`; Google Sheets는 고유 미이관 자료가 있는 경우의 compatibility source일 뿐 새 정본/동기화 대상이 아니다.
 
-`DriftBottle` public enablement is forbidden until the approved release gate has production server-side moderation, Terms/Community Guidelines, 16+ age gating, in-app report/block, moderation operations, support contact, and verification evidence. See `docs/superpowers/specs/2026-08-24-bondee-diorama-delayed-bottle-design.md`.
+## 3. 승인된 작업을 가볍게 이어가기
 
-## Authority bootstrap
+- 새 변경은 의도·현재 상태·변경/보호 범위·구현 방향·완료/검증 기준을 짧게 제시하고 승인받는다. 저장소에서 확인할 사실을 되묻지 않는다.
+- 같은 승인 범위의 계획·조사·검증은 재사용한다. 단계마다 재승인·재계획하지 않고 구현 → 필요한 검사 → 교정 → 정본 갱신 → 허용된 정상 PR 병합 → main 재확인까지 이어간다.
+- 새 핵심 경험·주요 UX·범위/비용·보안/권한·파괴적 변경·최종 아트 lock만 별도 결정으로 올린다. 자료 미확인은 그 자료에 의존하는 작업만 막고, 별도 근거가 있는 승인 작업은 계속한다.
+- 기존 구현·승인 자산·Base 재사용 근거부터 비교한다. 중요한 새 설계/정책만 실질 대안 3개를 비교하며, 이미 승인된 해법·명확한 오류 수정에 허수 대안을 만들지 않는다. 바뀔 수 있는 근거와 새 판단에 필요한 공식 자료는 확인한다.
+- 같은 승인 후보 계보의 전체 적대 검토는 **정확히 2회**를 공유한다. 단계/플러그인/병합마다 초기화하지 않는다. 이후 유효 finding은 영향 범위 교정·회귀로 닫고, blocker를 PASS로 숨기지 않는다. 독립 병합 검토와 필수 CI는 생략하지 않는다.
+- 현재 작업에 필요한 최소 skill/reference만 완독한다. 기존 계획·handoff를 재사용하고 별도 감독 skill·서버·중복 체크리스트를 만들지 않는다. 설치된 skill은 삭제/재작성하지 않는다. 적용 경로는 adapter의 `conditional_routes`를 따른다.
 
-Do not infer current project status from memory or past chats. Resolve current authority in this order:
+## 4. 경험·아트·검증
 
-1. Latest user instruction.
-2. This `AGENTS.md` and project engine/data/safety constraints.
-3. Current repository human-facing GDD, approved decisions, handoffs, planning/data/code/scenes/resources/tests, and actual runtime evidence.
-4. Current adopted Base contract and routing needed for the task.
-5. External references, past conversations, and inference.
+- 플레이어-facing 변경은 [GDD 재미·표현 검증 기준](docs/design/PROJECT_GDD.md#재미표현-검증-기준)에 같은 requirement ID로 경험 가설 → 입력/규칙/표현 → 실제 consumer → 검증·반증·교정을 연결한다. 작은 변경은 기존 기록 한 단락이면 충분하다.
+- 자동 검사와 실제 실행·화면, Human 재미/편안함, 최종 자산 승인, 병합·출시는 별개다. 미실행은 `NOT_RUN`이다. 사람 검증은 사용자 선언 때만 진행하며 그 전에도 승인된 구현은 계속한다.
+- 이미지 제작 전 현재 시각 원본·consumer·규격·상태군·재사용 자산을 확인한다. 필요한 후보는 이미지 도구로 제작하되 후보 생성 ≠ 사용자 lock ≠ 자산 등록 ≠ runtime 검증이다. 일관된 후보 한 개를 만든 뒤 사용자의 `LOCK / REVISE / REJECT`를 받고, 다른 자산군으로 자동 연쇄 제작하지 않는다.
+- 배경 제거할 독립 요소는 대상 색과 겹치지 않는 단색 크로마키 원본 → 배경 제거 → RGBA로 연결한다. 원본·프롬프트·설정·해시를 보존하고 alpha/halo/key spill/색 손실/pivot·합성을 검사한다. 하늘·바다 등 불투명 배경은 독립 레이어로 유지한다. 실제 필요 없는 이미지나 기존 승인 원본의 일괄 재제작은 하지 않는다.
+- Godot 실행 전 `project.godot`·경로·편집기/프로세스 소유권을 확인한다. 문서만 변경했으면 게임 실행을 했다고 보고하지 않는다. source 변경은 영향 검사와 repository 필수 검사를 수행한다.
+- import는 `godot --headless --path . --import`, smoke는 `godot --headless --path . --quit` 또는 해당 scene으로 한다. `ViewportTexture` 검사는 display renderer에서 실행한다. headless에서 명시적 capture skip은 화면 PASS가 아니다.
+- 기존 CLI/test 경로를 유지한다. Hera를 선택하면 live QA/read-only 관측과 source-delta 확인에 제한하며 진단용 상태 변경은 restart/복원 후 정상 경로를 검증한다. 새 도구 설치·provider 전환은 자동 채택하지 않는다.
 
-### DOMAIN_SPLIT_CANON
+## 5. 보존·정리·동기화
 
-- `REPOSITORY_HUMAN_FACING_CANON`: 사람이 읽고 비교·수정하는 Master GDD, Concept, Experience Bible, approved decision, visual lock, asset/provenance, Flow/Storyboard를 책임진다.
-- `REPOSITORY_STRUCTURED_CANON`: Markdown·JSON·게임 데이터·GDScript·Scene·Resource·config·tests를 책임진다.
-- `REPOSITORY_RUNTIME_TRUTH`: 실제 Godot 실행·test·log·screenshot/video evidence를 책임진다.
-- `NOTION_LEGACY_DISCOVERY_ONLY`: 2026-08-28의 마지막 user-authorized migration receipt 뒤 이전 Notion page/database/attachment는 historical archive일 뿐, current truth, approval owner, read/write target, or completion gate가 아니다. 새 Notion read/write/sync를 시작하지 않는다. 예외적으로 사용자가 새 일회성 archive migration을 명시 요청한 경우에만 read-only로 대조하고 repository receipt로 닫는다.
-- Google Sheets가 과거 자료로 남아 있더라도 unique 미이관 자료용 `MIGRATION_ONLY_UNTIL_REMOVAL` compatibility source일 뿐 신규 기본 작업공간이나 runtime 증거가 아니다.
+- 사용자 변경·다른 작업 폴더·미병합 브랜치를 보호한다. 열린 PR은 기본 read-only다. 이번처럼 번호와 허용 동작이 승인된 기존 PR 또는 latest main에서 만든 동일 작업 PR만 정확한 HEAD의 검사·독립 검토·미해결 thread 0·저장소 규칙 확인 후 정상 병합한다. force/direct-main/admin 우회는 금지한다.
+- 수명이 끝난 파일은 사용처·출처·복구 가능성을 확인한 범위만 프로젝트 밖 날짜별 `MyLittleBoat_삭제대기_YYYYMMDD`로 모아 링크를 준다. 원래 경로·사유·수량/용량·전후 해시를 남기며 사용자가 직접 삭제한다. 이름/나이만으로 폐기하지 않는다.
+- 테스트 자신이 만든 정확한 격리 경로의 teardown은 허용한다. production save를 패턴으로 지우지 않는다. Godot importer에 보이는 임시 PNG/PDF preview는 프로젝트 밖에 둔다. cache 정리를 원본 삭제의 대체로 삼지 않는다.
+- 한 논리 변경으로 commit하고 fetch·정상 PR·병합 후 main을 확인한다. 브랜치가 다르면 같은 내용이라고 보고하지 않는다. unrelated branch를 통째로 흡수하지 않는다.
 
-Repository 문서 승인이나 정적 이미지가 runtime 구현 성공을 의미하지 않는다. 사람용 결정이 구조화 데이터나 구현 의미를 바꾸면 repository owner에 동기화한 뒤 구현·완료를 주장한다.
+## 6. 기록과 완료보고
 
-현재 `open/draft/ready` PR은 작업 시작 시 실제 GitHub 상태를 조회한다. 다른 workstream의 PR을 명시적 권한 없이 수정·흡수·종료·병합하지 않는다.
-
-## Core Game Direction
-
-Normal presentation:
-- Visible player avatar + pet + boat + sea in a calm 3/4 diorama.
-- `Appreciation Camera` shifts focus toward the sea/horizon and hides most nonessential UI.
-- Camera mode changes must not alter voyage duration, rewards, or the persistent soundscape.
-
-Core controls:
-- Take Photo
-- Appreciation Mode / Appreciation Camera
-- Speed Control
-
-Core loop:
-- Launch directly into the normal 3/4 boat diorama. The device's local clock automatically chooses dawn, bright, sunset, or night; there is no startup selector and no saved atmosphere preference.
-- Rest with the visible avatar and pet. Simply staying is complete play.
-- Let low-density scenery pass naturally as active foreground time progresses. It is visual context, not a reward track or a task.
-- Optionally use low-pressure interactions, photography, decoration, fishing, ambient discoveries, and delayed bottle letters as each slice is implemented.
-- Open `꾸미기` only when desired to change cosmetic player appearance, companion species, or boat decoration.
-- Drift for about 5 minutes, leave a personal voyage record if one is created, or continue resting.
-- Do not present today’s mood, identity, pet, decor, light, or atmosphere as a requirement before the first boat view. Device-clock time affects visuals only and must not change rewards, progress, or saves.
-
-Supporting direction:
-- Boat decoration is self-expression/memory, not stats or optimization.
-- Object/pet interaction is optional and must not create chores or repeat-farming pressure.
-- `FriendBottle` and `DriftBottle` are delayed correspondence, not instant messaging.
-- Stranger bottle communication has no public directory, presence, typing indicator, read receipt, public feed, or popularity system.
-
-Rewards:
-- Companion affection.
-- Scenery collection.
-- Album-style collection.
-- Personal boat memories/decor as implemented.
-
-## Autonomous Quality Overlay (2026-08-29)
-
-```text
-CURRENT_RESEARCH_AND_IMPLEMENTATION_FEASIBILITY_REQUIRED
-MINIMUM_MATERIALLY_DISTINCT_ALTERNATIVES: 3
-ACTUAL_PROJECT_BOUNDARY_MAPPING_REQUIRED
-RESEARCH_SUMMARY_IS_NOT_IMPLEMENTATION_PROOF
-LONG_TERM_EFFICIENCY_AND_COMPLETENESS_FIRST
-QUALITY_OVER_RESPONSE_SPEED
-TOTAL_LIFECYCLE_COST
-NO_UNSUPPORTED_OVERENGINEERING
-MINIMUM_NECESSARY_COMPLEXITY
-LOW_INTERVENTION_AUTOMATION_AND_LEARNING_LOOP
-NEED_DRIVEN_GENERATE_THEN_LOCK
-CLAIM_ONLY_ADVERSARIAL_REVIEW_INVALID
-MINIMUM_FULL_LOOPS_BEFORE_CLEAN_EXIT: 5
-```
-
-### Research and implementation feasibility
-
-For every material design, visual, data, Scene/Resource, backend-safety, UI/UX, production-pipeline, or implementation-structure decision:
-
-1. Re-read the exact repository owner and actual implementation/consumer.
-2. Search the current project and adopted Base for an existing solution before building another one.
-3. Read fresh official or primary-source documentation and directly relevant professional success/failure cases when the answer may affect feasibility, platform behavior, moderation, rights, safety, cost, or maintenance.
-4. Compare at least three materially distinct viable alternatives using `ADOPT / ADAPT / TEST / REJECT`.
-5. Map the selected option to actual scenes, nodes, resources, scripts, data/save migration, UI/input states, asset dependencies, platform/performance/safety risks, test seams, rollback, and a bounded Codex package.
-6. Classify the result as `FEASIBLE | PARTIAL | BLOCKED_UNVERIFIED`.
-
-A link list, design note, static mockup, or passing unit test is not implementation proof. Code, Scene, runtime, moderation operations, Human UX, and release evidence remain separate ceilings.
-
-### Long-horizon quality and automation
-
-Prefer the minimum necessary complexity that solves the root cause and lowers total lifecycle cost. Do not choose a quick patch merely because it is faster when it leaves recurring manual work, authority drift, inaccessible recovery, or avoidable technical debt. Also do not create speculative frameworks, abstractions, services, paid dependencies, or future-only data models without a current consumer, test, owner, rollback, and measurable benefit.
-
-Within the already approved scope, continue safe reversible work without routine reapproval:
-
-```text
-fresh-read
-→ research / compare
-→ prepare candidate or bounded implementation package
-→ execute safe work
-→ test / readback
-→ adversarial review
-→ correct validated findings
-→ regression check
-→ record incident / solution / lesson
-→ project automation or Base promotion candidate
-→ recalculate remaining work
-```
-
-Escalate only core player meaning, final visual lock, significant scope/cost, destructive migration/deletion/deployment, permissions/security, or direct canon conflict. Fail closed on unsafe or unverified inputs.
-
-### Need-driven image candidate workflow
-
-When a concrete runtime consumer, planned player-facing surface, product-distribution need, or current Blueprint planning-board purpose is established, do not stop for a routine pre-generation approval question. First read the current visual canon, approved images and mockups, actual consumer, required state family, dimensions, rights/provenance boundary, and reusable approved assets. Then generate exactly one consistent candidate with the host image model and stop for the user to decide `LOCK / REVISE / REJECT`.
-
-```text
-GENERATED_CANDIDATE != USER_LOCKED != PROJECT_ASSET_APPROVED != IMPLEMENTED != RUNTIME_VERIFIED
-```
-
-A coverage gap alone is not generation authority. Do not automatically chain to another character, screen, variant, or asset family. `LOCK` is still required before canon registration or production promotion, and Blueprint final approval is still required before a new implementation package.
-
-### Evidence-backed adversarial review
-
-Every material retained change requires at least five actual full-scope loops before clean exit. Each loop must re-read the full approved scope and record the exact head/state, actual reads, commands/checks, validated findings, applied correction or explicit blocker, regression/readback evidence, untouched-consumer recheck, better-alternative search, and long-term-fit result.
-
-`검토 완료`, `5회 확인`, or `문제 없음` without those receipts is invalid. A validated finding must be corrected and reverified or remain as an explicit blocker. After five loops, continue until no new valid `MUST_FIX`, regression, authority/consumer drift, acceptance blocker, or stronger in-scope alternative remains.
-
-## Work Style
-
-- Inspect the actual files before editing. Use `rg` or Godot project structure instead of relying on memory.
-- State assumptions when the request is ambiguous. Ask before making risky product or architecture decisions.
-- Prefer the minimum necessary change that fixes the root cause and improves long-term maintainability, verification, and recovery.
-- Match the existing scene, node, script, and naming style.
-- Avoid speculative abstractions, large rewrites, or broad cleanup.
-- Do not revert, overwrite, or reformat unrelated user changes.
-- If the worktree is dirty, understand whether the dirty files are related before editing them.
-- Read real error messages and logs before applying a fix.
-- For every material design, visual, or implementation decision, re-read the relevant current repository owner and fresh official primary-source documentation when it can affect feasibility, platform behavior, safety, or cost.
-- Run the evidence-backed adversarial lifecycle above after a material candidate. Correct only validated findings, then repeat the full scope until verified clean exit.
-
-### Temporary Artifact Hygiene
-
-- Create temporary files only in an ignored, task-scoped location and remove them as soon as their consumer or verification use is complete.
-- A Git-ignored folder is still visible to Godot's importer. Keep temporary rendered rasters, PDF page previews, and build probes outside the project root. Use a narrowly scoped `.gdignore` only when a project-internal temporary folder is unavoidable and has no Godot consumer.
-- Every test that writes an isolated `user://test_*` file or directory must remove that exact path during teardown. After a suite, audit and remove only any remaining `user://test_*` artifacts; never delete production saves by pattern.
-- Before removing a worktree or local temporary branch, verify its exact path, confirm it is clean and merged into the current target, and preserve every dirty or unmerged worktree for its owner.
-- Treat `.godot/imported`, `.godot/shader_cache`, and `*.import` as regenerable local cache. They may be removed after machine verification, but never in place of source assets, approved candidates, canonical assets, runtime evidence, or current project documentation.
-- After clearing `.godot/imported`, run `Godot --headless --path . --import` before resource or scene verification. `--editor --quit` exits before import completion and is not a substitute.
-- At task closeout, read back temporary artifact and worktree state. Record what was removed and keep the remaining source/provenance and verification boundaries explicit.
-
-## Godot Rules
-
-- Use Godot 4.7 stable.
-- Use GDScript unless explicitly requested otherwise.
-- Keep scene and node structures simple.
-- Use clear node names such as `TakePhotoButton`, `AppreciationButton`, and `AlbumView`.
-- Keep UI mobile-friendly first, with PC mouse input where it makes sense.
-- Keep core rest/voyage/decor/pet systems local-first; isolate approved bottle-social networking behind dedicated interfaces.
-- Do not add combat, stamina, HP, enemies, damage, death, failure conditions, or ranking systems.
-- Do not add realtime/global/public social features outside the approved delayed bottle design.
-- Do not add paid assets or dependency-heavy plugins without explicit approval.
-- Update `README.md` when setup, controls, scenes, or test steps change.
-
-## File Header Comments
-
-For new source files, add a one-line Korean comment at the top explaining the file's role.
-
-GDScript example:
-
-```gdscript
-# 항해 화면의 기본 상호작용을 관리한다.
-extends Control
-```
-
-Skip header comments for generated files, Godot scene files, `.import` files, lockfiles, and simple README placeholders.
-
-## Planning
-
-For small tasks, work directly after reading the relevant files.
-
-For larger tasks that touch multiple scenes, scripts, or gameplay systems, briefly state:
-- What will change.
-- Which files or scenes are likely involved.
-- How the change will be verified.
-
-Create `checklist.md` or `context-notes.md` only for long-running, risky, or multi-session work. Do not create extra process files for small, self-contained changes.
-
-## Verification
-
-If code, scenes, or project settings changed, run the smallest useful Godot check before marking the task complete.
-
-Preferred checks:
-
-```powershell
-godot --headless --path . --quit
-godot --headless --path . --scene "res://scenes/main_menu.tscn" --quit-after 1
-```
-
-Known Windows local fallback in this workspace:
-
-```powershell
-& "C:\Users\user\Downloads\Godot_v4.7.2-stable_win64.exe\Godot_v4.7.2-stable_win64_console.exe" --headless --path . --quit
-```
-
-For UI-only or documentation-only changes, explain what was inspected instead of claiming gameplay was tested.
-
-Tests that read `ViewportTexture` must run on a display renderer. A headless contract may explicitly skip only that capture assertion; it must not attempt the unsupported read and report an engine error.
-
-Final replies should include:
-- What changed.
-- What was verified.
-- Any remaining risk or manual Godot check the user should perform.
-
-## Commit Guidance
-
-Commit only when one logical change is complete and the repository workflow expects it.
-
-Good commit examples:
-- `Improve AGENTS Godot guidance`
-- `Add mood selection UI`
-- `Fix album back button flow`
-
-Do not mix unrelated gameplay, UI, documentation, and cleanup changes in one commit unless the user explicitly asks for a broad conversion.
-
-## Korean Output
-
-When replying to a Korean user, answer in Korean.
-
-Write new human-facing project documentation in Korean. Keep Godot paths, APIs, status codes, and source identifiers in their exact original spelling where that prevents ambiguity.
-
-Avoid ending Korean prose lines with a colon. Prefer a period, question mark, or exclamation mark. Colons are fine in code, paths, key-value examples, timestamps, and Markdown labels.
-
-## Suggested Scene Structure
-
-- `scenes/main_menu.tscn`
-- `scenes/game.tscn`
-- `scenes/album.tscn`
-
-## Suggested Script Areas
-
-- `scripts/core/`
-- `scripts/ui/`
-- `scripts/voyage/`
-- `scripts/avatar/`
-- `scripts/companion/`
-- `scripts/album/`
-- future approved social code should live behind a dedicated social/bottle boundary, not inside voyage state.
+- 진행 상태·계획·판단·검증·다음 작업은 기존 handoff에 날짜별로 누적한다. 새 일지/버전 파일을 매번 만들지 않는다.
+- 월간 AI 작업일지는 기존 같은 PDF에 누적한다. 9월 위치는 `C:/Users/user/Documents/증빙서류/9월 증빙서류`다. 교체 전 원본·해시를 복구 가능하게 보관하고 source receipt를 갱신한다. 제출본 정정은 별도 정정 이력을 남긴다. 실제 작업일·사후 작성일·캡처일·발행일과 검증 상태를 구분한다. 계정/모델/결제/협약 사실을 추정하거나 비밀·원본 대화 전체를 자동 수록/제출하지 않는다.
+- 새 코드에는 역할을 설명하는 한 줄 한국어 주석을 둔다. 생성물·Scene·lockfile에는 불필요한 주석을 넣지 않는다. 바뀐 실행/설정/조작은 README에 연결한다.
+- 완료보고는 결과 → 이유/작동 방식 → 직접 확인 방법 → 실제 PASS/FAIL/NOT_RUN → 남은 작업 순이다. 필요하면 현재 상태/권장 조치/이유/기대효과 표를 덧붙인다. 작업 수·검사 횟수를 게임 완성률로 보고하지 않는다.
