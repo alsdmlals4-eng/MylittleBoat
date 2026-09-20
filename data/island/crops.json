@@ -1,0 +1,4 @@
+{"schema_version":1,"crops":{
+  "radish":{"growth_seconds":180.0,"care_credit_ratio":0.20,"young_threshold":0.25,"visual_id":"IV05_RADISH"},
+  "tomato":{"growth_seconds":480.0,"care_credit_ratio":0.20,"young_threshold":0.25,"visual_id":"IV05_TOMATO"}
+}}
