@@ -311,7 +311,7 @@
     }
   },
   "base_lightening_and_fun_2026_09_20": {
-    "status": "CANDIDATE_MACHINE_VALIDATED_INDEPENDENT_REVIEW_AND_MERGE_PENDING",
+    "status": "IMPLEMENTED_MACHINE_VALIDATED_REVIEWED_DELIVERY_STATUS_IN_PR_108",
     "base_main_observed": "23ecad5a3084f97c4e5d1e39a9a6d70d1eeb37ef",
     "recovery_main": "01427e864bcc791a0e16f6c9185f25299a8c4808",
     "owner": "docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md",
@@ -348,10 +348,21 @@
     "verification": {
       "python": "9/9 PASS",
       "godot_recovery_main_ci": "35477256521 SUCCESS",
-      "policy_ci": "NOT_RUN",
+      "policy_ci": "CANDIDATE_C0C44AA_PROJECT_POLICY_35477642985_AND_GODOT_35477642919_PASS_FINAL_HEAD_RECHECK_REQUIRED",
       "human_fun": "NOT_RUN",
       "island_runtime": "NOT_IMPLEMENTED"
     },
-    "rollback": "Revert new operations PR separately; retain merged107 recovery and untouched continuation branch."
+    "rollback": "Revert new operations PR separately; retain merged107 recovery and untouched continuation branch.",
+    "delivery_record": "https://github.com/alsdmlals4-eng/MylittleBoat/pull/108",
+    "review": {
+      "full_scope_budget_used": 2,
+      "independent_candidate": "c0c44aab30a4633aa17ba253ac389e21084576c7",
+      "findings_closed": [
+        "GDD whole-session foreground pause claim narrowed to actual together-time and scenery scheduling consumers",
+        "One-candidate and LOCK/REVISE/REJECT boundary restored"
+      ],
+      "after_review": "Targeted correction and 9/9 Python regression; no new full review",
+      "human_fun": "NOT_RUN"
+    }
   }
 }

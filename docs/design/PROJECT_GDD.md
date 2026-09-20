@@ -388,7 +388,7 @@
 | cosmetic 꾸미기 | `IMPLEMENTED / RUNTIME_CAPTURE_VERIFIED` | in-voyage selector와 독립 preview가 local cosmetic state만 바꿈 |
 | 함께 보낸 시간 | `IMPLEMENTED / RUNTIME_CAPTURE_VERIFIED` | active foreground delta만 누적하고 Album에만 표시. Human readability는 별도 검증 전 |
 | Ambient Discovery | `IMPLEMENTED / RUNTIME_CAPTURE_VERIFIED` | active foreground의 자동 풍경만 `user://ambient_memory_v1.cfg`에 저장·복원. no-first-guarantee cadence는 구현됐고 Human five-minute observation은 별도 |
-| foreground session | `IMPLEMENTED_AND_TESTED` | 앱이 foreground일 때만 항해 timer·낚시 대기·풍경 drift·자동 알림이 진행되며 background 경과는 기록을 만들지 않음 |
+| foreground session | `PARTIAL_IMPLEMENTED` | 함께한 시간 누적과 자연 명소 기회 예약만 foreground로 제한한다. 이 복구 main의 항해 timer·낚시·기본 모션 전체 pause는 구현/검증되지 않았다. |
 | Visual direction | `APPROVED_DIRECTION` | production asset batch와 runtime alignment는 별도 |
 | Human usability / Player Experience | `NOT_RUN` | 실제 30초·5분 기기 경험 검증 전 |
 
@@ -409,7 +409,7 @@ main scene을 direct boat route로 바꾸고 optional customization을 같은 �
 1. `project.godot`은 `game.tscn`을 시작 route로 사용하며, 첫 화면은 메뉴를 닫은 normal boat diorama입니다.
 2. 새벽 `05:00–08:59`, 밝음 `09:00–16:59`, 해질녘 `17:00–20:59`, 밤 `21:00–04:59`가 기기의 현지 시각으로 자동 적용됩니다. selector와 saved atmosphere는 없습니다.
 3. mood data와 시작 선택 UI를 retire하고 항해 기록을 중립 문구로 바꿨습니다.
-4. foreground 전용 session clock이 항해 timer·낚시 대기·풍경 drift·자동 알림을 함께 멈추며, drifting scenery director는 여섯 승인 자연 명소 중 시간대에 맞는 motif를 낮은 밀도로 표시하고 일부를 local ambient memory로 자동 저장합니다.
+4. foreground 여부는 함께한 시간 누적과 자연 명소 director의 기회 예약에 적용됩니다. director는 여섯 승인 자연 명소 중 시간대에 맞는 motif를 낮은 밀도로 표시하고 일부를 local ambient memory로 자동 저장합니다. 이 복구 main은 항해 timer·낚시 대기·기본 모션 전체를 foreground에 묶어 멈추는 구현/검증을 갖추지 않았습니다. 구형 continuation branch의 후속 교정과 혼동하지 않습니다.
 5. 외형·동반자·장식은 optional `메뉴 → 꾸미기`에만 있습니다.
 6. 540 x 960 GPU capture에서 boat-water contact, 시간대, 원거리 작은 섬을 확인했습니다.
 

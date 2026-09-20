@@ -33,7 +33,7 @@
 
 - 플레이어-facing 변경은 [GDD 재미·표현 검증 기준](docs/design/PROJECT_GDD.md#재미표현-검증-기준)에 같은 requirement ID로 경험 가설 → 입력/규칙/표현 → 실제 consumer → 검증·반증·교정을 연결한다. 작은 변경은 기존 기록 한 단락이면 충분하다.
 - 자동 검사와 실제 실행·화면, Human 재미/편안함, 최종 자산 승인, 병합·출시는 별개다. 미실행은 `NOT_RUN`이다. 사람 검증은 사용자 선언 때만 진행하며 그 전에도 승인된 구현은 계속한다.
-- 이미지 제작 전 현재 시각 원본·consumer·규격·상태군·재사용 자산을 확인한다. 필요한 후보는 이미지 도구로 제작하되 후보 생성 ≠ 사용자 lock ≠ 자산 등록 ≠ runtime 검증이다.
+- 이미지 제작 전 현재 시각 원본·consumer·규격·상태군·재사용 자산을 확인한다. 필요한 후보는 이미지 도구로 제작하되 후보 생성 ≠ 사용자 lock ≠ 자산 등록 ≠ runtime 검증이다. 일관된 후보 한 개를 만든 뒤 사용자의 `LOCK / REVISE / REJECT`를 받고, 다른 자산군으로 자동 연쇄 제작하지 않는다.
 - 배경 제거할 독립 요소는 대상 색과 겹치지 않는 단색 크로마키 원본 → 배경 제거 → RGBA로 연결한다. 원본·프롬프트·설정·해시를 보존하고 alpha/halo/key spill/색 손실/pivot·합성을 검사한다. 하늘·바다 등 불투명 배경은 독립 레이어로 유지한다. 실제 필요 없는 이미지나 기존 승인 원본의 일괄 재제작은 하지 않는다.
 - Godot 실행 전 `project.godot`·경로·편집기/프로세스 소유권을 확인한다. 문서만 변경했으면 게임 실행을 했다고 보고하지 않는다. source 변경은 영향 검사와 repository 필수 검사를 수행한다.
 - import는 `godot --headless --path . --import`, smoke는 `godot --headless --path . --quit` 또는 해당 scene으로 한다. `ViewportTexture` 검사는 display renderer에서 실행한다. headless에서 명시적 capture skip은 화면 PASS가 아니다.
