@@ -1,19 +1,23 @@
 {
   "schema_version": 1,
-  "base_source_commit": "8553678f70e22f193a2336b591f677dcfa5a8965",
+  "base_source_commit": "210ec78292fa12ed7563ba743b322dd36103ae4a",
   "modules": {
-    "RM-TOOL-001": {"state": "planned"},
-    "RM-SYS-001": {"state": "not_applicable"},
-    "RM-SYS-003": {"state": "not_applicable"},
+    "RM-TOOL-001": {
+      "state": "planned"
+    },
+    "RM-SYS-001": {
+      "state": "not_applicable"
+    },
+    "RM-SYS-003": {
+      "state": "not_applicable"
+    },
     "RM-VIS-001": {
-      "state": "enabled",
-      "source": "templates/reuse-modules/godot/semantic_ui_skin_kit.gd",
-      "destination": "scripts/base_reuse/semantic_ui_skin_kit.gd"
+      "state": "deferred",
+      "reason": "실제 destination·adoption lock·consumer·verification이 없어 enabled 주장을 교정한다. 새 모듈 설치는 하지 않는다."
     },
     "RM-VIS-002": {
-      "state": "enabled",
-      "source": "templates/reuse-modules/godot/gameplay_symbol_atlas.gd",
-      "destination": "scripts/base_reuse/gameplay_symbol_atlas.gd"
+      "state": "deferred",
+      "reason": "실제 destination·adoption lock·consumer·verification이 없어 enabled 주장을 교정한다. 새 모듈 설치는 하지 않는다."
     }
   }
 }

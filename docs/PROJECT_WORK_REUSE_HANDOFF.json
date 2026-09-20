@@ -309,5 +309,49 @@
       "base_untracked_worktree_directories": "PRESERVED_UNTOUCHED",
       "remaining_known_risk": "Godot --import shutdown warnings require a separately owned plugin/engine baseline diagnosis before any warning-clean gate is claimed."
     }
+  },
+  "base_lightening_and_fun_2026_09_20": {
+    "status": "CANDIDATE_MACHINE_VALIDATED_INDEPENDENT_REVIEW_AND_MERGE_PENDING",
+    "base_main_observed": "23ecad5a3084f97c4e5d1e39a9a6d70d1eeb37ef",
+    "recovery_main": "01427e864bcc791a0e16f6c9185f25299a8c4808",
+    "owner": "docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md",
+    "adapter": "docs/operations/MY_LITTLE_BOAT_BASE_ADAPTER.json",
+    "benchmark_preflight": {
+      "state": "REUSED_EVIDENCE_PLUS_FRESH_BASE_DIFF",
+      "sources": [
+        "project current AGENTS/GDD/handoff/actual consumer/main/PR107/PR19",
+        "Base current main AGENTS/START_HERE/GPT_CODEX_WORKFLOW_POLICY",
+        "Base PR883 and PR885 selected paths in adapter"
+      ],
+      "observed_pattern": "Always-on bootstrap + conditional details; shared two reviews; experience to implementation and separate evidence.",
+      "project_fit": "Preserve local owners, island direction, legacy assets/saves/engine. No new skill or provider."
+    },
+    "context_hygiene": {
+      "active": [
+        "AGENTS.md",
+        "docs/design/PROJECT_GDD.md",
+        "docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md"
+      ],
+      "compatibility": [
+        "docs/design/PROJECT_AI_PRODUCTION_SPEC.md"
+      ],
+      "protected": [
+        "original continuation checkout",
+        "PR19",
+        "Base checkout and other worktrees",
+        "approved assets and save IDs"
+      ],
+      "deletion": "None. Task temporary files only in external user-deletion queue."
+    },
+    "learning": "Main corruption requires semantic owner repair after source repair; missing real module destinations must not be enabled; CLI capability is not live MCP or game asset readiness.",
+    "base_promotion": "NO_NEW_REUSE_LEARNING_ALREADY_COVERED_BY_BASE",
+    "verification": {
+      "python": "9/9 PASS",
+      "godot_recovery_main_ci": "35477256521 SUCCESS",
+      "policy_ci": "NOT_RUN",
+      "human_fun": "NOT_RUN",
+      "island_runtime": "NOT_IMPLEMENTED"
+    },
+    "rollback": "Revert new operations PR separately; retain merged107 recovery and untouched continuation branch."
   }
 }

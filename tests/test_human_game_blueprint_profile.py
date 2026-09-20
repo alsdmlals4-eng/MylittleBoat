@@ -82,7 +82,7 @@ class HumanGameBlueprintProfileTests(unittest.TestCase):
         self.assertRegex(first_contract, r"\| 첫 30분 \|.*선택적.*\|.*NOT_RUN.*\|")
         self.assertNotIn("required milestone", first_contract.lower())
 
-    def test_evidence_ceiling_keeps_relationship_and_device_unknown(self) -> None:
+    def test_evidence_ceiling_keeps_implemented_relationship_and_unverified_human_separate(self) -> None:
         self.assertIn("### Blueprint evidence ceiling", self.gdd)
         evidence = self.gdd.split("### Blueprint evidence ceiling", 1)[1].split(
             "## 8.", 1
@@ -92,7 +92,7 @@ class HumanGameBlueprintProfileTests(unittest.TestCase):
             "Real-time atmosphere | `IMPLEMENTED_AND_TESTED`; GPU capture exists",
             "Foreground scenery | `IMPLEMENTED_AND_GPU_CAPTURED`",
             "Ambient memory | `IMPLEMENTED_AND_TESTED`",
-            "Relationship/shared-time expression | `CONFIRMED_NOT_IMPLEMENTED`",
+            "Relationship/shared-time expression | `IMPLEMENTED / RUNTIME_CAPTURE_VERIFIED`",
             "Device first 30 seconds / 5 minutes | `NOT_RUN`",
             "Touch / audio / notification intensity | `NOT_RUN`",
         )

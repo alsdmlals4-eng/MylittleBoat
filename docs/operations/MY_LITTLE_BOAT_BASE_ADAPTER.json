@@ -1,0 +1,209 @@
+{
+  "schema_version": 2,
+  "artifact_role": "MY_LITTLE_BOAT_PROJECT_BASE_ADAPTER",
+  "status": "ACTIVE_PROJECT_LOCAL_ADAPTER",
+  "project": {
+    "id": "MY_LITTLE_BOAT",
+    "repository": "alsdmlals4-eng/MylittleBoat",
+    "engine": "Godot 4.7 stable",
+    "product_boundary": "REST_FIRST_LOCAL_SMALL_ISLAND_FARM_SEA_VIEW"
+  },
+  "base_release": {
+    "repository": "alsdmlals4-eng/Base",
+    "version": "9.4.4",
+    "release_commit": "210ec78292fa12ed7563ba743b322dd36103ae4a",
+    "release_evidence_commit": "bb61e68dc3028421b60c11b87ba2abd297ee6f78",
+    "finalization_commit": "5adc196c0185951f50e49ab5e51586eff8d60886",
+    "registry_sha256": "08f882d0c77339e8f7ff187c35b79501e0a2958ab1ff1c7aaa1c0ef8dbee45d6",
+    "base_main_observed": "19355b7ef065a21d0f2b685c7d9be64a4a3970f8",
+    "observed_at": "2026-09-01",
+    "identity_status": "PRESERVED_HISTORICAL_V9_4_4_PAYLOAD_LOCK_NOT_CURRENT_OPERATING_POLICY"
+  },
+  "operating_policy_adoption": {
+    "observed_at": "2026-09-20",
+    "repository": "alsdmlals4-eng/Base",
+    "source_commit": "23ecad5a3084f97c4e5d1e39a9a6d70d1eeb37ef",
+    "base_main_observed": "23ecad5a3084f97c4e5d1e39a9a6d70d1eeb37ef",
+    "prs": [
+      883,
+      885
+    ],
+    "scope": "SELECTIVE_OPERATING_POLICY_AND_FUN_VERIFICATION_NOT_WHOLESALE_BASE_UPGRADE",
+    "selected_sources": [
+      {
+        "path": "AGENTS.md",
+        "url": "https://github.com/alsdmlals4-eng/Base/blob/23ecad5a3084f97c4e5d1e39a9a6d70d1eeb37ef/AGENTS.md"
+      },
+      {
+        "path": "START_HERE.md",
+        "url": "https://github.com/alsdmlals4-eng/Base/blob/23ecad5a3084f97c4e5d1e39a9a6d70d1eeb37ef/START_HERE.md"
+      },
+      {
+        "path": "docs/GPT_CODEX_WORKFLOW_POLICY.md",
+        "url": "https://github.com/alsdmlals4-eng/Base/blob/23ecad5a3084f97c4e5d1e39a9a6d70d1eeb37ef/docs/GPT_CODEX_WORKFLOW_POLICY.md"
+      },
+      {
+        "path": "skills/managing-project-intake-and-work-contract/SKILL.md",
+        "url": "https://github.com/alsdmlals4-eng/Base/blob/23ecad5a3084f97c4e5d1e39a9a6d70d1eeb37ef/skills/managing-project-intake-and-work-contract/SKILL.md"
+      },
+      {
+        "path": "skills/analyzing-and-refining-game-concepts/references/concept-evidence-and-gates.md",
+        "url": "https://github.com/alsdmlals4-eng/Base/blob/23ecad5a3084f97c4e5d1e39a9a6d70d1eeb37ef/skills/analyzing-and-refining-game-concepts/references/concept-evidence-and-gates.md"
+      },
+      {
+        "path": "docs/knowledge/game-development/EXPERIENCE_TO_PRESENTATION_GUIDE.md",
+        "url": "https://github.com/alsdmlals4-eng/Base/blob/23ecad5a3084f97c4e5d1e39a9a6d70d1eeb37ef/docs/knowledge/game-development/EXPERIENCE_TO_PRESENTATION_GUIDE.md"
+      },
+      {
+        "path": "skills/auditing-and-refining-ui-art/references/project-adapter-contract.md",
+        "url": "https://github.com/alsdmlals4-eng/Base/blob/23ecad5a3084f97c4e5d1e39a9a6d70d1eeb37ef/skills/auditing-and-refining-ui-art/references/project-adapter-contract.md"
+      }
+    ],
+    "refresh_rule": "다음 작업에서는 최신 main과 drift를 다시 확인한다. 이번 SHA는 채택 출처이지 영구 최신 기준이 아니며 release lock 전체를 조용히 교체하지 않는다."
+  },
+  "authority_order": [
+    "latest_user_instruction",
+    "AGENTS.md_and_project_safety_constraints",
+    "project_GDD_decisions_handoffs_actual_code_assets_tests_runtime_evidence",
+    "this_project_adapter_and_selected_Base_owners",
+    "Base_current_main_for_drift_and_reuse_only",
+    "external_references_memory_and_historical_material"
+  ],
+  "project_owner_paths": [
+    "AGENTS.md",
+    "README.md",
+    "docs/DOCUMENTATION_MAP.md",
+    "docs/design/PROJECT_GDD.md",
+    "docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md",
+    "docs/visual/CURRENT_SCREEN_SURFACE_INVENTORY_AND_VISUAL_ASSET_COVERAGE.md",
+    "docs/PROJECT_WORK_REUSE_HANDOFF.json",
+    "docs/base-reuse-adoption.json",
+    "project.godot",
+    "tests/test_base_adapter_contract.py"
+  ],
+  "adopted_base_contracts": {
+    "repository_primary_canon": "ADOPT",
+    "reuse_first_preflight": "ADOPT",
+    "important_new_decisions_three_alternatives": "ADAPT",
+    "shared_two_full_reviews": "ADOPT",
+    "same_scope_approval_and_plan_reuse": "ADOPT",
+    "unified_capability_based_execution": "ADOPT",
+    "source_dependency_scoped_blocker": "ADOPT",
+    "fun_verification_lifecycle": "ADAPT",
+    "experience_to_presentation": "ADAPT",
+    "evidence_ceiling_separation": "ADOPT",
+    "open_pr_read_only_by_default": "ADOPT",
+    "exact_release_payload_evidence_finalization_identity": "PRESERVE_HISTORICAL_LOCK"
+  },
+  "review_contract": {
+    "full_scope_min": 2,
+    "full_scope_max": 2,
+    "budget_scope": "SAME_APPROVED_CONTRACT_CANDIDATE_LINEAGE_ACROSS_STAGES_AND_PLUGINS",
+    "after_budget": "TARGETED_FINDING_CORRECTION_AND_REGRESSION_ONLY",
+    "merge_gate": "EXACT_HEAD_REQUIRED_CHECKS_INDEPENDENT_REVIEW_ZERO_UNRESOLVED_THREADS_RULESETS_POSTMERGE_READBACK",
+    "unresolved_blocker": "BLOCKED_UNVERIFIED_NOT_PASS"
+  },
+  "conditional_routes": [
+    {
+      "when": "current-authority / continuation",
+      "project_owner": "docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md",
+      "selected_reference": "docs/GPT_CODEX_WORKFLOW_POLICY.md",
+      "action": "기존 승인·계획·기록을 재사용한다. 새 대형 작업만 필요한 plan을 보강한다."
+    },
+    {
+      "when": "Base operating structure",
+      "project_owner": "docs/operations/MY_LITTLE_BOAT_BASE_ADAPTER.json",
+      "selected_reference": "skills/managing-project-intake-and-work-contract/SKILL.md",
+      "action": "프로젝트 등가 owner/검사를 사용한다. Base 전체 scaffold나 다른 adapter schema를 설치하지 않는다."
+    },
+    {
+      "when": "player-facing feature / fun",
+      "project_owner": "docs/design/PROJECT_GDD.md",
+      "selected_reference": "skills/analyzing-and-refining-game-concepts/references/concept-evidence-and-gates.md",
+      "action": "GDD 재미·표현 검증 기준의 같은 requirement ID로 연결한다. 작은 변경은 한 단락."
+    },
+    {
+      "when": "visual / UI / feedback specification",
+      "project_owner": "docs/visual/CURRENT_SCREEN_SURFACE_INVENTORY_AND_VISUAL_ASSET_COVERAGE.md",
+      "selected_reference": "docs/knowledge/game-development/EXPERIENCE_TO_PRESENTATION_GUIDE.md",
+      "action": "GDD 경험 원본에서 상태·입력·표현·실제 consumer·실패/복귀·검증까지 구체화한다."
+    },
+    {
+      "when": "actual raster creation",
+      "project_owner": "docs/visual/CURRENT_SCREEN_SURFACE_INVENTORY_AND_VISUAL_ASSET_COVERAGE.md",
+      "selected_skill": "imagegen",
+      "action": "현재 호스트의 해당 SKILL.md와 필요한 참조만 읽는다. 승인 자산 보호, 크로마키/alpha와 상태군 검증."
+    },
+    {
+      "when": "Godot live inspection",
+      "project_owner": "project.godot",
+      "selected_skill": "hera-godot:live-editor",
+      "action": "현재 경로/연결 확인 후 QA 관측만. 기존 CLI fallback 가능. 전역/설치 변경 없음."
+    },
+    {
+      "when": "PDF update",
+      "project_owner": "docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md",
+      "selected_skill": "pdf:pdf",
+      "action": "기존 월간 PDF에 누적. 실제 발행/검증 경로가 없으면 미발행으로 기록."
+    }
+  ],
+  "fun_verification": {
+    "source_id": "MLB-DIRECTION-20260916",
+    "path": "docs/design/PROJECT_GDD.md",
+    "section": "재미·표현 검증 기준",
+    "status": "METHOD_ADOPTED_ISLAND_REQUIREMENTS_HYPOTHESIS_NOT_RUNTIME_OR_FUN_PASS",
+    "legacy_consumers": [
+      "scenes/game.tscn",
+      "scripts/voyage/game_scene.gd",
+      "scripts/core/game_state.gd",
+      "scripts/audio/resting_soundscape.gd",
+      "scripts/ui/album_view.gd"
+    ],
+    "new_island_consumers": "PLANNED_NOT_IMPLEMENTED",
+    "evidence_owner": "docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md"
+  },
+  "project_adaptations": {
+    "human_facing_canon": "docs/design/PROJECT_GDD.md is the current human-facing canon. A PDF remains a derived snapshot and is not regenerated by an operations-only task.",
+    "structured_runtime_truth": "The existing GDD, current Godot handoff, visual inventory, GDScript, scenes, resources, tests, and repository evidence stay as separate owners. This adapter does not duplicate their product facts.",
+    "base_reuse_modules": "docs/base-reuse-adoption.json remains the Base reuse-module manifest only. A module is enabled only after a real project destination, lock, consumer, and verification exist.",
+    "godot_authoring_and_qa": "Keep the project's current Godot 4.7 source/test/runtime routes. Do not install HiGodot, GUT, Hera, or a Base helper merely because Base describes an optional route.",
+    "continuation": "A same-scope user approval may continue safe research, implementation, machine/runtime verification, correction, documentation, cleanup, and branch synchronization. New player meaning, public social scope, cost, permission, destructive migration, or Human UX approval stays separately gated.",
+    "read_order": "프로젝트 사용자/AGENTS→GDD/handoff→latest main/실제 consumer/PR→채택 adapter→필요 Base. Base START_HERE의 일반 순서보다 프로젝트 순서 우선.",
+    "record_shape": "기존 handoff가 승인·작업 순서·검증·판단·남은 작업을 소유. Base root receipt/kanban 전체 설치는 비채택. project-local contract test와 실제 review/readback을 사용.",
+    "skill_boundary": "프로젝트에 tracked SKILL.md 없음. 새 wrapper 복제 없이 조건부 route로 연결. 설치 plugin/global skill은 수정하지 않으며 상위 지침을 우회하지 않는다."
+  },
+  "work_sequence": [
+    "fresh-read current owners/main/PR/consumer",
+    "reuse valid evidence and approved brief",
+    "implement only approved bounded scope",
+    "impact checks and independent review with shared budget",
+    "normal current-task PR merge and main readback",
+    "append existing handoff/log and recalculate remaining work"
+  ],
+  "explicit_non_adoptions": [
+    "Base directory scaffolding or required-entrypoint paths that would relocate stable project owners",
+    "Notion or Google Sheets as an active project canon or required synchronization target",
+    "Automatic Base module vendoring without a named project consumer and Base adoption lock",
+    "Mandatory installation of HiGodot, GUT, Hera, a new MCP, a paid tool, or a second persistent editor authority",
+    "Automatic adoption of open Base PRs, draft proposals, or newer Base main content as project canon",
+    "Base-wide gameplay rules, visual grammar, save schema, character identity, asset path, or evidence claims",
+    "Universal fun score, compulsory retries/reward density or combat examples for this healing game",
+    "A new fun-supervisor skill, analytics server, or automatic Human PASS",
+    "Legacy five-review minimum and three alternatives for every mechanical fix"
+  ],
+  "protected_scope": [
+    "rest-first local-only game meaning",
+    "approved player, companion, boat, and visual asset provenance",
+    "existing save IDs and local persistence behavior",
+    "Human/device comfort and release evidence ceilings",
+    "open PR #19 and all unrelated workstreams",
+    "Base tracked files and Base-worktrees/"
+  ],
+  "validation": {
+    "project_contract_test": "python -B -m unittest discover -s tests -p test_base_adapter_contract.py -v",
+    "project_python_suite": "python -B -m unittest discover -s tests -p test_*.py -v",
+    "runtime_rule": "Run Godot import/scene/runtime checks only when the approved change affects a Godot runtime consumer; documentation-only contract refreshes do not claim new gameplay evidence.",
+    "ceiling": "Contract/link checks are not agent-compliance, Godot runtime, Human fun, or release evidence."
+  },
+  "rollback": "새 운영 규칙 PR만 revert한다. #107 복구와 별개이며 구형 continuation branch/자산/세이브/plugin/Base 원본을 덮어쓰지 않는다."
+}

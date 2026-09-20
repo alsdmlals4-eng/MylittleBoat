@@ -4,6 +4,21 @@
 
 ## Current owner route
 
+최신 읽기 순서는 `AGENTS.md`를 따른다. 현재 제품 결정은 GDD의 `MLB-DIRECTION-20260916`이며 아래 보트 §1–§8 reading profile은 보존된 역사다. Base 원격 main은 매 작업 재조회하고 채택된 계약과 구별한다.
+
+- 운영 규칙·출처·skill 조건부 경로 — `docs/operations/MY_LITTLE_BOAT_BASE_ADAPTER.json`.
+- 현재 상태·진행·날짜별 누적 일지 — `docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md`의 최신 절. 별도 ACTIVE_CONTEXT를 만들지 않는다.
+- 재미·효과·비주얼·UI 기준 — `docs/design/PROJECT_GDD.md`의 `재미·표현 검증 기준`; 실제 consumer는 기존 handoff/visual inventory에 연결한다. 섬 경로는 아직 PLANNED.
+- 실제 이미지/시각 사용처 — 기존 visual inventory. 구형 보트 승인 자산은 새 섬 아트 승인이 아니다.
+- module 설치 상태 — `docs/base-reuse-adoption.json`. adapter/skill route와 혼동하지 않는다.
+
+이번 선택 채택은 Base #883 지침 경량화와 #885 재미 검증 방법이다. 구체적인 적용 출처는 adapter의 exact permalink를 읽고 최신 main drift와 대조한다. 설치된 skill/plugin 본문은 수정하지 않으며 새 wrapper/감독 skill은 만들지 않는다.
+
+### 승인 재사용 경계
+
+아래 future-package gate는 새 제품/최종 Blueprint 승인에 적용한다. 이미 승인된 동일 범위 운영 교정·결함 수정·검증·정상 병합에 Blueprint 재발행/재승인을 요구하지 않는다. 필요한 실제 이미지가 없는 규칙 변경에 이미지를 만들지 않는다. 최신 사용자 지시와 `AGENTS.md`의 same-scope continuation이 우선한다.
+
+
 | 질문 | current owner |
 | --- | --- |
 | 사람용 프로젝트 경험·결정·layered Blueprint | `docs/design/PROJECT_GDD.md` — `CURRENT_HUMAN_FACING_GDD` |

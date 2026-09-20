@@ -1,5 +1,7 @@
 ---
-artifact_role: AI_MASTER_GDD
+artifact_role: HISTORICAL_AI_PRODUCTION_SPEC
+current_authority_status: SUPERSEDED_AS_CURRENT_GDD
+current_authority_path: docs/design/PROJECT_GDD.md
 pair_id: my-little-boat-20260830-destination-free-rest
 blueprint_revision: 2.8
 project_repo: alsdmlals4-eng/MylittleBoat
@@ -32,6 +34,8 @@ known_stale_points:
 ---
 
 # My Little Boat - AI Production Specification
+
+> 2026-09-20 역할 교정. 이 문서는 고유한 과거 명세·승인·출처를 보존하는 역사 자료입니다. `SUPERSEDED_POINTER_NOT_EDITING_MASTER`. 현재 제품 결정·재미 기준은 [PROJECT_GDD.md](PROJECT_GDD.md), 실제 상태는 [현재 handoff](../handoffs/CURRENT_GODOT_IMPLEMENTATION.md)를 읽습니다. 아래 과거 approval·implementation_authority·canonical_ai_gdd_path 값은 해당 보트 버전의 provenance이며 새 작업 권한이 아닙니다.
 
 ## 0. BLUEPRINT REVIEW PUBLICATION
 

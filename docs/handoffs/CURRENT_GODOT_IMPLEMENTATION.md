@@ -1,5 +1,63 @@
 # 현재 Godot 구현 handoff
 
+## Active Context — 2026-09-20
+
+현재 제품은 GDD `MLB-DIRECTION-20260916`의 작은 섬 농장·바다 휴식이다. 섬 runtime은 `NOT_IMPLEMENTED`, 구형 보트는 보존된 실행 코드다. 현재 운영 계약은 `docs/operations/MY_LITTLE_BOAT_BASE_ADAPTER.json`, 재미 기준은 GDD `MLB-FUN-20260920`을 읽는다. 아래 과거 “현재 작업”/항해 완성 표기는 해당 receipt 시점이며 섬 구현 권한이나 최신 검증이 아니다.
+
+### 승인 범위와 작업 순서
+
+사용자 2026-09-20 승인 A+B+C 및 같은 날 재미 기준 추가를 재사용한다.
+
+1. **B / 완료.** 명시 승인된 PR #107만 독립 검토→정확한 HEAD 검사→정상 squash 병합. head `89ea9582579efe10f33dd45a000ebae3efdc2fac`, main `01427e864bcc791a0e16f6c9185f25299a8c4808`. exact-head CI `34910038794`, postmerge main CI `35477256521` success. 코드/씬 복구 35파일 중 33개는 clean parent와 byte-equivalent Git blob, 두 테스트만 현 consumer 정합 교정. README/GDD 의미 교정은 다음 독립 PR 범위다.
+2. **A / 검증 중.** 복구된 main에서 `codex/base-lean-fun-20260920` 분리. AGENTS의 5회 무한 검토/모든 수정 3대안/중복 규칙을 최신 선택 계약으로 교정하고 GDD·README·AI spec의 충돌/역할을 정리한다. 기획 내용·code/Scene/assets/save/plugin은 운영 변경으로 수정하지 않는다.
+3. **#885 / 검증 중.** 기존 GDD에 경험 가설→명세→consumer→MACHINE/RUNTIME/HUMAN→교정 경로를 추가한다. 농사 수치/최종 아트/카메라는 확정하지 않는다. 실제 새 섬 consumer는 PLANNED.
+4. **C / PASS.** 독립 Blender portable CLI·Python→blend 저장/재열기→GLB→Godot 4.7.2 import/readback. 프로젝트에 모델을 넣거나 MCP/plugin을 설치하지 않았다.
+5. **마감 / 예정.** 같은 후보 두 번째 전체 검토·독립 검토, 필수 CI/normal PR/main readback, 기존 기록·같은 월간 PDF 누적과 남은 작업을 확인한다. 단계마다 전체 검토/승인을 초기화하지 않는다.
+
+**보호하는 다른 작업.** 기존 작업 폴더 `C:/Users/user/Documents/GitHub/MyLittleBoat`와 `codex/title-boat-flow-20260831@80ce184fa6a5571e7cefcb7ad53cdabef896a1cd`는 그대로 둔다. 이 브랜치의 60개 후속 커밋을 통합하지 않는다. PR #19는 read-only이며 README 변경 중첩만 인지하고 branch/PR을 수정·종료·병합하지 않는다. 다음 실행자는 현재 checkout 이름·main 차이를 먼저 확인한다.
+
+### 선택한 Base와 판단 기록
+
+- 2026-09-20 fetch 시 Base main은 `23ecad5a3084f97c4e5d1e39a9a6d70d1eeb37ef`. #883은 이미 병합됐고 #885도 포함됐다. 이 SHA는 이번 출처 기록이지 영구 최신 기준이 아니다. Base checkout의 local main/untracked worktrees는 변경하지 않았다.
+- v9.4.4 payload/evidence/finalization lock은 historical adopted identity로 보존한다. 이번 operating-policy adoption과 module lock을 구분한다. 기존 branch에서 adapter 의미만 선별 이전하며 전체 branch를 병합하지 않는다.
+- 비교. 전체 Base scaffold/skill 복사 `REJECT`(중복 owner·provider 변경 위험), 구형 5회/반복 승인 유지 `REJECT`(현재 승인과 충돌), 기존 owner+조건부 route+2회 공유 `ADAPT`(프로젝트 보호와 유지비 절감).
+- 기존 AGENTS·adapter·Base 규칙·실제 consumer를 benchmark/reuse 근거로 사용했다. 새 게임 시장/재미 실험은 수행하지 않았다. 설치된 skill 전체를 수정/검사했다고 주장하지 않는다. 프로젝트 tracked SKILL.md가 없어 새 wrapper 대신 adapter 조건부 경로를 사용한다.
+- 판단. 실행 스킬의 별도 ledger/계획 파일 권고는 최신 사용자 “기존 작업일지에 추가”와 이번 경량화 범위에 맞춰 이 기존 handoff가 대신한다. 동일 승인 완료보고/병합을 다시 승인 메뉴로 되묻지 않는다. 잘못 적용하면 추적 손실이 생기므로 이 절의 단계·검증·판단을 함께 유지한다.
+- 판단. Base의 신규 설치용 adapter schema/필수 도구 설치는 비채택이다. 현재 project-local 경로 검사를 사용하며 Base 전체 운영 validator PASS로 보고하지 않는다.
+- 판단. 보트 구현 receipt와 Human Blueprint reader profile 모두 보존하고 충돌 상태 값은 실제 구현 기준으로 통합한다. 함께한 시간은 이미 구현되어 `CONFIRMED_NOT_IMPLEMENTED` 주장을 교정하되 Human 검증은 계속 `NOT_RUN`이다.
+- 발견/교정. baseline Python 5개 중 1개가 AI spec의 중복 editing-master 표기로 실패했다. 본문/고유 provenance는 보존하고 현재 owner 안내를 교정했다. Base module 두 개는 파일이 없는데 enabled였다. 설치 대신 deferred로 교정했다. 새 연결 검사는 잘못된 soundscape 경로를 잡았고 실제 autoload `scripts/audio/resting_soundscape.gd`로 수정했다.
+
+### Blender 사용과 증거 경계
+
+- 공식 portable `Blender 5.2.2 LTS`, build `d13f752e3b9c`. ZIP SHA-256 `3849d17a682cba006075aaa3f3597ecb5c9c30ec31035b2e092c53e40679b535`가 공식 체크섬과 일치한다.
+- 실행 파일은 `C:/Users/user/Documents/Tools/Blender-5.2.2/blender-5.2.2-windows-x64/blender.exe`.
+- 재실행은 `C:/Users/user/Documents/MyLittleBoat_도구검증/Blender_20260920/run_connection_test.ps1`. 증거/스크립트는 같은 폴더의 `EVIDENCE.md`와 로그가 소유한다. parent는 해당 파일과 해시를 readback한다.
+- 격리 CLI에서 합성 큐브 생성·blend 재열기·GLB export, Godot PackedScene instantiate 후 MeshInstance3D 1개/24정점 확인. 최종 로그 오류/경고 0. 프로세스 환경 6개 sentinel 복원 PASS. Blender 잔류 프로세스 0.
+- 이 결과는 기술 연결뿐이다. live Blender MCP, 게임 모델/리그, 아트/Human/재미/출시 PASS가 아니다. 설치 plugin·전역 설정·Godot 프로젝트 변경 없음.
+- 사용 끝난 ZIP/backup/초기 실패 fixture는 `C:/Users/user/Documents/MyLittleBoat_삭제대기_20260920/BLENDER_20260920_MOVE_MANIFEST.md`에 원래 경로·해시·복원법과 함께 모았다. 직접 삭제하지 않았다.
+
+### 검토와 검증 기록
+
+전체 검토 1/2. 승인 범위 A+B+C+#885, 원래 checkout/main/열린 PR, Base 출처/채택 lock, 보호 consumer를 대조했다. 실제 읽은 owner는 AGENTS/GDD/handoff/visual inventory/project.godot/game_state/game_scene/기존 Python 검사/adapter/reuse manifest/Base 선택 계약이다. 복구 #107 독립 검토는 MUST_FIX 0이며 README/GDD·Human·섬 적합성·기존 고아 자산 삭제는 이 복구의 범위 밖이라는 판단을 유지한다. 코드 복구 검사는 원격 exact-head와 main에 묶고 정책 후보의 검사는 따로 기록한다. 새 정책 연결 RED에서 누락 owner·허위 enabled 두 건을 확인했고 수정 후 다시 검사한다. 장기 적합성은 새 시스템 설치보다 기존 owner 연결이 낫다는 비교다.
+
+두 번째 전체 검토/정책 독립 검토와 최종 exact-head/main 증거는 이 절에 이어 기록한다. 미실행 항목은 완료로 올리지 않는다.
+
+### 남은 제품 작업
+
+- 섬 농사·바다 휴식의 대표 구간, 이동/카메라 대안, 입력·상태·성장/저장 계약을 조사해 bounded 구현안으로 구체화한다.
+- 승인된 방향에 맞는 실제 사용 자산·모션·필요 상태군을 준비한다. Blender 연결 PASS를 모델 준비로 세지 않는다.
+- 승인된 Slice에서 규칙·표현·실패/복귀·기계/실행 검증을 연결한다. Human 검증은 사용자 선언 전 NOT_RUN.
+- 과거 continuation branch와 main의 전체 제품 통합 여부는 별도 범위다. 이번 운영 PR이 게임 전체 최신 구현 동기화는 아니다.
+
+<!-- MONTHLY_APPEND_20260920_BEGIN -->
+## 2026-09-20 AI 활용 작업 요약
+
+실제 작업일/기록일은 2026-09-20 KST다. Codex 작업에서 프로젝트·최신 Base #883/#885를 대조해 운영 지침을 경량화하고 재미/표현 검증을 기존 GDD에 연결했다. 명시 승인 PR #107 복구는 main 병합과 원격 Godot 검사까지 확인했다. 정책 후보 PR은 최종 검사/병합 증거를 아래 마감 기록에서 확인한다. 별도 portable Blender의 CLI/Python 저장·재열기·GLB와 Godot import 왕복도 검증했다. 계정·모델·비용 인정/협약은 검증하지 않았고, 실제 입력 화면 캡처는 이 기록에 없으므로 누락으로 남긴다. 게임 아트나 새 섬 runtime은 만들지 않았으며 사람 재미 검증도 미실행이다. 원본은 이 handoff·GDD·adapter·Git PR/Actions·로컬 Blender EVIDENCE다. 기존 월간 PDF에 누적하며 새 권/버전은 만들지 않는다.
+<!-- MONTHLY_APPEND_20260920_END -->
+
+## 보존된 과거 구현 기록
+
+
 **프로젝트:** `MY_LITTLE_BOAT`
 **역할:** 실제 코드·Scene·test·runtime evidence와 현재 제품 정본의 차이를 기록하는 기술 router
 **현재 사람용 정본:** [프로젝트 GDD](../design/PROJECT_GDD.md)

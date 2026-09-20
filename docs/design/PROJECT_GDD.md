@@ -1,13 +1,50 @@
 # 마이 리틀 보트 기획서
 
 **현재 상태:** `CURRENT_HUMAN_FACING_GDD`
-**갱신일:** 2026-08-30
+**갱신일:** 2026-09-20
 **읽는 법:** 이 문서는 사람이 게임의 경험과 결정 상태를 이해하기 위한 정본입니다. 실제 코드·Scene·테스트·캡처는 [현재 Godot handoff](../handoffs/CURRENT_GODOT_IMPLEMENTATION.md)가, visual consumer와 provenance는 [visual inventory](../visual/CURRENT_SCREEN_SURFACE_INVENTORY_AND_VISUAL_ASSET_COVERAGE.md)가 소유합니다.
 
-<<<<<<< HEAD
+## 현재 결정 — 작은 섬 농장과 바다 감상
+
+`MLB-DIRECTION-20260916 / USER_APPROVED_DIRECTION / ISLAND_RUNTIME_NOT_IMPLEMENTED`
+
+사용자가 확정한 방향은 **작은 섬에서 농장을 돌보고 바다를 바라보며 쉬는 게임**, **일본 청춘 애니메이션풍**이다. 보트 전진감 추가 개발은 중단한다. 이름은 `my little boat`로 유지한다. 농사 행동·성장 시간·진행 구조·카메라·캐릭터 비율·최종 아트는 아직 확정하지 않았다. 의무 일과·작물 고사·경쟁·전투·유료 압박을 임의로 추가하지 않는다.
+
+기존 보트 구현·승인 자산·세이브 ID·실행 증거는 보존한다. 아래 §0–§8의 항해 흐름·치비 lock·구현 표는 **구형 보트 버전의 보존 기록**이며 새 섬 게임의 명세/완료 근거가 아니다. 구형 브랜치 `codex/title-boat-flow-20260831`의 후속 구현도 자동 통합하지 않는다. local 저장·사진/앨범·감상·바다 소리는 재사용 후보이며, 동반자·낚시·편지는 새 필수 기능으로 확정하지 않았다.
+
+### 재미·표현 검증 기준
+
+`MLB-FUN-20260920 / METHOD_ADOPTED / EXPERIENCE_HYPOTHESES_UNVERIFIED`
+
+방법의 출처는 [Base 재미 검증 생명주기](https://github.com/alsdmlals4-eng/Base/blob/23ecad5a3084f97c4e5d1e39a9a6d70d1eeb37ef/skills/analyzing-and-refining-game-concepts/references/concept-evidence-and-gates.md#fun-verification-lifecycle)와 [경험→효과·비주얼·UI 가이드](https://github.com/alsdmlals4-eng/Base/blob/23ecad5a3084f97c4e5d1e39a9a6d70d1eeb37ef/docs/knowledge/game-development/EXPERIENCE_TO_PRESENTATION_GUIDE.md)다. 프로젝트 의미의 원본은 위 `MLB-DIRECTION-20260916`이며 채택/재조회 경계는 `docs/operations/MY_LITTLE_BOAT_BASE_ADAPTER.json`이 소유한다. Base의 방어/전투 예시와 고정 재미 점수는 채택하지 않는다.
+
+**핵심 경험**은 선택적인 농장 돌보기와 바다 감상이다. 부담 없이 머무는 느낌, 돌본 결과에 대한 작은 애착은 검증할 경험 가설이지 이미 입증된 재미가 아니다. 대상 플레이어는 잠시 쉬고 싶은 사람이라는 기획 가설이며 연령·세션 길이·기기별 선호는 연구 전 미확정이다. 사진/표현/소리 같은 보조 경험은 실제 섬 consumer의 필요가 확인될 때만 재사용한다.
+
+| requirement ID | 경험 가설과 방향 | 대표 구간·반증 질문 | 실제 구현/증거 연결과 현재 상태 |
+| --- | --- | --- | --- |
+| MLB-ISLAND-REST-01 | `AMPLIFY / HYPOTHESIS`. 농사 행동을 하지 않아도 바다를 보며 편안하게 머물 수 있다. | 작은 농장과 바다를 함께 보는 구간에서 쉬기만 선택한다. 알림·의무·자동 카메라 때문에 일을 해야 한다고 느끼거나 움직임/소리가 피곤하면 반증이다. | 새 섬 Scene·camera·입력은 `PLANNED`. 기존 `scenes/game.tscn`과 `scripts/voyage/game_scene.gd`의 감상/comfort, `scripts/audio/resting_soundscape.gd`는 재사용 검토 대상일 뿐. 섬 MACHINE/RUNTIME/HUMAN은 `NOT_RUN`. |
+| MLB-ISLAND-CARE-01 | `AMPLIFY / HYPOTHESIS`. 짧은 돌보기 행동과 눈에 보이는 결과가 내 작은 장소에 대한 애착을 만든다. | 승인 후 대표 돌보기 한 번→결과 확인→바다 휴식 복귀를 완성형 짧은 구간으로 본다. 무엇이 바뀌었는지 모르거나 반복 노동/손실 회피로만 행동하면 반증이다. | crop state owner·성장 규칙·저장·입력/취소는 `PLANNED`. 담당 owner는 이 GDD, 다음 행동은 농장 루프/카메라 대안 조사와 bounded spec 승인. 미정 수치에 의존하는 농사 구현만 보류한다. |
+| MLB-ISLAND-PRESENT-01 | `SUPPORT / HYPOTHESIS`. 일본 청춘 애니 분위기 안에서도 대상·선택·확정 결과가 구별되고, 표현이 휴식을 방해하지 않는다. | 같은 구간의 기본/저감 모션·음소거·작은 화면·반복 입력/복귀를 대조한다. 예쁘지만 대상을 못 찾거나 성공처럼 보였는데 결과/저장이 다르면 반증이다. | 시각 owner는 `docs/visual/CURRENT_SCREEN_SURFACE_INVENTORY_AND_VISUAL_ASSET_COVERAGE.md`; 새 섬 asset/state family는 `PLANNED`. 구형 승인 자산은 자동 재승인되지 않는다. 새 아트/사용성/재미는 `NOT_RUN`. |
+
+기능 기획부터 교정까지 같은 ID를 유지한다.
+
+1. **기획.** 승인 경험 원본과 가설·반증·보호 범위를 연결한다. 작은 L1은 기존 Decision/handoff 한 단락, 주요 L2만 필요한 상세 명세를 사용한다.
+2. **설계.** 입력·진입/종료 상태·규칙/state owner·선택·공개할 정보·취소/복귀·저장/실패를 정한다. 효과/모션/UI는 접수와 확정 결과를 구분하고 실제 결과를 표시만 한다. 반복/중단/동시 효과·reduced motion·mute에서 필수 정보가 남는지 명시한다. 값은 프로젝트 초기값/계산식·조정 범위·검증 장면으로 정하며 미정은 담당 owner와 의존 작업을 남긴다.
+3. **구현.** ID→실제 Scene/Node/Script/데이터/자산→검사를 연결하고, 화면/검사에서 ID와 승인 원본으로 역추적한다. 경로가 존재해도 실제로 호출/표시되지 않으면 연결 완료가 아니다. `PLANNED` 경로를 구현으로 세지 않는다.
+4. **검증.** exact commit/build·환경·설정·입력·대표 구간·관찰 질문·중단 기준을 먼저 기록한다. MACHINE은 상태/저장/중단·복귀, RUNTIME은 실제 표시/모션/입력, HUMAN은 행동 관찰·자기보고·반증을 대조한다. 오래 플레이함=재미, 로그 PASS=편안함으로 해석하지 않는다.
+5. **교정.** 못 봄/오해함, 규칙·선택 문제, 표현·감각 문제, 반복 피로, 빌드/환경 결함을 구분한다. 같은 승인 범위는 최소 수정·회귀 후 `KEEP / CHANGE / DEFER / RETEST`로 기존 기록에 남긴다. 경험·아트 방향·주요 UX·비용/범위 변경만 재승인한다.
+
+검증할 개발 결정은 “짧은 돌보기와 휴식이 양립하는가, 다음 제작으로 확대할 근거가 있는가”다. 성공은 의도한 결과를 이해하며 쉬기를 자유롭게 선택하는 관찰과 자기보고가 뒷받침되는 경우, 반박은 강제 노동/손실 회피·혼란·감각 피로가 드러나는 경우다. 저장 손상·조작 불능·불편 호소 시 해당 세션을 중단한다. 표본/시간/점수 합격선을 임의로 만들지 않으며 실제 사람 세션 전에 질문·대상·범위를 확정한다.
+
+`DOC / MACHINE / RUNTIME / HUMAN / USER_APPROVAL / RELEASE`는 별개다. 사람 검증은 사용자가 선언할 때만 수행하고, 미실행은 `NOT_RUN`으로 둔다. 승인된 구현은 계속할 수 있지만 자동 검사나 AI 평가를 `FUN_PASS`로 승격하지 않는다. 회색 상자나 Blender 연결 시험은 기술 확인일 뿐 재미 증거가 아니다. 사람 검증은 전체 게임 완성을 기다리지 않고 필요한 아트·소리·UI가 연결된 짧은 대표 Slice로 준비한다. 새로운 감독 skill·분석 서버·중복 재미 보고서는 만들지 않는다.
+
+## 보존된 구형 보트 기획과 실행 증거
+
+이하 “현재”라는 표현은 해당 과거 receipt의 시점이다. 2026-09-20 실제 main의 복구/검사 상태와 다음 작업은 [최신 handoff](../handoffs/CURRENT_GODOT_IMPLEMENTATION.md)를 우선한다.
+
 ## 0. 2026-08-30 현재 runtime receipt
 
-아래 상태가 현재 실행 build를 설명합니다. 이후의 pre-implementation 표와 `NOT_IMPLEMENTED` 표기는 historical context로만 읽고 이 receipt를 덮어쓰지 않습니다.
+아래 상태는 2026-08-30 보트 실행 build의 기록입니다. 이후의 pre-implementation 표와 `NOT_IMPLEMENTED` 표기는 historical context로만 읽고 이 receipt를 덮어쓰지 않습니다.
 
 | 주제 | 현재 상태 | evidence ceiling |
 | --- | --- | --- |
@@ -18,14 +55,14 @@
 | 모션 편안함 | `파도: 기본/잔잔/고요`는 보트·카메라·수면 접점의 자동 진폭만 `1.0 / 0.5 / 0.0`으로 바꾸는 local-only 선택입니다. | preference/state/scene contracts와 bright GPU capture `PASS`; Human motion comfort `NOT_RUN` |
 | 항해 포스트카드 | `사진`은 UI 없는 실제 렌더 프레임 PNG와 메타데이터를 기기에 저장하고, Album은 최신 세 장을 점수·보상 없이 보여 줍니다. | persistence/state/scene/Album contracts와 bright·Album GPU capture `PASS`; Human readability `NOT_RUN` |
 | 둘러보기 | `LookAroundCamera3D`와 드래그 입력, 기본·감상 전환, 꾸미기/Album 격리가 구현되었습니다. 사용자가 승인한 투명 수면 치비 family의 좌·우·뒤·위 원화가 exact canonical asset으로 연결됩니다. non-front에서는 중복 normal card만 숨기고 부유 보트 상태와 수면 접점은 유지합니다. | mode/input contracts와 540×960 GPU capture `PASS`; `MLB-LOOK-CHIBI-TRN-001..004` `USER_APPROVED → CANON_REGISTERED → IMPLEMENTED → RUNTIME_CAPTURE_VERIFIED`; Human motion comfort `NOT_RUN` |
-=======
+
 ## 0. Human Game Blueprint 읽기 profile
 
 `HUMAN_GAME_BLUEPRINT_GDD_LAYERED_PROFILE`
 
 `NO_SEPARATE_BLUEPRINT_ARTIFACT`
 
-이 profile은 새 Blueprint 문서·보드·부록을 만들지 않고 현재 editing master인 이 GDD 안에서 기존 경험·system card·flow·구현 evidence를 계층적으로 읽게 합니다. `docs/design/PROJECT_AI_PRODUCTION_SPEC.md`는 `SUPERSEDED_AS_CURRENT_GDD` 안내 포인터이며 current editing master로 승격하지 않습니다. 이 profile의 repository baseline은 `main@50909b33bd1d4a4ebc550b5be2a4f9cfe7ccf6d6`입니다.
+이 profile은 새 Blueprint 문서·보드·부록을 만들지 않고 현재 editing master인 이 GDD 안에서 기존 경험·system card·flow·구현 evidence를 계층적으로 읽게 합니다. `docs/design/PROJECT_AI_PRODUCTION_SPEC.md`는 `SUPERSEDED_AS_CURRENT_GDD` 안내 포인터이며 current editing master로 승격하지 않습니다. 이 profile의 역사적 repository baseline은 `main@50909b33bd1d4a4ebc550b5be2a4f9cfe7ccf6d6`입니다.
 
 ### 산출물과 publication 경계
 
@@ -73,8 +110,7 @@
 
 `PROSPECTIVE_ONLY_PREEXISTING_EXACT_USER_APPROVED_IMPLEMENTATION_AUTHORITY_PRESERVED`: profile 채택 전에 package ID, exact scope, artifact revision/branch/SHA에 연결된 명시적 사용자 구현 승인이 있었다면 그 package의 기존 authority는 유지합니다. `EXACT_APPROVED_SCOPE_AND_REVISION_ONLY`: grandfathering은 승인 기록과 같은 package·scope·revision만 허용합니다. `SCOPE_EXPANSION | SUCCESSOR_PACKAGE | INFERRED_BLANKET_APPROVAL`에는 기존 authority를 재사용할 수 없습니다. PR #19를 포함한 별도 workstream의 authority는 이 profile로 추정하거나 흡수하지 않습니다.
 
-새 image deliverable의 생성·편집은 Base current conversation-approval gate와 `IMAGE_MODEL_REQUIRED_FOR_IMAGE_CREATION_OR_EDITING`을 따라야 합니다. exact flow/state/system 관계는 `TEXT_NATIVE_EXACT_DIAGRAMS`와 `STRUCTURED_INFORMATION_ARTIFACTS_REMAIN_TEXT_NATIVE`에 따라 Mermaid/Flow/table로 유지합니다. 이미지 생성 성공은 asset 승인·runtime 연결·Human PASS가 아닙니다.
->>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
+새 image deliverable의 생성·편집은 최신 프로젝트 AGENTS의 승인 경계와 `IMAGE_MODEL_REQUIRED_FOR_IMAGE_CREATION_OR_EDITING`을 따라야 합니다. exact flow/state/system 관계는 `TEXT_NATIVE_EXACT_DIAGRAMS`와 `STRUCTURED_INFORMATION_ARTIFACTS_REMAIN_TEXT_NATIVE`에 따라 Mermaid/Flow/table로 유지합니다. 이미지 생성 성공은 asset 승인·runtime 연결·Human PASS가 아닙니다.
 
 ## 1. 이 게임은 무엇인가
 
@@ -211,11 +247,7 @@
 
 **피해야 할 압박.** 방치 벌, timer 실패, idle 보상, 매분 확인 요구, 목적지·항로·도착 보상.
 
-<<<<<<< HEAD
 **상태.** 자연 명소 여섯 장은 `USER_APPROVED → CANON_REGISTERED → IMPLEMENTED → MACHINE_VERIFIED → RUNTIME_CAPTURE_VERIFIED`입니다. 실제 기기에서의 휴식감은 `NOT_RUN`입니다.
-=======
-**상태.** `IMPLEMENTED_AND_GPU_CAPTURED`입니다. 실제 기기에서의 첫 30초와 5분 휴식 판단은 `NOT_RUN`입니다.
->>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 
 ### 감상 카메라
 
@@ -251,11 +283,7 @@
 
 **피해야 할 압박.** stats, rarity, gacha, price, daily shop, 모든 slot 채우기, 최적 배치.
 
-<<<<<<< HEAD
 **상태.** in-voyage `꾸미기`, local-only preview, 기존 ID를 보존한 alternate 치비 asset family가 `IMPLEMENTED / MACHINE_VERIFIED / RUNTIME_CAPTURE_VERIFIED`입니다. 실제 기기에서의 readability와 touch comfort는 `NOT_RUN`입니다.
-=======
-**상태.** `IMPLEMENTED`입니다. 첫 화면에는 보이지 않고 `메뉴 → 꾸미기`에서만 접근합니다. 실제 기기 터치 편안함은 `NOT_RUN`입니다.
->>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 
 ### 사진·조용한 낚시·작은 상호작용
 
@@ -279,11 +307,7 @@
 
 **피해야 할 압박.** live level, progress bar, growth popup, species bonus, action multiplier.
 
-<<<<<<< HEAD
 **상태.** active foreground delta만 누적하고 `user://together_time_v1.cfg`에 local-only로 저장하는 구현이 `IMPLEMENTED / RUNTIME_CAPTURE_VERIFIED`입니다. 실제 기기에서의 readability와 pressure 판단은 `NOT_RUN`입니다.
-=======
-**상태.** 제품 방향은 `CONFIRMED_NOT_IMPLEMENTED`입니다. 행동 보상형 호감도는 ambient memory에서 분리됐지만, 함께 켜 둔 foreground 시간 기반의 조용한 관계 표현은 아직 구현하지 않았습니다.
->>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 
 ### 흘러가는 풍경과 배경 발견 연출
 
@@ -295,11 +319,7 @@
 
 **피해야 할 압박.** 발견을 보기 위한 기다림, button 요구, reward claim, task, social message, missed-event penalty, 구조물을 탭해야 하는 상호작용.
 
-<<<<<<< HEAD
 **상태.** active foreground 시간만 사용하고, 명목 5분에 약 1-2회가 지나가되 zero도 정상이라는 cadence와 여섯 승인 motif의 runtime consumer는 `IMPLEMENTED / MACHINE_VERIFIED / RUNTIME_CAPTURE_VERIFIED`입니다. actual device에서의 5분 휴식감·noticeability·반복 피로는 `NOT_RUN`입니다.
-=======
-**상태.** `IMPLEMENTED_AND_GPU_CAPTURED`입니다. active foreground 시간만 쓰는 director와 부표·작은 섬·등대 consumer가 있으며, memory 저장은 확률형 local auto-save이고 zero도 정상입니다. 실제 5분의 빈도·noticeability는 `NOT_RUN`입니다.
->>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 
 ### Album
 
@@ -317,19 +337,11 @@
 
 | 화면 또는 상태 | 플레이어 목표 | 주요 행동 | 다음 연결 | 제품 상태 |
 | --- | --- | --- | --- | --- |
-<<<<<<< HEAD
 | Direct boat entry | “여기는 어떤 장소인가”를 즉시 느낌 | 보기, 머무르기 | normal voyage | `IMPLEMENTED / RUNTIME_CAPTURE_VERIFIED` |
 | Normal voyage diorama | 캐릭터·동반자·보트·바다와 시간에 따라 바뀌는 풍경을 함께 보기 | 쉬기, 사진, 낚시, 감상, 꾸미기 | album 또는 계속 머무르기 | direct-entry atmosphere/scenery `RUNTIME_CAPTURE_VERIFIED`; Human calm `NOT_RUN` |
 | Appreciation Camera | 수평선과 바다에 집중 | 감상 시작·종료 | 같은 normal voyage | `IMPLEMENTED`; Human comfort `NOT_RUN` |
 | 꾸미기 | 공간을 내 취향으로 두기 | 외형·동반자·장식 변경 및 별도 preview 확인 | 같은 normal voyage | `IMPLEMENTED / RUNTIME_CAPTURE_VERIFIED`; Human readability `NOT_RUN` |
 | Album | 남은 개인 기록과 함께한 시간 보기 | 최근 포스트카드 세 장, 복원된 물고기·항해 기록 읽기, 바다로 돌아가기 | normal voyage | together-time·postcard·ambient·fish/voyage ledger `IMPLEMENTED / RUNTIME_CAPTURE_VERIFIED`; delayed-letter persistence를 포함한 전체 memory save `PARTIAL_IMPLEMENTED` |
-=======
-| Direct boat entry | “여기는 어떤 장소인가”를 즉시 느낌 | 보기, 머무르기 | normal voyage | `IMPLEMENTED_AND_GPU_CAPTURED`; Human `NOT_RUN` |
-| Normal voyage diorama | 캐릭터·동반자·보트·바다와 시간에 따라 바뀌는 풍경을 함께 보기 | 쉬기, 사진, 낚시, 감상, 꾸미기 | album 또는 계속 머무르기 | `IMPLEMENTED_AND_GPU_CAPTURED`; Human `NOT_RUN` |
-| Appreciation Camera | 수평선과 바다에 집중 | 감상 시작·종료 | 같은 normal voyage | earlier slice `IMPLEMENTED` |
-| 꾸미기 | 공간을 내 취향으로 두기 | 외형·동반자·장식 변경 | 같은 normal voyage | cosmetic slice `PARTIAL_IMPLEMENTED` |
-| Album | 남은 개인 기록 보기 | 기록 읽기, 바다로 돌아가기 | normal voyage | `PARTIAL_IMPLEMENTED` |
->>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 
 첫 화면은 메뉴가 아니라 direct boat entry입니다. `main_menu.tscn`은 오래된 링크를 넘기는 compatibility route이며, 그 identity/time/mood capture runner는 `HISTORICAL_RETIRED`입니다. 현재 디자인 정본이나 visual approval, current runtime evidence로 사용하지 않습니다.
 
@@ -369,7 +381,6 @@
 | 항목 | 상태 | 의미 |
 | --- | --- | --- |
 | Rest-first direction | `CONFIRMED` | 머무르기가 complete play라는 제품 방향 |
-<<<<<<< HEAD
 | Direct boat entry | `IMPLEMENTED / RUNTIME_CAPTURE_VERIFIED` | `game.tscn`이 startup route이며 Human comfort는 별도 검증 전 |
 | 오늘의 마음 제거 | `IMPLEMENTED / MACHINE_VERIFIED` | mood data와 pre-entry prompt를 current product route에서 retire함 |
 | 현실 시간 분위기 | `IMPLEMENTED / RUNTIME_CAPTURE_VERIFIED` | 현지 시간은 시각만 바꾸고, startup selector·saved preference는 없음 |
@@ -377,16 +388,7 @@
 | cosmetic 꾸미기 | `IMPLEMENTED / RUNTIME_CAPTURE_VERIFIED` | in-voyage selector와 독립 preview가 local cosmetic state만 바꿈 |
 | 함께 보낸 시간 | `IMPLEMENTED / RUNTIME_CAPTURE_VERIFIED` | active foreground delta만 누적하고 Album에만 표시. Human readability는 별도 검증 전 |
 | Ambient Discovery | `IMPLEMENTED / RUNTIME_CAPTURE_VERIFIED` | active foreground의 자동 풍경만 `user://ambient_memory_v1.cfg`에 저장·복원. no-first-guarantee cadence는 구현됐고 Human five-minute observation은 별도 |
-=======
-| Direct boat entry | `IMPLEMENTED_AND_GPU_CAPTURED` | `project.godot`이 `game.tscn`을 열고 첫 화면은 메뉴를 닫은 보트 장면 |
-| 오늘의 마음 제거 | `IMPLEMENTED_AND_TESTED` | mood state, 시작 선택, 색 규칙, 항해 문구 의존을 retire함 |
-| 현실 시간 분위기 | `IMPLEMENTED_AND_TESTED` | 현지 시간은 시각만 바꾸고, startup selector·saved preference는 없음 |
 | foreground session | `IMPLEMENTED_AND_TESTED` | 앱이 foreground일 때만 항해 timer·낚시 대기·풍경 drift·자동 알림이 진행되며 background 경과는 기록을 만들지 않음 |
-| 흘러가는 풍경 | `IMPLEMENTED_AND_GPU_CAPTURED` | active foreground 시간만 쓰는 low-density director와 duplicate-safe local ambient memory |
-| cosmetic 꾸미기 | `PARTIAL_IMPLEMENTED` | local slice는 optional `메뉴 → 꾸미기`에서 현재 항해 화면에 live 적용됨 |
-| 함께 보낸 시간 | `CONFIRMED_NOT_IMPLEMENTED` | active foreground time 기반의 관계 문구·album 표현은 별도 구현 필요 |
-| Ambient Discovery | `IMPLEMENTED_AND_TESTED` | passive scenery event, 작은 auto-fade 알림, local auto-save이며 Human 빈도 평가는 미실시 |
->>>>>>> 8b78f8cba74d198a668ea2edcb77900d8b781564
 | Visual direction | `APPROVED_DIRECTION` | production asset batch와 runtime alignment는 별도 |
 | Human usability / Player Experience | `NOT_RUN` | 실제 30초·5분 기기 경험 검증 전 |
 
@@ -407,11 +409,11 @@ main scene을 direct boat route로 바꾸고 optional customization을 같은 �
 1. `project.godot`은 `game.tscn`을 시작 route로 사용하며, 첫 화면은 메뉴를 닫은 normal boat diorama입니다.
 2. 새벽 `05:00–08:59`, 밝음 `09:00–16:59`, 해질녘 `17:00–20:59`, 밤 `21:00–04:59`가 기기의 현지 시각으로 자동 적용됩니다. selector와 saved atmosphere는 없습니다.
 3. mood data와 시작 선택 UI를 retire하고 항해 기록을 중립 문구로 바꿨습니다.
-4. foreground 전용 session clock이 항해 timer·낚시 대기·풍경 drift·자동 알림을 함께 멈추며, drifting scenery director는 부표·작은 섬·등대를 낮은 밀도로 흘리고 일부를 local ambient memory로 자동 저장합니다.
+4. foreground 전용 session clock이 항해 timer·낚시 대기·풍경 drift·자동 알림을 함께 멈추며, drifting scenery director는 여섯 승인 자연 명소 중 시간대에 맞는 motif를 낮은 밀도로 표시하고 일부를 local ambient memory로 자동 저장합니다.
 5. 외형·동반자·장식은 optional `메뉴 → 꾸미기`에만 있습니다.
 6. 540 x 960 GPU capture에서 boat-water contact, 시간대, 원거리 작은 섬을 확인했습니다.
 
-남은 것은 사람 검증입니다. 실제 기기 첫 30초, 5분 휴식, 터치, 알림 noticeability, 오디오 편안함은 `NOT_RUN`이며, 함께 보낸 foreground 시간의 조용한 호감도 표현도 아직 구현하지 않았습니다.
+남은 것은 사람 검증입니다. 실제 기기 첫 30초, 5분 휴식, 터치, 알림 noticeability, 오디오 편안함은 `NOT_RUN`입니다. 함께 보낸 foreground 시간의 Album-only 표현은 기존 코드에 구현되어 있고 사람의 부담/가독성 검증은 미실행입니다.
 
 ### Blueprint evidence ceiling
 
@@ -421,7 +423,7 @@ main scene을 direct boat route로 바꾸고 optional customization을 같은 �
 | Real-time atmosphere | `IMPLEMENTED_AND_TESTED`; GPU capture exists | device transition/readability observation |
 | Foreground scenery | `IMPLEMENTED_AND_GPU_CAPTURED` | normal 5-minute density observation |
 | Ambient memory | `IMPLEMENTED_AND_TESTED` | noticeability and calmness observation |
-| Relationship/shared-time expression | `CONFIRMED_NOT_IMPLEMENTED` | separately approved future package and runtime evidence |
+| Relationship/shared-time expression | `IMPLEMENTED / RUNTIME_CAPTURE_VERIFIED` | Human/device readability and pressure review `NOT_RUN` |
 | Device first 30 seconds / 5 minutes | `NOT_RUN` | named Human/device session |
 | Touch / audio / notification intensity | `NOT_RUN` | real touch, soundscape, notification observation |
 
