@@ -35,6 +35,10 @@ jobs:
         shell: bash
         run: |
           status=0
+          timeout 20s godot --headless --path . --script res://tests/test_recoverable_config_store.gd || status=1
+          timeout 20s godot --headless --path . --script res://tests/test_island_farm_state.gd || status=1
+          timeout 20s godot --headless --path . --script res://tests/test_island_save_contract.gd || status=1
+          timeout 20s godot --headless --path . --script res://tests/test_island_session_contract.gd || status=1
           timeout 20s godot --headless --path . --script res://tests/test_calm_voyage_state.gd || status=1
           timeout 20s godot --headless --path . --script res://tests/test_fishing_session.gd || status=1
           timeout 20s godot --headless --path . --script res://tests/test_game_scene_contract.gd || status=1

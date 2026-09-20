@@ -1,6 +1,44 @@
 # 현재 Godot 구현 handoff
 
-## Active Context — P1 상세 계획·후속 배 나들이 2026-09-20
+## Active Context — P1 구현·로컬 저장 보호 중단 2026-09-20
+
+최신 사용자 '좋아 작업 계속 진행해'는 직전 P1 상세 계획의 Native 구현 승인을 이어간다. `codex/island-p1-implementation-20260920`은 main `798580c`에서 시작했다. Task 1–3 구현과 새 검사 연결을 수행했으나 **Task 4 로컬 저장 보호 검사가 실패하여 병합·추가 엔진 실행을 중단**했다. 원래 checkout/PR #19는 변경하지 않았으며 이 브랜치를 main 완료로 보지 않는다.
+
+### 실제 구현과 확인
+
+- `data/island/crops.json` → `scripts/island/farm_state.gd` → `scripts/island/island_session.gd` → `scripts/island/island_save_store.gd` → `scripts/core/recoverable_config_store.gd`. 현재 실제 consumer는 테스트이며 P2 Scene/새 화면은 없음.
+- Task 1 `b80403e`, Task 2 `a0655d6`, Task 3 `d927f33`. 세 신규 검사 각각 owner 부재의 exit 1 RED를 본 뒤 구현했다. Godot 4.7.2에서 farm 78, save 117, session 56 assertion PASS 및 재사용 helper 검사 PASS. 실제 ConfigFile로 심기→새 Session→480초 경과→수확→디스크 재로드 통합 경로도 실행했다.
+- helper 원본은 fresh 조회한 `origin/codex/title-boat-flow-20260831` / `80ce184fa6a5571e7cefcb7ad53cdabef896a1cd`, helper blob `e32761ab64a142a81c864364a6060d8ef385f0c5`. 제품 helper는 동일 내용으로 선별 이식했고 검사만 PID+ticks 전용 경로/생성 파일 목록/다른 실행 sentinel 보존으로 교정했다. 60개 continuation commit은 병합하지 않았다.
+- 로컬 CI 명령 36회(중복 시간대 검사 1회 포함)는 exit/error 검사상 실패 0이었다. **이 사실은 아래 사용자 저장 보호 실패를 덮지 않는다.** 새 섬 RUNTIME/HUMAN/ART/RELEASE, 실제 OS focus 통지 배선은 NOT_RUN이다.
+- 로컬 import가 UID cache 부재를 해소했으나 editor addon 종료에서 ObjectDB 45/resources 22 경고를 출력했다. 이후 네 신규 CLI 검사는 엔진 오류 없이 종료했다. plugin 소스/설정을 고쳐 숨기지 않았다. import로 생긴 tracked `.import` 차이는 내용 동일한 EOL/stat 변경이어서 index 재확인 후 변경 0이다.
+- Base origin/main `23ecad5...` 재조회 동일, 운영/재미 계약과 Godot Time/ConfigFile 근거 재확인. 기존 12게임 조사 재사용. Hera 연결은 Blacksmith였으므로 조작하지 않고 해당 프로젝트 경로의 CLI만 실행했다.
+
+### 중단 사유 — MLB-P1-SAVE-INCIDENT-20260920
+
+전체 기존 보트 회귀 검사를 실사용 `user://`와 완전히 분리하지 않고 실행한 작업 오류다. `tests/test_game_scene_contract.gd` 등은 일부 저장만 격리하고 함께한 시간/항해 ledger를 격리하지 않는다. `scripts/voyage/game_scene.gd::_exit_tree`는 `GameState.flush_together_time()`을 호출한다. 따라서 새 섬 테스트의 경로 격리만으로 전체 suite가 안전하다고 판단한 것은 틀렸다.
+
+검사 전후 production cfg 8개 중 6개는 동일, 아래 2개가 달라졌다. 실제 파일은 `%APPDATA%/Godot/app_userdata/my little boat/` 아래다. 민감할 수 있는 저장 본문은 Git/PDF에 싣지 않는다.
+
+| 파일 | 실행 전 SHA256 | 실행 후 SHA256 | 현재 판단 |
+| --- | --- | --- | --- |
+| `memory_ledger_v1.cfg` | `2023a48e376b6ea4ee8d07fa4d1fb936bbf8acde05d265b7360aefb2725300bc` | `f8350726c5a53a6cc43ad5b6cfec4eb30b421452ea70a308802c557c12f371bb` | 끝의 항해 기록 1건을 제외한 바이트가 실행 전 해시와 정확히 일치. 아직 실제 원본은 변경/복원하지 않음 |
+| `together_time_v1.cfg` | `ea802246f45fb1993cfed2cddfd929c17be2d3722b8d9798365b9e2a1b61353c` | `6a8eda48e2c33b6601307d319c6d7c9d153acafedc002f4a22b2ab373844ec14` | 현재 13183.268959395176초. 실행 전 바이트 백업은 없음. 기존 last_good는 해시가 달라 현재 복원 근거가 아님 |
+
+작업 소유 실행은 종료됐고 추가 local 엔진 실행을 금지했다. 현재 두 cfg와 기존 last_good는 프로젝트 밖 `C:/Users/user/Documents/MyLittleBoat_도구검증/P1_저장보호사고_20260920`에 사본 보존한다. 이 폴더는 삭제대기가 아니다. 추정값 덮어쓰기나 오래된 last_good의 자동 복원은 하지 않는다.
+
+**재개에 필요한 사용자 결정.** 항해 ledger만 해시 일치 원본으로 복원하고, 정확한 이전 값을 모르는 함께한 시간은 현재 값 보존/사용자 원본 제공 중 선택한다. 그 뒤 기존 테스트를 포함한 전체 suite의 사용자 데이터 격리부터 교정·증명하고 회귀→독립 검토→정상 PR/main 확인으로 이어간다. 구현 체크가 PASS여도 저장 보호가 실패했으므로 Task 4/전체 P1은 완료 아님.
+
+<!-- MONTHLY_APPEND_ISLAND_P1_IMPLEMENTATION_20260920_BEGIN -->
+### 2026-09-20 첫 섬 P1 구현과 저장 보호 중단
+
+사용자 승인에 따라 Codex로 밭 6칸·작물 2종의 순수 농사 상태, 섬 전용 저장 adapter, 기존 복구 모듈 선별 이식, 시간·앱 복귀·저장 확정 Session을 구현했다. Godot 4.7.2에서 신규 검사 78/117/56 항목과 기존 복구 helper 검사를 실행했다. 실제 격리 파일로 심기·종료 후 새 Session·성장·수확·재로드를 확인했다. 새 섬 화면·아트·사람 재미 검증은 하지 않았다.
+
+전체 기존 보트 회귀 명령 36회는 실패 0이었으나, 실행 후 보호 검사에서 실사용 함께한 시간과 항해 ledger 두 파일이 변경된 사실을 발견했다. 기존 일부 테스트가 실사용 저장 경로를 격리하지 않은 상태로 장면 종료/항해 기록을 저장했다. 작업자가 전체 실행 전 이를 격리하지 못한 문제이며 정상 완료로 처리하지 않는다. 항해 ledger는 추가 한 건을 제외하면 사전 해시와 일치하지만 아직 복원하지 않았고, 함께한 시간은 사전 바이트 백업이 없어 정확한 복원을 확정하지 못했다. 추가 local 게임 실행과 main 병합을 중단하고 사본·해시·원인과 재개 결정을 기존 handoff에 기록했다.
+
+실제 작업일·기록일은 2026-09-20 KST이며 PDF는 사후 누적 기록이다. 실제 입력 화면 캡처·계정/모델/결제/협약 사실은 미확인이다. 원본은 해당 브랜치 코드·테스트·handoff이며, 문서 발행은 P1 완료/제품 출시 증거가 아니다.
+<!-- MONTHLY_APPEND_ISLAND_P1_IMPLEMENTATION_20260920_END -->
+
+## 이전 P1 상세 계획·후속 배 나들이 — 2026-09-20
 
 사용자 '좋아 작업진행해 / 배도 나중에 배타고 바깥으로 구경나갈수 있게 할거야'를 반영한다. PR #109의 첫 섬 설계를 상세 계획 기준으로 채택하고 `MLB-BOAT-OUTING-01`을 후속 제품 방향으로 추가했다. 섬이 생활 거점이고 배 나들이는 선택적 외출이며, 구형 항해 중심 제품으로 되돌리는 지시가 아니다.
 

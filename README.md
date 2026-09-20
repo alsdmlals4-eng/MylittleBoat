@@ -4,6 +4,23 @@
 
 ## 먼저 알아둘 것
 
+2026-09-20 **P1 농사 상태·시간·저장 기술 기반**을 추가했습니다. 현재 소비자는 자동 검사이며 새 섬 화면/조작은 아직 연결하지 않았습니다. 실행 첫 화면은 여전히 구형 보트입니다. 배를 타고 섬 밖을 구경하는 기능은 후속 방향으로 남아 있습니다.
+
+**현재 검증 중단.** 기존 보트 회귀 테스트 일부가 실사용 저장을 변경하는 문제가 발견됐습니다. 아래 P1 명령은 신규 검사 경로 설명이며, 전체 기존 테스트/실제 장면 검사는 [handoff의 저장 보호 사고](docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md)를 해결하고 사용자 데이터 격리를 확인하기 전 실행하지 마세요. 현재 브랜치는 main 병합 완료가 아닙니다.
+
+P1을 직접 확인하려면 이 checkout에서 아래를 실행합니다. 테스트는 실행별 임시 경로만 사용하고 종료 시 자신이 만든 파일을 정리합니다. 실제 농장 저장 경로는 후속 Scene에서 `user://island_farm_v1.cfg`를 주입하며, 이 검사로 production 농장을 생성하지 않습니다.
+
+```powershell
+$godotExe = 'C:/Users/user/Downloads/Godot_v4.7.2-stable_win64.exe/Godot_v4.7.2-stable_win64_console.exe'
+& $godotExe --headless --path . --import
+foreach ($name in @('test_recoverable_config_store','test_island_farm_state','test_island_save_contract','test_island_session_contract')) {
+    & $godotExe --headless --path . --script ('res://tests/' + $name + '.gd')
+    if ($LASTEXITCODE -ne 0) { throw ('검사 실패: ' + $name) }
+}
+```
+
+농사 상태 검사는 심기/선택적 돌보기/성장/수확·중복 입력, 저장 검사는 실제 파일과 중단 복구·미래 버전 보호, 세션 검사는 종료/복귀·시계 이상·확정 뒤 이벤트와 실제 저장 재실행을 확인합니다. 통과는 새 화면·모션·재미·실기기 검증이 아닙니다. [상세 구현 계획](docs/superpowers/plans/2026-09-20-island-p1-state-save.md)과 [현재 검증 기록](docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md)을 함께 읽습니다.
+
 - 현재 사람용 정본은 [프로젝트 GDD](docs/design/PROJECT_GDD.md)입니다.
 - PDF는 기획 정본이 아닙니다. 역사적 발행본과 source-binding 한계는 [문서 지도](docs/DOCUMENTATION_MAP.md)에서 확인합니다.
 - 작업 순서·선택 Base #883/#885·조건부 skill 경로는 [프로젝트 adapter](docs/operations/MY_LITTLE_BOAT_BASE_ADAPTER.json), 현재 진행 상태는 handoff의 최신 절이 소유합니다.

@@ -159,7 +159,7 @@
       "scripts/audio/resting_soundscape.gd",
       "scripts/ui/album_view.gd"
     ],
-    "new_island_consumers": "PLANNED_NOT_IMPLEMENTED",
+    "new_island_consumers": "P1_STATE_SAVE_SESSION_TEST_CONSUMERS_IMPLEMENTED_SCENE_PLANNED_SEE_CURRENT_HANDOFF",
     "evidence_owner": "docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md"
   },
   "project_adaptations": {

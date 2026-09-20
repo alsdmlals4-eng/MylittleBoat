@@ -10,7 +10,7 @@
 
 **Spec:** [GDD MLB-ISLAND-SLICE-01 §5–6](../../design/PROJECT_GDD.md#5-농사결과시간-명세). 근거 기준 main `57295a59aafdd0fd2d796d6ecf3fe11b153b6dcb`. 실행 직전 최신 main/consumer를 다시 읽는다.
 
-**Status:** `PLAN_REVIEW_READY / IMPLEMENTATION_NOT_STARTED`. 사용자 2026-09-20 후속 진행 승인은 첫 설계를 계획 기준으로 채택한 것이다. 상세 계획과 실행 방식의 사용자 검토 뒤 구현한다. 최종 섬 아트/Blueprint는 별도이며, 계획을 병합했다고 `SLICE_BUILD_READY`나 게임 완성으로 올리지 않는다.
+**Status:** `IMPLEMENTATION_PARTIAL / BLOCKED_LOCAL_SAVE_PROTECTION`. 사용자 '좋아 작업 계속 진행해'로 상세 계획의 Native 실행을 승인했다. Task 1–3의 코드/신규 검사와 CI 연결은 구현했으나 Task 4에서 기존 보트 테스트가 실사용 저장 두 파일을 변경해 중단했다. 실제 결과와 재개 결정은 [현재 handoff](../../handoffs/CURRENT_GODOT_IMPLEMENTATION.md)의 `MLB-P1-SAVE-INCIDENT-20260920`이 소유한다. 아래 checkbox는 원래 실행 요구 목록이며 완료 증거는 handoff/commit을 따른다. 최종 섬 아트/Blueprint와 새 섬 runtime은 별도다.
 
 ## Global Constraints
 
