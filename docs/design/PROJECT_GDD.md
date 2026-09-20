@@ -40,7 +40,9 @@
 
 ## 첫 섬 플레이 설계 후보 — 2026-09-20
 
-`MLB-ISLAND-SLICE-01 / USER_APPROVED_DESIGN_FOR_PLANNING / IMPLEMENTATION_PLAN_REVIEW_PENDING / RUNTIME_NOT_IMPLEMENTED`
+`MLB-ISLAND-SLICE-01 / P1_IMPLEMENTATION_APPROVED / P1_PARTIAL_BLOCKED_SAVE_PROTECTION / RUNTIME_NOT_IMPLEMENTED`
+
+**최신 구현 상태.** 상세 계획 설명 뒤 사용자가 '좋아 작업 계속 진행해'로 P1 직접 구현을 승인했다. 순수 농사 상태·저장·시간 Session과 신규 검사는 구현했지만 첫 섬 Scene/화면은 없다. 전체 구형 테스트 실행에서 실사용 저장 변경이 발견되어 추가 local 엔진 실행과 병합을 중단했다. [현재 handoff](../handoffs/CURRENT_GODOT_IMPLEMENTATION.md)의 `MLB-P1-SAVE-INCIDENT-20260920`과 실제 코드/테스트가 결과·원인·재개 결정의 원본이다. 아래 과거 승인 설명은 첫 설계 채택 시점의 기록이다.
 
 2026-09-20 PR #109의 설계 결과를 설명한 뒤 사용자가 '좋아 작업진행해'로 후속 진행을 승인했다. C2/I2/T2/S2와 6칸/2작물/바구니를 상세 계획의 기준으로 채택한다. 아래 수치는 시험 초기값이며 최종 밸런스 승인이 아니다. 최종 아트·전체 게임 Blueprint·실제 구현 승인을 이 진행 승인으로 대체하지 않는다. 기존 `MLB-DIRECTION-20260916`과 재미 기준 세 ID를 구체화하며, [P1 상세 구현 계획](../superpowers/plans/2026-09-20-island-p1-state-save.md)의 검토와 자산/Blueprint gate를 연결한다. 과거 제목의 '후보'는 조사 계보를 보존하기 위한 것이다.
 
@@ -173,7 +175,7 @@ flowchart LR
 
 새 섬 저장 후보는 `user://island_farm_v1.cfg`다. 기존 voyage/identity/comfort/photo 파일과 save ID를 변경하지 않는다. `GameState.begin_voyage/tick_voyage`를 농사 시간으로 사용하지 않는다. 농장 상태·UI·표현·파일 I/O를 한 스크립트에 넣지 않는다.
 
-| 계획 owner / 상태는 모두 PLANNED | 책임·인터페이스 후보 | 비책임 |
+| owner / P1 코드·검사는 구현, Scene/표시는 PLANNED | 책임·인터페이스 | 비책임 |
 | --- | --- | --- |
 | `data/island/crops.json` | schema=1, 위 두 crop ID/성장/credit/phase/visual ID 정의 | 플레이어 진행 저장, 임의 경제 |
 | `scripts/island/farm_state.gd` | `preview_command(state, plot_id, action, crop_id, expected_generation, expected_revision) -> Dictionary`와 `advance_elapsed(state, seconds)`로 후보 snapshot 계산; 순수 데이터 검증. 정확한 타입/실패값은 P1 상세 계획이 소유 | Scene/소리/파일 접근 |

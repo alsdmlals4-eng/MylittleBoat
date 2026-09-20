@@ -8,7 +8,7 @@
 
 - 운영 규칙·출처·skill 조건부 경로 — `docs/operations/MY_LITTLE_BOAT_BASE_ADAPTER.json`.
 - 현재 상태·진행·날짜별 누적 일지 — `docs/handoffs/CURRENT_GODOT_IMPLEMENTATION.md`의 최신 절. 별도 ACTIVE_CONTEXT를 만들지 않는다.
-- 재미·효과·비주얼·UI 기준 — `docs/design/PROJECT_GDD.md`의 `재미·표현 검증 기준`; 실제 consumer는 기존 handoff/visual inventory에 연결한다. 섬 경로는 아직 PLANNED.
+- 재미·효과·비주얼·UI 기준 — `docs/design/PROJECT_GDD.md`의 `재미·표현 검증 기준`; 실제 consumer는 기존 handoff/visual inventory에 연결한다. P1 상태/저장/시간 코드는 검사 consumer에 연결됐으며 섬 화면은 PLANNED. 저장 보호 중단은 handoff 최신 절을 따른다.
 - 실제 이미지/시각 사용처 — 기존 visual inventory. 구형 보트 승인 자산은 새 섬 아트 승인이 아니다.
 - 첫 섬 플레이의 조사·대안·카메라/농사/저장 명세 — `PROJECT_GDD.md`의 `첫 섬 플레이 설계 후보 — 2026-09-20`. 후속 진행을 승인해 상세 계획 기준으로 채택했으며 runtime/최종 아트 승인은 아니다. 자산/모션 상태군은 visual inventory의 같은 날짜 절.
 - P1 상태·시간·저장 구현 순서/타입·검사 — `docs/superpowers/plans/2026-09-20-island-p1-state-save.md`. GDD 의미를 구현 작업으로 풀어 쓴 실행 계획이며 별도 GDD가 아니다. 미래 배 나들이 방향은 GDD §10, 현재 구현 대상은 아님.
