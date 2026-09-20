@@ -4,6 +4,32 @@
 
 **역할:** 이 문서는 visual direction, 실제 runtime consumer, asset provenance, 화면별 evidence의 관계를 기록합니다. 사람용 게임 설명은 [프로젝트 GDD](../design/PROJECT_GDD.md)가, 코드 수준 상태는 [현재 Godot handoff](../handoffs/CURRENT_GODOT_IMPLEMENTATION.md)가 소유합니다.
 
+## 섬 플레이 시각 제작 후보 — 2026-09-20
+
+`MLB-ISLAND-SLICE-01 / VISUAL_REQUIREMENTS_PLANNED / NO_NEW_ASSET_CREATED`
+
+현재 방향은 [GDD 첫 섬 설계 후보](../design/PROJECT_GDD.md#첫-섬-플레이-설계-후보--2026-09-20)의 일본 청춘 애니메이션풍 작은 섬이다. 아래 §1 이후의 chibi/storybook grammar와 승인표는 **구형 보트의 보존 기록**이다. 새 섬 캐릭터·비율·팔레트·카메라·자산 lock이 아니며 이 후보 작성으로 기존 승인을 취소하지 않는다.
+
+GDD가 행동/성장/입력/시간과 후보 수치를, 이 절은 자산 상태군·제작 순서·소비 규격을 소유한다. 계획 경로와 ID는 전부 `PLANNED`이며 생성·승인·등록·구현·실행 검증은 없다. 새 bitmap이나 3D 자산을 이번 작업에서 제작하지 않았다.
+
+| 계획 ID | 실제 예정 사용처 | 최소 상태/분리 구조 | 제작·검증 계약 |
+| --- | --- | --- | --- |
+| IV01 섬 지형 | `scenes/island/island_slice.tscn`의 IslandTerrain | 보행면/해안 경계/돌/밭/감상 장소 분리 | Blender source→GLB→Godot wrapper. 미터 단위, +Y up 최종 확인, origin/scale 적용, 보행 충돌은 단순 별도 mesh. 밭·휴식 동선과 카메라 시야를 우선 |
+| IV02 하늘·원경 | 같은 Scene의 SkyLayer/DistantLand | 하늘/구름/원경 육지 별도. 시점 안에서 수평선 일관 | 하늘은 불투명 texture/sky material, 구름 cutout 필요 시 크로마키→RGBA. 바다를 배경에 굽지 않음. 임시 원본 해상도보다 실제 crop/시야 범위를 먼저 lock |
+| IV03 바다·해안 | 같은 Scene의 SeaSurface/Shore | 독립 수면 mesh/material, 해안 접촉 표시 | world 기준 UV/normal, 잔잔한 반사·움직임. 물 밑 전체 시뮬레이션/동적 파도 물리는 첫 Slice 제외. 수면과 땅의 틈·교차·과한 bloom·저감/정지 설정 검사 |
+| IV04 플레이어·도구 | `island_player.gd`의 CharacterBody3D 아래 CharacterVisual | idle/walk/plant/care/harvest/rest_enter/rest_idle/rest_exit와 물뿌리개 socket | 새 비율 후보 1개 먼저 검토. 회전 가능한 rigged 3D 권장, 발바닥 기준 origin, in-place locomotion. 카메라 뒷/옆/농사 크기에서 얼굴·손·발/도구 정합. 2D 합성 후면 한 장으로 대체하지 않음 |
+| IV05 두 작물·밭 | `crop_plot.tscn`의 PlantVisual/SoilVisual | EMPTY soil 공용, 두 종의 seedling/young/mature, cared 표식, tomato 지지대 | phase/cared는 state에서 읽음. 메시 swap 또는 material 상태를 선택하고 규칙은 넣지 않음. 색뿐 아니라 실루엣/짧은 상태 문구로 구분. 뿌리 pivot 통일 |
+| IV06 휴식 장소·바구니 | island_slice의 RestSpot/HarvestBasket | 앉기 접점, 바구니 empty/radish/tomato | 마지막 수확 종류만 표시. 보상 화폐/희귀도 표시 없음. 손·도구·의자 관통과 REST 카메라에서 내 밭/바구니 일부의 가독성 확인 |
+| IV07 UI·피드백·음향 | island_scene의 CanvasLayer/동작 이벤트 | 대상/가용·불가 이유/선택/확정/실패/복구/메뉴, OceanBed+짧은 행동음 | 한글은 텍스처에 굽지 않음. 540×960 기준 긴 문구·소리 0·모션 저감에서도 결과 구분. 입력 효과와 저장 성공을 구분 |
+
+**자산 생산 초기 예산은 측정 전 가설**이다. 캐릭터 색 texture 1024² 한 장에서 시작하고 식물/소품은 512² atlas 후보로 묶되, UV bleed 여백·mipmap·texture filter를 실제 카메라 거리에서 검사한다. 이 크기는 최종 모바일 메모리 합격선이 아니다. 동일 상태군은 scale/pivot/광원/명암 단계를 통일한다. 불필요한 normal/metallic texture와 여러 투명 겹침은 추가하지 않는다. 재질 조절은 Godot wrapper의 공용 material에서 시작해 Blender 복잡 node tree 자동 이식을 전제하지 않는다.
+
+**제작 순서**는 공간/카메라 설계 후보 검토 → 섬·캐릭터·밭·바다를 함께 볼 art-direction 후보 한 개 → 사용자 `LOCK / REVISE / REJECT` → 승인 상태군을 실제 GLB/texture/clip로 연결 → 같은 구도와 감상 시점에서 runtime 비교다. 후보 한 장의 승인이 만들어지지 않은 다른 자산군까지 자동 승인하지 않는다. 이미지가 필요한 독립 요소는 단색 크로마키 원본/프롬프트/제거 설정/RGBA/hash를 보존한다. sky·sea 같은 불투명 texture에는 불필요하게 배경 제거를 적용하지 않는다. Blender mesh/rig는 raster 배경 제거 규칙의 대상이 아니다.
+
+자산 manifest에는 원본·파생 GLB/PNG·export 설정·hash·계획 ID·실제 Scene/Node·필요 상태·fallback을 기록한다. missing 승인 자산은 내부 기술 시험에서만 명시적 placeholder로 표시하고 최종 Slice/art PASS를 막는다. `.blend` 직접 자동 import는 전역 설정/CI Blender 의존을 늘리므로 이번 후보에서는 명시적 GLB export를 권장한다. source 파일은 재현 가능한 보존 위치에 두며 자동 importer가 불필요한 backup을 읽지 않도록 한다.
+
+**현재 근거의 상한**은 2026-09-20 합성 큐브의 Blender→GLB→Godot 왕복뿐이다. 새 캐릭터 리그·재질·식물·수면·최종 조합·기기 성능은 `NOT_RUN`. static art 승인, animation 연결, runtime 캡처, 사람의 편안함은 각각 별도로 기록한다.
+
 ## 1. authority와 evidence를 구분하는 법
 
 | 구분 | owner | 뜻 |
