@@ -8,7 +8,7 @@
 
 `MLB-DIRECTION-20260916 / USER_APPROVED_DIRECTION / ISLAND_RUNTIME_NOT_IMPLEMENTED`
 
-사용자가 확정한 방향은 **작은 섬에서 농장을 돌보고 바다를 바라보며 쉬는 게임**, **일본 청춘 애니메이션풍**이다. 보트 전진감 추가 개발은 중단한다. 이름은 `my little boat`로 유지한다. 농사 행동·성장 시간·진행 구조·카메라·캐릭터 비율·최종 아트는 아직 확정하지 않았다. 의무 일과·작물 고사·경쟁·전투·유료 압박을 임의로 추가하지 않는다.
+사용자가 확정한 방향은 **작은 섬에서 농장을 돌보고 바다를 바라보며 쉬는 게임**, **일본 청춘 애니메이션풍**이다. 구형 보트 전진감의 추가 개발은 현재 중단한다. 2026-09-20에는 **나중에 배를 타고 섬 밖 풍경을 구경하는 선택적 나들이**를 후속 제품 방향으로 추가했다. 첫 섬 Slice보다 먼저 항해 개발을 재개하는 결정은 아니다. 이름은 `my little boat`로 유지한다. 아래 첫 섬 설계를 같은 날 후속 진행 기준으로 채택했으며, 성장 수치의 최종 밸런스·캐릭터 비율·최종 아트는 미확정이다. 의무 일과·작물 고사·경쟁·전투·유료 압박을 임의로 추가하지 않는다.
 
 기존 보트 구현·승인 자산·세이브 ID·실행 증거는 보존한다. 아래 §0–§8의 항해 흐름·치비 lock·구현 표는 **구형 보트 버전의 보존 기록**이며 새 섬 게임의 명세/완료 근거가 아니다. 구형 브랜치 `codex/title-boat-flow-20260831`의 후속 구현도 자동 통합하지 않는다. local 저장·사진/앨범·감상·바다 소리는 재사용 후보이며, 동반자·낚시·편지는 새 필수 기능으로 확정하지 않았다.
 
@@ -40,9 +40,9 @@
 
 ## 첫 섬 플레이 설계 후보 — 2026-09-20
 
-`MLB-ISLAND-SLICE-01 / RESEARCHED_DESIGN_CANDIDATE / USER_REVIEW_REQUIRED / RUNTIME_NOT_IMPLEMENTED`
+`MLB-ISLAND-SLICE-01 / USER_APPROVED_DESIGN_FOR_PLANNING / IMPLEMENTATION_PLAN_REVIEW_PENDING / RUNTIME_NOT_IMPLEMENTED`
 
-사용자가 승인한 이번 작업은 벤치마킹·대표 흐름·카메라/농사/저장 명세와 필요한 재사용 조사다. 아래 수치·조작·카메라·작물은 **권장 후보**이지 사용자 확정이나 구현 사실이 아니다. 기존 `MLB-DIRECTION-20260916`과 재미 기준 세 ID를 구체화한다. 이 문서의 Git 병합은 후보 보관 승인이지 게임 규칙/최종 아트의 자동 승인이 아니다. 전체 게임 완성 명세나 최종 Blueprint 발행본으로도 세지 않는다.
+2026-09-20 PR #109의 설계 결과를 설명한 뒤 사용자가 '좋아 작업진행해'로 후속 진행을 승인했다. C2/I2/T2/S2와 6칸/2작물/바구니를 상세 계획의 기준으로 채택한다. 아래 수치는 시험 초기값이며 최종 밸런스 승인이 아니다. 최종 아트·전체 게임 Blueprint·실제 구현 승인을 이 진행 승인으로 대체하지 않는다. 기존 `MLB-DIRECTION-20260916`과 재미 기준 세 ID를 구체화하며, [P1 상세 구현 계획](../superpowers/plans/2026-09-20-island-p1-state-save.md)의 검토와 자산/Blueprint gate를 연결한다. 과거 제목의 '후보'는 조사 계보를 보존하기 위한 것이다.
 
 ### 1. 목적·범위·가장 작은 완성 구간
 
@@ -176,7 +176,7 @@ flowchart LR
 | 계획 owner / 상태는 모두 PLANNED | 책임·인터페이스 후보 | 비책임 |
 | --- | --- | --- |
 | `data/island/crops.json` | schema=1, 위 두 crop ID/성장/credit/phase/visual ID 정의 | 플레이어 진행 저장, 임의 경제 |
-| `scripts/island/farm_state.gd` | `preview_command(plot_id, action, crop_id, expected_revision) -> Dictionary`와 `advance_elapsed(seconds)`로 후보 snapshot 계산; 순수 데이터 검증 | Scene/소리/파일 접근 |
+| `scripts/island/farm_state.gd` | `preview_command(state, plot_id, action, crop_id, expected_generation, expected_revision) -> Dictionary`와 `advance_elapsed(state, seconds)`로 후보 snapshot 계산; 순수 데이터 검증. 정확한 타입/실패값은 P1 상세 계획이 소유 | Scene/소리/파일 접근 |
 | `scripts/island/island_session.gd` | clock/lifecycle/현재 snapshot 소유. `request_action(...) -> result`가 검증→저장→확정 이벤트 수행. `state_changed(snapshot)`로 UI 동기화 | 모션 callback에서 규칙 재계산 |
 | `scripts/island/island_save_store.gd` | `load_state() -> result`, `commit(snapshot) -> result`, 명시적 복구. 기존 recoverable store를 island schema validator와 조합 | 다른 세이브 자동 마이그레이션 |
 | `scenes/island/island_slice.tscn`, `scripts/island/island_scene.gd` | 지형·밭·캐릭터·감상장소·UI 배선. 상태를 표시하고 의도를 전달 | 작물 성장/파일 권위 |
@@ -244,7 +244,23 @@ continuation의 관측 출처는 `80ce184fa6a5571e7cefcb7ad53cdabef896a1cd`다. 
 - 즉시 중단 기준은 생산 세이브 변경, 복구 불가능한 저장 오류, 입력 영구 잠금, 해안 밖 탈출, 실제 관찰 중 불편 호소다. 짧은 구간의 결과를 전체 게임 재미·장기 유지율·모든 기기 성능으로 확대하지 않는다.
 - 현재 DOC는 검토 대상, 새 섬 MACHINE/RUNTIME/HUMAN/최종 아트/RELEASE는 모두 `NOT_RUN`. 성능 목표는 승인 후 기준 기기·renderer·해상도에서 frame time/메모리/draw call을 측정해 정한다. 이번에는 기기 성능 수치를 발명하지 않는다.
 
-**되돌리기와 다음 결정.** 후보가 맞지 않으면 이 절과 연결된 시각 계획만 수정/보류한다. 구형 보트 코드·세이브·자산을 삭제하거나 엔진/플러그인을 바꾸지 않는다. 검토할 묶음은 C2/I2 카메라·조작, T2 무벌점 성장, 6칸/2작물/바구니 범위다. 채택되면 기존 handoff에 정확한 승인 revision을 남기고 필요한 자산/상세 실행 계획을 연결한다. 공용 Base 승격은 반복 실증이 없으므로 이번에는 제안하지 않는다.
+**되돌리기와 다음 결정.** 상세 계획은 아래의 채택 설계를 구현 순서로 구체화하며, 새로운 핵심 규칙이 필요하면 따로 결정한다. 구형 보트 코드·세이브·자산을 삭제하거나 엔진/플러그인을 바꾸지 않는다. C2/I2/T2/S2와 6칸/2작물/바구니의 기획 채택은 기록했으며, [P1 상세 구현 계획](../superpowers/plans/2026-09-20-island-p1-state-save.md)과 필요한 자산/Blueprint 검토가 다음 단계다. 공용 Base 승격은 반복 실증이 없으므로 이번에는 제안하지 않는다.
+
+### 10. 후속 확장 — 배를 타고 바깥 풍경 구경
+
+`MLB-BOAT-OUTING-01 / USER_APPROVED_FUTURE_DIRECTION / DEFERRED_NOT_IMPLEMENTED`
+
+사용자 원문은 '배도 나중에 배타고 바깥으로 구경나갈수 있게 할거야'다. 집이 되는 작은 섬에서 선택적으로 배를 타고 바깥 풍경을 구경하는 기능을 후속 로드맵에 포함한다. 섬 농장·휴식을 버리고 이전 항해 중심 제품으로 돌아가는 뜻으로 해석하지 않는다. 새 기능을 구형 보트 runtime의 완료 이력으로 대신하지 않는다.
+
+**현재 설계에서 보호할 연결점.** 농장 상태/시간은 카메라·선박 이동·Scene 수명과 분리한다. 농장은 하나이며 출항 때 복제하거나 초기화하지 않는다. 나들이 중 농사 부재에 벌·고사·귀환 의무를 추가하지 않는다. 탑승→풍경 감상→귀환, 출항 전 저장 실패, 나들이 중 앱 종료/복귀, 위치 복원은 나들이 설계를 할 때 함께 정의한다. 지금은 항해용 세이브 필드·빈 router·부두 버튼·보상·잠금 해제 조건을 만들지 않는다.
+
+| 후속 구현 대안 | 검토 이유와 현재 판단 |
+| --- | --- |
+| 하나의 거대한 연속 섬·바다 맵 | 전환 없는 이동이 가능하지만 월드 스트리밍/충돌/성능·조작 범위가 커짐. 첫 섬 P1에 도입하지 않음 |
+| 작은 나들이 구역을 별도 Scene으로 구성 | 섬과 바다 구역을 따로 다듬기 쉬움. 출항/귀환 경계와 하나의 농장 세션 유지가 필요. **후속 조사 우선 후보**이지 채택된 구현 방식은 아님 |
+| 감상용 사전 연출만 재생 | 제작은 작지만 플레이어가 배를 타고 구경한다는 감각·시점 선택을 제한할 수 있음. 비교 후보로만 유지 |
+
+앞서 조사한 B05는 섬 생활과 바깥 탐험을 결합한 제품 사례지만, 우리 나들이의 조작/항로/경관/도착점이 정해졌다는 근거는 아니다. 첫 섬 P1–P4 뒤 별도의 bounded 나들이 명세를 작성하고 필요한 실무 자료·실행 성능을 조사한다. 자동 항해/직접 조종, 귀환 방식, 볼거리 범위, 자산은 그때 검토한다. 이번 계획은 그 결정을 미리 대신하지 않는다.
 
 ## 보존된 구형 보트 기획과 실행 증거
 
