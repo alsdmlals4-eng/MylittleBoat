@@ -21,8 +21,11 @@ continuation `80ce184fa6a5571e7cefcb7ad53cdabef896a1cd`에서 recoverable_config
 ### 적용 판단·검증 기록
 
 - 브레인스토밍 skill의 architectural 설계 경로를 사용한다. 이미 승인한 조사·권장안 작성에 단계별 재승인을 요구하지 않고, 새 gameplay 구현과 최종 아트는 보류한다. 기존 GDD/visual/handoff를 재사용해 별도 spec·ledger·일지를 늘리지 않는다. writing-plans 형식의 실행 코드 계획은 후보 검토 후 만들며 이번 순서표를 완성된 코드 계획으로 주장하지 않는다.
-- baseline Python 9/9 PASS. 이번 source/Scene/assets/project.godot 변경은 없다. 문서 경로/역할/상태/수치·보호 구간·후보 consumer를 대조하고 독립 검토 결과를 아래에 누적한다. 새 섬 MACHINE/RUNTIME/HUMAN/ART/RELEASE는 NOT_RUN.
+- baseline 및 후보 Python 9/9 PASS, `git diff --check` PASS. 상대 문서 링크 9개가 존재하며 GDD/visual의 보존 구간은 기준 main과 동일하다. 이번 source/Scene/assets/project.godot 변경은 없다. 새 섬 MACHINE/RUNTIME/HUMAN/ART/RELEASE는 NOT_RUN.
 - 검토 1/2. main·Base·관련 PR·현재/과거 GDD 경계를 읽고 B/R/P 근거를 후보에 연결했다. 세 가지 이상 대안을 camera/time/input/storage마다 비교했다. source 재사용 조사에서 main의 foreground 제한과 continuation의 복구/음량 의존성을 찾아 그대로 이식하지 않는 판단을 반영했다. 시각 inventory에 남아 있던 과거 '확정 grammar'를 섬 승인으로 오인하지 않도록 현재/보존 구간을 명시했다. 긴 온라인 성장/물주기 의무화 대신 한 주기 상한·만료 없음·1회 credit·무경쟁 결과를 후보로 제한했다.
+- source 표적 재확인에서 R01 게시일을 실제 원문 2019-12-16으로 교정했고, 게임 autoload 두 개와 설치 플러그인 autoload의 보존 범위를 명확하게 했다.
+- 독립 전체 검토 2/2는 `140f985 → 6c1c4e4`의 4문서 전체와 관련 실제 source, adapter 경로, 주요 공식 원문을 read-only 대조했다. Critical/Important 0, Minor 1. GDD의 위치 검증을 '형식 손상'과 '보행 불가지만 유효한 위치'로 분리하고 후자는 Scene이 위치만 복원하도록 교정했으며 P2 검사에 유효 작물 보존을 추가했다. 이는 후보 명세 보완이며 실제 저장 구현 교정이 아니다. 추가 전체 검토를 초기화하지 않고 해당 문장/기존 상태·복구 경계와 9개 회귀를 확인한다.
+- 독립 검토가 판정하지 않은 전체 12게임 재플레이, Blender 재실행, 섬 runtime/모바일 성능/아트/Human은 이번 PASS 범위에 포함하지 않는다. 같은 작업 [PR #109](https://github.com/alsdmlals4-eng/MylittleBoat/pull/109)의 closeout/Actions가 최종 HEAD CI·정상 병합·main 재확인과 PDF 누적 결과를 소유한다.
 
 ### 남은 결정·다음 작업
 

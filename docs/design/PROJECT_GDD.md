@@ -186,7 +186,7 @@ flowchart LR
 
 신규 `IslandSession`은 Slice root가 소유하는 Node로 시작해 새 autoload를 추가하지 않는다. 테스트에서는 별도 root/경로를 주입한다. 기존 게임 autoload `GameState`·`RestingSoundscape`와 설치 플러그인의 autoload는 보존하되 island는 voyage session을 시작하지 않는다. `RestingSoundscape`의 섬용 제어는 명시적 음량 인터페이스만 연결한다.
 
-저장 snapshot은 `schema_version=1`, `revision`(확정 명령마다 증가), `saved_at_utc`, `plots`(고정 6 ID, crop_id/세대/elapsed/cared), `last_harvest_crop`, 안전한 player XZ/yaw를 갖는다. phase는 파생값이며 중복 저장하지 않는다. 숫자는 finite·범위·타입, ID는 허용 목록, 좌표는 보행 가능 여부를 검사한다. 미래 schema는 복구로 구버전 덮어쓰기하지 않고 `UNSUPPORTED_VERSION`으로 보존한다.
+저장 snapshot은 `schema_version=1`, `revision`(확정 명령마다 증가), `saved_at_utc`, `plots`(고정 6 ID, crop_id/세대/elapsed/cared), `last_harvest_crop`, 안전한 player XZ/yaw를 갖는다. phase는 파생값이며 중복 저장하지 않는다. 숫자는 finite·범위·타입, ID는 허용 목록을 검사한다. 위치의 타입/비유한 값 같은 형식 손상과, 정상 숫자지만 현재 지형에서 보행할 수 없는 위치를 구분한다. 후자는 농장 전체를 `CORRUPT`로 처리하지 않고 로드 후 위치만 안전한 시작점으로 대체하며 유효한 작물·수확 상태를 보존한다. 보행 판정은 Scene 책임이며 순수 저장 validator에 지형 의존성을 넣지 않는다. 미래 schema는 복구로 구버전 덮어쓰기하지 않고 `UNSUPPORTED_VERSION`으로 보존한다.
 
 거래는 유효한 현재 state→복사본 계산→검증된 파일 commit→in-memory state 교체→표현 이벤트 순이다. `NOT_COMMITTED/RECOVERY_REQUIRED`면 성공 연출과 새 행동은 금지한다. 이동/바다 감상은 가능하고 성장 화면은 마지막 안전 snapshot에 머문다. 재시도는 기존 상태를 다시 읽고 시간을 reconcile한 뒤 사용자가 원한 행동을 다시 확인한다. 검증된 복구도 사용자 동작으로만 하고 손상/unknown 자료는 보존한다. 시작 read는 디스크를 수정하지 않는다. 정상 성장은 30초 후보 간격 및 pause/정상 종료/명령 시 저장하되 hard kill 직전의 위치 복원은 최근 성공 저장까지임을 명시한다. 시간 경과는 마지막 저장 anchor에서 복원한다.
 
@@ -232,7 +232,7 @@ continuation의 관측 출처는 `80ce184fa6a5571e7cefcb7ad53cdabef896a1cd`다. 
 | 패키지 | 독립 결과·입출력 | 영향 경로 / 필수 검사 / 완료 기준 |
 | --- | --- | --- |
 | P1 상태·시간·저장 | crop data+명령→검증된 snapshot/result, 실제 저장 복원 가능 | 위 farm_state/session/save_store+tests. empty→plant→care→mature→harvest, 금지 명령/중복 revision, 음수/NaN/큰 경과, 시계 역행, 재접속/중복 resume, 손상/미지원 schema/쓰기 실패·복구. 기존 파일 bytes 불변. UI 없이 PASS는 기술 증거만 |
-| P2 공간·조작·감상 | P1 snapshot에 실제 캐릭터·대상 입력·카메라 연결 | island_slice/player/camera/plot wrapper. 가장자리/충돌/가림/6칸 접근, 다중 입력·UI 클릭 누수, REST/메뉴/전환 중 suspend·복귀. 기본/저감/정지 및 해상도 3종 실행 캡처. 회색 상자는 내부 배치 시험만 |
+| P2 공간·조작·감상 | P1 snapshot에 실제 캐릭터·대상 입력·카메라 연결 | island_slice/player/camera/plot wrapper. 가장자리/충돌/가림/6칸 접근, 보행 불가 복원 위치만 fallback하고 유효 작물 보존, 다중 입력·UI 클릭 누수, REST/메뉴/전환 중 suspend·복귀. 기본/저감/정지 및 해상도 3종 실행 캡처. 회색 상자는 내부 배치 시험만 |
 | P3 아트·모션·소리 통합 | 승인 asset state family→위 consumer에 실제 표시 | visual inventory의 IV01–IV07. GLB 재import 전후 gameplay 경로 보존, 발 접촉·도구/clip, 성장 phase/결과 일치, mute/모션 저감, 바다/하늘 레이어. 실제 화면+짧은 모션 증거 필요 |
 | P4 대표 구간 교정·패키지 | 처음부터 휴식·종료/재접속까지 연결된 내부 빌드 | 앞 세 패키지 회귀, 저장 fault injection, 낮은 성능 조건·장시간 idle/lifecycle, 기본 UI·한국어 가독성. 사용자 선언 시만 Human 관찰. 정상 PR/병합 main/기존 월간 기록 갱신 |
 
