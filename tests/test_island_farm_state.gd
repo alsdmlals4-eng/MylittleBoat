@@ -3,6 +3,7 @@ extends SceneTree
 
 var failures := 0
 var checks := 0
+var body_completed := false
 var fixture := "user://test_island_catalog_%d_%d.json" % [OS.get_process_id(), Time.get_ticks_usec()]
 
 func _init() -> void:
@@ -18,6 +19,7 @@ func _run() -> void:
 	expect(ResourceLoader.exists("res://scripts/island/farm_state.gd"), "planned farm owner exists")
 	if failures == 0:
 		test_body()
+		expect(body_completed, "test body completed without script exception")
 	print("island_farm_state: %d checks, %d failures" % [checks, failures])
 	quit(0 if failures == 0 else 1)
 
@@ -115,3 +117,4 @@ func test_body() -> void:
 		Engine.print_error_messages = previous
 		expect(result.status == ("OK" if number in ["1", "1.0"] else "INVALID_CATALOG"), "catalog schema " + number)
 	expect(DirAccess.remove_absolute(fixture) == OK, "fixture cleanup")
+	body_completed = true
