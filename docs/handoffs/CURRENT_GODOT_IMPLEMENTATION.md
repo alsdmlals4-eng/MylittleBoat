@@ -1,6 +1,30 @@
 # 현재 Godot 구현 handoff
 
-## Active Context — 첫 섬 설계 작업 2026-09-20
+## Active Context — P1 상세 계획·후속 배 나들이 2026-09-20
+
+사용자 '좋아 작업진행해 / 배도 나중에 배타고 바깥으로 구경나갈수 있게 할거야'를 반영한다. PR #109의 첫 섬 설계를 상세 계획 기준으로 채택하고 `MLB-BOAT-OUTING-01`을 후속 제품 방향으로 추가했다. 섬이 생활 거점이고 배 나들이는 선택적 외출이며, 구형 항해 중심 제품으로 되돌리는 지시가 아니다.
+
+### 이번 작업과 다음 실행
+
+- [P1 상세 계획](../superpowers/plans/2026-09-20-island-p1-state-save.md)은 FarmState→복구 저장→Session→검사/인도 4개 task, 정확한 API/파일·RED/PASS 절차·중단/복구·보호 범위를 소유한다. 작성 완료와 실행 완료는 다르며 모든 구현 checkbox는 미실행이다.
+- 실행 방식 권장은 Native다. 새 계획의 검토 뒤 같은 작업에서 직접 구현하고 필수 독립 병합 검토를 받는다. 첫 섬 설계를 다시 인터뷰하지 않으며 P1 구현/아트·Blueprint 준비의 의존성만 구분한다. 최종 아트/전체 Blueprint 승인을 이번 진행 지시로 추정하지 않는다.
+- 배는 현재 P1/P2의 항해 consumer나 빈 저장 필드를 만들지 않는다. 첫 섬 P1–P4 뒤 출항/귀환·나들이 조작/경관·앱 종료를 함께 설계한다. 농장 시간/상태를 카메라·배·Scene에서 분리하는 현재 경계는 유지한다.
+- current source는 main `57295a59aafdd0fd2d796d6ecf3fe11b153b6dcb`. 전용 기존 worktree에서 `codex/island-p1-plan-boat-outing-20260920` 분리. 원래 checkout `80ce184...`와 PR #19 OPEN/head `1dc7684...` 보호. Base main 재조회 `23ecad5...` 동일, 채택 version/설치 설정 변경 없음.
+- 실제 읽은 consumer는 GameState의 로드/항해 수명, game_scene의 focus/pause 처리, 기존 together-time 저장 테스트, CI 전체 명령, continuation RecoverableConfigStore 전문/fault test다. Godot Time/ConfigFile/MainLoop 공식 문서를 재조회했다. 이전 12게임 조사는 `REUSED_EVIDENCE`이며 새로 모두 플레이/재조사한 것이 아니다.
+- 설계 계보 전체 검토 2회는 PR #109에서 소진했다. 이번에는 계획 자기 점검·표적 교정·필수 독립 병합 검토를 수행한다. 계획에서 자동 농장 초기화, 미래 schema의 구버전 복구, clock 이중 계산, 실패한 행동 재실행이 일어나지 않도록 구체화했다.
+- baseline Python 9/9 PASS. 제품 코드·Scene·data·assets·저장·플러그인은 수정하지 않았다. 새 섬 및 배 나들이 MACHINE/RUNTIME/HUMAN/ART/RELEASE는 `NOT_RUN`; 현재 섬 runtime은 `NOT_IMPLEMENTED`다. 계획 내부 테스트 코드도 실제 테스트 PASS로 보고하지 않는다.
+
+### 완료 기준과 증거 경로
+
+문서 경로·GDD/계획/아트 연결·보존 구간·변경 범위를 대조하고 Python 검사·독립 검토·동일 작업 PR의 exact HEAD CI/정상 병합/main 재확인을 수행한다. 이번 PR의 최종 closeout이 병합 SHA·검사·기존 월간 PDF 누적 결과를 소유한다. 과거 두 전체 검토를 재시작하지 않는다. 새 실행/아트 후보는 아직 만들지 않았다.
+
+<!-- MONTHLY_APPEND_ISLAND_P1_PLAN_20260920_BEGIN -->
+### 2026-09-20 P1 상세 계획·배 나들이 방향 추가
+
+실제 작업·기록일은 2026-09-20 KST다. 사용자의 후속 진행과 '나중에 배타고 바깥 구경' 지시를 기존 GDD/AGENTS/시각 inventory에 연결했다. 첫 섬을 우선하는 범위는 유지하고 배 나들이는 후속 방향으로 기록했다. Codex로 실제 source·기존 저장 복구 모듈·Godot 공식 문서를 확인하여 농사 상태, 섬 전용 저장, 시간·앱 복귀, 실패·재시도에 대한 파일/API/테스트/구현 순서 계획을 작성했다. 기존 12게임 조사 근거는 재사용했다. 제품 코드·새 이미지·모델·항해 기능은 만들지 않았으며 계획 속 테스트도 미실행이다. 새 섬/나들이 실행·사람 재미·최종 아트 검증은 미실행이다. 실제 입력 화면 캡처와 계정·모델·결제·협약 사실은 확인하지 않았다. 원본은 이 handoff/GDD/P1 계획과 동일 작업 PR의 검사·병합 closeout이다. 같은 월간 PDF에 요약을 누적한다.
+<!-- MONTHLY_APPEND_ISLAND_P1_PLAN_20260920_END -->
+
+## 이전 첫 섬 설계 작업 — 2026-09-20
 
 이번 사용자는 앞서 제안한 대표 플레이/카메라/농사/저장 설계와 재사용 조사를 승인했다. 제품 구현·이미지 대량 제작은 이번 범위가 아니다. 새 정본 후보는 GDD `MLB-ISLAND-SLICE-01 / RESEARCHED_DESIGN_CANDIDATE`와 visual inventory IV01–IV07이며, 전체 게임 또는 최종 Blueprint 승인으로 읽지 않는다.
 
