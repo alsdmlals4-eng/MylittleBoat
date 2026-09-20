@@ -44,7 +44,7 @@
 | 3 | `scripts/island/island_session.gd`, `tests/test_island_session_contract.gd` | 주입 clock·저장소, 상태 확정·실패·lifecycle |
 | 4 | `.github/workflows/godot-validation.yml`, `README.md`, 기존 handoff | 실제 추가 검사 실행과 P1/제품 미구현 구분 |
 
-`FarmState`는 RefCounted, `IslandSession`은 Node다. catalog는 Task 1이 `static func load_catalog(path: String) -> Dictionary`로 읽어 `{status, crops}`를 반환한다. 실패는 `INVALID_CATALOG`와 빈 crops다. schema 정수 1, radish/tomato 두 key, finite 양수 growth, 0..0.25 credit, 0..1 안쪽 threshold, 비어 있지 않은 visual ID 문자열을 검증한다. 파일/JSON parse 실패나 잘못된 타입은 기본값으로 숨기지 않는다. Session의 순수 도메인은 성공한 catalog만 받는다.
+`FarmState`는 RefCounted, `IslandSession`은 Node다. catalog는 Task 1이 `static func load_catalog(path: String) -> Dictionary`로 읽어 `{status, crops}`를 반환한다. 실패는 `INVALID_CATALOG`와 빈 crops다. **JSON 카탈로그에만** schema를 finite int/float의 값 1로 검증한 뒤 내부 int 1로 정규화한다. Godot JSON의 숫자는 float로 파싱될 수 있으므로 ConfigFile snapshot의 strict int 계약과 혼동하지 않는다. bool/string/분수/비유한 값은 거절한다. radish/tomato 두 key, finite 양수 growth, 0..0.25 credit, 0..1 안쪽 threshold, 비어 있지 않은 visual ID 문자열을 검증한다. 파일/JSON parse 실패나 잘못된 타입은 기본값으로 숨기지 않는다. Session의 순수 도메인은 성공한 catalog만 받는다.
 
 | API | 정확한 입출력 |
 | --- | --- |
@@ -69,7 +69,7 @@
 
 plot은 `{crop_id: String, generation: int, elapsed_seconds: float, cared: bool}`다. EMPTY는 crop_id="", elapsed=0, cared=false이며 generation은 재사용 방지를 위해 유지한다. `plant` 때 generation+1, 성공 명령 때만 전역 revision+1이다. generation/revision은 0..2^53-1 정수이며 상한이면 변경 없이 `COUNTER_LIMIT`. phase는 저장하지 않는다.
 
-schema/revision/generation은 bool/float를 정수로 강제 변환해 받지 않는다. saved_at_utc는 finite 숫자 >=0, 위치 x/z/yaw는 finite 숫자다. 작물 elapsed는 0..growth_seconds, crop ID는 catalog 허용값, plots는 정확히 plot_01..plot_06, last_harvest_crop은 빈 문자열 또는 catalog ID다. Dictionary/배열/Resource를 문자열로 강제 변환하지 않는다. 알 수 없는 snapshot 키는 손상으로 간주해 거절한다. ConfigFile의 다른 section/key 보존은 기존 backend 책임이다. 정상 숫자지만 지형상 보행 불가인 위치는 P2에서 **위치만** fallback한다.
+ConfigFile snapshot의 schema/revision/generation은 bool/float를 정수로 강제 변환해 받지 않는다. saved_at_utc는 finite 숫자 >=0, 위치 x/z/yaw는 finite 숫자다. 작물 elapsed는 0..growth_seconds, crop ID는 catalog 허용값, plots는 정확히 plot_01..plot_06, last_harvest_crop은 빈 문자열 또는 catalog ID다. Dictionary/배열/Resource를 문자열로 강제 변환하지 않는다. 알 수 없는 snapshot 키는 손상으로 간주해 거절한다. ConfigFile의 다른 section/key 보존은 기존 backend 책임이다. 정상 숫자지만 지형상 보행 불가인 위치는 P2에서 **위치만** fallback한다.
 
 ## Task 1. 작물 데이터와 순수 상태 규칙
 
@@ -109,7 +109,7 @@ func _finish() -> void:
 
 ```gdscript
 # Task 1 test run()의 핵심 assertion. expect(condition, message)는 실패 수만 누적한다.
-var farm_script: Script = load("res://scripts/island/farm_state.gd")
+var farm_script: Variant = load("res://scripts/island/farm_state.gd")
 var catalog: Dictionary = farm_script.load_catalog("res://data/island/crops.json")
 expect(catalog.status == "OK", "catalog valid")
 if catalog.status != "OK":
@@ -150,16 +150,16 @@ func advance_elapsed(state: Dictionary, seconds: float) -> Dictionary:
     return next
 ```
 
-`preview_command`는 입력 snapshot 검증→plot/action 검증→expected revision/generation 일치→상태별 조건→deep copy 수정 순서다. 실패 코드는 INVALID_STATE/INVALID_COMMAND/STALE_COMMAND/INVALID_CROP/INVALID_PHASE/ALREADY_CARED/COUNTER_LIMIT로 한정한다. EMPTY plant는 위 초기값, care는 elapsed+growth×ratio를 clamp하고 cared=true, mature harvest는 같은 사본에서 crop를 비우고 last_harvest_crop를 바꾼다. 모르는 action, plant 외 crop_id 입력, 빈 곳 care/harvest, 성장 중 plant/harvest는 거절한다. phase 경계는 [0,0.25), [0.25,1), 1이며 EMPTY 우선이다.
+`preview_command`는 입력 snapshot 검증→plot/action 검증→expected revision/generation 일치→상태별 조건→deep copy 수정 순서다. 실패 코드는 INVALID_STATE/INVALID_COMMAND/STALE_COMMAND/INVALID_CROP/INVALID_PHASE/ALREADY_CARED/COUNTER_LIMIT로 한정한다. EMPTY plant는 위 초기값, care는 elapsed+growth×ratio를 clamp하고 cared=true, mature harvest는 같은 사본에서 crop를 비우고 last_harvest_crop를 바꾼다. 모르는 action, plant 외 crop_id 입력, 빈 곳 care/harvest, 성장 중 plant/harvest는 거절한다. phase 경계는 해당 crop의 `young_threshold=t`를 읽어 [0,t), [t,1), 1이며 EMPTY 우선이다. 초기 t=0.25를 코드에 다시 고정하지 않는다. 테스트 전용 카탈로그에서 t=0.5인 무는 45초에 SEEDLING, 90초에 YOUNG라는 fixture를 추가하고 production catalog는 변경하지 않는다.
 
-- [ ] 같은 검사를 PASS로 만들고 tomato 480초, 45초 phase 경계, 성숙 care 거절, 수정한 반환 사본이 원본을 바꾸지 않는 경우, 두 plot 독립성, 10년 경과 한 주기 상한을 assertion에 추가한다.
+- [ ] 같은 검사를 PASS로 만들고 tomato 480초, 45초 phase 경계, 성숙 care 거절, 수정한 반환 사본이 원본을 바꾸지 않는 경우, 두 plot 독립성, 10년 경과 한 주기 상한을 assertion에 추가한다. catalog fixture는 schema JSON 숫자 1과 1.0 모두 OK, true/"1"/1.5/null/비유한 숫자는 INVALID_CATALOG를 요구한다. 각 fixture는 테스트의 격리 경로에 기록하며 ConfigFile snapshot에 float schema를 수용하는 근거로 쓰지 않는다.
 - [ ] Task 1 파일만 commit한다. 메시지 `feat: add isolated island crop state`. 이 시점은 순수 MACHINE 증거만이다.
 
 ## Task 2. 기존 복구 저장을 섬 전용 파일에 연결
 
 **Consumes:** `farm.validate_snapshot`, snapshot schema. **Produces:** IslandSaveStore API. 경로는 파일 표 Task 2다.
 
-- [ ] 다음 선택 이식 원본을 다시 조회한다. `origin/codex/title-boat-flow-20260831`에서 `scripts/core/recoverable_config_store.gd`와 `tests/test_recoverable_config_store.gd` 두 파일만 비교·이식한다. 이번 관측 source는 `80ce184...`, 구체 blob은 구현 시 기록한다. 다른 owner·60개 commit은 병합하지 않는다. 기존 helper의 코드/테스트가 변경됐으면 해당 diff를 먼저 판정한다.
+- [ ] 다음 선택 이식 원본을 다시 조회한다. `origin/codex/title-boat-flow-20260831`에서 `scripts/core/recoverable_config_store.gd`와 `tests/test_recoverable_config_store.gd` 두 파일만 비교·이식한다. 이번 관측 source는 `80ce184...`, 구체 blob은 구현 시 기록한다. 다른 owner·60개 commit은 병합하지 않는다. 기존 helper의 코드/테스트가 변경됐으면 해당 diff를 먼저 판정한다. **이식하는 helper 검사도** 고정 `user://test_recoverable_config_store`와 시작 시 전체 cleanup을 그대로 가져오지 않는다. PID+ticks 접미사의 새 격리 경로를 만들고 기존 경로가 있으면 삭제하지 않고 종료한다. 이번 실행의 생성 파일만 기록해 teardown한다. 다른 실행 경로에 sentinel을 남긴 병행 fixture의 hash가 불변인지 검사한다. 이 검증용 sentinel도 자기 격리 영역 안에서만 만들고 종료 시 정리한다.
 - [ ] `tests/test_island_save_contract.gd`에 `user://test_island_p1_save_<PID>/farm.cfg`를 생성하고 생성 파일 경로를 배열로 기록한다. 모든 정상/실패 종료에서 이 테스트가 만든 경로만 teardown한다. production path는 사용하지 않는다.
 - [ ] Task 2 runner로 최초 missing island store FAIL을 확인한 뒤, snapshot을 `[island] snapshot=<Dictionary>` 한 key에 넣는 adapter를 구현한다. `_encode`/`_decode`는 이 key와 FarmState validator만 사용한다.
 
@@ -334,6 +334,6 @@ P1은 이미지·모델·음향을 입력으로 소비하지 않는다. 아트�
 
 ## 근거·현재 증거와 되돌리기
 
-2026-09-20 실제 main의 GameState `_ready`/voyage 함수, 기존 SceneTree 저장 검사와 CI, continuation의 RecoverableConfigStore 전문/주요 fault test를 읽었다. helper는 main에 아직 없으며 이번 턴에서 복사하지 않았다. [Godot Time](https://docs.godotengine.org/en/stable/classes/class_time.html)의 monotonic/시스템 시각 구분, [ConfigFile](https://docs.godotengine.org/en/stable/classes/class_configfile.html)의 load/save/Variant 구조, [MainLoop](https://docs.godotengine.org/en/stable/classes/class_mainloop.html)의 lifecycle 알림을 재확인했다. engine pin 변경 근거로 쓰지 않는다. 이전 12게임 조사와 §5–6 규칙은 유효한 기존 근거로 재사용하며 새 시장조사를 했다고 보고하지 않는다.
+2026-09-20 실제 main의 GameState `_ready`/voyage 함수, 기존 SceneTree 저장 검사와 CI, continuation의 RecoverableConfigStore 전문/주요 fault test를 읽었다. helper는 main에 아직 없으며 이번 턴에서 복사하지 않았다. [Godot Time](https://docs.godotengine.org/en/stable/classes/class_time.html)의 monotonic/시스템 시각 구분, [ConfigFile](https://docs.godotengine.org/en/stable/classes/class_configfile.html)의 load/save/Variant 구조, [MainLoop](https://docs.godotengine.org/en/stable/classes/class_mainloop.html)의 lifecycle 알림, [JSON](https://docs.godotengine.org/en/stable/classes/class_json.html)의 숫자 파싱 경계를 재확인했다. engine pin 변경 근거로 쓰지 않는다. 이전 12게임 조사와 §5–6 규칙은 유효한 기존 근거로 재사용하며 새 시장조사를 했다고 보고하지 않는다.
 
 계획의 범위 밖인 P2 화면 입력, 지형/카메라, 리그·최종 아트, Human·기기 성능은 각각 후속 패키지다. P1 계획은 전체 게임 구현 명세를 대신하지 않는다. 이번 변경은 문서만 되돌릴 수 있으며 실행 전에도 기존 source/자산/세이브에 영향이 없다. 구현 rollback은 P1의 새 소비 연결/파일을 해당 PR 단위로 되돌리고, 사용자 저장이 생겼다면 파일을 삭제하거나 구형 포맷으로 덮지 않는다.

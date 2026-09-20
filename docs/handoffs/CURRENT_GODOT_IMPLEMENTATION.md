@@ -16,7 +16,9 @@
 
 ### 완료 기준과 증거 경로
 
-문서 경로·GDD/계획/아트 연결·보존 구간·변경 범위를 대조하고 Python 검사·독립 검토·동일 작업 PR의 exact HEAD CI/정상 병합/main 재확인을 수행한다. 이번 PR의 최종 closeout이 병합 SHA·검사·기존 월간 PDF 누적 결과를 소유한다. 과거 두 전체 검토를 재시작하지 않는다. 새 실행/아트 후보는 아직 만들지 않았다.
+문서 경로·GDD/계획/아트 연결·보존 구간·변경 범위를 대조하고 Python 검사·독립 검토·동일 작업 PR의 exact HEAD CI/정상 병합/main 재확인을 수행한다. [PR #110](https://github.com/alsdmlals4-eng/MylittleBoat/pull/110)의 최종 closeout이 병합 SHA·검사·기존 월간 PDF 누적 결과를 소유한다. 과거 두 전체 검토를 재시작하지 않는다. 새 실행/아트 후보는 아직 만들지 않았다.
+
+필수 독립 병합 검토는 `57295a5 → 8f58db8`의 6문서와 관련 source/CI/공식 원문을 대조했다. Critical 0, Important 2, Minor 1이다. JSON 카탈로그에서만 숫자 1/1.0을 검증 후 정규화하고 ConfigFile snapshot의 strict integer 계약을 유지하도록 분리했다. 이식할 helper 테스트도 기존 고정 user:// 경로를 지우지 않고 실행별 격리·생성 경로 추적·정확한 teardown을 하도록 보강했다. phase 계산은 카탈로그 young_threshold를 읽고 비기본 fixture로 확인하도록 교정했다. 신규 제품 테스트 실행은 아니라는 경계를 유지하며 표적 재검토와 기존 Python 9개·문서 검사를 확인한다. 검토가 제외한 P2·실기기·아트·Human은 NOT_RUN 그대로다.
 
 <!-- MONTHLY_APPEND_ISLAND_P1_PLAN_20260920_BEGIN -->
 ### 2026-09-20 P1 상세 계획·배 나들이 방향 추가
