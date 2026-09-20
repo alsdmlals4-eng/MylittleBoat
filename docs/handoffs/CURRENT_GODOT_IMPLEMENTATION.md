@@ -1,6 +1,45 @@
 # 현재 Godot 구현 handoff
 
-## Active Context — 2026-09-20
+## Active Context — 첫 섬 설계 작업 2026-09-20
+
+이번 사용자는 앞서 제안한 대표 플레이/카메라/농사/저장 설계와 재사용 조사를 승인했다. 제품 구현·이미지 대량 제작은 이번 범위가 아니다. 새 정본 후보는 GDD `MLB-ISLAND-SLICE-01 / RESEARCHED_DESIGN_CANDIDATE`와 visual inventory IV01–IV07이며, 전체 게임 또는 최종 Blueprint 승인으로 읽지 않는다.
+
+### 승인 범위·진행 순서
+
+1. 최신 AGENTS→GDD 현재 방향/재미 기준→이 handoff→main/PR/실제 source→adapter→필요 Base를 읽었다. 작업 시작 main `140f9858219fe4acd73597a1fd31c2b1ca642796`; 전용 기존 worktree에서 `codex/island-first-play-design-20260920` 분리. 원래 checkout/continuation은 보호한다.
+2. Base 원격 main은 `23ecad5a3084f97c4e5d1e39a9a6d70d1eeb37ef`로 기존 채택 #883/#885와 동일했다. concept/fun·benchmark evidence·system-design·experience-to-presentation의 필요한 원본을 읽었다. 역사적 v9.4.4 lock/설치 스킬/플러그인 변경 없음.
+3. 12게임의 공식 제품 설명, 개발자 제작 글, 개별 긍정/부정/혼합 반응, Godot/접근성/저장 실무를 대조했다. GDD B01–B12/R01–R03/P01–P07이 출처·내용·한계를 소유한다. 게임 직접 플레이·전체 영상/실험·매출 검증은 하지 않았다.
+4. C2 작은 3D 섬/I2 방향 이동과 명시적 행동/T2 한 주기 무벌점 오프라인 성장/S2 섬 저장 분리 **권장 후보**를 작성했다. 6칸/2작물/바구니, 화면 상태·취소/복귀·clock·저장 실패·자산 상태군·SWOT·P1–P4 순서를 같은 GDD에 연결했다.
+5. 현재 문서 후보를 2회 공유 검토와 영향 검사로 닫고 동일 작업 PR/정상 병합/main 재확인으로 보관한다. 후보 보관은 새로운 게임 규칙/최종 아트 승인이나 구현 시작 권한이 아니다. 새 핵심 UX와 성장 규칙은 사용자 검토 후 실행 계획/필요 자산/Blueprint gate에 연결한다.
+
+### 재사용 조사와 실제 사용처
+
+main에서 project.godot, game_state, game_scene의 lifecycle, comfort_preferences, resting_soundscape, real_time_atmosphere_resolver, photo_memory_persistence, album_view, look-around controller를 읽었다. 현재 `GameState`는 voyage 시간/기억을 소유하므로 섬 성장 owner로 쓰지 않는다. atmosphere resolver 실제 경로는 `scripts/voyage/real_time_atmosphere_resolver.gd`다.
+
+continuation `80ce184fa6a5571e7cefcb7ad53cdabef896a1cd`에서 recoverable_config_store 전문, comfort/음량 소비 경계와 관련 tests 목록/commit history를 읽었다. 저장 복구·음량 모듈의 **선별 재사용 후보만** 기록했으며 코드를 이전하거나 그 테스트를 이번 작업에서 실행하지 않았다. PR #19는 OPEN/head `1dc768485ece548c01589d9814851b862ac50e10` read-only. 60개 커밋 전체 병합 없음.
+
+### 적용 판단·검증 기록
+
+- 브레인스토밍 skill의 architectural 설계 경로를 사용한다. 이미 승인한 조사·권장안 작성에 단계별 재승인을 요구하지 않고, 새 gameplay 구현과 최종 아트는 보류한다. 기존 GDD/visual/handoff를 재사용해 별도 spec·ledger·일지를 늘리지 않는다. writing-plans 형식의 실행 코드 계획은 후보 검토 후 만들며 이번 순서표를 완성된 코드 계획으로 주장하지 않는다.
+- baseline 및 후보 Python 9/9 PASS, `git diff --check` PASS. 상대 문서 링크 9개가 존재하며 GDD/visual의 보존 구간은 기준 main과 동일하다. 이번 source/Scene/assets/project.godot 변경은 없다. 새 섬 MACHINE/RUNTIME/HUMAN/ART/RELEASE는 NOT_RUN.
+- 검토 1/2. main·Base·관련 PR·현재/과거 GDD 경계를 읽고 B/R/P 근거를 후보에 연결했다. 세 가지 이상 대안을 camera/time/input/storage마다 비교했다. source 재사용 조사에서 main의 foreground 제한과 continuation의 복구/음량 의존성을 찾아 그대로 이식하지 않는 판단을 반영했다. 시각 inventory에 남아 있던 과거 '확정 grammar'를 섬 승인으로 오인하지 않도록 현재/보존 구간을 명시했다. 긴 온라인 성장/물주기 의무화 대신 한 주기 상한·만료 없음·1회 credit·무경쟁 결과를 후보로 제한했다.
+- source 표적 재확인에서 R01 게시일을 실제 원문 2019-12-16으로 교정했고, 게임 autoload 두 개와 설치 플러그인 autoload의 보존 범위를 명확하게 했다.
+- 독립 전체 검토 2/2는 `140f985 → 6c1c4e4`의 4문서 전체와 관련 실제 source, adapter 경로, 주요 공식 원문을 read-only 대조했다. Critical/Important 0, Minor 1. GDD의 위치 검증을 '형식 손상'과 '보행 불가지만 유효한 위치'로 분리하고 후자는 Scene이 위치만 복원하도록 교정했으며 P2 검사에 유효 작물 보존을 추가했다. 이는 후보 명세 보완이며 실제 저장 구현 교정이 아니다. 추가 전체 검토를 초기화하지 않고 해당 문장/기존 상태·복구 경계와 9개 회귀를 확인한다.
+- 독립 검토가 판정하지 않은 전체 12게임 재플레이, Blender 재실행, 섬 runtime/모바일 성능/아트/Human은 이번 PASS 범위에 포함하지 않는다. 같은 작업 [PR #109](https://github.com/alsdmlals4-eng/MylittleBoat/pull/109)의 closeout/Actions가 최종 HEAD CI·정상 병합·main 재확인과 PDF 누적 결과를 소유한다.
+
+### 남은 결정·다음 작업
+
+- 사용자 검토 묶음은 GDD C2/I2/T2/S2와 6칸/2작물/바구니 범위다. 숫자는 시험 초기값이며 밸런스 확정이 아니다.
+- 후보가 승인되면 P1의 상세 실행 계획과 승인 자산 제작 경로를 구체화하고 P1→P2→P3→P4 순으로 연결한다. 섬 runtime은 여전히 NOT_IMPLEMENTED.
+- 기존 세이브·승인 자산·원래 작업 폴더·PR #19·설치 도구는 보호. 새 장르 기능/온라인/비용/전역 변경 없음. 정리할 새 제작 자산도 없다.
+
+<!-- MONTHLY_APPEND_ISLAND_DESIGN_20260920_BEGIN -->
+### 2026-09-20 첫 섬 플레이 조사·설계 요약
+
+실제 조사/기록일은 2026-09-20 KST다. Codex로 현재 main과 Base 선택 계약, 구형 구현의 실제 사용처를 대조하고 12게임의 공식 제품 설명·개별 반응·개발자 제작/엔진/접근성 자료를 조사했다. 기존 GDD에 첫 섬 대표 흐름, 세 가지 이상 대안 비교, 권장 카메라·농사·성장·저장/복귀 후보, SWOT 보완 행동, 구현 패키지와 재미 검증 질문을 추가했다. 기존 시각 inventory에 분리 자산·모션 상태군을 연결했다. 제품 코드·이미지·3D 모델은 만들지 않았고 최종 기획/아트 승인 및 섬 실행/사람 재미 검증은 미실행이다. 입력 화면 캡처는 없으며 계정·모델·비용/협약 사실은 검증하지 않았다. 이 요약은 기존 월간 PDF의 같은 파일에 누적하고 최종 검사/병합 상태는 이번 PR closeout에서 확인한다.
+<!-- MONTHLY_APPEND_ISLAND_DESIGN_20260920_END -->
+
+## 이전 운영 정비 기록 — 2026-09-20
 
 현재 제품은 GDD `MLB-DIRECTION-20260916`의 작은 섬 농장·바다 휴식이다. 섬 runtime은 `NOT_IMPLEMENTED`, 구형 보트는 보존된 실행 코드다. 현재 운영 계약은 `docs/operations/MY_LITTLE_BOAT_BASE_ADAPTER.json`, 재미 기준은 GDD `MLB-FUN-20260920`을 읽는다. 아래 과거 “현재 작업”/항해 완성 표기는 해당 receipt 시점이며 섬 구현 권한이나 최신 검증이 아니다.
 

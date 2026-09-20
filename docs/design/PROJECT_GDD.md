@@ -38,6 +38,214 @@
 
 `DOC / MACHINE / RUNTIME / HUMAN / USER_APPROVAL / RELEASE`는 별개다. 사람 검증은 사용자가 선언할 때만 수행하고, 미실행은 `NOT_RUN`으로 둔다. 승인된 구현은 계속할 수 있지만 자동 검사나 AI 평가를 `FUN_PASS`로 승격하지 않는다. 회색 상자나 Blender 연결 시험은 기술 확인일 뿐 재미 증거가 아니다. 사람 검증은 전체 게임 완성을 기다리지 않고 필요한 아트·소리·UI가 연결된 짧은 대표 Slice로 준비한다. 새로운 감독 skill·분석 서버·중복 재미 보고서는 만들지 않는다.
 
+## 첫 섬 플레이 설계 후보 — 2026-09-20
+
+`MLB-ISLAND-SLICE-01 / RESEARCHED_DESIGN_CANDIDATE / USER_REVIEW_REQUIRED / RUNTIME_NOT_IMPLEMENTED`
+
+사용자가 승인한 이번 작업은 벤치마킹·대표 흐름·카메라/농사/저장 명세와 필요한 재사용 조사다. 아래 수치·조작·카메라·작물은 **권장 후보**이지 사용자 확정이나 구현 사실이 아니다. 기존 `MLB-DIRECTION-20260916`과 재미 기준 세 ID를 구체화한다. 이 문서의 Git 병합은 후보 보관 승인이지 게임 규칙/최종 아트의 자동 승인이 아니다. 전체 게임 완성 명세나 최종 Blueprint 발행본으로도 세지 않는다.
+
+### 1. 목적·범위·가장 작은 완성 구간
+
+잠시 쉬고 싶은 플레이어가 작은 섬에서 **돌볼 만큼만 돌보고, 내가 바꾼 풍경 곁에서 바다를 바라보는 경험**을 만든다. 대상층의 실제 선호와 장기 재미는 조사 가설이다. 세계관은 평온한 개인 섬이라는 현재 판타지만 유지하며 새 주인공 신분·서사·NPC 관계를 발명하지 않는다. 전투/난이도/적 AI는 코어와 충돌하므로 `NOT_APPLICABLE`이다.
+
+- 첫 구간의 제작 상한 후보는 섬 1개, 플레이어 1명, 고정 밭 6칸, 작물 2종, 바다 감상 장소 1곳, 수확 결과를 볼 바구니 1개다. 콘텐츠 대량 생산 전에 상태와 표현의 연결을 검증한다.
+- 캐릭터 이동·선택적 심기/물주기/수확·바다 감상·종료/복귀가 끊김 없이 이어져야 한다. 아무 행동 없이 쉬거나 성숙한 작물을 남겨도 정상 플레이다.
+- 상점/화폐/제작망/퀘스트/일일 보상/접속 연속 기록/의무 수면/작물 고사/체력 소모는 첫 구간에서 제외한다. 수확물은 내 풍경의 결과를 보여줄 뿐 판매·해금 재료가 아니다.
+- 동반자·낚시·편지·사진/앨범·자유 건축·여러 섬·계절별 작물은 `DEFER`다. 기존 승인과 코드는 보존하며 새 섬 필수 기능으로 자동 채택하지 않는다.
+- 명목상 한 구간은 심기부터 짧은 휴식까지 관찰 가능한 범위다. 의무 체류 시간과 보상 타이머는 없다. 첫 실행은 빈 밭과 눈에 보이는 감상 장소를 제공하고, 강제 튜토리얼·초기 선택 화면은 두지 않는 후보다.
+
+### 2. 조사 질문·근거와 한계
+
+2026-09-20 웹 원문 확인. 결정 질문은 (a) 기다림을 의무로 만들지 않는 성장, (b) 농장 조작과 수평선 감상의 공존, (c) 1인 제작의 화면/자산/저장 비용이다. 공식 제품 설명은 기능 근거, 개발자 글·엔진 문서는 제작 근거, 개별 게시물은 자기보고다. 직접 플레이·전체 영상 분석·통제 실험·시장 판매량 검증은 하지 않았다. 평점과 판매 추정은 채택 근거로 쓰지 않는다. 모든 사례의 성공 규모는 이번 조사에서 `NOT_100K_VERIFIED`다.
+
+| ID / 비교 대상·원문 | 확인한 제품 사실 | 우리 설계의 판단·가져오지 않을 것 |
+| --- | --- | --- |
+| B01 [Farm Together 2](https://store.steampowered.com/app/2418520/Farm_Together_2/) | 종료 중에도 시간 진행, 농장 확장과 자동 작업을 설명한다. | `ADAPT` 복귀 때 자라 있는 느낌만. 대규모 생산·자동화·수익 최적화는 제외. → 성장 대안 T2 |
+| B02 [Garden Life](https://store.steampowered.com/app/1915380/Garden_Life/?l=english) | 식물 돌보기·자유 배치, story/creative mode, 절차적 성장을 설명한다. | `ADAPT` 돌본 결과가 공간에 남는 가치. 절차적 식물 생성·의뢰 경제는 첫 구간에 과함. → 고정 상태 메시/바구니 |
+| B03 [Littlewood](https://store.steampowered.com/app/894940/Littlewood/?l=english) | 마을 복원, 농사, 주민 요청과 여러 생활 활동을 설명한다. | `ADAPT` 내 장소 변화. 주민 요청·기술 레벨·생활 시스템 수를 그대로 복사하지 않음. → 두 작물로 결과 가독성 시험 |
+| B04 [Cozy Grove](https://store.steampowered.com/app/1458100/Cozy_Grove/?l=english) | 현실 시간과 일일 신규 콘텐츠, 이후 자유 낚시·제작·꾸미기를 설명한다. | `AVOID` 현실 날짜별 콘텐츠 문턱. 휴식 복귀의 리듬만 참고하며 접속 일정은 만들지 않음. → 만료 없는 성숙 상태 |
+| B05 [Summer in Mara](https://store.steampowered.com/app/962580/SummerinMara/) | 개인 섬의 농사·제작과 여러 섬 탐험·다수 퀘스트를 결합한다. | `ADAPT` 섬과 생활의 관계. 넓은 항해·심부름망은 기존 방향과 제작 범위에 맞지 않음. → 단일 섬/짧은 동선 |
+| B06 [Garden In!](https://www.nintendo.com/nl-nl/Games/Nintendo-Switch-download-software/Garden-In--2436265.html) | 출판사 설명에 화분/흙/씨앗, 성장·교배, 방 꾸미기가 있다. | `ADAPT` 식물 형태가 달라지는 관찰. 교배 조합·도감은 보류. → 두 종/네 상태 가족 |
+| B07 [Wylde Flowers](https://wyldeflowersgame.com/) | 농사와 캐릭터 서사, 접근 가능한 조작·낮은 압박을 지향한다. | `ADAPT` 명확한 일상 동작과 접근 경로. 마법·연애·일과는 비채택. 저장 사고 대응은 P02 참고 |
+| B08 [Tiny Glade](https://store.steampowered.com/app/2198150/Tiny_Glade/?l=english) | 실패 상태 없이 만들고 바꿔 볼 수 있는 건축을 설명한다. | `ADAPT` 행동 뒤 공간이 읽히는 반응. 절차적 성/자유 건축 엔진은 제외. → 모션 아닌 상태가 결과 소유 |
+| B09 [A Short Hike](https://store.steampowered.com/app/1055540/A_Short_Hike/) | 자기 경로·속도로 섬을 탐색하고 주변 활동을 선택한다. | `ADAPT` 이동 자체의 장소감과 선택적 우회. 등반·점프·도달 목표는 제외. → 걷기/바다 감상 |
+| B10 [Rusty's Retirement](https://store.steampowered.com/app/2666510/Rustys_Retirement/?l=english) | 화면 하단 농장 자동화와 생산을 느리게 하는 Focus Mode를 설명한다. | `ADAPT` 주의를 덜 요구하는 표시. 상주 창·자동 생산 수익은 비채택. → 성장 알림이 휴식을 중단하지 않음 |
+| B11 [Townscaper](https://store.steampowered.com/app/1291340/Townscaper/?l=english) | 배치 입력이 해안 마을 형태로 즉시 바뀌는 건축 장난감이다. | `ADAPT` 입력과 눈에 보이는 결과의 인과. 무목표 건축으로 장르를 다시 바꾸지 않음. → 수확 바구니 |
+| B12 [Haven Park](https://havenparkgame.com/) | 작은 평화로운 공간 탐색과 캠핑장 돌보기를 설명한다. | `ADAPT` 작은 공간에서 돌봄과 산책 연결. 방문객 요구 시스템은 보류. → 한 화면의 농장/휴식 관계 |
+
+**긍정·부정·혼합 반응의 표적 표본.** 대표성 없는 소수 게시물을 실패 조건 탐색에만 사용한다. 리뷰를 바탕으로 현재 게임 버그나 다수 이용자의 선호를 단정하지 않는다.
+
+- R01 [Littlewood 2019-12-16 토론](https://steamcommunity.com/app/894940/discussions/0/3963662507768569583/)의 하루 행동량/시간이 짧다는 불만과 조절·진행에 관한 응답을 읽었다. 과거 버전의 불만이며 현재 제품 사실로 확장하지 않는다. B03의 다양한 활동이 긍정적 약속이어도 행동 제한은 우리 게임의 반례다. `AVOID` 행동력/강제 취침.
+- R02 [Wylde Flowers 2022-03-14 토론](https://www.reddit.com/r/wyldeflowers/comments/tebakj/)은 검색 결과에 제공된 원글과 댓글까지 확인했다. 느린 속도를 반기는 반응과, 느리면 지루하고 보통은 급해서 상황마다 전환한다는 혼합 자기보고가 있다. 직접 open은 실패했으며 전체 스레드/플레이 시간/현행 패치 동일성은 미확인이다. `TEST` 기다림의 편안함과 지루함을 별도 질문으로 검증. 고정 속도 하나가 모두에게 맞는다는 근거는 아니다.
+- R03 [Littlewood 개별 Steam 리뷰가 노출된 페이지](https://store.steampowered.com/app/894940/Littlewood/?curator_clanid=42857742&l=dutch)의 2023-01-26 비추천(표시 총 18.5시간)과 2023-10-24 추천(리뷰 당시 9.5시간)을 읽었다. 전자는 초기 성장/느긋함을 좋아하면서 행동량과 스킬 결과를 비판하고, 후자는 단순한 외형 안의 여러 층을 좋아했다. 두 건의 자기보고이지 비율·원인 증명은 아니다. `TEST` 복잡성 추가 전 두 작물의 차이와 돌봄 결과가 읽히는지 확인.
+
+| ID / 실무·공식 근거 | 확인·적용 | 한계 |
+| --- | --- | --- |
+| P01 [A Short Hike 개발자 글, 2021-08-05](https://blog.playstation.com/2021/08/05/crafting-a-tiny-open-world-a-look-behind-the-scenes-at-the-creation-of-a-short-hike/) | 제작자가 작은 세계·자유 경로·명상적인 탐색과 1인 제작을 설명. `ADAPT` 단일 섬, 농사를 건너뛰는 경로도 완결 | 그 게임의 제작 기간·아트 방식이 우리 일정/성능 증거는 아님 |
+| P02 [Wylde Flowers 공식 변경 기록](https://wyldeflowersgame.com/changes.html) | 1.0.5의 저장 백업/저장 공간 오류 안내/취소 시 재료 반환과 1.7.3 PS5 백업 수정 확인. `ADAPT` 복구/취소를 첫 명세에 포함 | 다른 플랫폼의 문제를 우리 버그라고 단정하지 않음 |
+| P03 [Godot SpringArm](https://docs.godotengine.org/en/stable/tutorials/3d/spring_arm.html) | `Camera3D`를 `SpringArm3D` 직접 자식으로 두고 충돌 접근을 설계 | 벽 충돌 회피이지 모든 화면 가림을 해결하지 않음 |
+| P04 [Godot 3D 형식](https://docs.godotengine.org/en/stable/tutorials/assets_pipeline/importing_3d_scenes/available_formats.html) | GLB는 메시/텍스처/애니메이션 전달 후보. 직접 blend import는 Blender 의존. `ADAPT` 명시적 GLB 출력 | 아트 shader·리그 전체 일치까지 보장하지 않음 |
+| P05 [Godot Time](https://docs.godotengine.org/en/stable/classes/class_time.html) | 시스템 시계는 조정될 수 있고 정밀 경과는 monotonic ticks를 사용. `ADOPT` 성장 시간과 현지 시각 분리 | 종료 중 경과는 신뢰할 서버 시계가 아닌 로컬 추정 |
+| P06 [Xbox XAG 117](https://learn.microsoft.com/en-us/gaming/accessibility/xbox-accessibility-guidelines/117) | 불필요한 카메라 흔들림·자동 변화·텍스트 뒤 움직임의 조절. `ADAPT` 고정 수평선, 카메라 bob 없음, 모션 저감 | 가이드 준수나 실제 접근성 PASS를 주장하지 않음 |
+| P07 [Godot CharacterBody3D](https://docs.godotengine.org/en/stable/classes/class_characterbody3d.html) | 사용자 조종 몸체·충돌 기반 걷기를 위한 엔진 제공 구조 | 실제 섬 경사·충돌·입력 검사는 구현 이후 |
+
+웹 `stable` 문서는 2026-09-20 조회된 API 설명이며 채택 엔진 변경 권한이 아니다. 구현 직전 로컬 Godot 4.7.2와 대상 API를 대조한다. Blender glTF 공식 manual 직접 열기는 실패하여 그 페이지의 내용은 근거로 쓰지 않았다. 필요할 때 P04와 실제 Blender 왕복 증거를 사용한다.
+
+### 3. 대안 비교와 권장 설계
+
+| 결정 | 대안 1 | 대안 2 | 대안 3 | 이번 권장 후보·이유 |
+| --- | --- | --- | --- | --- |
+| 공간/카메라 | C1 고정 2.5D 화면·대상 클릭. 제작은 단순하나 자유로운 뒤/옆 보기와 깊이 제한 | C2 작은 3D 지형·걷기·제한 회전·감상 시점. 깊이/모션 재사용 가능, 리그 제작 필요 | C3 자유 3인칭 대형 섬·360도 시점. 탐색은 넓지만 가림/카메라/자산 비용 증가 | **C2 / ADAPT**. 섬의 장소감과 제작 범위를 함께 유지. C1은 기술 문제가 확인될 때 축소 대안, C3은 첫 구간에서 REJECT |
+| 성장 시간 | T1 플레이 중에만 경과. 단순하나 앱을 켜 두는 압박 가능 | T2 플레이 중 경과+종료 중 현재 작물만 성장. 복귀 기대와 이탈 자유, 시계 변경 처리 필요 | T3 행동 횟수로 성장. 대기는 없지만 연타/농사 행동이 휴식의 전제처럼 보일 위험 | **T2 / TEST**. 성장 상한은 현재 한 작물의 성숙까지, 자동 재심기/오프라인 수확 없음. T1/T3은 첫 구간에서 비채택 |
+| 조작 | I1 탭 이동·자동 접근 후 행동. 쉬운 진입, 경로 실패/의도 밖 행동 위험 | I2 방향 이동+근거리 대상 선택+명시적 행동. 경로 자동화 불필요 | I3 농장 관리 카메라에서 원격 작업. 조작은 간단하나 캐릭터가 공간에서 생활하는 느낌 약화 | **I2 / TEST**. PC 방향키/WASD, 터치 이동 패드와 행동 버튼 동등. 원격 탭은 선택만 하며 자동 행동하지 않음 |
+| 저장 통합 | S1 기존 voyage GameState/파일에 농장 필드 추가. 빠르나 save 의미 결합 | S2 섬 전용 파일/owner와 기존 recoverable store의 최소 재사용. 경계 분명, 재검증 필요 | S3 새 범용 저장 프레임워크/DB. 확장 가능하나 첫 구간에는 과함 | **S2 / ADAPT**. 기존 저장/ID 보호. S1/S3 REJECT |
+
+**실현성 판정은 `PARTIAL`이다.** Godot 기본 구성과 Blender→GLB→Godot 기술 왕복은 근거가 있지만 실제 섬 공간·새 캐릭터 리그·성능·입력·성장/저장은 아직 실행하지 않았다. 이 비교가 '최적화 완료'나 `SLICE_BUILD_READY`를 뜻하지 않는다.
+
+### 4. 화면 흐름·공간·입력 계약
+
+```mermaid
+flowchart LR
+    A[실행: 저장 읽기] --> B[섬에서 걷기/머무르기]
+    B --> C[가까운 밭 선택]
+    C --> D[심기 / 선택적 물주기 / 수확]
+    D -->|저장 확정 결과만 표시| B
+    B --> E[바다 감상]
+    E -->|돌아오기| B
+    B --> F[메뉴/종료]
+    E --> F
+    F --> A
+    A -->|손상/미지원 저장| G[덮어쓰기 금지·복구 안내]
+    G -->|검증된 복구 또는 종료| A
+```
+
+| 화면/상태 ID | 진입·보이는 정보 | 입력·취소·복귀 |
+| --- | --- | --- |
+| IS-ENTRY | 첫 시작 또는 새 프로세스. 로컬 저장 상태를 확인한 뒤 섬 표시 | 정상 저장은 자동 이어하기. 손상 자료를 빈 농장으로 덮지 않음. 초기 외모/기분 선택 요구 없음 |
+| IS-WALK | 캐릭터·밭·바다·짧은 메뉴 버튼. 가까운 선택 대상과 가능한 행동만 표시 | PC WASD/방향키, 터치 고정 이동 패드. 방향은 카메라 수평 축 기준. UI 입력은 지면으로 전파하지 않음 |
+| IS-TARGET | 근거리 1.6m 이내의 밭/바구니/감상 장소. 대상 외곽선+이름+행동 문구 | 여러 대상은 최근 선택 유지, 없으면 거리→고정 ID 순. PC Tab/화면 대상 전환 버튼으로 바꾸기. 범위 밖 탭은 선택/거리 안내만, 자동 이동/행동 없음 |
+| IS-CARE | 빈 밭은 씨앗 2개 선택, 성장 중은 1회 물주기, 성숙은 수확 | PC E/Enter 또는 동일 행동 버튼. 씨앗창 취소는 변경 0. 확정 입력은 현재 대상 ID/세대/리비전 검증 후 저장 명령 한 번만 실행 |
+| IS-REST | 감상 장소의 낮은 시점, 수평선·나의 밭 일부·캐릭터가 함께 보임 | 접근 후 명시적 감상 입력. 이동 패드/농사 알림 숨김, 돌아오기/메뉴는 남음. Esc/돌아오기만 종료, 이동 키는 무시하여 우발 종료 방지 |
+| IS-MENU | 소리·모션·도움말·종료. 과제/성과 요약 없음 | 열 때 이동/대상 입력 해제. 닫으면 원래 WALK/REST 모드와 의미 있는 focus 복구. 도움말은 심기/물주기 선택/수확/휴식만 설명 |
+| IS-STORAGE | 저장 실패 또는 미지원/손상 파일. 결과 성공 연출 없음 | 재시도/검증된 복구 안내/종료. 기존 정상본과 손상 원본 보존. 자동 새 게임/초기화 버튼은 첫 구간에 없음 |
+
+**공간과 카메라 초기값은 조정 가능한 가설이다.** 지형 20×16m 이내의 단일 연결된 보행면, 밭 2×3칸, 밭과 감상 장소 사이 8m 이내로 시작한다. 플레이어 보행 2m/s, 뛰기/점프/수영 없음. 해안은 보행 충돌과 낮은 바위/식생으로 경계를 설명하고 낙하·익사 처벌을 만들지 않는다. 범위 이탈/잘못된 복원 위치는 안전한 시작 위치로 복귀하되 작물은 바뀌지 않는다.
+
+기본 카메라는 원근 3/4 시점(FOV 40°, 하향 35°, 거리 8m 출발), yaw ±35°·pitch 25–45°·거리 6–10m 범위의 명시적 조절 후보다. PC 우클릭 드래그/휠, 터치는 별도 둘러보기 영역 드래그/줌 버튼. 입력별 포인터 ID를 고정하고 UI 위에서 시작한 드래그는 카메라에 전달하지 않는다. 수평선 roll=0, 보행 bob/자동 회전/자동 줌 없음. 카메라 원점은 캐릭터 이동을 따라가되 미세 흔들림을 추가하지 않는다. 처음 구도는 농장과 바다를 동시에 읽는 것부터 조정한다.
+
+감상 시점은 같은 섬 좌표의 고정된 안전한 카메라 transform을 사용한다. 기본 전환 0.6초/저감 0.3초/정지 설정 즉시 전환은 시험 초기값이다. 전환 중 재입력·메뉴·백그라운드에서는 tween을 종료하고 최종 의미 상태를 한 번 적용한다. 돌아오면 진입 전 플레이어 위치/기본 카메라 설정을 복원한다. 저장 후 새 실행은 보행 모드로 시작해 숨은 이동 잠금을 남기지 않는다.
+
+지형과 밭/돌산은 world 좌표에 고정한다. **맵 전체를 카메라 반대로 이동시키지 않는다.** 캐릭터가 실제로 걷고 카메라가 따라가므로 원근·가림 변화가 이동을 만든다. 바다는 독립 메시/material의 잔잔한 움직임, 하늘/원경은 독립 배경, 구름/식생은 각각 제한된 모션으로 다룬다. 바다·하늘·돌산을 한 장에 굽거나 구형 보트 합성 그림을 새 섬 지형으로 쓰지 않는다.
+
+기존 540×960 세로 기준과 `canvas_items/expand`는 유지한다. 720×1280·1080×1920에서 UI 겹침과 crop 대상 가림을 확인하고, 가로/태블릿의 제품 지원 여부는 추후 별도 결정한다. 모바일은 입력 설계 대상이며 실기기 출시/성능 검증 완료를 뜻하지 않는다.
+
+### 5. 농사·결과·시간 명세
+
+밭 슬롯 `plot_01..plot_06`의 선택과 작물 종류/성숙 모습이 작은 표현 선택이다. 수확 효율 경쟁을 만들지 않는다. 씨앗은 무료·무제한이고 도구 구매/내구도/물 보충은 없다. 작물 후보는 `radish`(잎과 뿌리)·`tomato`(지지대와 열매)다. 실제 캐릭터·식물 디자인 lock과는 별개다.
+
+| 데이터 키 | radish 초기 후보 | tomato 초기 후보 | 의미·조정/검증 |
+| --- | --- | --- | --- |
+| `growth_seconds` | 180 | 480 | 시험 범위 120–600초. 체류 의무가 아니라 비교용 한 주기. 최종 밸런스 미승인 |
+| `care_credit_ratio` | 0.20 | 0.20 | 1세대 1회만 전체 성장량의 20%를 추가, 성숙을 넘지 않음. 0–0.25 시험; 보상 연타 금지 |
+| `young_threshold` | 0.25 | 0.25 | 진행률 0–0.25 seedling, 0.25–1 young, 1 mature. 수치가 아닌 형태/실루엣으로도 상태 표시 |
+| `mature_expiry` | 없음 | 없음 | 수확하지 않아도 손실/경고 없음 |
+| `harvest_result` | 바구니에 무 표시 | 바구니에 토마토 표시 | 최근 수확 종류 하나만 표시. 돈/점수/판매/자동 생산 아님. 기존 작물에 맞는 결과만 표시 |
+
+| 권위 상태 | 허용 명령 | 확정 결과 | 잘못된 입력/재입력 |
+| --- | --- | --- | --- |
+| EMPTY | `plant(crop_id)` | 세대+1, elapsed=0, cared=false, SEEDLING | 모르는 종류/먼 대상/이전 revision은 거부; 비용 없음 |
+| SEEDLING / YOUNG | `care` 또는 대기 | care는 1회 credit 추가·cared=true; 시간은 성장량만 증가 | 이미 cared면 중복 변화 없음. 성숙한 순간의 care는 거부하고 UI 갱신 |
+| MATURE | `harvest` 또는 그대로 두기 | EMPTY로 전환하고 last_harvest_crop 갱신. 두 변경은 같은 저장 거래 | 같은 세대/revision의 두 번째 수확은 거부; 연출이 다시 저장하지 않음 |
+
+성장 중 뽑기/종 변경은 첫 구간에 넣지 않는다. 잘못 심었다고 손해는 없으며 성숙→수확 후 다른 씨앗을 고를 수 있다. 즉시 취소 가능한 씨앗 선택창을 제공한다. 수확 후 자동 재심기와 강제 다음 행동 안내는 없다.
+
+**시간 처리 후보 T2.** 권위 값은 작물별 `elapsed_seconds`, 저장된 `saved_at_utc`, 실행 중 injected monotonic clock이다. 성장량은 0..growth_seconds로 제한하고 visual phase는 그 값에서 계산한다. 온라인/오프라인 두 clock을 같은 구간에 더하지 않는다.
+
+1. 새 프로세스에서 저장을 읽으면 `max(0, now_utc - saved_at_utc)`를 현재 각 작물의 남은 성장량까지만 한 번 적용한다. 주기는 하나이며 수확/재심기는 자동 실행하지 않는다. 시간이 뒤로 갔으면 성장 손실·벌 없이 0으로 처리한다.
+2. 활성 실행 동안은 monotonic ticks의 차이만 적용한다. 현지 시각 변화는 dawn/bright/sunset/night 표현에만 쓰며 성장률·보상을 바꾸지 않는다.
+3. focus-out/suspend 때 그 시점까지 reconcile하고 가능한 저장을 시도한 뒤 성장 polling·입력·VFX를 멈춘다. resume은 그 pause anchor와 현재 UTC 차이만 한 번 적용하고 monotonic 기준을 새로 잡는다. 중복 pause/resume 통지는 같은 lifecycle 상태에서 무시한다. 메뉴가 열린 활성 실행 중 성장 자체는 계속되지만 완료 알림은 없고 닫을 때 state를 재표시한다.
+4. 큰 미래 시계 점프도 현재 작물의 성숙까지만 허용한다. 로컬 시계 조작으로 빠르게 자라게 할 수 있는 것은 단독·무경제 Slice의 알려진 한계로 수용한다. anti-cheat 서버/시계 보정 계층은 만들지 않는다. 시간대/DST는 UTC 성장 계산과 분리한다.
+5. 물주기 직전 시간 reconcile→가용성 재검사→credit 1회→저장→결과 표시 순서다. 모션 길이·프레임 수·배속 설정은 성장 계산의 입력이 아니다.
+
+명령은 사용자 확정 입력 때 한 번 처리하고 성공한 뒤 짧은 모션을 재생한다. 모션 도중 이동/취소는 **표현만** 종료하며 확정된 저장을 되돌리지 않는다. 성공 전 거절/저장 실패는 상태를 바꾸지 않고 작은 실패 안내만 한다. 모션 종료 callback으로 수확·물주기·비용을 처리하지 않는다.
+
+### 6. 저장·복구·모듈 경계와 재사용
+
+새 섬 저장 후보는 `user://island_farm_v1.cfg`다. 기존 voyage/identity/comfort/photo 파일과 save ID를 변경하지 않는다. `GameState.begin_voyage/tick_voyage`를 농사 시간으로 사용하지 않는다. 농장 상태·UI·표현·파일 I/O를 한 스크립트에 넣지 않는다.
+
+| 계획 owner / 상태는 모두 PLANNED | 책임·인터페이스 후보 | 비책임 |
+| --- | --- | --- |
+| `data/island/crops.json` | schema=1, 위 두 crop ID/성장/credit/phase/visual ID 정의 | 플레이어 진행 저장, 임의 경제 |
+| `scripts/island/farm_state.gd` | `preview_command(plot_id, action, crop_id, expected_revision) -> Dictionary`와 `advance_elapsed(seconds)`로 후보 snapshot 계산; 순수 데이터 검증 | Scene/소리/파일 접근 |
+| `scripts/island/island_session.gd` | clock/lifecycle/현재 snapshot 소유. `request_action(...) -> result`가 검증→저장→확정 이벤트 수행. `state_changed(snapshot)`로 UI 동기화 | 모션 callback에서 규칙 재계산 |
+| `scripts/island/island_save_store.gd` | `load_state() -> result`, `commit(snapshot) -> result`, 명시적 복구. 기존 recoverable store를 island schema validator와 조합 | 다른 세이브 자동 마이그레이션 |
+| `scenes/island/island_slice.tscn`, `scripts/island/island_scene.gd` | 지형·밭·캐릭터·감상장소·UI 배선. 상태를 표시하고 의도를 전달 | 작물 성장/파일 권위 |
+| `scripts/island/island_player.gd`, `scripts/island/island_camera.gd` | CharacterBody3D 걷기/근거리 선택, camera pivot→SpringArm3D→Camera3D와 REST 전환 | 작물 저장, 조작 없는 자동 orbit |
+| `scenes/island/crop_plot.tscn`, `scripts/island/crop_plot_view.gd` | 고정 plot ID와 phase/cared/선택 표시, 모델 상태 교체 | elapsed 누적, 수확 지급 |
+| `tests/test_island_farm_state.gd`, `tests/test_island_save_contract.gd`, `tests/test_island_scene_contract.gd` | injected clock/격리 저장/실제 Scene 연결의 자동 검사 | Human 재미 판정 |
+
+신규 `IslandSession`은 Slice root가 소유하는 Node로 시작해 새 autoload를 추가하지 않는다. 테스트에서는 별도 root/경로를 주입한다. 기존 게임 autoload `GameState`·`RestingSoundscape`와 설치 플러그인의 autoload는 보존하되 island는 voyage session을 시작하지 않는다. `RestingSoundscape`의 섬용 제어는 명시적 음량 인터페이스만 연결한다.
+
+저장 snapshot은 `schema_version=1`, `revision`(확정 명령마다 증가), `saved_at_utc`, `plots`(고정 6 ID, crop_id/세대/elapsed/cared), `last_harvest_crop`, 안전한 player XZ/yaw를 갖는다. phase는 파생값이며 중복 저장하지 않는다. 숫자는 finite·범위·타입, ID는 허용 목록을 검사한다. 위치의 타입/비유한 값 같은 형식 손상과, 정상 숫자지만 현재 지형에서 보행할 수 없는 위치를 구분한다. 후자는 농장 전체를 `CORRUPT`로 처리하지 않고 로드 후 위치만 안전한 시작점으로 대체하며 유효한 작물·수확 상태를 보존한다. 보행 판정은 Scene 책임이며 순수 저장 validator에 지형 의존성을 넣지 않는다. 미래 schema는 복구로 구버전 덮어쓰기하지 않고 `UNSUPPORTED_VERSION`으로 보존한다.
+
+거래는 유효한 현재 state→복사본 계산→검증된 파일 commit→in-memory state 교체→표현 이벤트 순이다. `NOT_COMMITTED/RECOVERY_REQUIRED`면 성공 연출과 새 행동은 금지한다. 이동/바다 감상은 가능하고 성장 화면은 마지막 안전 snapshot에 머문다. 재시도는 기존 상태를 다시 읽고 시간을 reconcile한 뒤 사용자가 원한 행동을 다시 확인한다. 검증된 복구도 사용자 동작으로만 하고 손상/unknown 자료는 보존한다. 시작 read는 디스크를 수정하지 않는다. 정상 성장은 30초 후보 간격 및 pause/정상 종료/명령 시 저장하되 hard kill 직전의 위치 복원은 최근 성공 저장까지임을 명시한다. 시간 경과는 마지막 저장 anchor에서 복원한다.
+
+| 실제 읽은 재사용 후보 | 확인한 사용처/차이 | 판단과 다음 검사 |
+| --- | --- | --- |
+| main `scripts/core/comfort_preferences.gd` | standard/gentle/still 로컬 설정. 현재 GameState→보트 bob 진폭이 consumer | `ADAPT` 값/세이브 ID 유지. 섬 camera bob은 새로 넣지 않고 식생/물/전환 진폭에 매핑. 현재 save는 단순 ConfigFile이므로 복구 안전을 보장하지 않음 |
+| main `scripts/audio/resting_soundscape.gd` | autoload OceanBed, display에서 생성·재생·종료 해제. main에는 사용자 음량 연결 없음 | `ADAPT` 파도 원본과 수명. 보트 creak 의미는 섬에 들여오지 않음. 실제 청취는 미검증 |
+| continuation `scripts/audio/resting_soundscape.gd`, `scripts/core/comfort_preferences.gd` | `1967483` 이후 음량 smooth gain, GameState signal·설정 저장에 의존 | `ADAPT_CANDIDATE` 필요한 음량 기능만 추출, full GameState 병합 금지. mute/재생위치/복귀 검사 포함 |
+| continuation `scripts/core/recoverable_config_store.gd` | read_validated/write_validated/recover_primary, pending/last_good/receipt·해시·검증 callback 존재. main에는 파일 없음 | `ADAPT_CANDIDATE` 새 framework보다 우선. 복구/권한/손상/미지원 schema/중단 write를 섬 전용 경로에서 재검증 후 사용. 코드 존재≠새 소비자 검증 |
+| main `scripts/voyage/real_time_atmosphere_resolver.gd` | hour→4개 시간대 ID. GameScene와 Album이 소비 | `ADAPT` ID/순수 시간 함수만. 구형 배경 이미지·성장률은 연결하지 않음 |
+| main `scripts/core/photo_memory_persistence.gd`, `scripts/ui/album_view.gd` | voyage PNG/metadata, GameState 사진/항해/동반자 시간과 강결합 | `DEFER` 첫 Slice에 없음. 섬 사진을 옛 항해 파일에 섞지 않음 |
+| main `scripts/voyage/look_around_camera_controller.gd` | drag/pitch/yaw 및 각도별 보트 합성 이미지 라우팅 | `REFERENCE_ONLY` 입력 아이디어만. 3D 섬에는 이미지 각도 교체 불필요 |
+| main `scripts/voyage/game_scene.gd::_process` | foreground는 함께한 시간/명소에만 적용, fishing/tick_voyage/bob은 별도 | `REJECT_AS_IS` 섬 lifecycle에 그대로 복사하지 않음. scope 안 pause/resume 계약을 새 Session이 소유 |
+
+continuation의 관측 출처는 `80ce184fa6a5571e7cefcb7ad53cdabef896a1cd`다. 이 SHA는 이번 조사 출처이며 미래 실행에서는 원격/소유자를 다시 읽는다. `tests/test_recoverable_config_store.gd`, `test_simple_owner_recovery.gd`, `test_photo_memory_recovery.gd`는 그 브랜치의 재사용 검사 후보이지 이번 실행 PASS가 아니다. 60개 후속 커밋·PR #19·원래 checkout은 변경하지 않는다.
+
+### 7. 아트·모션·사운드 제작 계약
+
+시각 분야 원본은 [시각 inventory의 섬 제작 후보](../visual/CURRENT_SCREEN_SURFACE_INVENTORY_AND_VISUAL_ASSET_COVERAGE.md#섬-플레이-시각-제작-후보--2026-09-20)다. 기존 치비 lock은 구형 보트용이며 새 캐릭터 비율을 확정하지 않는다. 일본 청춘 애니메이션풍의 맑은 색면·부드러운 명암·생활 동작을 목표로 하되 특정 작품 캐릭터/의상/구도를 복제하지 않는다.
+
+농장 화면과 감상 화면을 먼저 합성 가능한 한 세트로 시험한다. 캐릭터·농장·바다의 재질/광원 기준을 맞춘 뒤 다른 자산군으로 확대한다. Blender source→명시적 GLB→Godot wrapper Scene/material로 연결하며 import 결과 파일에 직접 gameplay script를 붙여 재import에 잃지 않는다. Blender 노드 shader가 그대로 전달된다고 가정하지 않고 색/거칠기/alpha/normal·뼈/clip/root motion을 Godot에서 확인한다. 카메라 회전 때문에 캐릭터를 단일 후면 이미지로 대신하지 않는다.
+
+필수 동작은 idle/walk/plant/care/harvest/rest_enter/rest_idle/rest_exit 후보다. 발 접촉과 도구 pivot, interruption→idle, 무음/저감 모션에서도 상태 전달을 검증한다. 완료 표시에는 한 번의 짧은 소리/형태 변화만 쓰고 반복 성장 popup·화면 흔들림·큰 축하를 넣지 않는다. 정지 설정에서는 장식 모션을 줄이되 플레이어 입력으로 발생한 이동과 상태 식별은 보존한다.
+
+### 8. SWOT·차별화와 보완 행동
+
+| 축 | 현재 근거/위험 | 강화·보완 행동 | 확인할 반례·효과 |
+| --- | --- | --- | --- |
+| S1 | 바다 휴식과 작은 농장이라는 분명한 방향 | `SO` 감상 구도에 내가 돌본 밭/수확 바구니 일부를 남겨 휴식과 돌봄을 한 장소로 연결 | 별도 농장 화면과 배경 감상이 단절되어 보이면 실패 |
+| S2 | 로컬 저장·바다 소리·comfort·Blender 왕복 기반 존재 | `ST` 검증 가능한 부분만 재사용하고 온라인 없이 첫 구간 완결 | 기존 보트 모듈 결합 때문에 섬 상태가 오염되면 축소/분리 |
+| W1 | 섬 runtime·리그·최종 아트가 없음 | `WO` 단일 섬/2작물/캐릭터1명으로 재import와 완성형 화면을 먼저 검증 | placeholder만 동작하는 상태를 최종 재미 검증으로 보고하지 않음 |
+| W2 | 단순 농사가 무의미한 대기/반복일 수 있음 | `WO` 종류·위치·성숙 모습 유지 선택, 바구니의 명확한 결과. 반복 확장 전 편안함과 지루함을 함께 묻기 | 대기만 하거나 수확 이유를 모르겠다면 수치보다 선택/결과 의미부터 교정 |
+| O1 | B01/B08/B10/B11처럼 낮은 압박·관찰/표현을 약속하는 여러 제품 존재 | `SO` '성과 화면 대신 내가 돌본 풍경에서 쉬기'를 차별화 가설로 시험 | 이 원리가 시장 독점/판매 성공을 보장하지 않음. 화면만으로 차이를 읽는지 미검증 |
+| T1 | R01/R02의 시간 압박·느린 진행 양쪽 불만 | `WT` daily gate·고사·강제 취침 제거, 현재 한 주기만 오프라인 성장 | 앱 켜두기/물주기 최적화를 강요받는 느낌이면 care credit·성장 방식을 재검토 |
+| T2 | 3D 제작·카메라 가림·저장 손상이 작은 팀 비용을 키움 | `ST/WT` 제한 회전/짧은 동선/고정 밭·명시적 GLB·복구 저장, feature 확대 보류 | 실제 표적 기기의 frame time·입력/복원 검증 없이는 최적화 완료 아님 |
+
+**차별화 가설.** '많이 수확할수록 커지는 농장'보다 '조금 돌본 흔적을 풍경으로 남기고 그 곁에서 쉬는 섬'을 우선한다. 기존작에도 돌봄·감상은 있으므로 완전한 독창성을 주장하지 않는다. Micro는 명확한 돌봄 결과, Session은 돌보기/그냥 쉬기의 선택, Meta는 내 배치·식물 모습이 남는 연속성이다. 장기 해금·경제는 이 단계에서 약속하지 않는다. 행동–피드백–결과 렌즈를 사용하되 보상 빈도나 실제 도파민을 측정했다고 하지 않는다.
+
+### 9. 승인 후 구현 순서·검증·완료 기준
+
+아래는 **설계에 종속된 작업 순서**이며 실행 가능한 상세 코드 계획/최종 Blueprint를 대신하지 않는다. 새 기획의 검토, 필요한 실제 자산 후보와 Blueprint 검토 게이트를 먼저 닫는다. 신규 파일은 아직 없으며 제품 구현을 이번 조사 완료로 세지 않는다.
+
+| 패키지 | 독립 결과·입출력 | 영향 경로 / 필수 검사 / 완료 기준 |
+| --- | --- | --- |
+| P1 상태·시간·저장 | crop data+명령→검증된 snapshot/result, 실제 저장 복원 가능 | 위 farm_state/session/save_store+tests. empty→plant→care→mature→harvest, 금지 명령/중복 revision, 음수/NaN/큰 경과, 시계 역행, 재접속/중복 resume, 손상/미지원 schema/쓰기 실패·복구. 기존 파일 bytes 불변. UI 없이 PASS는 기술 증거만 |
+| P2 공간·조작·감상 | P1 snapshot에 실제 캐릭터·대상 입력·카메라 연결 | island_slice/player/camera/plot wrapper. 가장자리/충돌/가림/6칸 접근, 보행 불가 복원 위치만 fallback하고 유효 작물 보존, 다중 입력·UI 클릭 누수, REST/메뉴/전환 중 suspend·복귀. 기본/저감/정지 및 해상도 3종 실행 캡처. 회색 상자는 내부 배치 시험만 |
+| P3 아트·모션·소리 통합 | 승인 asset state family→위 consumer에 실제 표시 | visual inventory의 IV01–IV07. GLB 재import 전후 gameplay 경로 보존, 발 접촉·도구/clip, 성장 phase/결과 일치, mute/모션 저감, 바다/하늘 레이어. 실제 화면+짧은 모션 증거 필요 |
+| P4 대표 구간 교정·패키지 | 처음부터 휴식·종료/재접속까지 연결된 내부 빌드 | 앞 세 패키지 회귀, 저장 fault injection, 낮은 성능 조건·장시간 idle/lifecycle, 기본 UI·한국어 가독성. 사용자 선언 시만 Human 관찰. 정상 PR/병합 main/기존 월간 기록 갱신 |
+
+**검증 시나리오와 증거 경계.** 세 재미 ID에 같은 build/환경을 연결한다.
+
+- `REST-01`. 새 저장으로 어떤 농사 입력도 하지 않고 걷기/감상/종료/복귀 가능. MACHINE은 금지 의무·상태 불변, RUNTIME은 메뉴 복귀/수평선/모션, HUMAN은 '쉬어도 괜찮았는가, 일을 해야 한다고 느낀 순간은?'이다.
+- `CARE-01`. 두 작물 중 선택→1회 care→성숙→수확 또는 그대로 두기. MACHINE은 state/credit/저장/중복, RUNTIME은 실제 형태/바구니/무음 결과, HUMAN은 '무엇을 바꿨고 왜 다음 행동을 골랐는가, 기다림이 어땠는가?'이다.
+- `PRESENT-01`. 작은 화면·선택 전환·모션 중 취소·음소거·저감·휴식 복귀. MACHINE은 consumer/state 연결, RUNTIME은 대상 가림/입력/clip/정보 보존, HUMAN은 '대상과 결과를 구분했는가, 움직임이 불편했는가?'이다.
+- 즉시 중단 기준은 생산 세이브 변경, 복구 불가능한 저장 오류, 입력 영구 잠금, 해안 밖 탈출, 실제 관찰 중 불편 호소다. 짧은 구간의 결과를 전체 게임 재미·장기 유지율·모든 기기 성능으로 확대하지 않는다.
+- 현재 DOC는 검토 대상, 새 섬 MACHINE/RUNTIME/HUMAN/최종 아트/RELEASE는 모두 `NOT_RUN`. 성능 목표는 승인 후 기준 기기·renderer·해상도에서 frame time/메모리/draw call을 측정해 정한다. 이번에는 기기 성능 수치를 발명하지 않는다.
+
+**되돌리기와 다음 결정.** 후보가 맞지 않으면 이 절과 연결된 시각 계획만 수정/보류한다. 구형 보트 코드·세이브·자산을 삭제하거나 엔진/플러그인을 바꾸지 않는다. 검토할 묶음은 C2/I2 카메라·조작, T2 무벌점 성장, 6칸/2작물/바구니 범위다. 채택되면 기존 handoff에 정확한 승인 revision을 남기고 필요한 자산/상세 실행 계획을 연결한다. 공용 Base 승격은 반복 실증이 없으므로 이번에는 제안하지 않는다.
+
 ## 보존된 구형 보트 기획과 실행 증거
 
 이하 “현재”라는 표현은 해당 과거 receipt의 시점이다. 2026-09-20 실제 main의 복구/검사 상태와 다음 작업은 [최신 handoff](../handoffs/CURRENT_GODOT_IMPLEMENTATION.md)를 우선한다.
